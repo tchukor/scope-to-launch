@@ -37,9 +37,9 @@ export const OverviewView: React.FC = () => {
   };
 
   return (
-    <div className="max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[#111111]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[#111111]">
       {/* Page Header Area */}
-      <section className="flex flex-col md:flex-row md:items-end justify-between pb-4 sm:pb-6 border-b border-[#DDD6C7] gap-4">
+      <section className="flex flex-col xl:flex-row xl:items-end justify-between pb-4 sm:pb-6 border-b border-[#DDD6C7] gap-4">
         <div>
           <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">Overview</h1>
           <p className="font-body-md text-xs sm:text-body-md text-[#5F5E5E] mt-1">
@@ -222,7 +222,7 @@ export const OverviewView: React.FC = () => {
             </div>
 
             {/* Benchmark rule note */}
-            <div className="mt-4 pt-2 border-t border-[#DDD6C7] flex items-center justify-between text-[#5F5E5E] font-caption text-caption">
+            <div className="mt-4 pt-2 border-t border-[#DDD6C7] flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-[#5F5E5E] font-caption text-caption">
               <span>C+ university threshold benchmark: 6.50+ Mean Points</span>
               <span className="font-tabular-sm text-tabular-sm font-medium">
                 {nearTheLineStudents.length} candidates in threshold window
@@ -247,6 +247,15 @@ export const OverviewView: React.FC = () => {
                   key={student.student.id}
                   className="h-[44px] flex items-center justify-between px-1 hover:bg-[#FBF8F1] transition-colors cursor-pointer"
                   onClick={() => handleViewCard(student.student.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleViewCard(student.student.id);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View report card for ${student.student.name}`}
                   title="Click to view report card"
                 >
                   <div className="flex items-center gap-4">

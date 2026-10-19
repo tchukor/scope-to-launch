@@ -516,22 +516,22 @@ export const MarksEntryView: React.FC = () => {
             </div>
 
             {/* Stepper Navigation Buttons (min-h 48px touch targets) */}
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center justify-between gap-2 sm:gap-3">
               <button
                 onClick={handlePrevStudent}
                 disabled={activeStudentIdx === 0}
                 type="button"
-                className="flex-1 py-2.5 px-3 min-h-[48px] bg-[#FEF9EF] border border-[#DDD6C7] hover:bg-[#F2EDE3] disabled:opacity-30 rounded font-medium text-xs sm:text-sm flex items-center justify-center gap-1 cursor-pointer"
+                className="flex-1 min-w-0 shrink-0 py-2.5 px-3 min-h-[48px] bg-[#FEF9EF] border border-[#DDD6C7] hover:bg-[#F2EDE3] disabled:opacity-30 rounded font-medium text-xs sm:text-sm flex items-center justify-center gap-1 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[18px]">arrow_back</span>
-                <span>Previous Student</span>
+                <span>Prev<span className="hidden sm:inline">ious Student</span></span>
               </button>
 
               {/* Quick Jump Selector */}
               <select
                 value={activeStudentIdx}
                 onChange={(e) => setActiveStudentIdx(Number(e.target.value))}
-                className="py-2.5 px-2 min-h-[48px] bg-[#FEF9EF] border border-[#DDD6C7] rounded text-xs font-medium cursor-pointer"
+                className="min-w-0 max-w-[45%] py-2.5 px-2 min-h-[48px] bg-[#FEF9EF] border border-[#DDD6C7] rounded text-xs font-medium cursor-pointer"
               >
                 {students.map((s, idx) => (
                   <option key={s.id} value={idx}>
@@ -544,9 +544,9 @@ export const MarksEntryView: React.FC = () => {
                 onClick={handleNextStudent}
                 disabled={activeStudentIdx === students.length - 1}
                 type="button"
-                className="flex-1 py-2.5 px-3 min-h-[48px] bg-[#FEF9EF] border border-[#DDD6C7] hover:bg-[#F2EDE3] disabled:opacity-30 rounded font-medium text-xs sm:text-sm flex items-center justify-center gap-1 cursor-pointer"
+                className="flex-1 min-w-0 shrink-0 py-2.5 px-3 min-h-[48px] bg-[#FEF9EF] border border-[#DDD6C7] hover:bg-[#F2EDE3] disabled:opacity-30 rounded font-medium text-xs sm:text-sm flex items-center justify-center gap-1 cursor-pointer"
               >
-                <span>Next Student</span>
+                <span>Next<span className="hidden sm:inline"> Student</span></span>
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
               </button>
             </div>

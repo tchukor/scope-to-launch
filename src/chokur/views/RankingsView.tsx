@@ -203,7 +203,7 @@ export const RankingsView: React.FC = () => {
       </div>
 
       {/* Screen Header */}
-      <section className="mb-4 sm:mb-6 flex flex-col md:flex-row md:items-end justify-between gap-2 no-print">
+      <section className="mb-4 sm:mb-6 flex flex-col xl:flex-row xl:items-end justify-between gap-2 no-print">
         <div>
           <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">Rankings</h1>
           <p className="font-body-sm text-body-sm text-[#5F5E5E]">
@@ -343,7 +343,7 @@ export const RankingsView: React.FC = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={handleExportCSV}
             type="button"

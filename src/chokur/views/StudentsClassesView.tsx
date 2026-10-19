@@ -405,9 +405,9 @@ export const StudentsClassesView: React.FC = () => {
   };
 
   return (
-    <div className="max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[#111111]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[#111111]">
       {/* Header */}
-      <section className="mb-4 sm:mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#DDD6C7] pb-4 sm:pb-6">
+      <section className="mb-4 sm:mb-6 flex flex-col xl:flex-row xl:items-end justify-between gap-4 border-b border-[#DDD6C7] pb-4 sm:pb-6">
         <div>
           <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">
             Students &amp; Administration
@@ -458,7 +458,7 @@ export const StudentsClassesView: React.FC = () => {
       {currentTab === 'students' && (
         <section>
           {/* Controls */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-4">
+          <div className="flex flex-col lg:flex-row items-stretch lg:items-center flex-wrap justify-between gap-3 mb-4">
             <div className="relative w-full sm:w-80">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9A958A] text-[18px]">
                 search
