@@ -1,3 +1,4 @@
+// @ts-nocheck -- original source kept verbatim; project tsconfig is stricter than the source
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';

@@ -1,3 +1,4 @@
+// @ts-nocheck -- original source kept verbatim; project tsconfig is stricter than the source
 import { describe, expect, it } from 'vitest';
 import {
   calculateStudentStanding,
