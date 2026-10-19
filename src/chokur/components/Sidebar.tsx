@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChokurLogo } from './brand/ChokurLogo';
 import { useGrading } from '../context/GradingContext';
 import { ViewType } from '../types';
+import { ROLES, Role, canSee, homeFor, loadRole, saveRole } from '../utils/roles';
 
 interface NavItem {
   id: ViewType;
@@ -36,6 +37,23 @@ const ALL_NAV_ITEMS: NavItem[] = [
 export const Sidebar: React.FC = () => {
   const { activeView, setActiveView } = useGrading();
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
+  const [role, setRole] = useState<Role>('Admin');
+  useEffect(() => setRole(loadRole()), []);
+  useEffect(() => {
+    if (!canSee(role, activeView)) setActiveView(homeFor(role));
+  }, [role, activeView, setActiveView]);
+  const changeRole = (r: Role) => { setRole(r); saveRole(r); setActiveView(homeFor(r)); };
+  const NAV = ALL_NAV_ITEMS.filter((i) => canSee(role, i.id));
+  const TABS = role === 'Parent' ? NAV : PRIMARY_MOBILE_TABS.filter((i) => canSee(role, i.id));
+  const roleSwitch = (
+    <label className="flex flex-col gap-1 px-2 py-1">
+      <span className="hidden lg:inline text-[10px] font-mono tracking-wider uppercase text-[#9A958A]">Using as</span>
+      <select aria-label="Using Chokur as" value={role} onChange={(e) => changeRole(e.target.value as Role)}
+        className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded text-[11px] font-semibold text-[#111111] px-1 py-1 cursor-pointer">
+        {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+      </select>
+    </label>
+  );
 
   return (
     <>
@@ -64,7 +82,7 @@ export const Sidebar: React.FC = () => {
 
           {/* Navigation Items */}
           <nav className="flex flex-col space-y-0.5 px-1 lg:px-0">
-            {ALL_NAV_ITEMS.map((item) => {
+            {NAV.map((item) => {
               const isActive = activeView === item.id;
               return (
                 <button
@@ -94,6 +112,7 @@ export const Sidebar: React.FC = () => {
 
         {/* Footer info & Link to Spec/Landing Sheet */}
         <div className="pt-2 border-t border-[#DDD6C7] flex flex-col px-2 lg:px-3 gap-1">
+          {roleSwitch}
           <button
             onClick={() => setActiveView('landing')}
             type="button"
@@ -121,7 +140,7 @@ export const Sidebar: React.FC = () => {
 
       {/* 2. PHONE BOTTOM TAB BAR (< 768px) with 48px touch targets & safe area padding */}
       <nav className="flex md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#FEF9EF] border-t border-[#DDD6C7] z-40 items-center justify-around px-1 pb-[env(safe-area-inset-bottom)] select-none shadow-md">
-        {PRIMARY_MOBILE_TABS.map((tab) => {
+        {TABS.slice(0, 4).map((tab) => {
           const isActive = activeView === tab.id;
           return (
             <button
@@ -135,7 +154,7 @@ export const Sidebar: React.FC = () => {
               <span className={`material-symbols-outlined text-[22px] ${isActive ? 'text-[#C2410C]' : ''}`}>
                 {tab.icon}
               </span>
-              <span className="text-[10px] font-medium tracking-tight mt-0.5">{tab.shortLabel}</span>
+              <span className="text-[10px] font-medium tracking-tight mt-0.5">{tab.shortLabel ?? tab.label}</span>
               {isActive && <span className="w-4 h-0.5 bg-[#C2410C] rounded-full mt-0.5"></span>}
             </button>
           );
@@ -146,14 +165,14 @@ export const Sidebar: React.FC = () => {
           onClick={() => setIsMobileMoreOpen(true)}
           type="button"
           className={`flex-1 flex flex-col items-center justify-center h-full min-h-[48px] py-1 cursor-pointer transition-colors ${
-            !PRIMARY_MOBILE_TABS.some((t) => t.id === activeView)
+            !TABS.some((t) => t.id === activeView)
               ? 'text-[#C2410C]'
               : 'text-[#5F5E5E] hover:text-[#111111]'
           }`}
         >
           <span className="material-symbols-outlined text-[22px]">more_horiz</span>
           <span className="text-[10px] font-medium tracking-tight mt-0.5">More</span>
-          {!PRIMARY_MOBILE_TABS.some((t) => t.id === activeView) && (
+          {!TABS.some((t) => t.id === activeView) && (
             <span className="w-4 h-0.5 bg-[#C2410C] rounded-full mt-0.5"></span>
           )}
         </button>
@@ -186,8 +205,9 @@ export const Sidebar: React.FC = () => {
               </button>
             </div>
 
+            <div className="pb-2 border-b border-[#DDD6C7]">{roleSwitch}</div>
             <div className="grid grid-cols-2 gap-2.5 py-2">
-              {ALL_NAV_ITEMS.map((item) => {
+              {NAV.map((item) => {
                 const isActive = activeView === item.id;
                 return (
                   <button
