@@ -6,6 +6,10 @@ export type ViewType =
   | 'grade-distribution' 
   | 'report-cards' 
   | 'students' 
+  | 'attendance'
+  | 'messaging'
+  | 'fees'
+  | 'parent-portal'
   | 'profile'
   | 'settings'
   | 'landing';
