@@ -25,6 +25,10 @@ const ALL_NAV_ITEMS: NavItem[] = [
   { id: 'grade-distribution', label: 'Grade Distribution', icon: 'bar_chart' },
   { id: 'report-cards', label: 'Report Cards', icon: 'badge' },
   { id: 'students', label: 'Students & Classes', icon: 'group' },
+  { id: 'attendance', label: 'Attendance', icon: 'fact_check' },
+  { id: 'messaging', label: 'Bulk SMS', icon: 'sms' },
+  { id: 'fees', label: 'Fees', icon: 'payments' },
+  { id: 'parent-portal', label: 'Parent Portal', icon: 'family_restroom' },
   { id: 'profile', label: 'Profile & WhatsApp', icon: 'forum' },
   { id: 'settings', label: 'Settings & Backups', icon: 'settings' },
 ];

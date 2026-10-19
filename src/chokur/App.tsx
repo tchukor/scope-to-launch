@@ -7,6 +7,10 @@ import React from 'react';
 import { Sidebar } from './components/Sidebar';
 import { TopNavBar } from './components/TopNavBar';
 import { GradingProvider, useGrading } from './context/GradingContext';
+import { AttendanceView } from './views/AttendanceView';
+import { BulkSmsView } from './views/BulkSmsView';
+import { FeesView } from './views/FeesView';
+import { ParentPortalView } from './views/ParentPortalView';
 import { GradeDistributionView } from './views/GradeDistributionView';
 import { LandingPageView } from './views/LandingPageView';
 import { MarksEntryView } from './views/MarksEntryView';
@@ -43,6 +47,10 @@ const MainContent: React.FC = () => {
         {activeView === 'grade-distribution' && <GradeDistributionView />}
         {activeView === 'report-cards' && <ReportCardsView />}
         {activeView === 'students' && <StudentsClassesView />}
+        {activeView === 'attendance' && <AttendanceView />}
+        {activeView === 'messaging' && <BulkSmsView />}
+        {activeView === 'fees' && <FeesView />}
+        {activeView === 'parent-portal' && <ParentPortalView />}
         {activeView === 'profile' && <ProfileInboxView />}
         {activeView === 'settings' && <SettingsView />}
       </main>
