@@ -35,7 +35,7 @@ const MainContent: React.FC = () => {
       <TopNavBar />
 
       {/* Main Workspace Canvas with responsive offsets and ultrawide centering */}
-      <main className="pb-20 md:pb-6 md:ml-[72px] lg:ml-[200px] xl:ml-[220px] pt-14 min-h-screen flex-1 flex flex-col bg-[#FEF9EF] max-w-[1600px] w-full transition-all duration-200">
+      <main className="pb-20 md:pb-6 md:ml-[72px] lg:ml-[200px] xl:ml-[220px] pt-14 min-h-screen flex-1 flex flex-col bg-[#FEF9EF] min-w-0 transition-all duration-200">
         {activeView === 'overview' && <OverviewView />}
         {activeView === 'marks-entry' && <MarksEntryView />}
         {activeView === 'rankings' && <RankingsView />}

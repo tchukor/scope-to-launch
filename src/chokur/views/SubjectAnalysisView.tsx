@@ -71,9 +71,9 @@ export const SubjectAnalysisView: React.FC = () => {
   };
 
   return (
-    <div className="max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[#111111]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[#111111]">
       {/* Header & Controls */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 sm:pb-6 border-b border-[#DDD6C7]">
+      <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-4 pb-4 sm:pb-6 border-b border-[#DDD6C7]">
         <div>
           <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">Subject Analysis</h1>
           <p className="font-body-md text-xs sm:text-body-md text-[#5F5E5E] mt-1">
@@ -84,7 +84,7 @@ export const SubjectAnalysisView: React.FC = () => {
         {/* Controls */}
         <div className="flex items-center gap-2 sm:gap-3 flex-wrap no-print">
           {/* Department Filter */}
-          <div className="flex items-center border border-[#DDD6C7] rounded bg-[#FBF8F1] text-xs font-medium overflow-hidden">
+          <div className="flex flex-wrap items-center border border-[#DDD6C7] rounded bg-[#FBF8F1] text-xs font-medium overflow-hidden max-w-full">
             <button
               onClick={() => setSelectedDepartment('ALL')}
               className={`px-3 py-2 min-h-[40px] cursor-pointer ${
