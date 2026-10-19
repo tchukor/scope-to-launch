@@ -133,7 +133,11 @@ interface GradingContextType {
   weakestSubject?: { name: string; average: number };
 }
 
-const GradingContext = createContext<GradingContextType | undefined>(undefined);
+// Keep one context instance across hot reloads so the provider and consumers never mismatch.
+const ctxStore = globalThis as unknown as { __chokurGradingContext?: React.Context<GradingContextType | undefined> };
+const GradingContext =
+  ctxStore.__chokurGradingContext ??
+  (ctxStore.__chokurGradingContext = createContext<GradingContextType | undefined>(undefined));
 
 // Hash route parser
 const parseHashRoute = (): { view: ViewType; studentId?: string; subTab?: string } => {
