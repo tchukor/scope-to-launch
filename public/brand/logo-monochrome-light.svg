@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 32" width="160" height="32" fill="none">
+  <!-- Monochrome Light (For reversed dark backgrounds) -->
+  <g transform="translate(0, 0)">
+    <rect x="4" y="4" width="4" height="24" fill="#F6F1E7" />
+    <rect x="8" y="4" width="20" height="4" fill="#F6F1E7" />
+    <rect x="8" y="14" width="13" height="4" fill="#F6F1E7" />
+    <rect x="8" y="24" width="8" height="4" fill="#F6F1E7" />
+  </g>
+  <text x="36" y="19" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="14.5" font-weight="800" letter-spacing="1.5" fill="#F6F1E7">CHOKUR</text>
+  <text x="108" y="19" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600" letter-spacing="1.8" fill="#DDD6C7">SYSTEM</text>
+  <text x="37" y="28" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="6.5" font-weight="600" letter-spacing="1.2" fill="#9A958A">KENYAN ACADEMIC LEDGER</text>
+</svg>

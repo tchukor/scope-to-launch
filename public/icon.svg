@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none">
+  <!-- Chokur Official PWA App Icon -->
+  <rect width="512" height="512" rx="96" fill="#F6F1E7" />
+  <rect x="16" y="16" width="480" height="480" rx="80" fill="none" stroke="#DDD6C7" stroke-width="8" />
+  
+  <!-- Scaled 32x32 Symbol (scale = 11, centered: 32*11 = 352, offset = (512-352)/2 = 80) -->
+  <g transform="translate(80, 80) scale(11)">
+    <!-- Spine -->
+    <rect x="4" y="4" width="4" height="24" fill="#111111" />
+    <!-- Top Ledger Bar -->
+    <rect x="8" y="4" width="20" height="4" fill="#111111" />
+    <!-- Middle Ledger Bar -->
+    <rect x="8" y="14" width="13" height="4" fill="#111111" />
+    <!-- Accent Foundation Ledger Bar -->
+    <rect x="8" y="24" width="8" height="4" fill="#C2410C" />
+  </g>
+</svg>

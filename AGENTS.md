@@ -8,3 +8,4 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+- The migrated Chokur app lives verbatim in src/chokur and renders client-only from src/routes/index.tsx; it is offline-first (IndexedDB/localStorage), so keep it out of SSR.

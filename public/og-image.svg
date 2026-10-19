@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#F6F1E7" />
+  
+  <!-- Outer hairline frame -->
+  <rect x="32" y="32" width="1136" height="566" fill="#FBF8F1" stroke="#DDD6C7" stroke-width="2" rx="4" />
+  <rect x="44" y="44" width="1112" height="542" fill="none" stroke="#DDD6C7" stroke-width="0.5" stroke-dasharray="4 4" />
+
+  <!-- Left Column: Typography & Brand -->
+  <g transform="translate(80, 100)">
+    <!-- Symbol + Header -->
+    <g transform="translate(0, 0) scale(1.6)">
+      <rect x="4" y="4" width="4" height="24" fill="#111111" />
+      <rect x="8" y="4" width="20" height="4" fill="#111111" />
+      <rect x="8" y="14" width="13" height="4" fill="#111111" />
+      <rect x="8" y="24" width="8" height="4" fill="#C2410C" />
+    </g>
+    <text x="64" y="32" font-family="Inter, -apple-system, sans-serif" font-size="28" font-weight="900" letter-spacing="3" fill="#111111">CHOKUR</text>
+    <text x="210" y="32" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700" letter-spacing="2" fill="#C2410C">SYSTEM</text>
+    <text x="64" y="48" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600" letter-spacing="1.5" fill="#5C5850">KENYAN ACADEMIC LEDGER · KCSE 12-POINT GRADING</text>
+
+    <!-- Main Headline -->
+    <text x="0" y="128" font-family="Inter, -apple-system, sans-serif" font-size="44" font-weight="800" line-height="1.15" fill="#111111">Marks to insight</text>
+    <text x="0" y="180" font-family="Inter, -apple-system, sans-serif" font-size="44" font-weight="800" fill="#111111">in one pass. <tspan fill="#C2410C">Offline.</tspan></text>
+
+    <!-- Subhead description -->
+    <text x="0" y="235" font-family="Inter, -apple-system, sans-serif" font-size="18" fill="#5C5850">Kenyan secondary school exam grading, class rankings,</text>
+    <text x="0" y="264" font-family="Inter, -apple-system, sans-serif" font-size="18" fill="#5C5850">subject department analysis &amp; official printable report cards.</text>
+
+    <!-- Bullet Specs -->
+    <g transform="translate(0, 310)">
+      <rect x="0" y="0" width="160" height="34" fill="#F6F1E7" stroke="#DDD6C7" stroke-width="1" rx="2" />
+      <text x="80" y="21" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600" fill="#111111">100% OFFLINE</text>
+
+      <rect x="175" y="0" width="180" height="34" fill="#F6F1E7" stroke="#DDD6C7" stroke-width="1" rx="2" />
+      <text x="265" y="21" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600" fill="#111111">KCSE 12-PT SCALE</text>
+
+      <rect x="370" y="0" width="160" height="34" fill="#F6F1E7" stroke="#DDD6C7" stroke-width="1" rx="2" />
+      <text x="450" y="21" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600" fill="#C2410C">ZERO CLOUD LOCK-IN</text>
+    </g>
+  </g>
+
+  <!-- Right Column: Ledger Specimen Sheet Graphic -->
+  <g transform="translate(680, 100)">
+    <rect x="0" y="0" width="440" height="420" fill="#F6F1E7" stroke="#111111" stroke-width="2" rx="2" />
+    
+    <!-- Ledger Table Header -->
+    <rect x="0" y="0" width="440" height="40" fill="#111111" />
+    <text x="16" y="25" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F6F1E7">ADM / CANDIDATE</text>
+    <text x="170" y="25" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F6F1E7">MAT</text>
+    <text x="215" y="25" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F6F1E7">ENG</text>
+    <text x="260" y="25" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F6F1E7">KIS</text>
+    <text x="305" y="25" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F6F1E7">BIO</text>
+    <text x="350" y="25" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F6F1E7">AGP</text>
+    <text x="400" y="25" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F6F1E7">GRD</text>
+
+    <!-- Row 1 -->
+    <g transform="translate(0, 40)">
+      <rect x="0" y="0" width="440" height="46" fill="#FBF8F1" />
+      <line x1="0" y1="46" x2="440" y2="46" stroke="#DDD6C7" stroke-width="1" />
+      <text x="16" y="22" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#111111">1042 Wanjiku Faith</text>
+      <text x="16" y="36" font-family="JetBrains Mono, monospace" font-size="9" fill="#5C5850">Form 4 East · Pos #1</text>
+      <text x="170" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">88</text>
+      <text x="215" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">82</text>
+      <text x="260" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">79</text>
+      <text x="305" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">84</text>
+      <text x="350" y="27" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#111111">11.6</text>
+      <!-- Grade Chip A -->
+      <rect x="395" y="14" width="28" height="20" fill="#111111" rx="2" />
+      <text x="409" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="800" fill="#F6F1E7">A</text>
+    </g>
+
+    <!-- Row 2 -->
+    <g transform="translate(0, 86)">
+      <rect x="0" y="0" width="440" height="46" fill="#F6F1E7" />
+      <line x1="0" y1="46" x2="440" y2="46" stroke="#DDD6C7" stroke-width="1" />
+      <text x="16" y="22" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#111111">1048 Kiprono Brian</text>
+      <text x="16" y="36" font-family="JetBrains Mono, monospace" font-size="9" fill="#5C5850">Form 4 East · Pos #2</text>
+      <text x="170" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">78</text>
+      <text x="215" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">74</text>
+      <text x="260" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">72</text>
+      <text x="305" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">76</text>
+      <text x="350" y="27" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#111111">10.4</text>
+      <!-- Grade Chip A- -->
+      <rect x="395" y="14" width="30" height="20" fill="#111111" rx="2" />
+      <text x="410" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="800" fill="#F6F1E7">A-</text>
+    </g>
+
+    <!-- Row 3 -->
+    <g transform="translate(0, 132)">
+      <rect x="0" y="0" width="440" height="46" fill="#FBF8F1" />
+      <line x1="0" y1="46" x2="440" y2="46" stroke="#DDD6C7" stroke-width="1" />
+      <text x="16" y="22" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#111111">1053 Otieno Kevin</text>
+      <text x="16" y="36" font-family="JetBrains Mono, monospace" font-size="9" fill="#5C5850">Form 4 West · Pos #3</text>
+      <text x="170" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">70</text>
+      <text x="215" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">68</text>
+      <text x="260" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">65</text>
+      <text x="305" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">72</text>
+      <text x="350" y="27" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#111111">9.2</text>
+      <!-- Grade Chip B+ -->
+      <rect x="395" y="14" width="30" height="20" fill="#111111" rx="2" />
+      <text x="410" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="800" fill="#F6F1E7">B+</text>
+    </g>
+
+    <!-- Row 4 -->
+    <g transform="translate(0, 178)">
+      <rect x="0" y="0" width="440" height="46" fill="#F6F1E7" />
+      <line x1="0" y1="46" x2="440" y2="46" stroke="#DDD6C7" stroke-width="1" />
+      <text x="16" y="22" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#111111">1060 Mutua Mercy</text>
+      <text x="16" y="36" font-family="JetBrains Mono, monospace" font-size="9" fill="#5C5850">Form 4 East · Pos #4</text>
+      <text x="170" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">64</text>
+      <text x="215" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">66</text>
+      <text x="260" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">62</text>
+      <text x="305" y="27" font-family="JetBrains Mono, monospace" font-size="12" fill="#111111">65</text>
+      <text x="350" y="27" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#111111">8.0</text>
+      <!-- Grade Chip B -->
+      <rect x="395" y="14" width="28" height="20" fill="none" stroke="#111111" stroke-width="1.5" rx="2" />
+      <text x="409" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="800" fill="#111111">B</text>
+    </g>
+
+    <!-- Summary Footnote in Card -->
+    <g transform="translate(16, 240)">
+      <rect x="0" y="0" width="408" height="150" fill="#FBF8F1" stroke="#DDD6C7" stroke-width="1" rx="2" />
+      <text x="16" y="28" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#111111">FORM 4 COHORT SUMMARY · TERM 2</text>
+      <text x="16" y="56" font-family="JetBrains Mono, monospace" font-size="10" fill="#5C5850">CANDIDATES RANKED: 48</text>
+      <text x="200" y="56" font-family="JetBrains Mono, monospace" font-size="10" fill="#5C5850">MEAN SCORE: 7.42 (C+)</text>
+      <text x="16" y="84" font-family="JetBrains Mono, monospace" font-size="10" fill="#5C5850">UNIV. QUALIFIED (&gt;=C+): 72.9%</text>
+      <text x="200" y="84" font-family="JetBrains Mono, monospace" font-size="10" fill="#C2410C">DEVIATION: +0.48 pts</text>
+      <!-- Accent Line -->
+      <line x1="16" y1="104" x2="392" y2="104" stroke="#DDD6C7" stroke-width="1" />
+      <text x="16" y="128" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#5C5850">OFFICIAL KICD/MOE SECONDARY SCHOOL CURRICULUM</text>
+    </g>
+  </g>
+</svg>
