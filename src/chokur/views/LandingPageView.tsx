@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChokurLogo } from '../components/brand/ChokurLogo';
+import { SchoolSuiteSection } from '../components/SchoolSuiteSection';
 import { GradeChip } from '../components/GradeChip';
 import { useGrading } from '../context/GradingContext';
 import { KCSEGrade, ViewType } from '../types';
@@ -289,6 +290,8 @@ export const LandingPageView: React.FC = () => {
           </div>
         </div>
       </section>
+
+      <SchoolSuiteSection onOpen={launchApp} />
 
       {/* The Kenyan Exam Week Reality Section */}
       <section className="px-4 sm:px-8 py-12 sm:py-16 max-w-[1200px] mx-auto border-b border-[#DDD6C7]">
