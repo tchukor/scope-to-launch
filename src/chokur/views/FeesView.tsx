@@ -5,7 +5,7 @@ import { feeBalance, ops, useSchoolOps } from '../lib/schoolOps';
 const kes = (n: number) => `KES ${n.toLocaleString()}`;
 
 export const FeesView: React.FC = () => {
-  const { filteredStudents, activeStream, schoolConfig } = useGrading();
+  const { filteredStudents, activeStream, schoolConfig, setActiveView } = useGrading();
   const store = useSchoolOps();
   const [studentId, setStudentId] = useState('');
   const [amount, setAmount] = useState('');
@@ -44,11 +44,19 @@ export const FeesView: React.FC = () => {
           <h1 className="font-headline-lg text-headline-lg tracking-tight">Fees</h1>
           <p className="text-xs sm:text-sm text-[#5F5E5E] mt-1">{activeStream} · {schoolConfig.term} {schoolConfig.academicYear}</p>
         </div>
-        <label className="text-sm flex items-center gap-2">
-          Fee per term (KES)
-          <input type="number" min={0} value={store.feePerTerm} onChange={(e) => ops.setFeePerTerm(Number(e.target.value))}
-            className="h-10 w-32 px-3 border border-[#DDD6C7] bg-[#FBF8F1] rounded" />
-        </label>
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="text-sm flex items-center gap-2">
+            Fee per term (KES)
+            <input type="number" min={0} value={store.feePerTerm} onChange={(e) => ops.setFeePerTerm(Number(e.target.value))}
+              className="h-10 w-32 px-3 border border-[#DDD6C7] bg-[#FBF8F1] rounded" />
+          </label>
+          {defaulters > 0 && (
+            <button type="button" onClick={() => setActiveView('messaging')}
+              className="h-10 px-3 rounded bg-[#C2410C] text-white text-sm font-medium hover:opacity-90">
+              Remind {defaulters} parent{defaulters === 1 ? '' : 's'} by SMS
+            </button>
+          )}
+        </div>
       </section>
 
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 py-4">

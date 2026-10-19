@@ -24,6 +24,17 @@ export const TopNavBar: React.FC = () => {
       <header className="fixed top-0 left-0 md:left-[72px] lg:left-[200px] xl:left-[220px] right-0 h-14 bg-[#FEF9EF] border-b border-[#DDD6C7] flex items-center justify-between px-2.5 sm:px-6 z-30 no-print transition-all duration-200">
         {/* Context Selectors */}
         <div className="flex items-center gap-1 sm:gap-2">
+          {typeof window !== 'undefined' && window.history.state?.chokur && (
+            <button
+              type="button"
+              onClick={() => window.history.back()}
+              aria-label="Go back"
+              title="Back"
+              className="min-h-[40px] min-w-[40px] flex items-center justify-center rounded border border-[#DDD6C7] bg-[#FBF8F1] hover:bg-[#F2EDE3] text-[#111111] cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+            </button>
+          )}
           {/* Mobile Logo Brand Mark */}
           <div className="md:hidden flex items-center pr-1 shrink-0">
             <ChokurLogo
