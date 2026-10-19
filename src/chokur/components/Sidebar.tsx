@@ -112,6 +112,7 @@ export const Sidebar: React.FC = () => {
 
         {/* Footer info & Link to Spec/Landing Sheet */}
         <div className="pt-2 border-t border-[#DDD6C7] flex flex-col px-2 lg:px-3 gap-1">
+          {roleSwitch}
           <button
             onClick={() => setActiveView('landing')}
             type="button"
@@ -139,7 +140,7 @@ export const Sidebar: React.FC = () => {
 
       {/* 2. PHONE BOTTOM TAB BAR (< 768px) with 48px touch targets & safe area padding */}
       <nav className="flex md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#FEF9EF] border-t border-[#DDD6C7] z-40 items-center justify-around px-1 pb-[env(safe-area-inset-bottom)] select-none shadow-md">
-        {PRIMARY_MOBILE_TABS.map((tab) => {
+        {TABS.slice(0, 4).map((tab) => {
           const isActive = activeView === tab.id;
           return (
             <button
@@ -153,7 +154,7 @@ export const Sidebar: React.FC = () => {
               <span className={`material-symbols-outlined text-[22px] ${isActive ? 'text-[#C2410C]' : ''}`}>
                 {tab.icon}
               </span>
-              <span className="text-[10px] font-medium tracking-tight mt-0.5">{tab.shortLabel}</span>
+              <span className="text-[10px] font-medium tracking-tight mt-0.5">{tab.shortLabel ?? tab.label}</span>
               {isActive && <span className="w-4 h-0.5 bg-[#C2410C] rounded-full mt-0.5"></span>}
             </button>
           );
@@ -164,14 +165,14 @@ export const Sidebar: React.FC = () => {
           onClick={() => setIsMobileMoreOpen(true)}
           type="button"
           className={`flex-1 flex flex-col items-center justify-center h-full min-h-[48px] py-1 cursor-pointer transition-colors ${
-            !PRIMARY_MOBILE_TABS.some((t) => t.id === activeView)
+            !TABS.some((t) => t.id === activeView)
               ? 'text-[#C2410C]'
               : 'text-[#5F5E5E] hover:text-[#111111]'
           }`}
         >
           <span className="material-symbols-outlined text-[22px]">more_horiz</span>
           <span className="text-[10px] font-medium tracking-tight mt-0.5">More</span>
-          {!PRIMARY_MOBILE_TABS.some((t) => t.id === activeView) && (
+          {!TABS.some((t) => t.id === activeView) && (
             <span className="w-4 h-0.5 bg-[#C2410C] rounded-full mt-0.5"></span>
           )}
         </button>
@@ -204,8 +205,9 @@ export const Sidebar: React.FC = () => {
               </button>
             </div>
 
+            <div className="pb-2 border-b border-[#DDD6C7]">{roleSwitch}</div>
             <div className="grid grid-cols-2 gap-2.5 py-2">
-              {ALL_NAV_ITEMS.map((item) => {
+              {NAV.map((item) => {
                 const isActive = activeView === item.id;
                 return (
                   <button
