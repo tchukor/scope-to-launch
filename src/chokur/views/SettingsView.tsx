@@ -1,7 +1,9 @@
-import React, { useRef, useState } from 'react';
-import { GradeChip } from '../components/GradeChip';
-import { useGrading } from '../context/GradingContext';
-import { KCSE_GRADING_TABLE, parseMarksCSV, ParsedCSVResult } from '../utils/grading';
+import React, { useRef, useState } from "react";
+import { GradeChip } from "../components/GradeChip";
+import { useGrading } from "../context/GradingContext";
+import { KCSE_GRADING_TABLE, parseMarksCSV, ParsedCSVResult } from "../utils/grading";
+import { LegalModals, LegalModalType } from "../components/LegalModals";
+import { TestPresetsModal } from "../components/TestPresetsModal";
 
 export const SettingsView: React.FC = () => {
   const {
@@ -20,13 +22,13 @@ export const SettingsView: React.FC = () => {
   const [formConfig, setFormConfig] = useState(schoolConfig);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [dbHealth, setDbHealth] = useState<{
-    status: 'idle' | 'checking' | 'healthy';
+    status: "idle" | "checking" | "healthy";
     totalStudents: number;
     totalMarksEntered: number;
     estimatedStorageKB: number;
     lastVerified: string | null;
   }>({
-    status: 'idle',
+    status: "idle",
     totalStudents: students.length,
     totalMarksEntered: 0,
     estimatedStorageKB: 0,
@@ -34,13 +36,15 @@ export const SettingsView: React.FC = () => {
   });
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false);
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
-  const [restoreText, setRestoreText] = useState('');
+  const [isPresetsModalOpen, setIsPresetsModalOpen] = useState(false);
+  const [legalModal, setLegalModal] = useState<LegalModalType>(null);
+  const [restoreText, setRestoreText] = useState("");
   const [restoreError, setRestoreError] = useState(false);
 
   // CSV Import State
-  const [csvInputText, setCsvInputText] = useState<string>('');
-  const [csvFileName, setCsvFileName] = useState<string>('');
-  const [csvMode, setCsvMode] = useState<'upload' | 'paste'>('upload');
+  const [csvInputText, setCsvInputText] = useState<string>("");
+  const [csvFileName, setCsvFileName] = useState<string>("");
+  const [csvMode, setCsvMode] = useState<"upload" | "paste">("upload");
   const [parsedPreview, setParsedPreview] = useState<ParsedCSVResult | null>(null);
   const [csvSuccessMessage, setCsvSuccessMessage] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -57,17 +61,21 @@ export const SettingsView: React.FC = () => {
   };
 
   const handleVerifyDatabaseIntegrity = async () => {
-    setDbHealth((prev) => ({ ...prev, status: 'checking' }));
+    setDbHealth((prev) => ({ ...prev, status: "checking" }));
     try {
       let markCount = 0;
       Object.values(marks).forEach((subjMap) => {
-        if (subjMap && typeof subjMap === 'object') {
+        if (subjMap && typeof subjMap === "object") {
           markCount += Object.keys(subjMap).length;
         }
       });
 
       let storageKB = 24;
-      if (typeof navigator !== 'undefined' && 'storage' in navigator && navigator.storage?.estimate) {
+      if (
+        typeof navigator !== "undefined" &&
+        "storage" in navigator &&
+        navigator.storage?.estimate
+      ) {
         const estimate = await navigator.storage.estimate();
         if (estimate.usage) {
           storageKB = Math.round(estimate.usage / 1024);
@@ -75,14 +83,14 @@ export const SettingsView: React.FC = () => {
       }
 
       setDbHealth({
-        status: 'healthy',
+        status: "healthy",
         totalStudents: students.length,
         totalMarksEntered: markCount,
         estimatedStorageKB: storageKB,
         lastVerified: new Date().toLocaleTimeString(),
       });
     } catch {
-      setDbHealth((prev) => ({ ...prev, status: 'idle' }));
+      setDbHealth((prev) => ({ ...prev, status: "idle" }));
     }
   };
 
@@ -91,7 +99,7 @@ export const SettingsView: React.FC = () => {
     const success = restoreJSONBackup(restoreText);
     if (success) {
       setIsRestoreModalOpen(false);
-      setRestoreText('');
+      setRestoreText("");
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 2500);
     } else {
@@ -100,7 +108,7 @@ export const SettingsView: React.FC = () => {
   };
 
   // CSV Processing Handlers
-  const handleProcessFileContent = (content: string, name: string = 'uploaded_file.csv') => {
+  const handleProcessFileContent = (content: string, name: string = "uploaded_file.csv") => {
     setCsvInputText(content);
     setCsvFileName(name);
     setCsvSuccessMessage(null);
@@ -116,7 +124,7 @@ export const SettingsView: React.FC = () => {
         const text = event.target?.result as string;
         handleProcessFileContent(text, file.name);
       };
-      reader.readAsText(file, 'UTF-8');
+      reader.readAsText(file, "UTF-8");
     }
   };
 
@@ -130,13 +138,13 @@ export const SettingsView: React.FC = () => {
         const text = event.target?.result as string;
         handleProcessFileContent(text, file.name);
       };
-      reader.readAsText(file, 'UTF-8');
+      reader.readAsText(file, "UTF-8");
     }
   };
 
   const handlePasteChange = (text: string) => {
     setCsvInputText(text);
-    setCsvFileName('Pasted CSV text');
+    setCsvFileName("Pasted CSV text");
     setCsvSuccessMessage(null);
     if (text.trim()) {
       const parsed = parseMarksCSV(text, students, subjects);
@@ -153,21 +161,21 @@ export const SettingsView: React.FC = () => {
       const studentCount = result.updates.length;
       const subjectsCount = result.mappedSubjects.length;
       setCsvSuccessMessage(
-        `Successfully imported marks for ${studentCount} students across ${subjectsCount} subjects into the central ledger!`
+        `Successfully imported marks for ${studentCount} students across ${subjectsCount} subjects into the central ledger!`,
       );
       setParsedPreview(null);
-      setCsvInputText('');
-      setCsvFileName('');
-      if (fileInputRef.current) fileInputRef.current.value = '';
+      setCsvInputText("");
+      setCsvFileName("");
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
   const handleClearCSV = () => {
-    setCsvInputText('');
-    setCsvFileName('');
+    setCsvInputText("");
+    setCsvFileName("");
     setParsedPreview(null);
     setCsvSuccessMessage(null);
-    if (fileInputRef.current) fileInputRef.current.value = '';
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   return (
@@ -186,7 +194,9 @@ export const SettingsView: React.FC = () => {
 
         {saveSuccess && (
           <div className="bg-[#111111] text-[#FEF9EF] px-3 py-1.5 rounded text-xs font-medium flex items-center gap-1.5 animate-fadeIn">
-            <span className="material-symbols-outlined text-[16px] text-emerald-400">check_circle</span>
+            <span className="material-symbols-outlined text-[16px] text-emerald-400">
+              check_circle
+            </span>
             <span>All configuration settings updated</span>
           </div>
         )}
@@ -245,7 +255,9 @@ export const SettingsView: React.FC = () => {
                 <input
                   type="text"
                   value={formConfig.contactPhoneEmail}
-                  onChange={(e) => setFormConfig({ ...formConfig, contactPhoneEmail: e.target.value })}
+                  onChange={(e) =>
+                    setFormConfig({ ...formConfig, contactPhoneEmail: e.target.value })
+                  }
                   className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-2 text-[#111111] font-body-md text-body-md focus:border-[#C2410C] focus:outline-none"
                 />
               </div>
@@ -257,7 +269,7 @@ export const SettingsView: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  value={formConfig.principalName || ''}
+                  value={formConfig.principalName || ""}
                   onChange={(e) => setFormConfig({ ...formConfig, principalName: e.target.value })}
                   placeholder="e.g. Dr. E. Kibet (PhD)"
                   className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-2 text-[#111111] font-body-md text-body-md focus:border-[#C2410C] focus:outline-none"
@@ -350,8 +362,8 @@ export const SettingsView: React.FC = () => {
               KCSE Grading Scale (12-Point Scale)
             </h2>
             <p className="font-caption text-caption text-[#5F5E5E] mt-1">
-              Read-only standard ministerial metric. Points feed mean score calculations directly across
-              all Form 1 to Form 4 classes.
+              Read-only standard ministerial metric. Points feed mean score calculations directly
+              across all Form 1 to Form 4 classes.
             </p>
 
             {/* Calculation Method Switcher */}
@@ -364,8 +376,8 @@ export const SettingsView: React.FC = () => {
                   <input
                     type="radio"
                     name="calcMethod"
-                    checked={formConfig.calculationMethod === 'best7'}
-                    onChange={() => setFormConfig({ ...formConfig, calculationMethod: 'best7' })}
+                    checked={formConfig.calculationMethod === "best7"}
+                    onChange={() => setFormConfig({ ...formConfig, calculationMethod: "best7" })}
                     className="accent-[#C2410C]"
                   />
                   <span>Best 7 Subjects Rule (KNEC Standard)</span>
@@ -374,8 +386,10 @@ export const SettingsView: React.FC = () => {
                   <input
                     type="radio"
                     name="calcMethod"
-                    checked={formConfig.calculationMethod === 'simpleMean'}
-                    onChange={() => setFormConfig({ ...formConfig, calculationMethod: 'simpleMean' })}
+                    checked={formConfig.calculationMethod === "simpleMean"}
+                    onChange={() =>
+                      setFormConfig({ ...formConfig, calculationMethod: "simpleMean" })
+                    }
                     className="accent-[#C2410C]"
                   />
                   <span>Straight Mean across all subjects</span>
@@ -403,7 +417,9 @@ export const SettingsView: React.FC = () => {
                     <th className="px-4 py-2 font-label-caps text-label-caps text-[#5F5E5E]">
                       Marks Range
                     </th>
-                    <th className="px-4 py-2 font-label-caps text-label-caps text-[#5F5E5E]">Grade</th>
+                    <th className="px-4 py-2 font-label-caps text-label-caps text-[#5F5E5E]">
+                      Grade
+                    </th>
                     <th className="px-4 py-2 font-label-caps text-label-caps text-[#5F5E5E] text-right">
                       Points
                     </th>
@@ -414,7 +430,7 @@ export const SettingsView: React.FC = () => {
                 </thead>
                 <tbody className="divide-y divide-[#DDD6C7] font-body-sm text-body-sm">
                   {KCSE_GRADING_TABLE.map((row) => {
-                    const isCPlus = row.grade === 'C+';
+                    const isCPlus = row.grade === "C+";
 
                     return (
                       <React.Fragment key={row.grade}>
@@ -460,11 +476,17 @@ export const SettingsView: React.FC = () => {
           <div className="col-span-12 md:col-span-4 pr-4">
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-[#C2410C]">upload_file</span>
-              <h2 className="font-headline-sm text-headline-sm text-[#111111]">Bulk Marks Import (CSV)</h2>
+              <h2 className="font-headline-sm text-headline-sm text-[#111111]">
+                Bulk Marks Import (CSV)
+              </h2>
             </div>
             <p className="font-caption text-caption text-[#5F5E5E] mt-1.5">
-              Bulk-upload student examination marks directly into the central ledger. Automatically matches
-              student admission numbers and KCSE subject codes (<code className="font-tabular-sm text-[#111111]">MAT, ENG, KIS, BIO, CHE, PHY, HIS, GEO, CRE, BST</code>).
+              Bulk-upload student examination marks directly into the central ledger. Automatically
+              matches student admission numbers and KCSE subject codes (
+              <code className="font-tabular-sm text-[#111111]">
+                MAT, ENG, KIS, BIO, CHE, PHY, HIS, GEO, CRE, BST
+              </code>
+              ).
             </p>
 
             {/* Template Download Button */}
@@ -473,7 +495,8 @@ export const SettingsView: React.FC = () => {
                 CSV Template
               </span>
               <p className="font-caption text-caption text-[#5F5E5E] mb-2">
-                Download a pre-filled spreadsheet containing current student admission numbers and subject columns.
+                Download a pre-filled spreadsheet containing current student admission numbers and
+                subject columns.
               </p>
               <button
                 type="button"
@@ -491,11 +514,11 @@ export const SettingsView: React.FC = () => {
             <div className="flex items-center gap-3 border-b border-[#DDD6C7] pb-2 text-xs font-medium">
               <button
                 type="button"
-                onClick={() => setCsvMode('upload')}
+                onClick={() => setCsvMode("upload")}
                 className={`flex items-center gap-1.5 pb-1 border-b-2 cursor-pointer ${
-                  csvMode === 'upload'
-                    ? 'border-[#C2410C] text-[#111111]'
-                    : 'border-transparent text-[#5F5E5E] hover:text-[#111111]'
+                  csvMode === "upload"
+                    ? "border-[#C2410C] text-[#111111]"
+                    : "border-transparent text-[#5F5E5E] hover:text-[#111111]"
                 }`}
               >
                 <span className="material-symbols-outlined text-[15px]">cloud_upload</span>
@@ -503,11 +526,11 @@ export const SettingsView: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setCsvMode('paste')}
+                onClick={() => setCsvMode("paste")}
                 className={`flex items-center gap-1.5 pb-1 border-b-2 cursor-pointer ${
-                  csvMode === 'paste'
-                    ? 'border-[#C2410C] text-[#111111]'
-                    : 'border-transparent text-[#5F5E5E] hover:text-[#111111]'
+                  csvMode === "paste"
+                    ? "border-[#C2410C] text-[#111111]"
+                    : "border-transparent text-[#5F5E5E] hover:text-[#111111]"
                 }`}
               >
                 <span className="material-symbols-outlined text-[15px]">content_paste</span>
@@ -519,7 +542,9 @@ export const SettingsView: React.FC = () => {
             {csvSuccessMessage && (
               <div className="p-3 bg-emerald-50 border border-emerald-300 rounded text-emerald-900 text-xs flex items-center justify-between animate-fadeIn">
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px] text-emerald-700">check_circle</span>
+                  <span className="material-symbols-outlined text-[18px] text-emerald-700">
+                    check_circle
+                  </span>
                   <span className="font-medium">{csvSuccessMessage}</span>
                 </div>
                 <button
@@ -533,7 +558,7 @@ export const SettingsView: React.FC = () => {
             )}
 
             {/* Mode 1: Drag & Drop File Upload */}
-            {csvMode === 'upload' && (
+            {csvMode === "upload" && (
               <div>
                 <input
                   ref={fileInputRef}
@@ -553,8 +578,8 @@ export const SettingsView: React.FC = () => {
                   onClick={() => fileInputRef.current?.click()}
                   className={`border-2 border-dashed rounded p-6 text-center cursor-pointer transition-colors ${
                     isDragging
-                      ? 'border-[#C2410C] bg-[#F2EDE3]'
-                      : 'border-[#DDD6C7] bg-[#FEF9EF] hover:bg-[#F2EDE3]/50'
+                      ? "border-[#C2410C] bg-[#F2EDE3]"
+                      : "border-[#DDD6C7] bg-[#FEF9EF] hover:bg-[#F2EDE3]/50"
                   }`}
                 >
                   <span className="material-symbols-outlined text-[32px] text-[#5F5E5E] mb-2 block">
@@ -564,7 +589,7 @@ export const SettingsView: React.FC = () => {
                     {csvFileName ? (
                       <span className="text-[#C2410C] font-semibold">{csvFileName}</span>
                     ) : (
-                      'Click to select a CSV file or drag and drop here'
+                      "Click to select a CSV file or drag and drop here"
                     )}
                   </div>
                   <p className="font-caption text-xs text-[#5F5E5E] mt-1">
@@ -575,7 +600,7 @@ export const SettingsView: React.FC = () => {
             )}
 
             {/* Mode 2: Paste Raw CSV Text */}
-            {csvMode === 'paste' && (
+            {csvMode === "paste" && (
               <div>
                 <label className="block font-label-caps text-label-caps text-[#5F5E5E] uppercase mb-1">
                   Paste Tabular Marks Data
@@ -597,15 +622,18 @@ export const SettingsView: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <span
                       className={`w-2.5 h-2.5 rounded-full ${
-                        parsedPreview.success ? 'bg-emerald-600' : 'bg-red-600'
+                        parsedPreview.success ? "bg-emerald-600" : "bg-red-600"
                       }`}
                     ></span>
                     <span className="font-headline-sm text-xs font-semibold text-[#111111]">
-                      {parsedPreview.success ? 'File Parsed Successfully' : 'Parse Errors Encountered'}
+                      {parsedPreview.success
+                        ? "File Parsed Successfully"
+                        : "Parse Errors Encountered"}
                     </span>
                   </div>
                   <span className="font-tabular-sm text-xs text-[#5F5E5E]">
-                    {parsedPreview.updates.length} students matched · {parsedPreview.mappedSubjects.length} subjects
+                    {parsedPreview.updates.length} students matched ·{" "}
+                    {parsedPreview.mappedSubjects.length} subjects
                   </span>
                 </div>
 
@@ -636,7 +664,9 @@ export const SettingsView: React.FC = () => {
                 {/* Mapped Subjects Badges */}
                 {parsedPreview.mappedSubjects.length > 0 && (
                   <div className="flex flex-wrap items-center gap-1.5 text-xs">
-                    <span className="text-[#5F5E5E] font-label-caps text-[10px]">Mapped Subjects:</span>
+                    <span className="text-[#5F5E5E] font-label-caps text-[10px]">
+                      Mapped Subjects:
+                    </span>
                     {parsedPreview.mappedSubjects.map((sub) => (
                       <span
                         key={sub}
@@ -666,7 +696,9 @@ export const SettingsView: React.FC = () => {
                               </th>
                             ))}
                             {parsedPreview.mappedSubjects.length > 6 && (
-                              <th className="px-2 py-1.5 text-right">+{parsedPreview.mappedSubjects.length - 6} more</th>
+                              <th className="px-2 py-1.5 text-right">
+                                +{parsedPreview.mappedSubjects.length - 6} more
+                              </th>
                             )}
                           </tr>
                         </thead>
@@ -677,7 +709,7 @@ export const SettingsView: React.FC = () => {
                               <td className="px-2 py-1 text-[#111111]">{u.studentName}</td>
                               {parsedPreview.mappedSubjects.slice(0, 6).map((sub) => (
                                 <td key={sub} className="px-2 py-1 text-right text-[#111111]">
-                                  {u.marks[sub] !== undefined ? String(u.marks[sub]) : '—'}
+                                  {u.marks[sub] !== undefined ? String(u.marks[sub]) : "—"}
                                 </td>
                               ))}
                               {parsedPreview.mappedSubjects.length > 6 && (
@@ -695,11 +727,11 @@ export const SettingsView: React.FC = () => {
                 {parsedPreview.unmatchedStudents.length > 0 && (
                   <div className="text-xs text-[#5F5E5E]">
                     <span className="text-amber-700 font-medium">
-                      {parsedPreview.unmatchedStudents.length} rows in CSV did not match active students
-                    </span>{' '}
-                    (e.g.{' '}
-                    {parsedPreview.unmatchedStudents.slice(0, 3).join(', ')}
-                    {parsedPreview.unmatchedStudents.length > 3 ? '...' : ''}).
+                      {parsedPreview.unmatchedStudents.length} rows in CSV did not match active
+                      students
+                    </span>{" "}
+                    (e.g. {parsedPreview.unmatchedStudents.slice(0, 3).join(", ")}
+                    {parsedPreview.unmatchedStudents.length > 3 ? "..." : ""}).
                   </div>
                 )}
 
@@ -719,7 +751,9 @@ export const SettingsView: React.FC = () => {
                     className="px-4 py-1.5 bg-[#C2410C] text-[#FEF9EF] text-xs font-medium rounded hover:opacity-90 disabled:opacity-50 transition-opacity cursor-pointer flex items-center gap-1.5"
                   >
                     <span className="material-symbols-outlined text-[15px]">publish</span>
-                    <span>Commit Marks to Central Ledger ({parsedPreview.updates.length} Students)</span>
+                    <span>
+                      Commit Marks to Central Ledger ({parsedPreview.updates.length} Students)
+                    </span>
                   </button>
                 </div>
               </div>
@@ -732,12 +766,20 @@ export const SettingsView: React.FC = () => {
           <div className="col-span-12 md:col-span-4 pr-4">
             <h2 className="font-headline-sm text-headline-sm text-[#111111]">Data &amp; Backups</h2>
             <p className="font-caption text-caption text-[#5F5E5E] mt-1">
-              Direct cryptographic snapshots of the ledger state. Store cold archive files onto local
-              physical storage keys.
+              Direct cryptographic snapshots of the ledger state. Store cold archive files onto
+              local physical storage keys.
             </p>
           </div>
           <div className="col-span-12 md:col-span-8 flex flex-col justify-start">
             <div className="flex flex-wrap items-center gap-3">
+              <button
+                onClick={() => setIsPresetsModalOpen(true)}
+                type="button"
+                className="border border-[#C2410C] bg-[#C2410C] text-[#FEF9EF] px-4 py-2 rounded font-body-sm text-body-sm font-semibold hover:opacity-90 transition-opacity cursor-pointer flex items-center gap-1.5"
+              >
+                <span className="material-symbols-outlined text-[16px]">science</span>
+                <span>Test Presets &amp; Scenarios</span>
+              </button>
               <button
                 onClick={exportJSONBackup}
                 type="button"
@@ -761,7 +803,8 @@ export const SettingsView: React.FC = () => {
               </button>
             </div>
             <p className="font-caption text-caption text-[#9A958A] mt-3">
-              All marks and student records are stored locally in IndexedDB / localStorage on this browser.
+              All marks and student records are stored locally in IndexedDB / localStorage on this
+              browser.
             </p>
           </div>
         </section>
@@ -769,9 +812,12 @@ export const SettingsView: React.FC = () => {
         {/* 6. Local Storage & Database Integrity Section */}
         <section className="py-6 grid grid-cols-12 gap-6">
           <div className="col-span-12 md:col-span-4 pr-4">
-            <h2 className="font-headline-sm text-headline-sm text-[#111111]">Local Storage &amp; Database Health</h2>
+            <h2 className="font-headline-sm text-headline-sm text-[#111111]">
+              Local Storage &amp; Database Health
+            </h2>
             <p className="font-caption text-caption text-[#5F5E5E] mt-1">
-              Zero-cloud privacy architecture. All student marks, subjects, and configurations are stored in your device's persistent IndexedDB database.
+              Zero-cloud privacy architecture. All student marks, subjects, and configurations are
+              stored in your device's persistent IndexedDB database.
             </p>
           </div>
           <div className="col-span-12 md:col-span-8 flex flex-col items-start gap-3">
@@ -779,31 +825,74 @@ export const SettingsView: React.FC = () => {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-[#DDD6C7] bg-[#FBF8F1] rounded">
                 <span
                   className={`w-2 h-2 rounded-full inline-block ${
-                    dbHealth.status === 'healthy' ? 'bg-emerald-600' : 'bg-[#C2410C]'
+                    dbHealth.status === "healthy" ? "bg-emerald-600" : "bg-[#C2410C]"
                   }`}
                 ></span>
                 <span className="font-tabular-sm text-tabular-sm text-[#111111] font-medium">
-                  {dbHealth.status === 'checking'
-                    ? 'Verifying IndexedDB records & local cache...'
-                    : dbHealth.status === 'healthy'
-                    ? `Healthy: ${dbHealth.totalStudents} candidates · ${dbHealth.totalMarksEntered} scores verified (~${dbHealth.estimatedStorageKB} KB)`
-                    : `Offline Storage Active: ${students.length} candidates cached`}
+                  {dbHealth.status === "checking"
+                    ? "Verifying IndexedDB records & local cache..."
+                    : dbHealth.status === "healthy"
+                      ? `Healthy: ${dbHealth.totalStudents} candidates · ${dbHealth.totalMarksEntered} scores verified (~${dbHealth.estimatedStorageKB} KB)`
+                      : `Offline Storage Active: ${students.length} candidates cached`}
                 </span>
               </div>
               <button
                 onClick={handleVerifyDatabaseIntegrity}
-                disabled={dbHealth.status === 'checking'}
+                disabled={dbHealth.status === "checking"}
                 type="button"
                 className="border border-[#111111] bg-transparent text-[#111111] px-4 py-1.5 rounded font-body-sm text-body-sm font-medium hover:bg-[#F2EDE3] transition-colors disabled:opacity-50 cursor-pointer min-h-[36px]"
               >
-                {dbHealth.status === 'checking' ? 'Checking...' : 'Verify Database Health'}
+                {dbHealth.status === "checking" ? "Checking..." : "Verify Database Health"}
               </button>
             </div>
             <span className="font-caption text-caption text-[#5F5E5E]">
               {dbHealth.lastVerified
                 ? `Last integrity verification: ${dbHealth.lastVerified} · 100% local persistence`
-                : '100% offline-ready · Zero data transmitted to external servers'}
+                : "100% offline-ready · Zero data transmitted to external servers"}
             </span>
+          </div>
+        </section>
+
+        {/* 7. Legal & Data Protection Compliance Section */}
+        <section className="py-6 border-t border-[#DDD6C7] grid grid-cols-12 gap-6">
+          <div className="col-span-12 md:col-span-4 pr-4">
+            <h2 className="font-headline-sm text-headline-sm text-[#111111]">
+              Legal &amp; Statutory Compliance
+            </h2>
+            <p className="font-caption text-caption text-[#5F5E5E] mt-1">
+              Institutional policies governed by the Kenya Basic Education Act and the Data Protection Act (DPA No. 24 of 2019).
+            </p>
+          </div>
+          <div className="col-span-12 md:col-span-8 flex flex-col items-start gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setLegalModal("privacy")}
+                className="border border-[#DDD6C7] bg-[#FBF8F1] hover:bg-[#F2EDE3] text-[#111111] px-3.5 py-2 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[16px] text-[#C2410C]">policy</span>
+                <span>Privacy Policy (DPA 2019)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setLegalModal("terms")}
+                className="border border-[#DDD6C7] bg-[#FBF8F1] hover:bg-[#F2EDE3] text-[#111111] px-3.5 py-2 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[16px] text-[#5F5E5E]">gavel</span>
+                <span>Terms of Service</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setLegalModal("compliance")}
+                className="border border-[#DDD6C7] bg-[#FBF8F1] hover:bg-[#F2EDE3] text-[#111111] px-3.5 py-2 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[16px] text-emerald-700">verified</span>
+                <span>Ministry of Education &amp; KNEC</span>
+              </button>
+            </div>
+            <p className="font-caption text-caption text-[#9A958A]">
+              Learner personal data is protected under Section 31 of Kenya DPA. Zero cloud telemetry or external third-party scraping.
+            </p>
           </div>
         </section>
       </div>
@@ -841,7 +930,9 @@ export const SettingsView: React.FC = () => {
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
           <div className="bg-[#FEF9EF] border border-[#DDD6C7] rounded max-w-lg w-full p-6 shadow-md">
             <div className="flex items-center justify-between pb-3 border-b border-[#DDD6C7] mb-3">
-              <h3 className="font-headline-sm text-headline-sm text-[#111111]">Restore from JSON Backup</h3>
+              <h3 className="font-headline-sm text-headline-sm text-[#111111]">
+                Restore from JSON Backup
+              </h3>
               <button
                 onClick={() => setIsRestoreModalOpen(false)}
                 className="text-[#5F5E5E] hover:text-[#111111] font-bold text-lg cursor-pointer"
@@ -891,10 +982,12 @@ export const SettingsView: React.FC = () => {
               <h3 className="font-headline-sm text-headline-sm">Reset to Demo Cohort Data</h3>
             </div>
             <p className="font-body-sm text-body-sm text-[#111111] mb-3">
-              This will restore the ledger to clean Form 4 East seed records (42 students, KNEC 12-point marks, and official school config).
+              This will restore the ledger to clean Form 4 East seed records (42 students, KNEC
+              12-point marks, and official school config).
             </p>
             <div className="bg-red-50 border border-red-200 text-red-800 p-3 text-xs mb-4">
-              <strong>Notice:</strong> All custom student additions and newly entered marks will be overwritten with initial baseline data.
+              <strong>Notice:</strong> All custom student additions and newly entered marks will be
+              overwritten with initial baseline data.
             </div>
             <div className="flex items-center justify-end gap-3">
               <button
@@ -920,6 +1013,18 @@ export const SettingsView: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Test Presets & Scenarios Modal */}
+      <TestPresetsModal
+        isOpen={isPresetsModalOpen}
+        onClose={() => setIsPresetsModalOpen(false)}
+      />
+
+      {/* Legal & Compliance Modal */}
+      <LegalModals
+        activeModal={legalModal}
+        onClose={() => setLegalModal(null)}
+      />
     </div>
   );
 };

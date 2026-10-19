@@ -1,11 +1,11 @@
 // @ts-nocheck -- original source kept verbatim; project tsconfig is stricter than the source
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { GradeChip } from '../components/GradeChip';
-import { useGrading } from '../context/GradingContext';
-import { MarkValue } from '../types';
-import { exportTableToCSV, getGradeFromScore, sanitizeMarkInput } from '../utils/grading';
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { GradeChip } from "../components/GradeChip";
+import { useGrading } from "../context/GradingContext";
+import { MarkValue } from "../types";
+import { exportTableToCSV, getGradeFromScore, sanitizeMarkInput } from "../utils/grading";
 
-type EntryMode = 'grid' | 'student' | 'subject';
+type EntryMode = "grid" | "student" | "subject";
 
 export const MarksEntryView: React.FC = () => {
   const {
@@ -19,35 +19,36 @@ export const MarksEntryView: React.FC = () => {
     activeExam,
     saveStatus,
     forceSave,
+    setActiveView,
   } = useGrading();
 
   // Responsive default mode: on phone screen (<768px), default to 'student' card mode
   const [entryMode, setEntryMode] = useState<EntryMode>(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      return 'student';
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      return "student";
     }
-    return 'grid';
+    return "grid";
   });
 
   // Active student in student-by-student mode
   const [activeStudentIdx, setActiveStudentIdx] = useState(0);
 
   // Active subject in subject-by-subject mode
-  const [activeSubjectCode, setActiveSubjectCode] = useState<string>(
-    subjects[0]?.code || 'MAT'
-  );
+  const [activeSubjectCode, setActiveSubjectCode] = useState<string>(subjects[0]?.code || "MAT");
 
   // Active cell in grid matrix mode
-  const [focusedCell, setFocusedCell] = useState<{ studentId: string; subjectCode: string } | null>(() => {
-    if (students.length > 0 && subjects.length > 0) {
-      return { studentId: students[0].id, subjectCode: subjects[0].code };
-    }
-    return null;
-  });
+  const [focusedCell, setFocusedCell] = useState<{ studentId: string; subjectCode: string } | null>(
+    () => {
+      if (students.length > 0 && subjects.length > 0) {
+        return { studentId: students[0].id, subjectCode: subjects[0].code };
+      }
+      return null;
+    },
+  );
 
-  const [editingValue, setEditingValue] = useState<string>('');
+  const [editingValue, setEditingValue] = useState<string>("");
   const [isPastingModalOpen, setIsPastingModalOpen] = useState(false);
-  const [pastedText, setPastedText] = useState('');
+  const [pastedText, setPastedText] = useState("");
   const [saveToast, setSaveToast] = useState(false);
   const [validationWarning, setValidationWarning] = useState<string | null>(null);
 
@@ -57,7 +58,7 @@ export const MarksEntryView: React.FC = () => {
   useEffect(() => {
     if (focusedCell) {
       const current = marks[focusedCell.studentId]?.[focusedCell.subjectCode];
-      setEditingValue(current === null || current === undefined ? '' : String(current));
+      setEditingValue(current === null || current === undefined ? "" : String(current));
       setValidationWarning(null);
       setTimeout(() => {
         gridInputRef.current?.focus();
@@ -103,10 +104,14 @@ export const MarksEntryView: React.FC = () => {
     const num = Number(editingValue.trim());
 
     if (editingValue.trim() && !isNaN(num) && (num < 0 || num > 100)) {
-      setValidationWarning('Mark clamped within valid range (0–100)');
+      setValidationWarning("Mark clamped within valid range (0–100)");
       setTimeout(() => setValidationWarning(null), 3000);
-    } else if (editingValue.trim() && sanitized === null && editingValue.trim().toUpperCase() !== 'ABS') {
-      setValidationWarning('Invalid entry: enter a mark (0–100) or ABS');
+    } else if (
+      editingValue.trim() &&
+      sanitized === null &&
+      editingValue.trim().toUpperCase() !== "ABS"
+    ) {
+      setValidationWarning("Invalid entry: enter a mark (0–100) or ABS");
       setTimeout(() => setValidationWarning(null), 3000);
     }
 
@@ -115,21 +120,21 @@ export const MarksEntryView: React.FC = () => {
 
   const handleGridKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
-      case 'ArrowUp':
+      case "ArrowUp":
         e.preventDefault();
         navigateCell(-1, 0);
         break;
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
         navigateCell(1, 0);
         break;
-      case 'ArrowLeft':
+      case "ArrowLeft":
         if (e.currentTarget.selectionStart === 0 && e.currentTarget.selectionEnd === 0) {
           e.preventDefault();
           navigateCell(0, -1);
         }
         break;
-      case 'ArrowRight':
+      case "ArrowRight":
         if (
           e.currentTarget.selectionStart === editingValue.length &&
           e.currentTarget.selectionEnd === editingValue.length
@@ -138,7 +143,7 @@ export const MarksEntryView: React.FC = () => {
           navigateCell(0, 1);
         }
         break;
-      case 'Tab':
+      case "Tab":
         e.preventDefault();
         if (e.shiftKey) {
           navigateCell(0, -1);
@@ -146,15 +151,15 @@ export const MarksEntryView: React.FC = () => {
           navigateCell(0, 1);
         }
         break;
-      case 'Enter':
+      case "Enter":
         e.preventDefault();
         navigateCell(1, 0);
         break;
-      case 'Escape':
+      case "Escape":
         e.preventDefault();
         if (focusedCell) {
           const original = marks[focusedCell.studentId]?.[focusedCell.subjectCode];
-          setEditingValue(original === null || original === undefined ? '' : String(original));
+          setEditingValue(original === null || original === undefined ? "" : String(original));
         }
         break;
       default:
@@ -169,9 +174,9 @@ export const MarksEntryView: React.FC = () => {
     const num = Number(val.trim());
 
     if (val.trim() && !isNaN(num) && (num < 0 || num > 100)) {
-      setValidationWarning('Number will be clamped to 0–100');
-    } else if (val.trim() && sanitized === null && val.trim().toUpperCase() !== 'ABS') {
-      setValidationWarning('Enter numbers (0–100) or ABS');
+      setValidationWarning("Number will be clamped to 0–100");
+    } else if (val.trim() && sanitized === null && val.trim().toUpperCase() !== "ABS") {
+      setValidationWarning("Enter numbers (0–100) or ABS");
     } else {
       setValidationWarning(null);
     }
@@ -243,7 +248,7 @@ export const MarksEntryView: React.FC = () => {
         const targetSubj = subjects[targetSubjIdx];
 
         const trimmed = cellVal.trim();
-        if (trimmed === '') {
+        if (trimmed === "") {
           updates.push({
             studentId: targetStudent.id,
             studentName: targetStudent.name,
@@ -254,13 +259,13 @@ export const MarksEntryView: React.FC = () => {
           });
         } else {
           const upper = trimmed.toUpperCase();
-          if (upper === 'ABS' || upper === 'A' || upper === 'ABSENT') {
+          if (upper === "ABS" || upper === "A" || upper === "ABSENT") {
             updates.push({
               studentId: targetStudent.id,
               studentName: targetStudent.name,
               subjectCode: targetSubj.code,
               raw: trimmed,
-              parsed: 'ABS',
+              parsed: "ABS",
               isValid: true,
             });
           } else {
@@ -273,7 +278,7 @@ export const MarksEntryView: React.FC = () => {
                 raw: trimmed,
                 parsed: null,
                 isValid: false,
-                error: 'Not a number',
+                error: "Not a number",
               });
             } else if (num < 0 || num > 100) {
               updates.push({
@@ -283,7 +288,7 @@ export const MarksEntryView: React.FC = () => {
                 raw: trimmed,
                 parsed: Math.max(0, Math.min(100, Math.round(num))),
                 isValid: false,
-                error: 'Clamped to 0-100',
+                error: "Clamped to 0-100",
               });
             } else {
               updates.push({
@@ -300,7 +305,7 @@ export const MarksEntryView: React.FC = () => {
       });
     });
 
-    const validUpdates = updates.filter((u) => u.isValid || u.error?.includes('Clamped'));
+    const validUpdates = updates.filter((u) => u.isValid || u.error?.includes("Clamped"));
     const invalidCount = updates.length - validUpdates.length;
 
     return {
@@ -325,33 +330,40 @@ export const MarksEntryView: React.FC = () => {
 
     batchUpdateMarks(batch);
     setIsPastingModalOpen(false);
-    setPastedText('');
+    setPastedText("");
     handleSaveAll();
   };
 
   const handleExportEnteredMarksCSV = () => {
-    const headers = ['AdmNo', 'StudentName', ...subjects.map((s) => s.code), 'Average', 'Aggregate', 'Grade'];
+    const headers = [
+      "AdmNo",
+      "StudentName",
+      ...subjects.map((s) => s.code),
+      "Average",
+      "Aggregate",
+      "Grade",
+    ];
     const rows = students.map((s) => {
       const calc = rankingMap.get(s.id);
       const studentMarks = marks[s.id] || {};
       const subjectCols = subjects.map((subj) => {
         const val = studentMarks[subj.code];
-        return val === null || val === undefined ? '' : String(val);
+        return val === null || val === undefined ? "" : String(val);
       });
       return [
         s.admNo,
         s.name,
         ...subjectCols,
-        calc ? calc.average.toFixed(1) : '',
-        calc ? String(calc.aggregate) : '',
-        calc ? calc.meanGrade : '',
+        calc ? calc.average.toFixed(1) : "",
+        calc ? String(calc.aggregate) : "",
+        calc ? calc.meanGrade : "",
       ];
     });
 
     exportTableToCSV(
-      `Marks_Entry_${activeStream.replace(/\s+/g, '_')}_${activeExam.replace(/\s+/g, '_')}`,
+      `Marks_Entry_${activeStream.replace(/\s+/g, "_")}_${activeExam.replace(/\s+/g, "_")}`,
       headers,
-      rows
+      rows,
     );
   };
 
@@ -369,12 +381,12 @@ export const MarksEntryView: React.FC = () => {
       let count = 0;
       students.forEach((s) => {
         const val = marks[s.id]?.[subj.code];
-        if (typeof val === 'number') {
+        if (typeof val === "number") {
           sum += val;
           count++;
         }
       });
-      return count > 0 ? (sum / count).toFixed(1) : '—';
+      return count > 0 ? (sum / count).toFixed(1) : "—";
     });
   }, [subjects, students, marks]);
 
@@ -383,7 +395,9 @@ export const MarksEntryView: React.FC = () => {
       {/* Header Section */}
       <section className="mb-3 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
         <div>
-          <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">Marks Entry</h1>
+          <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">
+            Marks Entry
+          </h1>
           <p className="font-body-sm text-body-sm text-[#5F5E5E]">
             {activeStream} · {activeExam} · spreadsheet ledger with instant KNEC recalculation
           </p>
@@ -399,7 +413,9 @@ export const MarksEntryView: React.FC = () => {
           )}
           {saveToast && (
             <div className="bg-[#111111] text-[#FEF9EF] px-3 py-1 rounded text-xs font-medium flex items-center gap-1.5 animate-fadeIn">
-              <span className="material-symbols-outlined text-[16px] text-emerald-400">check_circle</span>
+              <span className="material-symbols-outlined text-[16px] text-emerald-400">
+                check_circle
+              </span>
               <span>All records synchronized and saved</span>
             </div>
           )}
@@ -411,36 +427,36 @@ export const MarksEntryView: React.FC = () => {
         {/* Mode Segmented Controls */}
         <div className="flex items-center p-0.5 bg-[#EDE8DE] border border-[#DDD6C7] rounded">
           <button
-            onClick={() => setEntryMode('student')}
+            onClick={() => setEntryMode("student")}
             type="button"
             className={`px-3 py-1.5 text-xs font-medium rounded flex items-center gap-1.5 min-h-[36px] cursor-pointer transition-colors ${
-              entryMode === 'student'
-                ? 'bg-[#FEF9EF] text-[#111111] font-semibold shadow-xs'
-                : 'text-[#5F5E5E] hover:text-[#111111]'
+              entryMode === "student"
+                ? "bg-[#FEF9EF] text-[#111111] font-semibold shadow-xs"
+                : "text-[#5F5E5E] hover:text-[#111111]"
             }`}
           >
             <span className="material-symbols-outlined text-[16px]">person</span>
             <span>Student Mode</span>
           </button>
           <button
-            onClick={() => setEntryMode('subject')}
+            onClick={() => setEntryMode("subject")}
             type="button"
             className={`px-3 py-1.5 text-xs font-medium rounded flex items-center gap-1.5 min-h-[36px] cursor-pointer transition-colors ${
-              entryMode === 'subject'
-                ? 'bg-[#FEF9EF] text-[#111111] font-semibold shadow-xs'
-                : 'text-[#5F5E5E] hover:text-[#111111]'
+              entryMode === "subject"
+                ? "bg-[#FEF9EF] text-[#111111] font-semibold shadow-xs"
+                : "text-[#5F5E5E] hover:text-[#111111]"
             }`}
           >
             <span className="material-symbols-outlined text-[16px]">menu_book</span>
             <span>Subject Mode</span>
           </button>
           <button
-            onClick={() => setEntryMode('grid')}
+            onClick={() => setEntryMode("grid")}
             type="button"
             className={`px-3 py-1.5 text-xs font-medium rounded flex items-center gap-1.5 min-h-[36px] cursor-pointer transition-colors ${
-              entryMode === 'grid'
-                ? 'bg-[#FEF9EF] text-[#111111] font-semibold shadow-xs'
-                : 'text-[#5F5E5E] hover:text-[#111111]'
+              entryMode === "grid"
+                ? "bg-[#FEF9EF] text-[#111111] font-semibold shadow-xs"
+                : "text-[#5F5E5E] hover:text-[#111111]"
             }`}
           >
             <span className="material-symbols-outlined text-[16px]">grid_on</span>
@@ -450,7 +466,7 @@ export const MarksEntryView: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
-          {entryMode === 'grid' && (
+          {entryMode === "grid" && (
             <button
               onClick={() => setIsPastingModalOpen(true)}
               type="button"
@@ -484,7 +500,7 @@ export const MarksEntryView: React.FC = () => {
       {/* =========================================================================
           MODE 1: STUDENT-BY-STUDENT TOUCH MODE (Optimized for Phones & Tablets)
           ========================================================================= */}
-      {entryMode === 'student' && currentStudent && (
+      {entryMode === "student" && currentStudent && (
         <div className="flex-1 flex flex-col max-w-2xl mx-auto w-full">
           {/* Candidate Card & Stepper Header */}
           <div className="bg-[#FBF8F1] border border-[#DDD6C7] p-4 rounded mb-4 shadow-xs">
@@ -497,7 +513,8 @@ export const MarksEntryView: React.FC = () => {
                   {currentStudent.name}
                 </h2>
                 <div className="text-xs text-[#5F5E5E] font-tabular-sm mt-0.5">
-                  ADM: <strong>{currentStudent.admNo}</strong> · KCPE: {currentStudent.kcpeMarks} · {currentStudent.gender}
+                  ADM: <strong>{currentStudent.admNo}</strong> · KCPE: {currentStudent.kcpeMarks} ·{" "}
+                  {currentStudent.gender}
                 </div>
               </div>
 
@@ -509,7 +526,8 @@ export const MarksEntryView: React.FC = () => {
                     <GradeChip grade={currentStudentCalc.meanGrade} size="md" />
                   </div>
                   <div className="text-[11px] text-[#5F5E5E] font-tabular-sm mt-1">
-                    Mean: {currentStudentCalc.meanPoints.toFixed(1)} pts · Best 7: {currentStudentCalc.aggregate}/84
+                    Mean: {currentStudentCalc.meanPoints.toFixed(1)} pts · Best 7:{" "}
+                    {currentStudentCalc.aggregate}/84
                   </div>
                 </div>
               )}
@@ -524,7 +542,9 @@ export const MarksEntryView: React.FC = () => {
                 className="flex-1 min-w-0 shrink-0 py-2.5 px-3 min-h-[48px] bg-[#FEF9EF] border border-[#DDD6C7] hover:bg-[#F2EDE3] disabled:opacity-30 rounded font-medium text-xs sm:text-sm flex items-center justify-center gap-1 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[18px]">arrow_back</span>
-                <span>Prev<span className="hidden sm:inline">ious Student</span></span>
+                <span>
+                  Prev<span className="hidden sm:inline">ious Student</span>
+                </span>
               </button>
 
               {/* Quick Jump Selector */}
@@ -546,7 +566,9 @@ export const MarksEntryView: React.FC = () => {
                 type="button"
                 className="flex-1 min-w-0 shrink-0 py-2.5 px-3 min-h-[48px] bg-[#FEF9EF] border border-[#DDD6C7] hover:bg-[#F2EDE3] disabled:opacity-30 rounded font-medium text-xs sm:text-sm flex items-center justify-center gap-1 cursor-pointer"
               >
-                <span>Next<span className="hidden sm:inline"> Student</span></span>
+                <span>
+                  Next<span className="hidden sm:inline"> Student</span>
+                </span>
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
               </button>
             </div>
@@ -563,7 +585,7 @@ export const MarksEntryView: React.FC = () => {
 
             {subjects.map((subj) => {
               const currentVal = marks[currentStudent.id]?.[subj.code];
-              const scoreNum = typeof currentVal === 'number' ? currentVal : null;
+              const scoreNum = typeof currentVal === "number" ? currentVal : null;
               const grade = scoreNum !== null ? getGradeFromScore(scoreNum).grade : null;
 
               return (
@@ -573,7 +595,9 @@ export const MarksEntryView: React.FC = () => {
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-xs sm:text-sm text-[#111111]">{subj.code}</span>
+                      <span className="font-semibold text-xs sm:text-sm text-[#111111]">
+                        {subj.code}
+                      </span>
                       <span className="text-xs text-[#5F5E5E] truncate">{subj.name}</span>
                     </div>
                     <span className="text-[10px] text-[#9A958A] uppercase font-label-caps">
@@ -587,15 +611,23 @@ export const MarksEntryView: React.FC = () => {
                       type="text"
                       inputMode="numeric"
                       enterKeyHint="next"
-                      value={currentVal === null || currentVal === undefined ? '' : String(currentVal)}
-                      onChange={(e) => handleSingleMarkChange(currentStudent.id, subj.code, e.target.value)}
+                      value={
+                        currentVal === null || currentVal === undefined ? "" : String(currentVal)
+                      }
+                      onChange={(e) =>
+                        handleSingleMarkChange(currentStudent.id, subj.code, e.target.value)
+                      }
                       placeholder="—"
                       className="w-20 sm:w-24 h-12 text-center text-base sm:text-base font-tabular-md font-semibold bg-white border border-[#DDD6C7] focus:border-[#C2410C] focus:ring-1 focus:ring-[#C2410C] rounded focus:outline-none"
                     />
 
                     {/* Live KCSE Grade Chip */}
                     <div className="w-10 flex justify-center">
-                      {grade ? <GradeChip grade={grade} size="sm" /> : <span className="text-[#9A958A] text-xs">—</span>}
+                      {grade ? (
+                        <GradeChip grade={grade} size="sm" />
+                      ) : (
+                        <span className="text-[#9A958A] text-xs">—</span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -608,7 +640,7 @@ export const MarksEntryView: React.FC = () => {
       {/* =========================================================================
           MODE 2: SUBJECT-BY-SUBJECT MODE (Rapid batch marking for a teacher)
           ========================================================================= */}
-      {entryMode === 'subject' && (
+      {entryMode === "subject" && (
         <div className="flex-1 flex flex-col max-w-3xl mx-auto w-full">
           {/* Subject Horizontal Selector */}
           <div className="flex items-center gap-1.5 overflow-x-auto hide-scrollbar pb-2 mb-3">
@@ -619,8 +651,8 @@ export const MarksEntryView: React.FC = () => {
                 type="button"
                 className={`px-3 py-2 min-h-[44px] rounded text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors border ${
                   activeSubjectCode === subj.code
-                    ? 'bg-[#111111] text-[#FEF9EF] border-[#111111]'
-                    : 'bg-[#FBF8F1] text-[#5F5E5E] border-[#DDD6C7] hover:border-[#111111]'
+                    ? "bg-[#111111] text-[#FEF9EF] border-[#111111]"
+                    : "bg-[#FBF8F1] text-[#5F5E5E] border-[#DDD6C7] hover:border-[#111111]"
                 }`}
               >
                 <span>{subj.code}</span>
@@ -637,12 +669,14 @@ export const MarksEntryView: React.FC = () => {
               <span className="font-label-caps text-label-caps text-[#5F5E5E] text-[11px] uppercase">
                 Marking {activeSubjectCode} for {activeStream} ({students.length} Candidates)
               </span>
-              <span className="text-[11px] text-[#5F5E5E]">Tab / Enter steps to next candidate</span>
+              <span className="text-[11px] text-[#5F5E5E]">
+                Tab / Enter steps to next candidate
+              </span>
             </div>
 
             {students.map((student, idx) => {
               const currentVal = marks[student.id]?.[activeSubjectCode];
-              const scoreNum = typeof currentVal === 'number' ? currentVal : null;
+              const scoreNum = typeof currentVal === "number" ? currentVal : null;
               const grade = scoreNum !== null ? getGradeFromScore(scoreNum).grade : null;
 
               return (
@@ -653,7 +687,9 @@ export const MarksEntryView: React.FC = () => {
                   <div className="flex items-center gap-3">
                     <span className="w-7 text-xs font-tabular-sm text-[#9A958A]">{idx + 1}.</span>
                     <div>
-                      <div className="font-medium text-xs sm:text-sm text-[#111111]">{student.name}</div>
+                      <div className="font-medium text-xs sm:text-sm text-[#111111]">
+                        {student.name}
+                      </div>
                       <div className="text-[10px] text-[#5F5E5E] font-tabular-sm">
                         ADM {student.admNo} · KCPE {student.kcpeMarks}
                       </div>
@@ -665,13 +701,21 @@ export const MarksEntryView: React.FC = () => {
                       type="text"
                       inputMode="numeric"
                       enterKeyHint="next"
-                      value={currentVal === null || currentVal === undefined ? '' : String(currentVal)}
-                      onChange={(e) => handleSingleMarkChange(student.id, activeSubjectCode, e.target.value)}
+                      value={
+                        currentVal === null || currentVal === undefined ? "" : String(currentVal)
+                      }
+                      onChange={(e) =>
+                        handleSingleMarkChange(student.id, activeSubjectCode, e.target.value)
+                      }
                       placeholder="—"
                       className="w-20 sm:w-24 h-11 text-center text-base font-tabular-md font-semibold bg-white border border-[#DDD6C7] focus:border-[#C2410C] focus:ring-1 focus:ring-[#C2410C] rounded focus:outline-none"
                     />
                     <div className="w-10 flex justify-center">
-                      {grade ? <GradeChip grade={grade} size="sm" /> : <span className="text-[#9A958A] text-xs">—</span>}
+                      {grade ? (
+                        <GradeChip grade={grade} size="sm" />
+                      ) : (
+                        <span className="text-[#9A958A] text-xs">—</span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -684,7 +728,7 @@ export const MarksEntryView: React.FC = () => {
       {/* =========================================================================
           MODE 3: FULL SPREADSHEET MATRIX (Grid Mode with Arrow Navigation & Paste)
           ========================================================================= */}
-      {entryMode === 'grid' && (
+      {entryMode === "grid" && (
         <div className="flex-1 border border-[#DDD6C7] bg-[#FBF8F1] overflow-hidden flex flex-col shadow-xs">
           <div className="overflow-x-auto hide-scrollbar flex-1 relative max-h-[640px]">
             <table className="w-full border-collapse text-left border-spacing-0">
@@ -733,7 +777,10 @@ export const MarksEntryView: React.FC = () => {
                   const calc = rankingMap.get(student.id);
 
                   return (
-                    <tr key={student.id} className="h-10 hover:bg-[#F8F3E9] transition-colors group">
+                    <tr
+                      key={student.id}
+                      className="h-10 hover:bg-[#F8F3E9] transition-colors group"
+                    >
                       {/* Sticky Student Identifier Column */}
                       <td className="sticky left-0 z-20 bg-[#FBF8F1] group-hover:bg-[#F8F3E9] border-r border-[#DDD6C7] px-3 py-1.5 transition-colors">
                         <div className="flex items-center justify-between">
@@ -741,7 +788,10 @@ export const MarksEntryView: React.FC = () => {
                             <span className="font-tabular-sm text-xs font-semibold text-[#111111] shrink-0">
                               {student.admNo}
                             </span>
-                            <span className="text-body-sm text-xs truncate text-[#111111]" title={student.name}>
+                            <span
+                              className="text-body-sm text-xs truncate text-[#111111]"
+                              title={student.name}
+                            >
                               {student.name}
                             </span>
                           </div>
@@ -754,10 +804,11 @@ export const MarksEntryView: React.FC = () => {
                       {/* Marks Cells */}
                       {subjects.map((subj) => {
                         const isFocused =
-                          focusedCell?.studentId === student.id && focusedCell?.subjectCode === subj.code;
+                          focusedCell?.studentId === student.id &&
+                          focusedCell?.subjectCode === subj.code;
                         const cellVal = studentMarks[subj.code];
-                        const isAbsent = cellVal === 'ABS';
-                        const scoreNum = typeof cellVal === 'number' ? cellVal : null;
+                        const isAbsent = cellVal === "ABS";
+                        const scoreNum = typeof cellVal === "number" ? cellVal : null;
                         const grade = scoreNum !== null ? getGradeFromScore(scoreNum).grade : null;
 
                         return (
@@ -768,7 +819,7 @@ export const MarksEntryView: React.FC = () => {
                               setFocusedCell({ studentId: student.id, subjectCode: subj.code });
                             }}
                             className={`border-r border-[#DDD6C7] p-0 text-center relative select-none cursor-pointer ${
-                              isFocused ? 'ring-2 ring-[#C2410C] z-10 bg-[#FFFDF8]' : ''
+                              isFocused ? "ring-2 ring-[#C2410C] z-10 bg-[#FFFDF8]" : ""
                             }`}
                           >
                             {isFocused ? (
@@ -787,13 +838,17 @@ export const MarksEntryView: React.FC = () => {
                                 <span
                                   className={`font-tabular-sm text-xs ${
                                     isAbsent
-                                      ? 'text-red-700 font-bold'
+                                      ? "text-red-700 font-bold"
                                       : cellVal === null || cellVal === undefined
-                                      ? 'text-[#9A958A]'
-                                      : 'text-[#111111] font-medium'
+                                        ? "text-[#9A958A]"
+                                        : "text-[#111111] font-medium"
                                   }`}
                                 >
-                                  {isAbsent ? 'ABS' : cellVal === null || cellVal === undefined ? '—' : cellVal}
+                                  {isAbsent
+                                    ? "ABS"
+                                    : cellVal === null || cellVal === undefined
+                                      ? "—"
+                                      : cellVal}
                                 </span>
                                 {grade && <GradeChip grade={grade} size="sm" />}
                               </div>
@@ -804,13 +859,13 @@ export const MarksEntryView: React.FC = () => {
 
                       {/* Summary Columns */}
                       <td className="border-r border-[#DDD6C7] px-2 py-1 text-center font-tabular-sm text-xs font-medium text-[#111111] bg-[#FEF9EF]/50">
-                        {calc ? calc.average.toFixed(1) : '—'}
+                        {calc ? calc.average.toFixed(1) : "—"}
                       </td>
                       <td className="border-r border-[#DDD6C7] px-2 py-1 text-center font-tabular-sm text-xs font-semibold text-[#111111] bg-[#FEF9EF]/50">
-                        {calc ? calc.aggregate : '—'}
+                        {calc ? calc.aggregate : "—"}
                       </td>
                       <td className="px-2 py-1 text-center bg-[#FEF9EF]/50">
-                        {calc ? <GradeChip grade={calc.meanGrade} size="sm" /> : '—'}
+                        {calc ? <GradeChip grade={calc.meanGrade} size="sm" /> : "—"}
                       </td>
                     </tr>
                   );
@@ -834,12 +889,12 @@ export const MarksEntryView: React.FC = () => {
                   <td className="border-r border-[#DDD6C7] px-2 py-2 text-center font-tabular-sm text-[#C2410C]">
                     {rankings.length > 0
                       ? (rankings.reduce((a, b) => a + b.average, 0) / rankings.length).toFixed(1)
-                      : '—'}
+                      : "—"}
                   </td>
                   <td className="border-r border-[#DDD6C7] px-2 py-2 text-center font-tabular-sm text-[#111111]">
                     {rankings.length > 0
                       ? (rankings.reduce((a, b) => a + b.aggregate, 0) / rankings.length).toFixed(1)
-                      : '—'}
+                      : "—"}
                   </td>
                   <td className="px-2 py-2 text-center font-label-caps text-[#111111]">KCSE</td>
                 </tr>
@@ -848,6 +903,53 @@ export const MarksEntryView: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Workflow Next Steps Banner */}
+      <section className="mt-6 p-4 sm:p-5 bg-[#FBF8F1] border border-[#DDD6C7] rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h4 className="font-semibold text-sm text-[#111111] flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-[18px] text-[#C2410C]">route</span>
+            <span>Marks Entry Workflow: Next Actions</span>
+          </h4>
+          <p className="text-xs text-[#5F5E5E] mt-0.5">
+            Your marks are saved locally in real time. Once scores are entered, continue to
+            performance analysis or certificate generation.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setActiveView("overview")}
+            className="px-3 py-2 text-xs font-medium border border-[#DDD6C7] rounded bg-white hover:bg-[#F2EDE3] text-[#111111] cursor-pointer"
+          >
+            ← Overview
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("rankings")}
+            className="px-3.5 py-2 text-xs font-semibold bg-[#111111] text-white hover:bg-neutral-800 rounded flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">format_list_numbered</span>
+            <span>Class Rankings →</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("subject-analysis")}
+            className="px-3.5 py-2 text-xs font-semibold border border-[#111111] hover:bg-[#F2EDE3] text-[#111111] rounded flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">analytics</span>
+            <span>Subject Analysis →</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("report-cards")}
+            className="px-3.5 py-2 text-xs font-semibold bg-[#C2410C] text-white hover:opacity-90 rounded flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">badge</span>
+            <span>Report Cards →</span>
+          </button>
+        </div>
+      </section>
 
       {/* Paste from Excel / Sheets Modal */}
       {isPastingModalOpen && (
@@ -859,11 +961,11 @@ export const MarksEntryView: React.FC = () => {
                   Paste Rectangular Marks Matrix
                 </h3>
                 <p className="text-xs text-[#5F5E5E]">
-                  Starting at focused cell:{' '}
+                  Starting at focused cell:{" "}
                   <strong>
                     {focusedCell
                       ? `${students.find((s) => s.id === focusedCell.studentId)?.name} (${focusedCell.subjectCode})`
-                      : 'First cell'}
+                      : "First cell"}
                   </strong>
                 </p>
               </div>
@@ -890,14 +992,20 @@ export const MarksEntryView: React.FC = () => {
                 <div className="flex items-center justify-between font-medium">
                   <span>
                     Detected {parsedPasteGrid.totalCells} cells (
-                    <strong className="text-emerald-700">{parsedPasteGrid.validUpdates.length} valid</strong>,{' '}
-                    <strong className="text-amber-700">{parsedPasteGrid.invalidCount} invalid</strong>)
+                    <strong className="text-emerald-700">
+                      {parsedPasteGrid.validUpdates.length} valid
+                    </strong>
+                    ,{" "}
+                    <strong className="text-amber-700">
+                      {parsedPasteGrid.invalidCount} invalid
+                    </strong>
+                    )
                   </span>
                 </div>
                 <div className="text-[11px] text-[#5F5E5E] font-tabular-sm">
                   {parsedPasteGrid.sampleRows.map((sample, idx) => (
                     <span key={idx} className="mr-3 inline-block">
-                      {sample.studentName.split(' ')[0]} ({sample.subjectCode}):{' '}
+                      {sample.studentName.split(" ")[0]} ({sample.subjectCode}):{" "}
                       <strong>{String(sample.parsed)}</strong>
                     </span>
                   ))}

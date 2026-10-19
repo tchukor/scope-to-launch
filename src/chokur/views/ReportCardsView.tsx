@@ -1,23 +1,23 @@
 // @ts-nocheck -- original source kept verbatim; project tsconfig is stricter than the source
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import { ChokurLogo } from '../components/brand/ChokurLogo';
-import { GradeChip } from '../components/GradeChip';
-import { useGrading } from '../context/GradingContext';
-import { getGradeFromScore } from '../utils/grading';
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { ChokurLogo } from "../components/brand/ChokurLogo";
+import { GradeChip } from "../components/GradeChip";
+import { useGrading } from "../context/GradingContext";
+import { getGradeFromScore } from "../utils/grading";
 
 const DEFAULT_SUBJECT_REMARKS: Record<string, string> = {
-  MAT: 'Excellent analytical problem solving and numerical skills.',
-  ENG: 'Very good comprehension, composition and grammar mastery.',
-  KIS: 'Lugha sanifu na uelewa thabiti wa fasihi.',
-  BIO: 'Strong understanding of physiological principles and experiments.',
-  CHE: 'Consistent performance, maintain focus on stoichiometry.',
-  PHY: 'Commendable application of mathematical models to mechanics.',
-  HIS: 'Clear grasp of international relations and constitutional history.',
-  GEO: 'Commendable topographical map reading and field survey analysis.',
-  CRE: 'Exemplary moral and scriptural grounding throughout.',
-  BST: 'Solid comprehension of commercial law and accounting ledgers.',
+  MAT: "Excellent analytical problem solving and numerical skills.",
+  ENG: "Very good comprehension, composition and grammar mastery.",
+  KIS: "Lugha sanifu na uelewa thabiti wa fasihi.",
+  BIO: "Strong understanding of physiological principles and experiments.",
+  CHE: "Consistent performance, maintain focus on stoichiometry.",
+  PHY: "Commendable application of mathematical models to mechanics.",
+  HIS: "Clear grasp of international relations and constitutional history.",
+  GEO: "Commendable topographical map reading and field survey analysis.",
+  CRE: "Exemplary moral and scriptural grounding throughout.",
+  BST: "Solid comprehension of commercial law and accounting ledgers.",
 };
 
 export const ReportCardsView: React.FC = () => {
@@ -32,13 +32,15 @@ export const ReportCardsView: React.FC = () => {
     activeStream,
     activeExam,
     classAverage,
+    role,
+    setActiveView,
   } = useGrading();
 
-  const [searchRoster, setSearchRoster] = useState('');
+  const [searchRoster, setSearchRoster] = useState("");
   const [printAllMode, setPrintAllMode] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   // On mobile screens, toggle between roster list and card view
-  const [mobileView, setMobileView] = useState<'roster' | 'card'>('roster');
+  const [mobileView, setMobileView] = useState<"roster" | "card">("roster");
   const reportCardRef = useRef<HTMLDivElement>(null);
 
   // Selected student calculation
@@ -48,14 +50,16 @@ export const ReportCardsView: React.FC = () => {
 
   // Filtered roster for left pane
   const filteredRoster = useMemo(() => {
+    if (role === "Parent") {
+      const parentChild = rankings.find((r) => r.student.id === selectedStudentId) || rankings[0];
+      return parentChild ? [parentChild] : [];
+    }
     if (!searchRoster.trim()) return rankings;
     const q = searchRoster.toLowerCase();
     return rankings.filter(
-      (r) =>
-        r.student.name.toLowerCase().includes(q) ||
-        r.student.admNo.toLowerCase().includes(q)
+      (r) => r.student.name.toLowerCase().includes(q) || r.student.admNo.toLowerCase().includes(q),
     );
-  }, [rankings, searchRoster]);
+  }, [rankings, searchRoster, role, selectedStudentId]);
 
   // Current student index in filtered roster
   const currentIndex = useMemo(() => {
@@ -78,20 +82,20 @@ export const ReportCardsView: React.FC = () => {
   // Keyboard navigation: [ and ] or arrow keys
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
+      if (["INPUT", "TEXTAREA"].includes((e.target as HTMLElement)?.tagName)) {
         return;
       }
-      if (e.key === '[' || (e.altKey && e.key === 'ArrowUp')) {
+      if (e.key === "[" || (e.altKey && e.key === "ArrowUp")) {
         e.preventDefault();
         handlePrevStudent();
-      } else if (e.key === ']' || (e.altKey && e.key === 'ArrowDown')) {
+      } else if (e.key === "]" || (e.altKey && e.key === "ArrowDown")) {
         e.preventDefault();
         handleNextStudent();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentIndex, filteredRoster]);
 
   const handlePrintSingle = () => {
@@ -118,25 +122,25 @@ export const ReportCardsView: React.FC = () => {
         scale: 2,
         useCORS: true,
         logging: false,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: "#FFFFFF",
       });
 
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
       });
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, Math.min(pdfHeight, 297));
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, Math.min(pdfHeight, 297));
       pdf.save(
-        `ReportCard_${selectedCalculation.student.admNo}_${selectedCalculation.student.name.replace(/\s+/g, '_')}.pdf`
+        `ReportCard_${selectedCalculation.student.admNo}_${selectedCalculation.student.name.replace(/\s+/g, "_")}.pdf`,
       );
     } catch (err) {
-      console.error('Error generating PDF report card:', err);
+      console.error("Error generating PDF report card:", err);
       window.print();
     } finally {
       setIsGeneratingPDF(false);
@@ -158,7 +162,7 @@ export const ReportCardsView: React.FC = () => {
       }
     } else {
       navigator.clipboard.writeText(shareText);
-      alert('Report summary copied to clipboard for WhatsApp sharing.');
+      alert("Report summary copied to clipboard for WhatsApp sharing.");
     }
   };
 
@@ -179,7 +183,7 @@ export const ReportCardsView: React.FC = () => {
         key={calc.student.id}
         ref={isMultiPage ? undefined : reportCardRef}
         className={`w-full max-w-[820px] bg-[#FFFFFF] border border-[#DDD6C7] p-5 sm:p-8 md:p-10 shadow-sm text-[#111111] print-sheet ${
-          isMultiPage ? 'mb-12 page-break-always' : 'mb-8'
+          isMultiPage ? "mb-12 page-break-always" : "mb-8"
         }`}
       >
         {/* School Archival Header with Official Chokur Seal */}
@@ -207,31 +211,43 @@ export const ReportCardsView: React.FC = () => {
         {/* Student Metadata Grid */}
         <div className="my-3 sm:my-4 py-2 sm:py-3 border-b border-[#DDD6C7] grid grid-cols-1 sm:grid-cols-2 gap-x-6 sm:gap-x-8 gap-y-1.5 sm:gap-y-2 font-body-sm text-body-sm text-xs sm:text-[13px]">
           <div className="flex justify-between border-b border-[#DDD6C7]/50 pb-1">
-            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">STUDENT NAME:</span>
+            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
+              STUDENT NAME:
+            </span>
             <span className="font-semibold text-[#111111]">{calc.student.name}</span>
           </div>
           <div className="flex justify-between border-b border-[#DDD6C7]/50 pb-1">
-            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">ADMISSION NO:</span>
+            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
+              ADMISSION NO:
+            </span>
             <span className="font-tabular-sm text-tabular-sm font-semibold text-[#111111]">
               {calc.student.admNo}
             </span>
           </div>
           <div className="flex justify-between border-b border-[#DDD6C7]/50 pb-1">
-            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">CLASS &amp; STREAM:</span>
+            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
+              CLASS &amp; STREAM:
+            </span>
             <span className="font-semibold text-[#111111]">{calc.student.stream}</span>
           </div>
           <div className="flex justify-between border-b border-[#DDD6C7]/50 pb-1">
-            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">CLASS TEACHER:</span>
+            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
+              CLASS TEACHER:
+            </span>
             <span className="text-[#111111]">{schoolConfig.classTeacher}</span>
           </div>
           <div className="flex justify-between pb-1">
-            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">KCPE MARKS:</span>
+            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
+              KCPE MARKS:
+            </span>
             <span className="font-tabular-sm text-tabular-sm text-[#111111] font-semibold">
               {calc.student.kcpeMarks} / 500
             </span>
           </div>
           <div className="flex justify-between pb-1">
-            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">STREAM POPULATION:</span>
+            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
+              STREAM POPULATION:
+            </span>
             <span className="font-tabular-sm text-tabular-sm text-[#111111]">
               {students.length} Candidates
             </span>
@@ -253,9 +269,10 @@ export const ReportCardsView: React.FC = () => {
             <tbody className="divide-y divide-[#DDD6C7] font-body-sm text-[12px] sm:text-body-sm">
               {subjects.map((subj) => {
                 const val = studentMarks[subj.code];
-                const isAbs = val === 'ABS';
+                const isAbs = val === "ABS";
                 const gradeInfo = getGradeFromScore(val);
-                const remark = DEFAULT_SUBJECT_REMARKS[subj.code] || 'Satisfactory academic effort.';
+                const remark =
+                  DEFAULT_SUBJECT_REMARKS[subj.code] || "Satisfactory academic effort.";
 
                 return (
                   <tr key={subj.code} className="hover:bg-[#FBF8F1]">
@@ -281,7 +298,7 @@ export const ReportCardsView: React.FC = () => {
                       )}
                     </td>
                     <td className="py-2 px-2 text-center font-tabular-sm font-semibold">
-                      {isAbs || val === null || val === undefined ? '0' : gradeInfo.points}
+                      {isAbs || val === null || val === undefined ? "0" : gradeInfo.points}
                     </td>
                     <td className="py-2 px-2 text-[11px] text-[#5F5E5E] italic hidden sm:table-cell">
                       {remark}
@@ -296,25 +313,34 @@ export const ReportCardsView: React.FC = () => {
         {/* KCSE KNEC Aggregate Summary Matrix */}
         <div className="my-4 border-2 border-[#111111] p-3 sm:p-4 bg-[#FBF8F1] grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
           <div className="border-r border-[#DDD6C7] pr-2">
-            <span className="text-[10px] font-label-caps uppercase text-[#5F5E5E] block">STREAM RANK</span>
+            <span className="text-[10px] font-label-caps uppercase text-[#5F5E5E] block">
+              STREAM RANK
+            </span>
             <span className="font-display-stat text-xl sm:text-2xl font-bold text-[#111111] block mt-0.5">
-              #{calc.rank} <span className="text-xs text-[#5F5E5E] font-normal">of {students.length}</span>
+              #{calc.rank}{" "}
+              <span className="text-xs text-[#5F5E5E] font-normal">of {students.length}</span>
             </span>
           </div>
           <div className="sm:border-r border-[#DDD6C7] sm:pr-2">
-            <span className="text-[10px] font-label-caps uppercase text-[#5F5E5E] block">BEST 7 AGGREGATE</span>
+            <span className="text-[10px] font-label-caps uppercase text-[#5F5E5E] block">
+              BEST 7 AGGREGATE
+            </span>
             <span className="font-display-stat text-xl sm:text-2xl font-bold text-[#111111] block mt-0.5">
               {calc.aggregate} <span className="text-xs text-[#5F5E5E] font-normal">/ 84 pts</span>
             </span>
           </div>
           <div className="border-r border-[#DDD6C7] pr-2 pt-2 sm:pt-0 border-t sm:border-t-0">
-            <span className="text-[10px] font-label-caps uppercase text-[#5F5E5E] block">MEAN SCORE</span>
+            <span className="text-[10px] font-label-caps uppercase text-[#5F5E5E] block">
+              MEAN SCORE
+            </span>
             <span className="font-display-stat text-xl sm:text-2xl font-bold text-[#111111] block mt-0.5">
               {calc.average.toFixed(1)}%
             </span>
           </div>
           <div className="pt-2 sm:pt-0 border-t sm:border-t-0">
-            <span className="text-[10px] font-label-caps uppercase text-[#5F5E5E] block">KCSE MEAN GRADE</span>
+            <span className="text-[10px] font-label-caps uppercase text-[#5F5E5E] block">
+              KCSE MEAN GRADE
+            </span>
             <div className="mt-1 flex justify-center">
               <GradeChip grade={calc.meanGrade} size="md" />
             </div>
@@ -324,11 +350,13 @@ export const ReportCardsView: React.FC = () => {
         {/* Teacher & Principal Signatures */}
         <div className="mt-5 pt-4 border-t border-[#DDD6C7] grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
           <div className="p-3 bg-[#FEF9EF] border border-[#DDD6C7] rounded">
-            <span className="font-semibold text-[#111111] block mb-1">Class Teacher's Remarks:</span>
+            <span className="font-semibold text-[#111111] block mb-1">
+              Class Teacher's Remarks:
+            </span>
             <p className="italic text-[#5F5E5E] text-[11px] leading-relaxed">
               {calc.qualifies
-                ? 'Commendable performance throughout this evaluation period. Qualifies for university degree admission. Maintain consistency in revision.'
-                : 'Steady effort observed. Needs intensive revision in weak subject areas to attain the university qualification cutoff threshold.'}
+                ? "Commendable performance throughout this evaluation period. Qualifies for university degree admission. Maintain consistency in revision."
+                : "Steady effort observed. Needs intensive revision in weak subject areas to attain the university qualification cutoff threshold."}
             </p>
             <div className="mt-3 pt-2 border-t border-dashed border-[#DDD6C7] flex justify-between text-[10px] text-[#5F5E5E]">
               <span>Sign: {schoolConfig.classTeacher}</span>
@@ -337,12 +365,15 @@ export const ReportCardsView: React.FC = () => {
           </div>
 
           <div className="p-3 bg-[#FEF9EF] border border-[#DDD6C7] rounded">
-            <span className="font-semibold text-[#111111] block mb-1">Principal's Seal &amp; Remarks:</span>
+            <span className="font-semibold text-[#111111] block mb-1">
+              Principal's Seal &amp; Remarks:
+            </span>
             <p className="italic text-[#5F5E5E] text-[11px] leading-relaxed">
-              Approved and certified by school administration. Official KNEC candidate academic standing.
+              Approved and certified by school administration. Official KNEC candidate academic
+              standing.
             </p>
             <div className="mt-3 pt-2 border-t border-dashed border-[#DDD6C7] flex justify-between text-[10px] text-[#5F5E5E]">
-              <span>Principal: {schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}</span>
+              <span>Principal: {schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}</span>
               <span>Official Stamp</span>
             </div>
           </div>
@@ -351,7 +382,7 @@ export const ReportCardsView: React.FC = () => {
         {/* Archival Footnote */}
         <div className="mt-4 pt-2 border-t border-[#DDD6C7] flex flex-wrap justify-between items-center text-[10px] text-[#9A958A] font-caption">
           <span>Official KCSE Grading Ledger · Chokur Academic System v2.4</span>
-          <span>Next Term Opens: {schoolConfig.termOpeningDate || 'TBA'}</span>
+          <span>Next Term Opens: {schoolConfig.termOpeningDate || "TBA"}</span>
         </div>
       </article>
     );
@@ -363,16 +394,18 @@ export const ReportCardsView: React.FC = () => {
       <section className="px-3 sm:px-6 py-3 sm:py-4 border-b border-[#DDD6C7] flex flex-col md:flex-row md:items-center justify-between gap-3 bg-[#FEF9EF] no-print">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="font-headline-lg text-lg sm:text-headline-lg text-[#111111]">Report Cards</h2>
+            <h2 className="font-headline-lg text-lg sm:text-headline-lg text-[#111111]">
+              Report Cards
+            </h2>
             <p className="font-body-sm text-xs sm:text-body-sm text-[#5F5E5E]">
               {activeStream} · {activeExam} · printable A4 certificates
             </p>
           </div>
 
           {/* Mobile Back to Roster button when viewing card */}
-          {mobileView === 'card' && (
+          {mobileView === "card" && (
             <button
-              onClick={() => setMobileView('roster')}
+              onClick={() => setMobileView("roster")}
               type="button"
               className="md:hidden px-3 py-1.5 bg-[#FBF8F1] border border-[#DDD6C7] rounded text-xs font-semibold flex items-center gap-1 cursor-pointer min-h-[40px]"
             >
@@ -384,28 +417,53 @@ export const ReportCardsView: React.FC = () => {
 
         {/* Action Buttons Toolbar */}
         <div className="flex flex-wrap items-center gap-2">
-          {/* Stepper Navigation Controls */}
-          <div className="flex items-center border border-[#DDD6C7] rounded bg-[#FBF8F1] min-h-[40px]">
+          {/* Contextual Back Button */}
+          {role === "Parent" ? (
             <button
-              onClick={handlePrevStudent}
-              disabled={currentIndex <= 0}
-              className="p-2 text-[#5F5E5E] hover:text-[#111111] disabled:opacity-30 cursor-pointer min-h-[40px] min-w-[36px] flex items-center justify-center"
-              title="Previous Student (Press [)"
+              onClick={() => setActiveView("parent-portal")}
+              type="button"
+              className="px-3 py-2 bg-[#FBF8F1] border border-[#DDD6C7] text-[#111111] rounded text-xs font-semibold hover:bg-[#F2EDE3] transition-colors flex items-center gap-1.5 cursor-pointer min-h-[40px]"
+              title="Return to Parent Portal"
             >
-              <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+              <span>Parent Portal</span>
             </button>
-            <span className="text-xs font-tabular-sm px-2 text-[#5F5E5E]">
-              {currentIndex + 1} / {filteredRoster.length}
-            </span>
+          ) : (
             <button
-              onClick={handleNextStudent}
-              disabled={currentIndex >= filteredRoster.length - 1}
-              className="p-2 text-[#5F5E5E] hover:text-[#111111] disabled:opacity-30 cursor-pointer min-h-[40px] min-w-[36px] flex items-center justify-center"
-              title="Next Student (Press ])"
+              onClick={() => setActiveView("rankings")}
+              type="button"
+              className="px-3 py-2 bg-[#FBF8F1] border border-[#DDD6C7] text-[#111111] rounded text-xs font-semibold hover:bg-[#F2EDE3] transition-colors flex items-center gap-1.5 cursor-pointer min-h-[40px]"
+              title="Return to Class Rankings ledger"
             >
-              <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+              <span>Rankings</span>
             </button>
-          </div>
+          )}
+
+          {/* Stepper Navigation Controls (Staff only) */}
+          {role !== "Parent" && (
+            <div className="flex items-center border border-[#DDD6C7] rounded bg-[#FBF8F1] min-h-[40px]">
+              <button
+                onClick={handlePrevStudent}
+                disabled={currentIndex <= 0}
+                className="p-2 text-[#5F5E5E] hover:text-[#111111] disabled:opacity-30 cursor-pointer min-h-[40px] min-w-[36px] flex items-center justify-center"
+                title="Previous Student (Press [)"
+              >
+                <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+              </button>
+              <span className="text-xs font-tabular-sm px-2 text-[#5F5E5E]">
+                {currentIndex + 1} / {filteredRoster.length}
+              </span>
+              <button
+                onClick={handleNextStudent}
+                disabled={currentIndex >= filteredRoster.length - 1}
+                className="p-2 text-[#5F5E5E] hover:text-[#111111] disabled:opacity-30 cursor-pointer min-h-[40px] min-w-[36px] flex items-center justify-center"
+                title="Next Student (Press ])"
+              >
+                <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+              </button>
+            </div>
+          )}
 
           {/* Share via WhatsApp / Native Share */}
           <button
@@ -436,30 +494,32 @@ export const ReportCardsView: React.FC = () => {
             className="px-3 py-2 bg-transparent border border-[#111111] text-[#111111] rounded text-xs font-medium hover:bg-[#F2EDE3] transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50 min-h-[40px]"
           >
             <span className="material-symbols-outlined text-[16px]">
-              {isGeneratingPDF ? 'hourglass_empty' : 'download'}
+              {isGeneratingPDF ? "hourglass_empty" : "download"}
             </span>
-            <span>{isGeneratingPDF ? 'PDF...' : 'PDF'}</span>
+            <span>{isGeneratingPDF ? "PDF..." : "PDF"}</span>
           </button>
 
-          {/* Print All Cards */}
-          <button
-            onClick={handlePrintAll}
-            type="button"
-            className="px-3.5 py-2 bg-[#C2410C] text-[#FEF9EF] rounded text-xs font-semibold hover:opacity-95 transition-opacity flex items-center gap-1.5 cursor-pointer min-h-[40px]"
-          >
-            <span className="material-symbols-outlined text-[16px]">print</span>
-            <span className="hidden sm:inline">Print All ({students.length})</span>
-            <span className="sm:hidden">All</span>
-          </button>
+          {/* Print All Cards (Staff only) */}
+          {role !== "Parent" && (
+            <button
+              onClick={handlePrintAll}
+              type="button"
+              className="px-3.5 py-2 bg-[#C2410C] text-[#FEF9EF] rounded text-xs font-semibold hover:opacity-95 transition-opacity flex items-center gap-1.5 cursor-pointer min-h-[40px]"
+            >
+              <span className="material-symbols-outlined text-[16px]">print</span>
+              <span className="hidden sm:inline">Print All ({students.length})</span>
+              <span className="sm:hidden">All</span>
+            </button>
+          )}
         </div>
       </section>
 
       {/* Main Responsive Two-Panel Layout */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-        {/* Left Panel: Searchable Class Roster Index (Hidden on mobile when card is open) */}
+        {/* Left Panel: Searchable Class Roster Index (Hidden for parents or on mobile when card is open) */}
         <aside
           className={`w-full md:w-80 shrink-0 border-r border-[#DDD6C7] flex flex-col bg-[#FEF9EF] overflow-hidden no-print ${
-            mobileView === 'card' ? 'hidden md:flex' : 'flex'
+            role === "Parent" || mobileView === "card" ? "hidden" : "flex"
           }`}
         >
           <div className="p-3 border-b border-[#DDD6C7] space-y-2 bg-[#FEF9EF]">
@@ -493,12 +553,10 @@ export const ReportCardsView: React.FC = () => {
                   key={item.student.id}
                   onClick={() => {
                     setSelectedStudentId(item.student.id);
-                    setMobileView('card');
+                    setMobileView("card");
                   }}
                   className={`p-3 cursor-pointer transition-colors min-h-[56px] flex items-center justify-between ${
-                    isSelected
-                      ? 'bg-[#FBF8F1] border-l-3 border-[#C2410C]'
-                      : 'hover:bg-[#F2EDE3]'
+                    isSelected ? "bg-[#FBF8F1] border-l-3 border-[#C2410C]" : "hover:bg-[#F2EDE3]"
                   }`}
                 >
                   <div className="flex-1 min-w-0 pr-2">
@@ -508,8 +566,8 @@ export const ReportCardsView: React.FC = () => {
                     <h4
                       className={`leading-snug truncate ${
                         isSelected
-                          ? 'font-semibold text-xs text-[#111111]'
-                          : 'font-medium text-xs text-[#111111]'
+                          ? "font-semibold text-xs text-[#111111]"
+                          : "font-medium text-xs text-[#111111]"
                       }`}
                     >
                       {item.student.name}
@@ -536,7 +594,7 @@ export const ReportCardsView: React.FC = () => {
         {/* Right Panel: Official Printable A4 Sheet Preview (Shown on desktop or when mobileView === 'card') */}
         <section
           className={`flex-1 bg-[#F2EDE3] overflow-y-auto p-3 sm:p-6 md:p-8 flex flex-col items-center justify-start ${
-            mobileView === 'roster' ? 'hidden md:flex' : 'flex'
+            mobileView === "roster" ? "hidden md:flex" : "flex"
           }`}
         >
           {printAllMode ? (

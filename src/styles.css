@@ -3,24 +3,24 @@
 
 @layer base {
   :root {
-    --color-surface: #FEF9EF;
-    --color-surface-dim: #DED6CA;
-    --color-surface-bright: #FEF9EF;
-    --color-surface-container-lowest: #FFFFFF;
-    --color-surface-container-low: #F8F3E9;
-    --color-surface-container: #F2EDE3;
-    --color-surface-container-high: #EDE8DE;
-    --color-surface-container-highest: #E7E2D8;
-    --color-surface-panel: #FBF8F1;
-    --color-hairline-border: #DDD6C7;
-    --color-on-surface: #1D1C16;
+    --color-surface: #fef9ef;
+    --color-surface-dim: #ded6ca;
+    --color-surface-bright: #fef9ef;
+    --color-surface-container-lowest: #ffffff;
+    --color-surface-container-low: #f8f3e9;
+    --color-surface-container: #f2ede3;
+    --color-surface-container-high: #ede8de;
+    --color-surface-container-highest: #e7e2d8;
+    --color-surface-panel: #fbf8f1;
+    --color-hairline-border: #ddd6c7;
+    --color-on-surface: #1d1c16;
     --color-on-surface-dark: #111111;
-    --color-secondary: #5F5E5E;
-    --color-secondary-dark: #5C5850;
-    --color-text-muted: #9A958A;
-    --color-primary: #9B2F00;
-    --color-primary-container: #C2410C;
-    --color-on-primary: #FFFFFF;
+    --color-secondary: #5f5e5e;
+    --color-secondary-dark: #5c5850;
+    --color-text-muted: #9a958a;
+    --color-primary: #9b2f00;
+    --color-primary-container: #c2410c;
+    --color-on-primary: #ffffff;
   }
 
   html {
@@ -29,54 +29,98 @@
   }
 
   body {
-    background-color: #FEF9EF;
-    color: #1D1C16;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    background-color: #fef9ef;
+    color: #1d1c16;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     -webkit-font-smoothing: antialiased;
     overscroll-behavior-y: contain;
   }
 
   /* Consistent, high-visibility focus rings */
   :focus-visible {
-    outline: 2px solid #C2410C;
+    outline: 2px solid #c2410c;
     outline-offset: 2px;
   }
 }
 
 /* Safe area padding utilities */
-.pt-safe { padding-top: env(safe-area-inset-top); }
-.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
-.pl-safe { padding-left: env(safe-area-inset-left); }
-.pr-safe { padding-right: env(safe-area-inset-right); }
-
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.pl-safe {
+  padding-left: env(safe-area-inset-left);
+}
+.pr-safe {
+  padding-right: env(safe-area-inset-right);
+}
 
 /* Custom Editorial Ledger utility classes */
-.bg-surface { background-color: #FEF9EF; }
-.bg-surface-panel { background-color: #FBF8F1; }
-.bg-surface-container { background-color: #F2EDE3; }
-.bg-surface-container-low { background-color: #F8F3E9; }
-.bg-surface-container-high { background-color: #EDE8DE; }
-.bg-surface-container-lowest { background-color: #FFFFFF; }
+.bg-surface {
+  background-color: #fef9ef;
+}
+.bg-surface-panel {
+  background-color: #fbf8f1;
+}
+.bg-surface-container {
+  background-color: #f2ede3;
+}
+.bg-surface-container-low {
+  background-color: #f8f3e9;
+}
+.bg-surface-container-high {
+  background-color: #ede8de;
+}
+.bg-surface-container-lowest {
+  background-color: #ffffff;
+}
 
-.border-hairline-border { border-color: #DDD6C7; }
-.border-on-surface { border-color: #111111; }
-.border-secondary { border-color: #5C5850; }
+.border-hairline-border {
+  border-color: #ddd6c7;
+}
+.border-on-surface {
+  border-color: #111111;
+}
+.border-secondary {
+  border-color: #5c5850;
+}
 
-.text-on-surface { color: #1D1C16; }
-.text-secondary { color: #5F5E5E; }
-.text-text-muted { color: #9A958A; }
-.text-primary-container { color: #C2410C; }
-.bg-primary-container { background-color: #C2410C; }
+.text-on-surface {
+  color: #1d1c16;
+}
+.text-secondary {
+  color: #5f5e5e;
+}
+.text-text-muted {
+  color: #9a958a;
+}
+.text-primary-container {
+  color: #c2410c;
+}
+.bg-primary-container {
+  background-color: #c2410c;
+}
 
 /* Font Family definitions */
-.font-tabular-sm, .font-tabular-md, .font-tabular-lg, .font-display-stat {
-  font-family: 'JetBrains Mono', monospace;
+.font-tabular-sm,
+.font-tabular-md,
+.font-tabular-lg,
+.font-display-stat {
+  font-family: "JetBrains Mono", monospace;
   font-variant-numeric: tabular-nums;
 }
 
 .font-label-caps {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 11px;
   line-height: 16px;
   letter-spacing: 0.08em;
@@ -85,7 +129,7 @@
 }
 
 .font-display-stat {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 32px;
   line-height: 38px;
   letter-spacing: -0.02em;
@@ -100,7 +144,7 @@
 }
 
 .font-headline-lg {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 28px;
   line-height: 36px;
   letter-spacing: -0.02em;
@@ -108,7 +152,7 @@
 }
 
 .font-headline-md {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 18px;
   line-height: 24px;
   letter-spacing: -0.01em;
@@ -116,33 +160,33 @@
 }
 
 .font-headline-sm {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 15px;
   line-height: 20px;
   font-weight: 600;
 }
 
 .font-body-md {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
   line-height: 20px;
 }
 
 .font-body-sm {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 13px;
   line-height: 18px;
 }
 
 .font-caption {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 12px;
   line-height: 16px;
 }
 
 /* Material symbols */
 .material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
+  font-family: "Material Symbols Outlined";
   font-weight: normal;
   font-style: normal;
   font-size: 18px;
@@ -153,14 +197,19 @@
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
-  -webkit-font-feature-settings: 'liga';
+  -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
 }
 
 /* Blinking cursor for active cells */
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 .caret-blink {
   animation: blink 1s infinite;
@@ -172,11 +221,11 @@
   width: 6px;
 }
 .hide-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #DDD6C7;
+  background-color: #ddd6c7;
   border-radius: 2px;
 }
 .hide-scrollbar::-webkit-scrollbar-track {
-  background: #FBF8F1;
+  background: #fbf8f1;
 }
 
 /* Print Stylesheet for Report Cards & Ranking Sheets */
@@ -187,12 +236,17 @@
   }
 
   body {
-    background-color: #FFFFFF !important;
+    background-color: #ffffff !important;
     color: #111111 !important;
   }
 
   /* Hide sidebar, top context bar, action buttons during printing */
-  aside, header, nav, .no-print, button, input[type="text"] {
+  aside,
+  header,
+  nav,
+  .no-print,
+  button,
+  input[type="text"] {
     display: none !important;
   }
 

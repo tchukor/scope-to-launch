@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react';
-import { useGrading } from '../context/GradingContext';
-import { ClassStream, ExamPeriod, Student, Subject } from '../types';
+import React, { useMemo, useState } from "react";
+import { useGrading } from "../context/GradingContext";
+import { ClassStream, ExamPeriod, Student, Subject } from "../types";
 
 export const StudentsClassesView: React.FC = () => {
   const {
@@ -25,11 +25,13 @@ export const StudentsClassesView: React.FC = () => {
     removeExamPeriod,
     activeSubTab,
     setActiveSubTab,
+    setActiveView,
   } = useGrading();
 
-  const currentTab = (activeSubTab as 'students' | 'classes' | 'subjects' | 'periods') || 'students';
+  const currentTab =
+    (activeSubTab as "students" | "classes" | "subjects" | "periods") || "students";
 
-  const [searchStudent, setSearchStudent] = useState('');
+  const [searchStudent, setSearchStudent] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
 
@@ -37,10 +39,10 @@ export const StudentsClassesView: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [studentFormData, setStudentFormData] = useState({
-    admNo: '',
-    name: '',
+    admNo: "",
+    name: "",
     stream: activeStream,
-    gender: 'Female' as 'Male' | 'Female',
+    gender: "Female" as "Male" | "Female",
     kcpeMarks: 350,
   });
   const [studentFormError, setStudentFormError] = useState<string | null>(null);
@@ -50,9 +52,16 @@ export const StudentsClassesView: React.FC = () => {
 
   // Bulk CSV Import Modal
   const [isCSVModalOpen, setIsCSVModalOpen] = useState(false);
-  const [csvText, setCsvText] = useState('');
+  const [csvText, setCsvText] = useState("");
   const [csvImportResult, setCsvImportResult] = useState<{
-    parsed: Array<{ admNo: string; name: string; gender: 'Male' | 'Female'; kcpeMarks: number; isValid: boolean; error?: string }>;
+    parsed: Array<{
+      admNo: string;
+      name: string;
+      gender: "Male" | "Female";
+      kcpeMarks: number;
+      isValid: boolean;
+      error?: string;
+    }>;
     validCount: number;
     invalidCount: number;
   } | null>(null);
@@ -61,10 +70,10 @@ export const StudentsClassesView: React.FC = () => {
   const [isStreamModalOpen, setIsStreamModalOpen] = useState(false);
   const [editingStream, setEditingStream] = useState<ClassStream | null>(null);
   const [streamFormData, setStreamFormData] = useState({
-    name: '',
-    form: 'Form 4',
-    stream: '',
-    classTeacher: '',
+    name: "",
+    form: "Form 4",
+    stream: "",
+    classTeacher: "",
   });
   const [deletingStream, setDeletingStream] = useState<ClassStream | null>(null);
 
@@ -72,10 +81,10 @@ export const StudentsClassesView: React.FC = () => {
   const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
   const [editingSubject, setEditingSubject] = useState<Subject | null>(null);
   const [subjectFormData, setSubjectFormData] = useState({
-    code: '',
-    name: '',
-    department: 'Languages',
-    teacher: '',
+    code: "",
+    name: "",
+    department: "Languages",
+    teacher: "",
     lastExamMean: 50.0,
   });
   const [subjectFormError, setSubjectFormError] = useState<string | null>(null);
@@ -85,10 +94,10 @@ export const StudentsClassesView: React.FC = () => {
   const [isExamModalOpen, setIsExamModalOpen] = useState(false);
   const [editingExam, setEditingExam] = useState<ExamPeriod | null>(null);
   const [examFormData, setExamFormData] = useState({
-    name: '',
-    term: 'Term 2',
+    name: "",
+    term: "Term 2",
     year: 2026,
-    type: 'End-term' as 'Mid-term' | 'End-term' | 'Mock',
+    type: "End-term" as "Mid-term" | "End-term" | "Mock",
   });
   const [deletingExam, setDeletingExam] = useState<ExamPeriod | null>(null);
 
@@ -116,9 +125,9 @@ export const StudentsClassesView: React.FC = () => {
     setStudentFormError(null);
     setStudentFormData({
       admNo: String(4000 + students.length + 1),
-      name: '',
+      name: "",
       stream: activeStream,
-      gender: 'Female',
+      gender: "Female",
       kcpeMarks: 340,
     });
     setIsAddModalOpen(true);
@@ -144,13 +153,15 @@ export const StudentsClassesView: React.FC = () => {
     const name = studentFormData.name.trim();
 
     if (!adm || !name) {
-      setStudentFormError('Admission Number and Student Full Name are required.');
+      setStudentFormError("Admission Number and Student Full Name are required.");
       return;
     }
 
     // Check duplicate admission numbers
     const duplicate = students.find(
-      (s) => s.admNo.toLowerCase() === adm.toLowerCase() && (!editingStudent || s.id !== editingStudent.id)
+      (s) =>
+        s.admNo.toLowerCase() === adm.toLowerCase() &&
+        (!editingStudent || s.id !== editingStudent.id),
     );
     if (duplicate) {
       setStudentFormError(`Admission number "${adm}" is already assigned to ${duplicate.name}.`);
@@ -173,7 +184,7 @@ export const StudentsClassesView: React.FC = () => {
         stream: studentFormData.stream,
         gender: studentFormData.gender,
         kcpeMarks: Number(studentFormData.kcpeMarks) || 300,
-        status: 'Active',
+        status: "Active",
       });
     }
 
@@ -196,7 +207,7 @@ export const StudentsClassesView: React.FC = () => {
     const parsed: Array<{
       admNo: string;
       name: string;
-      gender: 'Male' | 'Female';
+      gender: "Male" | "Female";
       kcpeMarks: number;
       isValid: boolean;
       error?: string;
@@ -204,25 +215,49 @@ export const StudentsClassesView: React.FC = () => {
 
     lines.forEach((line, idx) => {
       // Skip header if line has "adm" or "name"
-      if (idx === 0 && (line.toLowerCase().includes('adm') || line.toLowerCase().includes('name'))) {
+      if (
+        idx === 0 &&
+        (line.toLowerCase().includes("adm") || line.toLowerCase().includes("name"))
+      ) {
         return;
       }
-      const delimiter = line.includes('\t') ? '\t' : ',';
-      const parts = line.split(delimiter).map((p) => p.trim().replace(/^["']|["']$/g, ''));
+      const delimiter = line.includes("\t") ? "\t" : ",";
+      const parts = line.split(delimiter).map((p) => p.trim().replace(/^["']|["']$/g, ""));
       if (parts.length === 0 || !parts[0]) return;
 
       const admNo = parts[0];
-      const name = parts[1] || '';
-      const genderRaw = parts[2] ? parts[2].toUpperCase() : 'FEMALE';
-      const gender: 'Male' | 'Female' = genderRaw.startsWith('M') ? 'Male' : 'Female';
+      const name = parts[1] || "";
+      const genderRaw = parts[2] ? parts[2].toUpperCase() : "FEMALE";
+      const gender: "Male" | "Female" = genderRaw.startsWith("M") ? "Male" : "Female";
       const kcpe = Number(parts[3]) || 320;
 
       if (!admNo) {
-        parsed.push({ admNo, name, gender, kcpeMarks: kcpe, isValid: false, error: 'Missing admission number' });
+        parsed.push({
+          admNo,
+          name,
+          gender,
+          kcpeMarks: kcpe,
+          isValid: false,
+          error: "Missing admission number",
+        });
       } else if (!name) {
-        parsed.push({ admNo, name, gender, kcpeMarks: kcpe, isValid: false, error: 'Missing student name' });
+        parsed.push({
+          admNo,
+          name,
+          gender,
+          kcpeMarks: kcpe,
+          isValid: false,
+          error: "Missing student name",
+        });
       } else if (existingAdms.has(admNo.toLowerCase())) {
-        parsed.push({ admNo, name, gender, kcpeMarks: kcpe, isValid: false, error: 'Admission number already exists' });
+        parsed.push({
+          admNo,
+          name,
+          gender,
+          kcpeMarks: kcpe,
+          isValid: false,
+          error: "Admission number already exists",
+        });
       } else {
         existingAdms.add(admNo.toLowerCase());
         parsed.push({ admNo, name, gender, kcpeMarks: kcpe, isValid: true });
@@ -245,12 +280,12 @@ export const StudentsClassesView: React.FC = () => {
         stream: activeStream,
         gender: p.gender,
         kcpeMarks: p.kcpeMarks,
-        status: 'Active' as const,
+        status: "Active" as const,
       }));
 
     bulkAddStudents(toAdd);
     setIsCSVModalOpen(false);
-    setCsvText('');
+    setCsvText("");
     setCsvImportResult(null);
   };
 
@@ -258,10 +293,10 @@ export const StudentsClassesView: React.FC = () => {
   const handleOpenAddStream = () => {
     setEditingStream(null);
     setStreamFormData({
-      name: 'Form 4 ',
-      form: 'Form 4',
-      stream: 'Central',
-      classTeacher: '',
+      name: "Form 4 ",
+      form: "Form 4",
+      stream: "Central",
+      classTeacher: "",
     });
     setIsStreamModalOpen(true);
   };
@@ -272,7 +307,7 @@ export const StudentsClassesView: React.FC = () => {
       name: str.name,
       form: str.form,
       stream: str.stream,
-      classTeacher: str.classTeacher || '',
+      classTeacher: str.classTeacher || "",
     });
     setIsStreamModalOpen(true);
   };
@@ -306,10 +341,10 @@ export const StudentsClassesView: React.FC = () => {
     setEditingSubject(null);
     setSubjectFormError(null);
     setSubjectFormData({
-      code: '',
-      name: '',
-      department: 'Sciences',
-      teacher: '',
+      code: "",
+      name: "",
+      department: "Sciences",
+      teacher: "",
       lastExamMean: 50.0,
     });
     setIsSubjectModalOpen(true);
@@ -322,7 +357,7 @@ export const StudentsClassesView: React.FC = () => {
       code: subj.code,
       name: subj.name,
       department: subj.department,
-      teacher: subj.teacher || '',
+      teacher: subj.teacher || "",
       lastExamMean: subj.lastExamMean,
     });
     setIsSubjectModalOpen(true);
@@ -335,12 +370,12 @@ export const StudentsClassesView: React.FC = () => {
     const name = subjectFormData.name.trim();
 
     if (!code || !name) {
-      setSubjectFormError('Subject code and Subject name are required.');
+      setSubjectFormError("Subject code and Subject name are required.");
       return;
     }
 
     const dup = subjects.find(
-      (s) => s.code === code && (!editingSubject || s.id !== editingSubject.id)
+      (s) => s.code === code && (!editingSubject || s.id !== editingSubject.id),
     );
     if (dup) {
       setSubjectFormError(`Subject code "${code}" is already in use by ${dup.name}.`);
@@ -373,10 +408,10 @@ export const StudentsClassesView: React.FC = () => {
   const handleOpenAddExam = () => {
     setEditingExam(null);
     setExamFormData({
-      name: 'Mid-term Exam, Term 3 2026',
-      term: 'Term 3',
+      name: "Mid-term Exam, Term 3 2026",
+      term: "Term 3",
       year: 2026,
-      type: 'Mid-term',
+      type: "Mid-term",
     });
     setIsExamModalOpen(true);
   };
@@ -420,33 +455,41 @@ export const StudentsClassesView: React.FC = () => {
         {/* Top Tab Bar with Mobile Scroll */}
         <div className="flex border border-[#DDD6C7] rounded bg-[#FBF8F1] overflow-x-auto hide-scrollbar text-xs font-medium max-w-full">
           <button
-            onClick={() => setActiveSubTab('students')}
+            onClick={() => setActiveSubTab("students")}
             className={`px-3.5 sm:px-4 py-2.5 min-h-[44px] cursor-pointer transition-colors whitespace-nowrap ${
-              currentTab === 'students' ? 'bg-[#111111] text-[#FEF9EF]' : 'text-[#5F5E5E] hover:bg-[#F2EDE3]'
+              currentTab === "students"
+                ? "bg-[#111111] text-[#FEF9EF]"
+                : "text-[#5F5E5E] hover:bg-[#F2EDE3]"
             }`}
           >
             Students Register
           </button>
           <button
-            onClick={() => setActiveSubTab('classes')}
+            onClick={() => setActiveSubTab("classes")}
             className={`px-3.5 sm:px-4 py-2.5 min-h-[44px] cursor-pointer transition-colors whitespace-nowrap ${
-              currentTab === 'classes' ? 'bg-[#111111] text-[#FEF9EF]' : 'text-[#5F5E5E] hover:bg-[#F2EDE3]'
+              currentTab === "classes"
+                ? "bg-[#111111] text-[#FEF9EF]"
+                : "text-[#5F5E5E] hover:bg-[#F2EDE3]"
             }`}
           >
             Classes &amp; Streams ({streams.length})
           </button>
           <button
-            onClick={() => setActiveSubTab('subjects')}
+            onClick={() => setActiveSubTab("subjects")}
             className={`px-3.5 sm:px-4 py-2.5 min-h-[44px] cursor-pointer transition-colors whitespace-nowrap ${
-              currentTab === 'subjects' ? 'bg-[#111111] text-[#FEF9EF]' : 'text-[#5F5E5E] hover:bg-[#F2EDE3]'
+              currentTab === "subjects"
+                ? "bg-[#111111] text-[#FEF9EF]"
+                : "text-[#5F5E5E] hover:bg-[#F2EDE3]"
             }`}
           >
             Subjects ({subjects.length})
           </button>
           <button
-            onClick={() => setActiveSubTab('periods')}
+            onClick={() => setActiveSubTab("periods")}
             className={`px-3.5 sm:px-4 py-2.5 min-h-[44px] cursor-pointer transition-colors whitespace-nowrap ${
-              currentTab === 'periods' ? 'bg-[#111111] text-[#FEF9EF]' : 'text-[#5F5E5E] hover:bg-[#F2EDE3]'
+              currentTab === "periods"
+                ? "bg-[#111111] text-[#FEF9EF]"
+                : "text-[#5F5E5E] hover:bg-[#F2EDE3]"
             }`}
           >
             Exam Periods ({exams.length})
@@ -455,7 +498,7 @@ export const StudentsClassesView: React.FC = () => {
       </section>
 
       {/* TAB 1: STUDENTS */}
-      {currentTab === 'students' && (
+      {currentTab === "students" && (
         <section>
           {/* Controls */}
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center flex-wrap justify-between gap-3 mb-4">
@@ -478,7 +521,7 @@ export const StudentsClassesView: React.FC = () => {
             <div className="flex items-center gap-2.5">
               <button
                 onClick={() => {
-                  setCsvText('');
+                  setCsvText("");
                   setCsvImportResult(null);
                   setIsCSVModalOpen(true);
                 }}
@@ -521,7 +564,9 @@ export const StudentsClassesView: React.FC = () => {
                     </td>
                     <td className="px-4 font-medium text-[#111111]">{student.name}</td>
                     <td className="px-3 text-[#5F5E5E]">{student.gender}</td>
-                    <td className="px-3 text-right font-tabular-sm text-[#111111]">{student.kcpeMarks} / 500</td>
+                    <td className="px-3 text-right font-tabular-sm text-[#111111]">
+                      {student.kcpeMarks} / 500
+                    </td>
                     <td className="px-3 text-[#5F5E5E]">{student.stream}</td>
                     <td className="px-3 text-center">
                       <span className="inline-block px-2 py-0.5 text-[10px] uppercase font-bold bg-[#111111] text-[#FEF9EF] rounded-[2px]">
@@ -562,7 +607,8 @@ export const StudentsClassesView: React.FC = () => {
           <div className="mt-4 flex items-center justify-between text-xs text-[#5F5E5E] font-tabular-sm">
             <span>
               Showing {filteredStudents.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}–
-              {Math.min(currentPage * pageSize, filteredStudents.length)} of {filteredStudents.length} candidates
+              {Math.min(currentPage * pageSize, filteredStudents.length)} of{" "}
+              {filteredStudents.length} candidates
             </span>
             <div className="flex items-center gap-1">
               <button
@@ -588,11 +634,12 @@ export const StudentsClassesView: React.FC = () => {
       )}
 
       {/* TAB 2: CLASSES & STREAMS */}
-      {currentTab === 'classes' && (
+      {currentTab === "classes" && (
         <section>
           <div className="flex items-center justify-between mb-4">
             <p className="text-body-sm text-[#5F5E5E]">
-              Registered classes and class teachers. Switching streams updates student filters across all views.
+              Registered classes and class teachers. Switching streams updates student filters
+              across all views.
             </p>
             <button
               onClick={handleOpenAddStream}
@@ -633,7 +680,7 @@ export const StudentsClassesView: React.FC = () => {
                       </td>
                       <td className="px-4 text-[#5F5E5E]">{str.form}</td>
                       <td className="px-4 text-[#5F5E5E]">{str.stream}</td>
-                      <td className="px-4 text-[#111111]">{str.classTeacher || '—'}</td>
+                      <td className="px-4 text-[#111111]">{str.classTeacher || "—"}</td>
                       <td className="px-4 text-right font-tabular-sm text-tabular-sm font-medium">
                         {count} Students
                       </td>
@@ -673,7 +720,7 @@ export const StudentsClassesView: React.FC = () => {
       )}
 
       {/* TAB 3: SUBJECTS */}
-      {currentTab === 'subjects' && (
+      {currentTab === "subjects" && (
         <section>
           <div className="flex items-center justify-between mb-4">
             <p className="text-body-sm text-[#5F5E5E]">
@@ -709,7 +756,7 @@ export const StudentsClassesView: React.FC = () => {
                     </td>
                     <td className="px-4 font-medium text-[#111111]">{subj.name}</td>
                     <td className="px-4 text-[#5F5E5E]">{subj.department}</td>
-                    <td className="px-4 text-[#111111]">{subj.teacher || '—'}</td>
+                    <td className="px-4 text-[#111111]">{subj.teacher || "—"}</td>
                     <td className="px-4 text-right font-tabular-sm text-[#111111]">
                       {subj.lastExamMean.toFixed(1)}%
                     </td>
@@ -739,12 +786,10 @@ export const StudentsClassesView: React.FC = () => {
       )}
 
       {/* TAB 4: PERIODS */}
-      {currentTab === 'periods' && (
+      {currentTab === "periods" && (
         <section>
           <div className="flex items-center justify-between mb-4">
-            <p className="text-body-sm text-[#5F5E5E]">
-              Examination periods and term schedules.
-            </p>
+            <p className="text-body-sm text-[#5F5E5E]">Examination periods and term schedules.</p>
             <button
               onClick={handleOpenAddExam}
               type="button"
@@ -797,7 +842,7 @@ export const StudentsClassesView: React.FC = () => {
             className="bg-[#FEF9EF] border border-[#DDD6C7] rounded max-w-md w-full p-6 shadow-xl"
           >
             <h3 className="font-headline-sm text-headline-sm text-[#111111] mb-4 pb-2 border-b border-[#DDD6C7]">
-              {editingStudent ? 'Edit Student Record' : 'Add New Candidate'}
+              {editingStudent ? "Edit Student Record" : "Add New Candidate"}
             </h3>
 
             {studentFormError && (
@@ -815,7 +860,9 @@ export const StudentsClassesView: React.FC = () => {
                   type="text"
                   required
                   value={studentFormData.admNo}
-                  onChange={(e) => setStudentFormData({ ...studentFormData, admNo: e.target.value })}
+                  onChange={(e) =>
+                    setStudentFormData({ ...studentFormData, admNo: e.target.value })
+                  }
                   className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-1.5 text-[#111111] focus:border-[#C2410C] focus:outline-none"
                 />
               </div>
@@ -841,7 +888,10 @@ export const StudentsClassesView: React.FC = () => {
                   <select
                     value={studentFormData.gender}
                     onChange={(e) =>
-                      setStudentFormData({ ...studentFormData, gender: e.target.value as 'Male' | 'Female' })
+                      setStudentFormData({
+                        ...studentFormData,
+                        gender: e.target.value as "Male" | "Female",
+                      })
                     }
                     className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-1.5 text-[#111111] focus:border-[#C2410C] focus:outline-none"
                   >
@@ -873,7 +923,9 @@ export const StudentsClassesView: React.FC = () => {
                 </label>
                 <select
                   value={studentFormData.stream}
-                  onChange={(e) => setStudentFormData({ ...studentFormData, stream: e.target.value })}
+                  onChange={(e) =>
+                    setStudentFormData({ ...studentFormData, stream: e.target.value })
+                  }
                   className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-1.5 text-[#111111] focus:border-[#C2410C] focus:outline-none"
                 >
                   {streams.map((s) => (
@@ -913,11 +965,15 @@ export const StudentsClassesView: React.FC = () => {
               <h3 className="font-headline-sm text-headline-sm">Confirm Student Deletion</h3>
             </div>
             <p className="font-body-sm text-body-sm text-[#111111] mb-3">
-              Are you sure you want to delete{' '}
-              <strong className="font-semibold">{deletingStudent.name} (Adm: {deletingStudent.admNo})</strong>?
+              Are you sure you want to delete{" "}
+              <strong className="font-semibold">
+                {deletingStudent.name} (Adm: {deletingStudent.admNo})
+              </strong>
+              ?
             </p>
             <div className="bg-red-50 border border-red-200 text-red-800 p-3 text-xs mb-4">
-              <strong>Cascading effect:</strong> All examination scores and marks entered for this student across all subjects will be permanently removed from the ledger and rankings.
+              <strong>Cascading effect:</strong> All examination scores and marks entered for this
+              student across all subjects will be permanently removed from the ledger and rankings.
             </div>
             <div className="flex items-center justify-end gap-3">
               <button
@@ -956,8 +1012,10 @@ export const StudentsClassesView: React.FC = () => {
             </div>
 
             <p className="font-body-sm text-body-sm text-[#5F5E5E] mb-3">
-              Paste CSV or Tab-delimited rows with columns:{' '}
-              <span className="font-medium text-[#111111]">AdmissionNo, FullName, Gender, KCPE</span>
+              Paste CSV or Tab-delimited rows with columns:{" "}
+              <span className="font-medium text-[#111111]">
+                AdmissionNo, FullName, Gender, KCPE
+              </span>
             </p>
 
             <textarea
@@ -983,9 +1041,13 @@ export const StudentsClassesView: React.FC = () => {
                 <div className="max-h-28 overflow-y-auto divide-y divide-[#DDD6C7]/50 text-[11px] text-[#5F5E5E]">
                   {csvImportResult.parsed.slice(0, 10).map((row, idx) => (
                     <div key={idx} className="py-0.5 flex justify-between">
-                      <span>{row.admNo} — {row.name} ({row.gender})</span>
-                      <span className={row.isValid ? 'text-emerald-700' : 'text-red-700 font-semibold'}>
-                        {row.isValid ? 'Valid' : row.error}
+                      <span>
+                        {row.admNo} — {row.name} ({row.gender})
+                      </span>
+                      <span
+                        className={row.isValid ? "text-emerald-700" : "text-red-700 font-semibold"}
+                      >
+                        {row.isValid ? "Valid" : row.error}
                       </span>
                     </div>
                   ))}
@@ -1022,7 +1084,7 @@ export const StudentsClassesView: React.FC = () => {
             className="bg-[#FEF9EF] border border-[#DDD6C7] rounded max-w-md w-full p-6 shadow-xl"
           >
             <h3 className="font-headline-sm text-headline-sm text-[#111111] mb-4 pb-2 border-b border-[#DDD6C7]">
-              {editingStream ? 'Edit Class Stream' : 'Add Class Stream'}
+              {editingStream ? "Edit Class Stream" : "Add Class Stream"}
             </h3>
             <div className="space-y-3 font-body-sm text-body-sm">
               <div>
@@ -1059,7 +1121,9 @@ export const StudentsClassesView: React.FC = () => {
                 <input
                   type="text"
                   value={streamFormData.classTeacher}
-                  onChange={(e) => setStreamFormData({ ...streamFormData, classTeacher: e.target.value })}
+                  onChange={(e) =>
+                    setStreamFormData({ ...streamFormData, classTeacher: e.target.value })
+                  }
                   placeholder="e.g. Mrs. S. Chelangat"
                   className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-1.5 text-[#111111]"
                 />
@@ -1093,7 +1157,9 @@ export const StudentsClassesView: React.FC = () => {
               Are you sure you want to delete <strong>{deletingStream.name}</strong>?
             </p>
             <div className="bg-red-50 border border-red-200 text-red-800 p-3 text-xs mb-4">
-              <strong>Cascading warning:</strong> All {students.filter((s) => s.stream === deletingStream.name).length} students currently enrolled in {deletingStream.name} and their marks will be removed.
+              <strong>Cascading warning:</strong> All{" "}
+              {students.filter((s) => s.stream === deletingStream.name).length} students currently
+              enrolled in {deletingStream.name} and their marks will be removed.
             </div>
             <div className="flex items-center justify-end gap-3">
               <button
@@ -1126,7 +1192,7 @@ export const StudentsClassesView: React.FC = () => {
             className="bg-[#FEF9EF] border border-[#DDD6C7] rounded max-w-md w-full p-6 shadow-xl"
           >
             <h3 className="font-headline-sm text-headline-sm text-[#111111] mb-4 pb-2 border-b border-[#DDD6C7]">
-              {editingSubject ? 'Edit Subject' : 'Add Curriculum Subject'}
+              {editingSubject ? "Edit Subject" : "Add Curriculum Subject"}
             </h3>
             {subjectFormError && (
               <div className="mb-3 p-2 bg-red-100 border border-red-300 text-red-800 text-xs rounded">
@@ -1144,7 +1210,9 @@ export const StudentsClassesView: React.FC = () => {
                     required
                     maxLength={4}
                     value={subjectFormData.code}
-                    onChange={(e) => setSubjectFormData({ ...subjectFormData, code: e.target.value.toUpperCase() })}
+                    onChange={(e) =>
+                      setSubjectFormData({ ...subjectFormData, code: e.target.value.toUpperCase() })
+                    }
                     placeholder="e.g. FRE"
                     className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-1.5 text-[#111111]"
                   />
@@ -1155,7 +1223,9 @@ export const StudentsClassesView: React.FC = () => {
                   </label>
                   <select
                     value={subjectFormData.department}
-                    onChange={(e) => setSubjectFormData({ ...subjectFormData, department: e.target.value })}
+                    onChange={(e) =>
+                      setSubjectFormData({ ...subjectFormData, department: e.target.value })
+                    }
                     className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-1.5 text-[#111111]"
                   >
                     <option value="Languages">Languages</option>
@@ -1187,7 +1257,9 @@ export const StudentsClassesView: React.FC = () => {
                 <input
                   type="text"
                   value={subjectFormData.teacher}
-                  onChange={(e) => setSubjectFormData({ ...subjectFormData, teacher: e.target.value })}
+                  onChange={(e) =>
+                    setSubjectFormData({ ...subjectFormData, teacher: e.target.value })
+                  }
                   placeholder="e.g. Madame Dubois"
                   className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-1.5 text-[#111111]"
                 />
@@ -1200,7 +1272,9 @@ export const StudentsClassesView: React.FC = () => {
                   type="number"
                   step="0.1"
                   value={subjectFormData.lastExamMean}
-                  onChange={(e) => setSubjectFormData({ ...subjectFormData, lastExamMean: Number(e.target.value) })}
+                  onChange={(e) =>
+                    setSubjectFormData({ ...subjectFormData, lastExamMean: Number(e.target.value) })
+                  }
                   className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-1.5 text-[#111111]"
                 />
               </div>
@@ -1230,10 +1304,15 @@ export const StudentsClassesView: React.FC = () => {
           <div className="bg-[#FEF9EF] border-2 border-red-700 rounded max-w-md w-full p-6 shadow-xl">
             <h3 className="font-headline-sm text-headline-sm text-red-700 mb-2">Delete Subject</h3>
             <p className="font-body-sm text-body-sm text-[#111111] mb-3">
-              Are you sure you want to remove <strong>{deletingSubject.code} — {deletingSubject.name}</strong>?
+              Are you sure you want to remove{" "}
+              <strong>
+                {deletingSubject.code} — {deletingSubject.name}
+              </strong>
+              ?
             </p>
             <div className="bg-red-50 border border-red-200 text-red-800 p-3 text-xs mb-4">
-              <strong>Cascading warning:</strong> All student marks recorded under {deletingSubject.code} across all cohort exams will be permanently deleted.
+              <strong>Cascading warning:</strong> All student marks recorded under{" "}
+              {deletingSubject.code} across all cohort exams will be permanently deleted.
             </div>
             <div className="flex items-center justify-end gap-3">
               <button
@@ -1266,7 +1345,7 @@ export const StudentsClassesView: React.FC = () => {
             className="bg-[#FEF9EF] border border-[#DDD6C7] rounded max-w-md w-full p-6 shadow-xl"
           >
             <h3 className="font-headline-sm text-headline-sm text-[#111111] mb-4 pb-2 border-b border-[#DDD6C7]">
-              {editingExam ? 'Edit Exam Period' : 'Add Examination Period'}
+              {editingExam ? "Edit Exam Period" : "Add Examination Period"}
             </h3>
             <div className="space-y-3 font-body-sm text-body-sm">
               <div>
@@ -1304,7 +1383,9 @@ export const StudentsClassesView: React.FC = () => {
                   <input
                     type="number"
                     value={examFormData.year}
-                    onChange={(e) => setExamFormData({ ...examFormData, year: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setExamFormData({ ...examFormData, year: Number(e.target.value) })
+                    }
                     className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-1.5 text-[#111111]"
                   />
                 </div>
@@ -1315,7 +1396,9 @@ export const StudentsClassesView: React.FC = () => {
                 </label>
                 <select
                   value={examFormData.type}
-                  onChange={(e) => setExamFormData({ ...examFormData, type: e.target.value as any })}
+                  onChange={(e) =>
+                    setExamFormData({ ...examFormData, type: e.target.value as any })
+                  }
                   className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-1.5 text-[#111111]"
                 >
                   <option value="Mid-term">Mid-term</option>
@@ -1347,7 +1430,9 @@ export const StudentsClassesView: React.FC = () => {
       {deletingExam && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
           <div className="bg-[#FEF9EF] border-2 border-red-700 rounded max-w-md w-full p-6 shadow-xl">
-            <h3 className="font-headline-sm text-headline-sm text-red-700 mb-2">Delete Exam Period</h3>
+            <h3 className="font-headline-sm text-headline-sm text-red-700 mb-2">
+              Delete Exam Period
+            </h3>
             <p className="font-body-sm text-body-sm text-[#111111] mb-3">
               Are you sure you want to delete <strong>{deletingExam.name}</strong>?
             </p>
@@ -1373,6 +1458,53 @@ export const StudentsClassesView: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Workflow Next Steps Banner */}
+      <section className="mt-8 p-4 sm:p-5 bg-[#FBF8F1] border border-[#DDD6C7] rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h4 className="font-semibold text-sm text-[#111111] flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-[18px] text-[#C2410C]">route</span>
+            <span>Roster & Administration: Next Steps</span>
+          </h4>
+          <p className="text-xs text-[#5F5E5E] mt-0.5">
+            Cohort records updated. Continue to daily roll-call attendance, marks entry, or academic
+            rankings.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setActiveView("overview")}
+            className="px-3 py-2 text-xs font-medium border border-[#DDD6C7] rounded bg-white hover:bg-[#F2EDE3] text-[#111111] cursor-pointer"
+          >
+            ← Overview
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("marks-entry")}
+            className="px-3.5 py-2 text-xs font-semibold bg-[#C2410C] text-white hover:opacity-90 rounded flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">edit_note</span>
+            <span>Enter Marks →</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("attendance")}
+            className="px-3.5 py-2 text-xs font-semibold bg-[#111111] text-white hover:bg-neutral-800 rounded flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">fact_check</span>
+            <span>Take Attendance →</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("rankings")}
+            className="px-3.5 py-2 text-xs font-semibold border border-[#111111] hover:bg-[#F2EDE3] text-[#111111] rounded flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">format_list_numbered</span>
+            <span>Class Rankings →</span>
+          </button>
+        </div>
+      </section>
     </div>
   );
 };

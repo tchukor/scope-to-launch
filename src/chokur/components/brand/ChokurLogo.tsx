@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
 export interface ChokurLogoProps {
-  variant?: 'symbol' | 'horizontal' | 'stacked' | 'monochrome-dark' | 'monochrome-light';
+  variant?: "symbol" | "horizontal" | "stacked" | "monochrome-dark" | "monochrome-light";
   size?: number | string;
   className?: string;
   showSubtitle?: boolean;
@@ -10,17 +10,17 @@ export interface ChokurLogoProps {
 }
 
 export const ChokurLogo: React.FC<ChokurLogoProps> = ({
-  variant = 'horizontal',
+  variant = "horizontal",
   size,
-  className = '',
+  className = "",
   showSubtitle = true,
-  accentColor = '#C2410C',
+  accentColor = "#C2410C",
   onClick,
 }) => {
   const isClickable = Boolean(onClick);
 
   // Symbol Only: 32x32 on 4px grid
-  if (variant === 'symbol') {
+  if (variant === "symbol") {
     const defaultSize = size || 28;
     return (
       <svg
@@ -29,7 +29,7 @@ export const ChokurLogo: React.FC<ChokurLogoProps> = ({
         height={defaultSize}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className={`inline-block shrink-0 ${isClickable ? 'cursor-pointer' : ''} ${className}`}
+        className={`inline-block shrink-0 ${isClickable ? "cursor-pointer" : ""} ${className}`}
         onClick={onClick}
         aria-label="Chokur System Symbol"
         role="img"
@@ -48,15 +48,15 @@ export const ChokurLogo: React.FC<ChokurLogoProps> = ({
   }
 
   // Stacked Logo (Symbol centered on top of Wordmark)
-  if (variant === 'stacked') {
+  if (variant === "stacked") {
     const defaultWidth = size || 80;
     return (
       <div
         className={`inline-flex flex-col items-center justify-center text-center select-none ${
-          isClickable ? 'cursor-pointer' : ''
+          isClickable ? "cursor-pointer" : ""
         } ${className}`}
         onClick={onClick}
-        role={isClickable ? 'button' : 'img'}
+        role={isClickable ? "button" : "img"}
         aria-label="Chokur System"
       >
         <svg
@@ -85,12 +85,12 @@ export const ChokurLogo: React.FC<ChokurLogoProps> = ({
   }
 
   // Monochrome Dark (for print & B/W xerox)
-  if (variant === 'monochrome-dark') {
+  if (variant === "monochrome-dark") {
     const defaultHeight = size || 28;
     return (
       <div
         className={`inline-flex items-center gap-2.5 select-none ${
-          isClickable ? 'cursor-pointer' : ''
+          isClickable ? "cursor-pointer" : ""
         } ${className}`}
         onClick={onClick}
       >
@@ -127,12 +127,12 @@ export const ChokurLogo: React.FC<ChokurLogoProps> = ({
   }
 
   // Monochrome Light (for dark / reversed contexts)
-  if (variant === 'monochrome-light') {
+  if (variant === "monochrome-light") {
     const defaultHeight = size || 28;
     return (
       <div
         className={`inline-flex items-center gap-2.5 select-none ${
-          isClickable ? 'cursor-pointer' : ''
+          isClickable ? "cursor-pointer" : ""
         } ${className}`}
         onClick={onClick}
       >
@@ -173,10 +173,10 @@ export const ChokurLogo: React.FC<ChokurLogoProps> = ({
   return (
     <div
       className={`inline-flex items-center gap-2.5 select-none ${
-        isClickable ? 'cursor-pointer group' : ''
+        isClickable ? "cursor-pointer group" : ""
       } ${className}`}
       onClick={onClick}
-      role={isClickable ? 'button' : 'img'}
+      role={isClickable ? "button" : "img"}
       aria-label="Chokur System - Marks to Insight"
     >
       <svg

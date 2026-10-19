@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { ChokurLogo } from './brand/ChokurLogo';
-import { useGrading } from '../context/GradingContext';
-import { ViewType } from '../types';
-import { ROLES, Role, canSee, homeFor, loadRole, saveRole } from '../utils/roles';
+import React, { useEffect, useState } from "react";
+import { ChokurLogo } from "./brand/ChokurLogo";
+import { useGrading } from "../context/GradingContext";
+import { ViewType } from "../types";
+import { ROLES, Role, canSee, homeFor, loadRole, saveRole } from "../utils/roles";
 
 interface NavItem {
   id: ViewType;
@@ -12,45 +12,53 @@ interface NavItem {
 }
 
 const PRIMARY_MOBILE_TABS: NavItem[] = [
-  { id: 'overview', label: 'Overview', icon: 'dashboard', shortLabel: 'Overview' },
-  { id: 'marks-entry', label: 'Marks', icon: 'edit_note', shortLabel: 'Marks' },
-  { id: 'rankings', label: 'Rankings', icon: 'format_list_numbered', shortLabel: 'Rankings' },
-  { id: 'report-cards', label: 'Cards', icon: 'badge', shortLabel: 'Reports' },
+  { id: "overview", label: "Overview", icon: "dashboard", shortLabel: "Overview" },
+  { id: "marks-entry", label: "Marks", icon: "edit_note", shortLabel: "Marks" },
+  { id: "rankings", label: "Rankings", icon: "format_list_numbered", shortLabel: "Rankings" },
+  { id: "report-cards", label: "Cards", icon: "badge", shortLabel: "Reports" },
 ];
 
 const ALL_NAV_ITEMS: NavItem[] = [
-  { id: 'overview', label: 'Overview', icon: 'dashboard' },
-  { id: 'marks-entry', label: 'Marks Entry', icon: 'edit_note' },
-  { id: 'rankings', label: 'Rankings', icon: 'format_list_numbered' },
-  { id: 'subject-analysis', label: 'Subject Analysis', icon: 'analytics' },
-  { id: 'grade-distribution', label: 'Grade Distribution', icon: 'bar_chart' },
-  { id: 'report-cards', label: 'Report Cards', icon: 'badge' },
-  { id: 'students', label: 'Students & Classes', icon: 'group' },
-  { id: 'attendance', label: 'Attendance', icon: 'fact_check' },
-  { id: 'messaging', label: 'Bulk SMS', icon: 'sms' },
-  { id: 'fees', label: 'Fees', icon: 'payments' },
-  { id: 'parent-portal', label: 'Parent Portal', icon: 'family_restroom' },
-  { id: 'profile', label: 'Profile & WhatsApp', icon: 'forum' },
-  { id: 'settings', label: 'Settings & Backups', icon: 'settings' },
+  { id: "overview", label: "Overview", icon: "dashboard" },
+  { id: "marks-entry", label: "Marks Entry", icon: "edit_note" },
+  { id: "rankings", label: "Rankings", icon: "format_list_numbered" },
+  { id: "subject-analysis", label: "Subject Analysis", icon: "analytics" },
+  { id: "grade-distribution", label: "Grade Distribution", icon: "bar_chart" },
+  { id: "report-cards", label: "Report Cards", icon: "badge" },
+  { id: "students", label: "Students & Classes", icon: "group" },
+  { id: "attendance", label: "Attendance", icon: "fact_check" },
+  { id: "messaging", label: "Bulk SMS", icon: "sms" },
+  { id: "fees", label: "Fees", icon: "payments" },
+  { id: "parent-portal", label: "Parent Portal", icon: "family_restroom" },
+  { id: "profile", label: "Profile & WhatsApp", icon: "forum" },
+  { id: "settings", label: "Settings & Backups", icon: "settings" },
 ];
 
 export const Sidebar: React.FC = () => {
-  const { activeView, setActiveView } = useGrading();
+  const { activeView, setActiveView, role, setRole } = useGrading();
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
-  const [role, setRole] = useState<Role>('Admin');
-  useEffect(() => setRole(loadRole()), []);
-  useEffect(() => {
-    if (!canSee(role, activeView)) setActiveView(homeFor(role));
-  }, [role, activeView, setActiveView]);
-  const changeRole = (r: Role) => { setRole(r); saveRole(r); setActiveView(homeFor(r)); };
+
+  const changeRole = (r: Role) => {
+    setRole(r);
+  };
   const NAV = ALL_NAV_ITEMS.filter((i) => canSee(role, i.id));
-  const TABS = role === 'Parent' ? NAV : PRIMARY_MOBILE_TABS.filter((i) => canSee(role, i.id));
+  const TABS = role === "Parent" ? NAV : PRIMARY_MOBILE_TABS.filter((i) => canSee(role, i.id));
   const roleSwitch = (
     <label className="flex flex-col gap-1 px-2 py-1">
-      <span className="hidden lg:inline text-[10px] font-mono tracking-wider uppercase text-[#9A958A]">Using as</span>
-      <select aria-label="Using Chokur as" value={role} onChange={(e) => changeRole(e.target.value as Role)}
-        className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded text-[11px] font-semibold text-[#111111] px-1 py-1 cursor-pointer">
-        {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+      <span className="hidden lg:inline text-[10px] font-mono tracking-wider uppercase text-[#9A958A]">
+        Using as
+      </span>
+      <select
+        aria-label="Using Chokur as"
+        value={role}
+        onChange={(e) => changeRole(e.target.value as Role)}
+        className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded text-[11px] font-semibold text-[#111111] px-1 py-1 cursor-pointer"
+      >
+        {ROLES.map((r) => (
+          <option key={r} value={r}>
+            {r}
+          </option>
+        ))}
       </select>
     </label>
   );
@@ -66,7 +74,7 @@ export const Sidebar: React.FC = () => {
               <ChokurLogo
                 variant="horizontal"
                 size={28}
-                onClick={() => setActiveView('landing')}
+                onClick={() => setActiveView("landing")}
                 className="cursor-pointer"
               />
             </div>
@@ -74,7 +82,7 @@ export const Sidebar: React.FC = () => {
               <ChokurLogo
                 variant="symbol"
                 size={28}
-                onClick={() => setActiveView('landing')}
+                onClick={() => setActiveView("landing")}
                 className="cursor-pointer"
               />
             </div>
@@ -92,13 +100,13 @@ export const Sidebar: React.FC = () => {
                   title={item.label}
                   className={`w-full text-left transition-colors duration-150 flex items-center justify-center lg:justify-start gap-3 cursor-pointer min-h-[44px] rounded lg:rounded-none ${
                     isActive
-                      ? 'border-l-0 lg:border-l-2 border-[#C2410C] text-[#111111] font-semibold bg-[#FBF8F1] lg:pl-3.5 py-2.5'
-                      : 'text-[#5F5E5E] hover:text-[#111111] hover:bg-[#F2EDE3] lg:pl-4 py-2.5 font-normal'
+                      ? "border-l-0 lg:border-l-2 border-[#C2410C] text-[#111111] font-semibold bg-[#FBF8F1] lg:pl-3.5 py-2.5"
+                      : "text-[#5F5E5E] hover:text-[#111111] hover:bg-[#F2EDE3] lg:pl-4 py-2.5 font-normal"
                   }`}
                 >
                   <span
                     className={`material-symbols-outlined text-[20px] ${
-                      isActive ? 'text-[#C2410C]' : 'text-[#5F5E5E]'
+                      isActive ? "text-[#C2410C]" : "text-[#5F5E5E]"
                     }`}
                   >
                     {item.icon}
@@ -114,7 +122,7 @@ export const Sidebar: React.FC = () => {
         <div className="pt-2 border-t border-[#DDD6C7] flex flex-col px-2 lg:px-3 gap-1">
           {roleSwitch}
           <button
-            onClick={() => setActiveView('landing')}
+            onClick={() => setActiveView("landing")}
             type="button"
             className="w-full text-left flex items-center justify-center lg:justify-start gap-2 py-1.5 px-2 text-[#5C5850] hover:text-[#111111] hover:bg-[#F2EDE3] rounded transition-colors text-xs font-medium cursor-pointer"
             title="View Marketing & Technical Spec Sheet"
@@ -133,7 +141,10 @@ export const Sidebar: React.FC = () => {
             </span>
           </div>
           <div className="flex lg:hidden justify-center py-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-600" title="KCSE v2.4 Active · 100% Offline"></span>
+            <span
+              className="w-2 h-2 rounded-full bg-emerald-600"
+              title="KCSE v2.4 Active · 100% Offline"
+            ></span>
           </div>
         </div>
       </aside>
@@ -148,13 +159,17 @@ export const Sidebar: React.FC = () => {
               onClick={() => setActiveView(tab.id)}
               type="button"
               className={`flex-1 flex flex-col items-center justify-center h-full min-h-[48px] py-1 cursor-pointer transition-colors ${
-                isActive ? 'text-[#C2410C]' : 'text-[#5F5E5E] hover:text-[#111111]'
+                isActive ? "text-[#C2410C]" : "text-[#5F5E5E] hover:text-[#111111]"
               }`}
             >
-              <span className={`material-symbols-outlined text-[22px] ${isActive ? 'text-[#C2410C]' : ''}`}>
+              <span
+                className={`material-symbols-outlined text-[22px] ${isActive ? "text-[#C2410C]" : ""}`}
+              >
                 {tab.icon}
               </span>
-              <span className="text-[10px] font-medium tracking-tight mt-0.5">{tab.shortLabel ?? tab.label}</span>
+              <span className="text-[10px] font-medium tracking-tight mt-0.5">
+                {tab.shortLabel ?? tab.label}
+              </span>
               {isActive && <span className="w-4 h-0.5 bg-[#C2410C] rounded-full mt-0.5"></span>}
             </button>
           );
@@ -166,8 +181,8 @@ export const Sidebar: React.FC = () => {
           type="button"
           className={`flex-1 flex flex-col items-center justify-center h-full min-h-[48px] py-1 cursor-pointer transition-colors ${
             !TABS.some((t) => t.id === activeView)
-              ? 'text-[#C2410C]'
-              : 'text-[#5F5E5E] hover:text-[#111111]'
+              ? "text-[#C2410C]"
+              : "text-[#5F5E5E] hover:text-[#111111]"
           }`}
         >
           <span className="material-symbols-outlined text-[22px]">more_horiz</span>
@@ -192,9 +207,7 @@ export const Sidebar: React.FC = () => {
             <div className="flex items-center justify-between pb-3 mb-2 border-b border-[#DDD6C7]">
               <div className="flex items-center gap-2">
                 <ChokurLogo variant="symbol" size={24} />
-                <span className="font-bold text-sm text-[#111111]">
-                  All Modules &amp; Tools
-                </span>
+                <span className="font-bold text-sm text-[#111111]">All Modules &amp; Tools</span>
               </div>
               <button
                 onClick={() => setIsMobileMoreOpen(false)}
@@ -219,13 +232,13 @@ export const Sidebar: React.FC = () => {
                     type="button"
                     className={`flex items-center gap-2.5 p-3 rounded-lg border text-left min-h-[48px] transition-colors cursor-pointer ${
                       isActive
-                        ? 'bg-[#FBF8F1] border-[#C2410C] text-[#C2410C] font-semibold'
-                        : 'bg-[#FBF8F1] border-[#DDD6C7] text-[#111111] hover:bg-[#F2EDE3]'
+                        ? "bg-[#FBF8F1] border-[#C2410C] text-[#C2410C] font-semibold"
+                        : "bg-[#FBF8F1] border-[#DDD6C7] text-[#111111] hover:bg-[#F2EDE3]"
                     }`}
                   >
                     <span
                       className={`material-symbols-outlined text-[20px] ${
-                        isActive ? 'text-[#C2410C]' : 'text-[#5F5E5E]'
+                        isActive ? "text-[#C2410C]" : "text-[#5F5E5E]"
                       }`}
                     >
                       {item.icon}
@@ -238,22 +251,22 @@ export const Sidebar: React.FC = () => {
               {/* Extra: Landing Page Spec Sheet */}
               <button
                 onClick={() => {
-                  setActiveView('landing');
+                  setActiveView("landing");
                   setIsMobileMoreOpen(false);
                 }}
                 type="button"
                 className={`flex items-center gap-2.5 p-3 rounded-lg border text-left min-h-[48px] transition-colors cursor-pointer col-span-2 ${
-                  activeView === 'landing'
-                    ? 'bg-[#FBF8F1] border-[#C2410C] text-[#C2410C] font-semibold'
-                    : 'bg-[#FBF8F1] border-[#DDD6C7] text-[#111111] hover:bg-[#F2EDE3]'
+                  activeView === "landing"
+                    ? "bg-[#FBF8F1] border-[#C2410C] text-[#C2410C] font-semibold"
+                    : "bg-[#FBF8F1] border-[#DDD6C7] text-[#111111] hover:bg-[#F2EDE3]"
                 }`}
               >
-                <span className="material-symbols-outlined text-[20px] text-[#C2410C]">
-                  info
-                </span>
+                <span className="material-symbols-outlined text-[20px] text-[#C2410C]">info</span>
                 <div className="flex flex-col">
                   <span className="text-xs font-semibold">About Chokur &amp; Spec Sheet</span>
-                  <span className="text-[10px] text-[#5C5850]">Curriculum specs, offline architecture &amp; calculator</span>
+                  <span className="text-[10px] text-[#5C5850]">
+                    Curriculum specs, offline architecture &amp; calculator
+                  </span>
                 </div>
               </button>
             </div>

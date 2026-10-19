@@ -1,24 +1,24 @@
-import React from 'react';
-import { KCSEGrade } from '../types';
+import React from "react";
+import { KCSEGrade } from "../types";
 
 interface GradeChipProps {
   grade: KCSEGrade | string;
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
-export const GradeChip: React.FC<GradeChipProps> = ({ grade, className = '', size = 'sm' }) => {
+export const GradeChip: React.FC<GradeChipProps> = ({ grade, className = "", size = "sm" }) => {
   const g = grade.trim().toUpperCase();
 
   const sizeClasses =
-    size === 'sm'
-      ? 'px-1.5 py-0.5 text-[10px] min-w-[20px] leading-tight'
-      : size === 'lg'
-      ? 'px-3 py-1 text-sm font-bold min-w-[34px]'
-      : 'px-2 py-0.5 text-xs min-w-[26px]';
+    size === "sm"
+      ? "px-1.5 py-0.5 text-[10px] min-w-[20px] leading-tight"
+      : size === "lg"
+        ? "px-3 py-1 text-sm font-bold min-w-[34px]"
+        : "px-2 py-0.5 text-xs min-w-[26px]";
 
   // Tier 1: Honors (A, A-, B+) -> Solid carbon black fill, cream text
-  if (g === 'A' || g === 'A-' || g === 'B+') {
+  if (g === "A" || g === "A-" || g === "B+") {
     return (
       <span
         className={`inline-flex items-center justify-center font-tabular-sm font-semibold rounded-[2px] bg-[#111111] text-[#FBF8F1] select-none ${sizeClasses} ${className}`}
@@ -29,7 +29,7 @@ export const GradeChip: React.FC<GradeChipProps> = ({ grade, className = '', siz
   }
 
   // Tier 2: Competent (B, B-, C+) -> 1px solid carbon outline, transparent fill, black text
-  if (g === 'B' || g === 'B-' || g === 'C+') {
+  if (g === "B" || g === "B-" || g === "C+") {
     return (
       <span
         className={`inline-flex items-center justify-center font-tabular-sm font-semibold rounded-[2px] border border-[#111111] text-[#111111] bg-transparent select-none ${sizeClasses} ${className}`}
@@ -40,7 +40,7 @@ export const GradeChip: React.FC<GradeChipProps> = ({ grade, className = '', siz
   }
 
   // Tier 3: Marginal (C, C-, D+) -> 1px solid slate grey outline, transparent fill, slate grey text
-  if (g === 'C' || g === 'C-' || g === 'D+') {
+  if (g === "C" || g === "C-" || g === "D+") {
     return (
       <span
         className={`inline-flex items-center justify-center font-tabular-sm font-medium rounded-[2px] border border-[#5C5850] text-[#5C5850] bg-transparent select-none ${sizeClasses} ${className}`}

@@ -1,5 +1,5 @@
 // @ts-nocheck -- original source kept verbatim; project tsconfig is stricter than the source
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   INITIAL_EXAMS,
   INITIAL_MARKS,
@@ -10,7 +10,7 @@ import {
   INITIAL_TEACHER_PROFILE,
   INITIAL_TERMS,
   INITIAL_WHATSAPP_MESSAGES,
-} from '../data/initialData';
+} from "../data/initialData";
 import {
   AppStateData,
   loadSynchronousStorageState,
@@ -18,7 +18,7 @@ import {
   persistAppState,
   resetDatabaseToDefaults,
   retrieveAppState,
-} from '../lib/db';
+} from "../lib/db";
 import {
   ClassStream,
   ExamPeriod,
@@ -34,7 +34,7 @@ import {
   TermConfig,
   ViewType,
   WhatsAppMessage,
-} from '../types';
+} from "../types";
 import {
   exportMarksTemplateCSV,
   getGradeFromPoints,
@@ -44,10 +44,11 @@ import {
   ParsedCSVResult,
   rankAllStudents,
   sanitizeMarkInput,
-} from '../utils/grading';
+} from "../utils/grading";
+import { Role, canSee, homeFor, loadRole, saveRole } from "../utils/roles";
 
 export interface SaveStatus {
-  state: 'saved' | 'saving' | 'offline';
+  state: "saved" | "saving" | "offline";
   lastSavedAt: string;
 }
 
@@ -63,6 +64,12 @@ interface GradingContextType {
   setActiveExam: (exam: string) => void;
   activeSubTab?: string;
   setActiveSubTab: (tab: string) => void;
+  goBack: () => void;
+  canGoBack: boolean;
+
+  // Role & Permissions
+  role: Role;
+  setRole: (role: Role) => void;
 
   // Save / Sync Status
   saveStatus: SaveStatus;
@@ -80,27 +87,29 @@ interface GradingContextType {
 
   // Mark Operations
   updateMark: (studentId: string, subjectCode: string, value: any) => void;
-  batchUpdateMarks: (updates: Array<{ studentId: string; subjectCode: string; value: any }>) => void;
+  batchUpdateMarks: (
+    updates: Array<{ studentId: string; subjectCode: string; value: any }>,
+  ) => void;
   importMarksFromCSV: (csvContent: string) => ParsedCSVResult;
   downloadMarksTemplateCSV: () => void;
 
   // Student Operations
-  addStudent: (student: Omit<Student, 'id'>) => Student;
+  addStudent: (student: Omit<Student, "id">) => Student;
   updateStudent: (student: Student) => void;
   removeStudent: (studentId: string) => void;
-  bulkAddStudents: (newStudents: Array<Omit<Student, 'id'>>) => { added: number; skipped: number };
+  bulkAddStudents: (newStudents: Array<Omit<Student, "id">>) => { added: number; skipped: number };
 
   // Subject Operations
-  addSubject: (subject: Omit<Subject, 'id'>) => Subject;
+  addSubject: (subject: Omit<Subject, "id">) => Subject;
   updateSubject: (subject: Subject) => void;
   removeSubject: (subjectCode: string) => void;
 
   // Stream & Exam Operations
-  addClassStream: (stream: Omit<ClassStream, 'id'>) => ClassStream;
+  addClassStream: (stream: Omit<ClassStream, "id">) => ClassStream;
   updateClassStream: (stream: ClassStream) => void;
   removeClassStream: (streamId: string) => void;
 
-  addExamPeriod: (exam: Omit<ExamPeriod, 'id'>) => ExamPeriod;
+  addExamPeriod: (exam: Omit<ExamPeriod, "id">) => ExamPeriod;
   updateExamPeriod: (exam: ExamPeriod) => void;
   removeExamPeriod: (examId: string) => void;
 
@@ -113,7 +122,7 @@ interface GradingContextType {
   teacherProfile: TeacherProfile;
   updateTeacherProfile: (profile: Partial<TeacherProfile>) => void;
   whatsAppMessages: WhatsAppMessage[];
-  sendWhatsAppMessage: (msg: Omit<WhatsAppMessage, 'id' | 'timestamp' | 'status'>) => void;
+  sendWhatsAppMessage: (msg: Omit<WhatsAppMessage, "id" | "timestamp" | "status">) => void;
 
   // Progressive Web App (PWA) Install
   canInstallPwa: boolean;
@@ -134,43 +143,45 @@ interface GradingContextType {
 }
 
 // Keep one context instance across hot reloads so the provider and consumers never mismatch.
-const ctxStore = globalThis as unknown as { __chokurGradingContext?: React.Context<GradingContextType | undefined> };
+const ctxStore = globalThis as unknown as {
+  __chokurGradingContext?: React.Context<GradingContextType | undefined>;
+};
 const GradingContext =
   ctxStore.__chokurGradingContext ??
   (ctxStore.__chokurGradingContext = createContext<GradingContextType | undefined>(undefined));
 
 // Hash route parser
 const parseHashRoute = (): { view: ViewType; studentId?: string; subTab?: string } => {
-  if (typeof window === 'undefined') return { view: 'overview' };
-  const hash = window.location.hash.replace(/^#\/?/, '');
-  if (!hash) return { view: 'overview' };
+  if (typeof window === "undefined") return { view: "overview" };
+  const hash = window.location.hash.replace(/^#\/?/, "");
+  if (!hash) return { view: "overview" };
 
-  const [routePart, queryPart] = hash.split('?');
+  const [routePart, queryPart] = hash.split("?");
   const validViews: ViewType[] = [
-    'overview',
-    'marks-entry',
-    'rankings',
-    'subject-analysis',
-    'grade-distribution',
-    'report-cards',
-    'students',
-    'attendance',
-    'messaging',
-    'fees',
-    'parent-portal',
-    'profile',
-    'settings',
-    'landing',
+    "overview",
+    "marks-entry",
+    "rankings",
+    "subject-analysis",
+    "grade-distribution",
+    "report-cards",
+    "students",
+    "attendance",
+    "messaging",
+    "fees",
+    "parent-portal",
+    "profile",
+    "settings",
+    "landing",
   ];
 
-  const view = validViews.includes(routePart as ViewType) ? (routePart as ViewType) : 'overview';
+  const view = validViews.includes(routePart as ViewType) ? (routePart as ViewType) : "overview";
   let studentId: string | undefined;
   let subTab: string | undefined;
 
   if (queryPart) {
     const params = new URLSearchParams(queryPart);
-    if (params.get('student')) studentId = params.get('student')!;
-    if (params.get('tab')) subTab = params.get('tab')!;
+    if (params.get("student")) studentId = params.get("student")!;
+    if (params.get("tab")) subTab = params.get("tab")!;
   }
 
   return { view, studentId, subTab };
@@ -182,10 +193,10 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const [schoolConfig, setSchoolConfig] = useState<SchoolConfig>(initialData.schoolConfig);
   const [teacherProfile, setTeacherProfile] = useState<TeacherProfile>(
-    initialData.teacherProfile || INITIAL_TEACHER_PROFILE
+    initialData.teacherProfile || INITIAL_TEACHER_PROFILE,
   );
   const [whatsAppMessages, setWhatsAppMessages] = useState<WhatsAppMessage[]>(
-    initialData.whatsAppMessages || INITIAL_WHATSAPP_MESSAGES
+    initialData.whatsAppMessages || INITIAL_WHATSAPP_MESSAGES,
   );
   const [students, setStudents] = useState<Student[]>(initialData.students);
   const [subjects, setSubjects] = useState<Subject[]>(initialData.subjects);
@@ -204,44 +215,77 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       setDeferredPrompt(e);
       setCanInstallPwa(true);
     };
-    window.addEventListener('beforeinstallprompt', handler);
-    return () => window.removeEventListener('beforeinstallprompt', handler);
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
   const installPwa = async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
       const choice = await deferredPrompt.userChoice;
-      if (choice && choice.outcome === 'accepted') {
+      if (choice && choice.outcome === "accepted") {
         setCanInstallPwa(false);
         setDeferredPrompt(null);
       }
     }
   };
 
+  // User Role & Session
+  const [role, setRoleInternal] = useState<Role>(() => loadRole());
+  const [historyStack, setHistoryStack] = useState<ViewType[]>([]);
+
   const initialRoute = useMemo(() => parseHashRoute(), []);
-  const [activeView, setActiveViewInternal] = useState<ViewType>(
-    initialRoute.view || initialData.uiState.activeView || 'overview'
-  );
+  const [activeView, setActiveViewInternal] = useState<ViewType>(() => {
+    const raw = initialRoute.view || initialData.uiState.activeView || "overview";
+    const currentRole = loadRole();
+    return canSee(currentRole, raw) ? raw : homeFor(currentRole);
+  });
   const [selectedStudentId, setSelectedStudentIdInternal] = useState<string>(
-    initialRoute.studentId || initialData.uiState.selectedStudentId || 's-1'
+    initialRoute.studentId || initialData.uiState.selectedStudentId || "s-1",
   );
   const [activeSubTab, setActiveSubTabInternal] = useState<string>(
-    initialRoute.subTab || 'students'
+    initialRoute.subTab || "students",
   );
   const [activeStream, setActiveStream] = useState<string>(
-    initialData.uiState.activeStream || 'Form 4 East'
+    initialData.uiState.activeStream || "Form 4 East",
   );
   const [activeExam, setActiveExam] = useState<string>(
-    initialData.uiState.activeExam || 'End-term Exam, Term 2 2026'
+    initialData.uiState.activeExam || "End-term Exam, Term 2 2026",
   );
 
   const [saveStatus, setSaveStatus] = useState<SaveStatus>({
-    state: 'saved',
+    state: "saved",
     lastSavedAt: new Date().toLocaleTimeString(),
   });
 
   const isInitialMount = useRef(true);
+
+  const setRole = (newRole: Role) => {
+    setRoleInternal(newRole);
+    saveRole(newRole);
+    if (!canSee(newRole, activeView)) {
+      const destination = homeFor(newRole);
+      setActiveViewInternal(destination);
+      updateHash(destination, selectedStudentId, activeSubTab);
+    }
+  };
+
+  const goBack = () => {
+    if (historyStack.length > 0) {
+      const prev = historyStack[historyStack.length - 1];
+      setHistoryStack((prevStack) => prevStack.slice(0, -1));
+      if (canSee(role, prev)) {
+        setActiveViewInternal(prev);
+        updateHash(prev, selectedStudentId, activeSubTab);
+        return;
+      }
+    }
+    const home = homeFor(role);
+    setActiveViewInternal(home);
+    updateHash(home, selectedStudentId, activeSubTab);
+  };
+
+  const canGoBack = activeView !== homeFor(role);
 
   // Sync IndexedDB on mount to reconcile any database changes
   useEffect(() => {
@@ -281,8 +325,12 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Update URL hash when view, studentId, or subTab change
   const setActiveView = (view: ViewType) => {
-    setActiveViewInternal(view);
-    updateHash(view, selectedStudentId, activeSubTab);
+    const permittedView = canSee(role, view) ? view : homeFor(role);
+    if (permittedView !== activeView) {
+      setHistoryStack((prev) => [...prev, activeView]);
+    }
+    setActiveViewInternal(permittedView);
+    updateHash(permittedView, selectedStudentId, activeSubTab);
   };
 
   const setSelectedStudentId = (id: string) => {
@@ -298,11 +346,11 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const updateHash = (view: ViewType, studentId: string, subTab?: string) => {
     let hash = `#${view}`;
     const params = new URLSearchParams();
-    if (view === 'report-cards' && studentId) {
-      params.set('student', studentId);
+    if (view === "report-cards" && studentId) {
+      params.set("student", studentId);
     }
-    if (view === 'students' && subTab) {
-      params.set('tab', subTab);
+    if (view === "students" && subTab) {
+      params.set("tab", subTab);
     }
     const queryString = params.toString();
     if (queryString) {
@@ -310,11 +358,11 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
     if (window.location.hash !== hash) {
       // New screen = new history entry so browser/phone Back works; same screen details replace.
-      const currentView = window.location.hash.replace(/^#/, '').split('?')[0];
+      const currentView = window.location.hash.replace(/^#/, "").split("?")[0];
       if (currentView && currentView !== view) {
-        window.history.pushState({ chokur: true }, '', hash);
+        window.history.pushState({ chokur: true }, "", hash);
       } else {
-        window.history.replaceState(window.history.state, '', hash);
+        window.history.replaceState(window.history.state, "", hash);
       }
     }
   };
@@ -323,14 +371,15 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   useEffect(() => {
     const handleHashChange = () => {
       const { view, studentId, subTab } = parseHashRoute();
-      setActiveViewInternal(view);
+      const permittedView = canSee(role, view) ? view : homeFor(role);
+      setActiveViewInternal(permittedView);
       if (studentId) setSelectedStudentIdInternal(studentId);
       if (subTab) setActiveSubTabInternal(subTab);
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, [role]);
 
   // Central persistence effect whenever state changes
   useEffect(() => {
@@ -339,7 +388,7 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       return;
     }
 
-    setSaveStatus((prev) => ({ ...prev, state: 'saving' }));
+    setSaveStatus((prev) => ({ ...prev, state: "saving" }));
 
     const payload: AppStateData = {
       version: 2,
@@ -365,20 +414,32 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       try {
         await persistAppState(payload);
         setSaveStatus({
-          state: 'saved',
+          state: "saved",
           lastSavedAt: new Date().toLocaleTimeString(),
         });
       } catch (err) {
-        console.warn('[Chokur] Persistence error, saved to localStorage fallback:', err);
+        console.warn("[Chokur] Persistence error, saved to localStorage fallback:", err);
         setSaveStatus({
-          state: 'offline',
+          state: "offline",
           lastSavedAt: new Date().toLocaleTimeString(),
         });
       }
     }, 200);
 
     return () => clearTimeout(timer);
-  }, [schoolConfig, students, subjects, streams, exams, terms, marks, activeStream, activeExam, activeView, selectedStudentId]);
+  }, [
+    schoolConfig,
+    students,
+    subjects,
+    streams,
+    exams,
+    terms,
+    marks,
+    activeStream,
+    activeExam,
+    activeView,
+    selectedStudentId,
+  ]);
 
   const forceSave = () => {
     const payload: AppStateData = {
@@ -402,7 +463,7 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     };
     persistAppState(payload).then(() => {
       setSaveStatus({
-        state: 'saved',
+        state: "saved",
         lastSavedAt: new Date().toLocaleTimeString(),
       });
     });
@@ -421,7 +482,9 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     });
   };
 
-  const batchUpdateMarks = (updates: Array<{ studentId: string; subjectCode: string; value: any }>) => {
+  const batchUpdateMarks = (
+    updates: Array<{ studentId: string; subjectCode: string; value: any }>,
+  ) => {
     setMarks((prev) => {
       const next = { ...prev };
       updates.forEach(({ studentId, subjectCode, value }) => {
@@ -458,12 +521,12 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     exportMarksTemplateCSV(
       filteredStudents,
       subjects,
-      `KCSE_Marks_Template_${activeStream.replace(/\s+/g, '_')}`
+      `KCSE_Marks_Template_${activeStream.replace(/\s+/g, "_")}`,
     );
   };
 
   // Student Mutations
-  const addStudent = (studentData: Omit<Student, 'id'>): Student => {
+  const addStudent = (studentData: Omit<Student, "id">): Student => {
     const newId = `s-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
     const newStudent: Student = { ...studentData, id: newId };
     setStudents((prev) => [newStudent, ...prev]);
@@ -487,7 +550,9 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     });
   };
 
-  const bulkAddStudents = (newStudentsData: Array<Omit<Student, 'id'>>): { added: number; skipped: number } => {
+  const bulkAddStudents = (
+    newStudentsData: Array<Omit<Student, "id">>,
+  ): { added: number; skipped: number } => {
     let addedCount = 0;
     let skippedCount = 0;
     const existingAdmNos = new Set(students.map((s) => s.admNo.trim().toLowerCase()));
@@ -522,7 +587,7 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   // Subject Mutations
-  const addSubject = (subjData: Omit<Subject, 'id'>): Subject => {
+  const addSubject = (subjData: Omit<Subject, "id">): Subject => {
     const newId = `sub-${subjData.code.toLowerCase().trim()}`;
     const newSubj: Subject = { ...subjData, id: newId, code: subjData.code.toUpperCase().trim() };
     setSubjects((prev) => [...prev, newSubj]);
@@ -548,7 +613,7 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   // Class Stream Mutations
-  const addClassStream = (streamData: Omit<ClassStream, 'id'>): ClassStream => {
+  const addClassStream = (streamData: Omit<ClassStream, "id">): ClassStream => {
     const newId = `str-${Date.now()}`;
     const newStream: ClassStream = { ...streamData, id: newId };
     setStreams((prev) => [...prev, newStream]);
@@ -562,7 +627,7 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     // Cascade update student stream names if name changed
     if (oldStream && oldStream.name !== updatedStream.name) {
       setStudents((prev) =>
-        prev.map((s) => (s.stream === oldStream.name ? { ...s, stream: updatedStream.name } : s))
+        prev.map((s) => (s.stream === oldStream.name ? { ...s, stream: updatedStream.name } : s)),
       );
       if (activeStream === oldStream.name) {
         setActiveStream(updatedStream.name);
@@ -577,7 +642,7 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setStreams((prev) => prev.filter((s) => s.id !== streamId));
     // Cascade remove all students in this stream
     const studentIdsToRemove = new Set(
-      students.filter((s) => s.stream === streamToRemove.name).map((s) => s.id)
+      students.filter((s) => s.stream === streamToRemove.name).map((s) => s.id),
     );
     setStudents((prev) => prev.filter((s) => !studentIdsToRemove.has(s.id)));
     setMarks((prev) => {
@@ -595,7 +660,7 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   // Exam Period Mutations
-  const addExamPeriod = (examData: Omit<ExamPeriod, 'id'>): ExamPeriod => {
+  const addExamPeriod = (examData: Omit<ExamPeriod, "id">): ExamPeriod => {
     const newId = `exam-${Date.now()}`;
     const newExam: ExamPeriod = { ...examData, id: newId };
     setExams((prev) => [newExam, ...prev]);
@@ -620,19 +685,19 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setTeacherProfile((prev) => ({ ...prev, ...profile }));
   };
 
-  const sendWhatsAppMessage = (msg: Omit<WhatsAppMessage, 'id' | 'timestamp' | 'status'>) => {
+  const sendWhatsAppMessage = (msg: Omit<WhatsAppMessage, "id" | "timestamp" | "status">) => {
     const newMsg: WhatsAppMessage = {
       ...msg,
       id: `msg-${Date.now()}`,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      status: 'delivered',
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      status: "delivered",
     };
     setWhatsAppMessages((prev) => [...prev, newMsg]);
 
-    if (msg.sender === 'teacher') {
+    if (msg.sender === "teacher") {
       setTimeout(() => {
         setWhatsAppMessages((prev) =>
-          prev.map((m) => (m.id === newMsg.id ? { ...m, status: 'read' } : m))
+          prev.map((m) => (m.id === newMsg.id ? { ...m, status: "read" } : m)),
         );
       }, 1200);
 
@@ -644,10 +709,10 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
           studentName: msg.studentName,
           parentName: msg.parentName,
           parentPhone: msg.parentPhone,
-          sender: 'parent',
+          sender: "parent",
           text: `Thank you Mwalimu! Received the report for ${msg.studentName}. We appreciate your dedication.`,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          status: 'read',
+          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          status: "read",
         };
         setWhatsAppMessages((prev) => [...prev, reply]);
       }, 2500);
@@ -668,8 +733,8 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setMarks(clean.marks);
     setActiveStream(clean.uiState.activeStream);
     setActiveExam(clean.uiState.activeExam);
-    setActiveView('overview');
-    setSelectedStudentId('s-1');
+    setActiveView("overview");
+    setSelectedStudentId("s-1");
   };
 
   // Export & Restore JSON
@@ -694,9 +759,12 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       },
     };
     const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(backupData, null, 2))}`;
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute('href', jsonString);
-    downloadAnchor.setAttribute('download', `chokur_backup_${new Date().toISOString().slice(0, 10)}.json`);
+    const downloadAnchor = document.createElement("a");
+    downloadAnchor.setAttribute("href", jsonString);
+    downloadAnchor.setAttribute(
+      "download",
+      `chokur_backup_${new Date().toISOString().slice(0, 10)}.json`,
+    );
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -729,7 +797,7 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Filter students by active stream
   const filteredStudents = useMemo(() => {
-    return students.filter((s) => s.stream === activeStream && s.status === 'Active');
+    return students.filter((s) => s.stream === activeStream && s.status === "Active");
   }, [students, activeStream]);
 
   // Compute live rankings according to pure KNEC algorithms
@@ -752,7 +820,7 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }, [rankings]);
 
   const meanGrade = useMemo(() => {
-    if (rankings.length === 0) return 'C+' as KCSEGrade;
+    if (rankings.length === 0) return "C+" as KCSEGrade;
     const totalPoints = rankings.reduce((acc, curr) => acc + curr.meanPoints, 0);
     const avgPoints = totalPoints / rankings.length;
     return getGradeFromPoints(avgPoints);
@@ -760,34 +828,36 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Subject statistics
   const subjectDepartmentalStats = useMemo<SubjectDepartmentalStat[]>(() => {
-    return subjects.map((subj) => {
-      const subjectScores: number[] = [];
-      filteredStudents.forEach((student) => {
-        const val = marks[student.id]?.[subj.code];
-        if (typeof val === 'number') {
-          subjectScores.push(val);
-        }
-      });
+    return subjects
+      .map((subj) => {
+        const subjectScores: number[] = [];
+        filteredStudents.forEach((student) => {
+          const val = marks[student.id]?.[subj.code];
+          if (typeof val === "number") {
+            subjectScores.push(val);
+          }
+        });
 
-      const entered = subjectScores.length;
-      const total = subjectScores.reduce((acc, curr) => acc + curr, 0);
-      const avg = entered > 0 ? Math.round((total / entered) * 10) / 10 : 0;
-      const highest = entered > 0 ? Math.max(...subjectScores) : 0;
-      const lowest = entered > 0 ? Math.min(...subjectScores) : 0;
-      const passed = subjectScores.filter((s) => s >= 50).length;
-      const rate = entered > 0 ? Math.round((passed / entered) * 100) : 0;
-      const diffFromLastExam = Math.round((avg - subj.lastExamMean) * 10) / 10;
+        const entered = subjectScores.length;
+        const total = subjectScores.reduce((acc, curr) => acc + curr, 0);
+        const avg = entered > 0 ? Math.round((total / entered) * 10) / 10 : 0;
+        const highest = entered > 0 ? Math.max(...subjectScores) : 0;
+        const lowest = entered > 0 ? Math.min(...subjectScores) : 0;
+        const passed = subjectScores.filter((s) => s >= 50).length;
+        const rate = entered > 0 ? Math.round((passed / entered) * 100) : 0;
+        const diffFromLastExam = Math.round((avg - subj.lastExamMean) * 10) / 10;
 
-      return {
-        subject: subj,
-        average: avg,
-        highest,
-        lowest,
-        passRate: rate,
-        entered,
-        diffFromLastExam,
-      };
-    }).sort((a, b) => b.average - a.average);
+        return {
+          subject: subj,
+          average: avg,
+          highest,
+          lowest,
+          passRate: rate,
+          entered,
+          diffFromLastExam,
+        };
+      })
+      .sort((a, b) => b.average - a.average);
   }, [subjects, filteredStudents, marks]);
 
   const strongestSubject = useMemo(() => {
@@ -887,6 +957,10 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
         sendWhatsAppMessage,
         canInstallPwa,
         installPwa,
+        role,
+        setRole,
+        goBack,
+        canGoBack,
       }}
     >
       {children}
@@ -897,7 +971,7 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
 export const useGrading = () => {
   const context = useContext(GradingContext);
   if (!context) {
-    throw new Error('useGrading must be used within a GradingProvider');
+    throw new Error("useGrading must be used within a GradingProvider");
   }
   return context;
 };

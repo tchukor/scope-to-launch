@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { ChokurLogo } from '../components/brand/ChokurLogo';
-import { SchoolSuiteSection } from '../components/SchoolSuiteSection';
-import { GradeChip } from '../components/GradeChip';
-import { useGrading } from '../context/GradingContext';
-import { KCSEGrade, ViewType } from '../types';
-import { getGradeFromScore } from '../utils/grading';
+import React, { useState } from "react";
+import { ChokurLogo } from "../components/brand/ChokurLogo";
+import { SchoolSuiteSection } from "../components/SchoolSuiteSection";
+import { GradeChip } from "../components/GradeChip";
+import { useGrading } from "../context/GradingContext";
+import { KCSEGrade, ViewType } from "../types";
+import { getGradeFromScore } from "../utils/grading";
+import { LegalModals, LegalModalType } from "../components/LegalModals";
 
 interface CalculatorSubject {
   code: string;
@@ -14,38 +15,37 @@ interface CalculatorSubject {
 
 const PRESET_PROFILES = [
   {
-    name: 'Stem High Achiever',
+    name: "Stem High Achiever",
     marks: { MAT: 84, ENG: 78, KIS: 74, BIO: 82, CHE: 76, PHY: 80, GEO: 88 },
   },
   {
-    name: 'KUCCPS Cutoff Borderline (C+)',
+    name: "KUCCPS Cutoff Borderline (C+)",
     marks: { MAT: 58, ENG: 55, KIS: 56, BIO: 54, CHE: 52, HIS: 60, CRE: 64 },
   },
   {
-    name: 'Humanities & Languages Focus',
+    name: "Humanities & Languages Focus",
     marks: { MAT: 50, ENG: 75, KIS: 80, BIO: 48, CHE: 45, HIS: 82, CRE: 85 },
   },
 ];
 
 export const LandingPageView: React.FC = () => {
+  const [legalModal, setLegalModal] = useState<LegalModalType>(null);
   const { setActiveView } = useGrading();
 
   // Micro-calculator state
   const [calcSubjects, setCalcSubjects] = useState<CalculatorSubject[]>([
-    { code: 'MAT', name: 'Mathematics Alt A', score: 74 },
-    { code: 'ENG', name: 'English Language', score: 68 },
-    { code: 'KIS', name: 'Kiswahili', score: 65 },
-    { code: 'BIO', name: 'Biology', score: 58 },
-    { code: 'CHE', name: 'Chemistry', score: 62 },
-    { code: 'PHY', name: 'Physics', score: 70 },
-    { code: 'GEO', name: 'Geography', score: 80 },
+    { code: "MAT", name: "Mathematics Alt A", score: 74 },
+    { code: "ENG", name: "English Language", score: 68 },
+    { code: "KIS", name: "Kiswahili", score: 65 },
+    { code: "BIO", name: "Biology", score: 58 },
+    { code: "CHE", name: "Chemistry", score: 62 },
+    { code: "PHY", name: "Physics", score: 70 },
+    { code: "GEO", name: "Geography", score: 80 },
   ]);
 
   const handleScoreChange = (code: string, val: number) => {
     const clamped = Math.max(0, Math.min(100, isNaN(val) ? 0 : val));
-    setCalcSubjects((prev) =>
-      prev.map((s) => (s.code === code ? { ...s, score: clamped } : s))
-    );
+    setCalcSubjects((prev) => prev.map((s) => (s.code === code ? { ...s, score: clamped } : s)));
   };
 
   const applyPreset = (presetMarks: Record<string, number | undefined>) => {
@@ -53,7 +53,7 @@ export const LandingPageView: React.FC = () => {
       prev.map((s) => ({
         ...s,
         score: presetMarks[s.code] ?? s.score,
-      }))
+      })),
     );
   };
 
@@ -71,27 +71,27 @@ export const LandingPageView: React.FC = () => {
 
   // KCSE Mean Grade lookup based on mean points
   const getMeanGradeFromPoints = (pts: number): KCSEGrade => {
-    if (pts >= 11.5) return 'A';
-    if (pts >= 10.5) return 'A-';
-    if (pts >= 9.5) return 'B+';
-    if (pts >= 8.5) return 'B';
-    if (pts >= 7.5) return 'B-';
-    if (pts >= 6.5) return 'C+';
-    if (pts >= 5.5) return 'C';
-    if (pts >= 4.5) return 'C-';
-    if (pts >= 3.5) return 'D+';
-    if (pts >= 2.5) return 'D';
-    if (pts >= 1.5) return 'D-';
-    return 'E';
+    if (pts >= 11.5) return "A";
+    if (pts >= 10.5) return "A-";
+    if (pts >= 9.5) return "B+";
+    if (pts >= 8.5) return "B";
+    if (pts >= 7.5) return "B-";
+    if (pts >= 6.5) return "C+";
+    if (pts >= 5.5) return "C";
+    if (pts >= 4.5) return "C-";
+    if (pts >= 3.5) return "D+";
+    if (pts >= 2.5) return "D";
+    if (pts >= 1.5) return "D-";
+    return "E";
   };
 
   const computedMeanGrade = getMeanGradeFromPoints(meanPoints);
   const qualifiesForUniversity = meanPoints >= 6.5; // C+ and above is KUCCPS qualification
 
-  const launchApp = (targetView: ViewType = 'overview') => {
+  const launchApp = (targetView: ViewType = "overview") => {
     setActiveView(targetView);
     window.location.hash = `#${targetView}`;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -101,15 +101,15 @@ export const LandingPageView: React.FC = () => {
         <ChokurLogo
           variant="horizontal"
           size={32}
-          onClick={() => launchApp('overview')}
+          onClick={() => launchApp("overview")}
           className="cursor-pointer"
         />
 
         <div className="flex items-center gap-3 sm:gap-5">
           <button
             onClick={() => {
-              const el = document.getElementById('spec-calculator');
-              el?.scrollIntoView({ behavior: 'smooth' });
+              const el = document.getElementById("spec-calculator");
+              el?.scrollIntoView({ behavior: "smooth" });
             }}
             type="button"
             className="hidden sm:inline-block text-xs font-semibold tracking-wider uppercase text-[#5C5850] hover:text-[#111111] transition-colors cursor-pointer"
@@ -118,8 +118,8 @@ export const LandingPageView: React.FC = () => {
           </button>
           <button
             onClick={() => {
-              const el = document.getElementById('spec-features');
-              el?.scrollIntoView({ behavior: 'smooth' });
+              const el = document.getElementById("spec-features");
+              el?.scrollIntoView({ behavior: "smooth" });
             }}
             type="button"
             className="hidden md:inline-block text-xs font-semibold tracking-wider uppercase text-[#5C5850] hover:text-[#111111] transition-colors cursor-pointer"
@@ -127,12 +127,14 @@ export const LandingPageView: React.FC = () => {
             Capabilities
           </button>
           <button
-            onClick={() => launchApp('overview')}
+            onClick={() => launchApp("overview")}
             type="button"
             className="px-4 py-2 bg-[#111111] text-[#FEF9EF] text-xs font-bold tracking-wider uppercase rounded hover:bg-neutral-800 transition-colors shadow-sm flex items-center gap-1.5 cursor-pointer min-h-[38px]"
           >
             <span>Open Ledger</span>
-            <span className="material-symbols-outlined text-[16px] text-[#C2410C]">arrow_forward</span>
+            <span className="material-symbols-outlined text-[16px] text-[#C2410C]">
+              arrow_forward
+            </span>
           </button>
         </div>
       </header>
@@ -148,7 +150,7 @@ export const LandingPageView: React.FC = () => {
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-extrabold text-[#111111] tracking-tight leading-[1.08] mb-6">
-              Marks to insight in one pass.{' '}
+              Marks to insight in one pass.{" "}
               <span className="text-[#C2410C] underline decoration-[#DDD6C7] underline-offset-8">
                 Offline.
               </span>
@@ -164,16 +166,18 @@ export const LandingPageView: React.FC = () => {
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-8">
               <button
-                onClick={() => launchApp('marks-entry')}
+                onClick={() => launchApp("marks-entry")}
                 type="button"
                 className="px-6 py-3.5 bg-[#111111] text-[#FEF9EF] font-bold text-sm tracking-wide rounded hover:bg-neutral-800 transition-colors shadow-sm flex items-center gap-2 cursor-pointer min-h-[48px]"
               >
                 <span>Launch Marks Entry</span>
-                <span className="material-symbols-outlined text-[18px] text-[#C2410C]">edit_note</span>
+                <span className="material-symbols-outlined text-[18px] text-[#C2410C]">
+                  edit_note
+                </span>
               </button>
 
               <button
-                onClick={() => launchApp('report-cards')}
+                onClick={() => launchApp("report-cards")}
                 type="button"
                 className="px-5 py-3.5 bg-[#FBF8F1] border border-[#DDD6C7] text-[#111111] font-semibold text-sm rounded hover:bg-[#F2EDE3] transition-colors flex items-center gap-2 cursor-pointer min-h-[48px]"
               >
@@ -183,8 +187,8 @@ export const LandingPageView: React.FC = () => {
 
               <button
                 onClick={() => {
-                  const el = document.getElementById('spec-calculator');
-                  el?.scrollIntoView({ behavior: 'smooth' });
+                  const el = document.getElementById("spec-calculator");
+                  el?.scrollIntoView({ behavior: "smooth" });
                 }}
                 type="button"
                 className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#C2410C] hover:text-[#9A3412] transition-colors cursor-pointer"
@@ -266,11 +270,15 @@ export const LandingPageView: React.FC = () => {
                 {/* Aggregate Summary */}
                 <div className="bg-[#FEF9EF] p-3 border border-[#DDD6C7] rounded flex justify-between items-center text-xs">
                   <div>
-                    <span className="text-[#5C5850] block font-mono text-[10px]">BEST 7 AGGREGATE</span>
+                    <span className="text-[#5C5850] block font-mono text-[10px]">
+                      BEST 7 AGGREGATE
+                    </span>
                     <span className="font-bold text-base text-[#111111]">81 / 84 Points</span>
                   </div>
                   <div className="text-right">
-                    <span className="text-[#5C5850] block font-mono text-[10px]">KUCCPS STATUS</span>
+                    <span className="text-[#5C5850] block font-mono text-[10px]">
+                      KUCCPS STATUS
+                    </span>
                     <span className="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded text-[11px]">
                       Degree Qualified
                     </span>
@@ -278,7 +286,7 @@ export const LandingPageView: React.FC = () => {
                 </div>
 
                 <button
-                  onClick={() => launchApp('rankings')}
+                  onClick={() => launchApp("rankings")}
                   type="button"
                   className="w-full py-2.5 bg-[#FEF9EF] hover:bg-[#F2EDE3] border border-[#DDD6C7] rounded text-xs font-bold text-[#111111] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
@@ -309,21 +317,23 @@ export const LandingPageView: React.FC = () => {
           <div className="bg-[#FBF8F1] border border-[#DDD6C7] p-6 rounded">
             <div className="flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-rose-700">cancel</span>
-              <h3 className="font-bold text-base text-[#111111]">The Traditional Staffroom Grind</h3>
+              <h3 className="font-bold text-base text-[#111111]">
+                The Traditional Staffroom Grind
+              </h3>
             </div>
             <ul className="space-y-3 text-xs sm:text-sm text-[#5C5850] leading-relaxed">
               <li className="flex items-start gap-2">
                 <span className="text-[#9A958A] mt-0.5 font-mono">01.</span>
                 <span>
-                  <strong>Fragile Excel Formulas:</strong> Broken VLOOKUPs, overwritten cells, and formula
-                  syntax errors when teachers copy sheets between flash drives.
+                  <strong>Fragile Excel Formulas:</strong> Broken VLOOKUPs, overwritten cells, and
+                  formula syntax errors when teachers copy sheets between flash drives.
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-[#9A958A] mt-0.5 font-mono">02.</span>
                 <span>
-                  <strong>Connectivity &amp; Power Cuts:</strong> Cloud portals freeze during rural load
-                  shedding or when local mobile network congestion peaks at end-of-term.
+                  <strong>Connectivity &amp; Power Cuts:</strong> Cloud portals freeze during rural
+                  load shedding or when local mobile network congestion peaks at end-of-term.
                 </span>
               </li>
               <li className="flex items-start gap-2">
@@ -336,8 +346,8 @@ export const LandingPageView: React.FC = () => {
               <li className="flex items-start gap-2">
                 <span className="text-[#9A958A] mt-0.5 font-mono">04.</span>
                 <span>
-                  <strong>Delayed Subject Analysis:</strong> HODs wait days after exams finish to know
-                  mean score standard deviations and university qualification numbers.
+                  <strong>Delayed Subject Analysis:</strong> HODs wait days after exams finish to
+                  know mean score standard deviations and university qualification numbers.
                 </span>
               </li>
             </ul>
@@ -353,15 +363,15 @@ export const LandingPageView: React.FC = () => {
               <li className="flex items-start gap-2">
                 <span className="text-[#C2410C] mt-0.5 font-mono font-bold">01.</span>
                 <span>
-                  <strong>Instant 12-Point Calculation:</strong> Every mark entered is instantly graded
-                  and ranked against class peers without pressing save or recalculate.
+                  <strong>Instant 12-Point Calculation:</strong> Every mark entered is instantly
+                  graded and ranked against class peers without pressing save or recalculate.
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-[#C2410C] mt-0.5 font-mono font-bold">02.</span>
                 <span>
-                  <strong>100% Offline Database:</strong> Runs on IndexedDB. Zero internet needed during
-                  exam week. Your marks remain safely cached in the browser storage.
+                  <strong>100% Offline Database:</strong> Runs on IndexedDB. Zero internet needed
+                  during exam week. Your marks remain safely cached in the browser storage.
                 </span>
               </li>
               <li className="flex items-start gap-2">
@@ -374,8 +384,8 @@ export const LandingPageView: React.FC = () => {
               <li className="flex items-start gap-2">
                 <span className="text-[#C2410C] mt-0.5 font-mono font-bold">04.</span>
                 <span>
-                  <strong>Touch-First Mobile Entry:</strong> Enter subject scores student-by-student on a
-                  cheap Android phone with 48px touch targets and full keyboard numeric pads.
+                  <strong>Touch-First Mobile Entry:</strong> Enter subject scores student-by-student
+                  on a cheap Android phone with 48px touch targets and full keyboard numeric pads.
                 </span>
               </li>
             </ul>
@@ -384,7 +394,10 @@ export const LandingPageView: React.FC = () => {
       </section>
 
       {/* Feature Deep-Dive Section */}
-      <section id="spec-features" className="px-4 sm:px-8 py-12 sm:py-16 max-w-[1200px] mx-auto border-b border-[#DDD6C7]">
+      <section
+        id="spec-features"
+        className="px-4 sm:px-8 py-12 sm:py-16 max-w-[1200px] mx-auto border-b border-[#DDD6C7]"
+      >
         <div className="max-w-2xl mb-12">
           <span className="text-xs font-mono font-bold tracking-widest text-[#C2410C] uppercase block mb-2">
             Seven Core Pillars
@@ -400,17 +413,19 @@ export const LandingPageView: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <span className="font-mono text-xs font-bold text-[#C2410C]">01 / GRADING</span>
-                <span className="material-symbols-outlined text-[20px] text-[#5C5850]">calculate</span>
+                <span className="material-symbols-outlined text-[20px] text-[#5C5850]">
+                  calculate
+                </span>
               </div>
               <h3 className="font-bold text-base text-[#111111] mb-2">KCSE 12-Point KNEC Scale</h3>
               <p className="text-xs text-[#5C5850] leading-relaxed">
-                Automated conversion from raw percentage scores to official KNEC letter grades (A through E)
-                and points (12 to 1). Evaluates the best-7 subjects aggregate according to Ministry of
-                Education cluster requirements.
+                Automated conversion from raw percentage scores to official KNEC letter grades (A
+                through E) and points (12 to 1). Evaluates the best-7 subjects aggregate according
+                to Ministry of Education cluster requirements.
               </p>
             </div>
             <button
-              onClick={() => launchApp('grade-distribution')}
+              onClick={() => launchApp("grade-distribution")}
               type="button"
               className="mt-4 pt-3 border-t border-[#DDD6C7] text-left text-xs font-bold text-[#111111] hover:text-[#C2410C] transition-colors flex items-center justify-between cursor-pointer"
             >
@@ -424,16 +439,18 @@ export const LandingPageView: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <span className="font-mono text-xs font-bold text-[#C2410C]">02 / ENTRY</span>
-                <span className="material-symbols-outlined text-[20px] text-[#5C5850]">edit_note</span>
+                <span className="material-symbols-outlined text-[20px] text-[#5C5850]">
+                  edit_note
+                </span>
               </div>
               <h3 className="font-bold text-base text-[#111111] mb-2">Dual-Mode Marks Entry</h3>
               <p className="text-xs text-[#5C5850] leading-relaxed">
-                Choose between rapid desktop spreadsheet matrix with arrow-key keyboard navigation and
-                focused mobile student-by-student cards with tactile numeric keypads.
+                Choose between rapid desktop spreadsheet matrix with arrow-key keyboard navigation
+                and focused mobile student-by-student cards with tactile numeric keypads.
               </p>
             </div>
             <button
-              onClick={() => launchApp('marks-entry')}
+              onClick={() => launchApp("marks-entry")}
               type="button"
               className="mt-4 pt-3 border-t border-[#DDD6C7] text-left text-xs font-bold text-[#111111] hover:text-[#C2410C] transition-colors flex items-center justify-between cursor-pointer"
             >
@@ -451,14 +468,17 @@ export const LandingPageView: React.FC = () => {
                   format_list_numbered
                 </span>
               </div>
-              <h3 className="font-bold text-base text-[#111111] mb-2">Class &amp; Stream Rankings</h3>
+              <h3 className="font-bold text-base text-[#111111] mb-2">
+                Class &amp; Stream Rankings
+              </h3>
               <p className="text-xs text-[#5C5850] leading-relaxed">
-                Instant stream rank, overall form rank, aggregate score, and mean points. Tracks deviation
-                from previous term to celebrate improving students and flag declining performers.
+                Instant stream rank, overall form rank, aggregate score, and mean points. Tracks
+                deviation from previous term to celebrate improving students and flag declining
+                performers.
               </p>
             </div>
             <button
-              onClick={() => launchApp('rankings')}
+              onClick={() => launchApp("rankings")}
               type="button"
               className="mt-4 pt-3 border-t border-[#DDD6C7] text-left text-xs font-bold text-[#111111] hover:text-[#C2410C] transition-colors flex items-center justify-between cursor-pointer"
             >
@@ -472,16 +492,21 @@ export const LandingPageView: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <span className="font-mono text-xs font-bold text-[#C2410C]">04 / HOD</span>
-                <span className="material-symbols-outlined text-[20px] text-[#5C5850]">analytics</span>
+                <span className="material-symbols-outlined text-[20px] text-[#5C5850]">
+                  analytics
+                </span>
               </div>
-              <h3 className="font-bold text-base text-[#111111] mb-2">Subject Performance Analysis</h3>
+              <h3 className="font-bold text-base text-[#111111] mb-2">
+                Subject Performance Analysis
+              </h3>
               <p className="text-xs text-[#5C5850] leading-relaxed">
-                Departmental metrics per subject: mean points, standard deviation, pass rate (&ge; C+),
-                top performers, and candidate grade count breakdowns for academic committee meetings.
+                Departmental metrics per subject: mean points, standard deviation, pass rate (&ge;
+                C+), top performers, and candidate grade count breakdowns for academic committee
+                meetings.
               </p>
             </div>
             <button
-              onClick={() => launchApp('subject-analysis')}
+              onClick={() => launchApp("subject-analysis")}
               type="button"
               className="mt-4 pt-3 border-t border-[#DDD6C7] text-left text-xs font-bold text-[#111111] hover:text-[#C2410C] transition-colors flex items-center justify-between cursor-pointer"
             >
@@ -499,12 +524,13 @@ export const LandingPageView: React.FC = () => {
               </div>
               <h3 className="font-bold text-base text-[#111111] mb-2">Printable Report Cards</h3>
               <p className="text-xs text-[#5C5850] leading-relaxed">
-                Official MOE layout with school crest, motto, student biodata, subject evaluation remarks,
-                stream rank, and teacher/principal signatures. Single-card or batch-class printing.
+                Official MOE layout with school crest, motto, student biodata, subject evaluation
+                remarks, stream rank, and teacher/principal signatures. Single-card or batch-class
+                printing.
               </p>
             </div>
             <button
-              onClick={() => launchApp('report-cards')}
+              onClick={() => launchApp("report-cards")}
               type="button"
               className="mt-4 pt-3 border-t border-[#DDD6C7] text-left text-xs font-bold text-[#111111] hover:text-[#C2410C] transition-colors flex items-center justify-between cursor-pointer"
             >
@@ -518,16 +544,20 @@ export const LandingPageView: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <span className="font-mono text-xs font-bold text-[#C2410C]">06 / OFFLINE</span>
-                <span className="material-symbols-outlined text-[20px] text-[#5C5850]">wifi_off</span>
+                <span className="material-symbols-outlined text-[20px] text-[#5C5850]">
+                  wifi_off
+                </span>
               </div>
-              <h3 className="font-bold text-base text-[#111111] mb-2">Offline-First &amp; JSON Backup</h3>
+              <h3 className="font-bold text-base text-[#111111] mb-2">
+                Offline-First &amp; JSON Backup
+              </h3>
               <p className="text-xs text-[#5C5850] leading-relaxed">
-                IndexedDB storage with automatic persistence. Export complete school backups to single
-                clean JSON files for safekeeping or sharing between teachers via USB drive.
+                IndexedDB storage with automatic persistence. Export complete school backups to
+                single clean JSON files for safekeeping or sharing between teachers via USB drive.
               </p>
             </div>
             <button
-              onClick={() => launchApp('settings')}
+              onClick={() => launchApp("settings")}
               type="button"
               className="mt-4 pt-3 border-t border-[#DDD6C7] text-left text-xs font-bold text-[#111111] hover:text-[#C2410C] transition-colors flex items-center justify-between cursor-pointer"
             >
@@ -541,7 +571,9 @@ export const LandingPageView: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
               <div className="md:col-span-8">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="font-mono text-xs font-bold text-[#C2410C]">07 / COMMUNICATION</span>
+                  <span className="font-mono text-xs font-bold text-[#C2410C]">
+                    07 / COMMUNICATION
+                  </span>
                   <span className="px-2 py-0.5 bg-[#FEF9EF] border border-[#DDD6C7] text-[10px] font-mono text-[#5C5850] rounded">
                     WHATSAPP &amp; SMS
                   </span>
@@ -550,19 +582,21 @@ export const LandingPageView: React.FC = () => {
                   Teacher Profile &amp; Parent Communication Log
                 </h3>
                 <p className="text-xs sm:text-sm text-[#5C5850] leading-relaxed">
-                  Keep teacher TSC numbers, teaching subjects, and stream responsibilities organized.
-                  Generate automated WhatsApp messages with KCSE mean grades and rank standing to send
-                  directly to parents and guardians with one tap.
+                  Keep teacher TSC numbers, teaching subjects, and stream responsibilities
+                  organized. Generate automated WhatsApp messages with KCSE mean grades and rank
+                  standing to send directly to parents and guardians with one tap.
                 </p>
               </div>
               <div className="md:col-span-4 flex justify-start md:justify-end">
                 <button
-                  onClick={() => launchApp('profile')}
+                  onClick={() => launchApp("profile")}
                   type="button"
                   className="px-4 py-2.5 bg-[#111111] text-[#FEF9EF] rounded text-xs font-bold tracking-wide flex items-center gap-2 hover:bg-neutral-800 transition-colors cursor-pointer"
                 >
                   <span>Open WhatsApp Inbox</span>
-                  <span className="material-symbols-outlined text-[16px] text-[#C2410C]">forum</span>
+                  <span className="material-symbols-outlined text-[16px] text-[#C2410C]">
+                    forum
+                  </span>
                 </button>
               </div>
             </div>
@@ -571,7 +605,10 @@ export const LandingPageView: React.FC = () => {
       </section>
 
       {/* Interactive Micro-Calculator Section */}
-      <section id="spec-calculator" className="px-4 sm:px-8 py-12 sm:py-16 max-w-[1200px] mx-auto border-b border-[#DDD6C7]">
+      <section
+        id="spec-calculator"
+        className="px-4 sm:px-8 py-12 sm:py-16 max-w-[1200px] mx-auto border-b border-[#DDD6C7]"
+      >
         <div className="max-w-2xl mb-8">
           <span className="text-xs font-mono font-bold tracking-widest text-[#C2410C] uppercase block mb-2">
             Try The Engine Now
@@ -624,7 +661,7 @@ export const LandingPageView: React.FC = () => {
                       <div className="flex items-center gap-2 mt-1">
                         <GradeChip grade={info.grade} size="sm" />
                         <span className="font-mono text-[11px] text-[#5C5850]">
-                          {info.points} {info.points === 1 ? 'pt' : 'pts'}
+                          {info.points} {info.points === 1 ? "pt" : "pts"}
                         </span>
                       </div>
                     </div>
@@ -693,7 +730,9 @@ export const LandingPageView: React.FC = () => {
                 </div>
                 <div className="p-2.5 bg-[#FBF8F1] border border-[#DDD6C7] rounded">
                   <span className="text-[10px] text-[#5C5850] block">AVERAGE SCORE</span>
-                  <span className="font-bold text-sm text-[#111111]">{averageScore.toFixed(1)}%</span>
+                  <span className="font-bold text-sm text-[#111111]">
+                    {averageScore.toFixed(1)}%
+                  </span>
                 </div>
               </div>
 
@@ -701,34 +740,36 @@ export const LandingPageView: React.FC = () => {
               <div
                 className={`p-3 rounded border text-xs leading-relaxed ${
                   qualifiesForUniversity
-                    ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
-                    : 'bg-amber-50 border-amber-300 text-amber-900'
+                    ? "bg-emerald-50 border-emerald-300 text-emerald-900"
+                    : "bg-amber-50 border-amber-300 text-amber-900"
                 }`}
               >
                 <div className="font-bold flex items-center gap-1.5 mb-1">
                   <span className="material-symbols-outlined text-[16px]">
-                    {qualifiesForUniversity ? 'verified' : 'info'}
+                    {qualifiesForUniversity ? "verified" : "info"}
                   </span>
                   <span>
                     {qualifiesForUniversity
-                      ? 'KUCCPS University Qualified'
-                      : 'Below University Degree Cutoff'}
+                      ? "KUCCPS University Qualified"
+                      : "Below University Degree Cutoff"}
                   </span>
                 </div>
                 <p className="text-[11px]">
                   {qualifiesForUniversity
-                    ? 'Candidate attains the minimum C+ (6.50 pts) cutoff required for direct degree entry placement in Kenyan universities.'
-                    : 'Requires minimum C+ (6.50 pts) for degree admission. Eligible for TVET diploma programs.'}
+                    ? "Candidate attains the minimum C+ (6.50 pts) cutoff required for direct degree entry placement in Kenyan universities."
+                    : "Requires minimum C+ (6.50 pts) for degree admission. Eligible for TVET diploma programs."}
                 </p>
               </div>
 
               <button
-                onClick={() => launchApp('marks-entry')}
+                onClick={() => launchApp("marks-entry")}
                 type="button"
                 className="w-full py-3 bg-[#111111] text-[#FEF9EF] rounded font-bold text-xs tracking-wide uppercase hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Enter Real Class Marks</span>
-                <span className="material-symbols-outlined text-[16px] text-[#C2410C]">arrow_forward</span>
+                <span className="material-symbols-outlined text-[16px] text-[#C2410C]">
+                  arrow_forward
+                </span>
               </button>
             </div>
           </div>
@@ -817,13 +858,13 @@ export const LandingPageView: React.FC = () => {
             </h2>
 
             <p className="text-sm sm:text-base text-[#DDD6C7] mb-8 leading-relaxed">
-              Launch Chokur right in your browser. No subscription, no login passwords to forget, and
-              zero data sent to third-party servers. Your marks stay with your school.
+              Launch Chokur right in your browser. No subscription, no login passwords to forget,
+              and zero data sent to third-party servers. Your marks stay with your school.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
               <button
-                onClick={() => launchApp('overview')}
+                onClick={() => launchApp("overview")}
                 type="button"
                 className="px-8 py-4 bg-[#C2410C] hover:bg-[#EA580C] text-[#FEF9EF] font-bold text-sm tracking-wider uppercase rounded transition-colors shadow-lg flex items-center gap-2 cursor-pointer min-h-[48px]"
               >
@@ -832,7 +873,7 @@ export const LandingPageView: React.FC = () => {
               </button>
 
               <button
-                onClick={() => launchApp('marks-entry')}
+                onClick={() => launchApp("marks-entry")}
                 type="button"
                 className="px-6 py-4 bg-transparent border border-[#DDD6C7]/40 hover:border-[#FEF9EF] text-[#FEF9EF] font-semibold text-sm rounded transition-colors cursor-pointer min-h-[48px]"
               >
@@ -858,41 +899,63 @@ export const LandingPageView: React.FC = () => {
             <span>Marks to Insight</span>
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-mono">
+          <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono">
             <button
-              onClick={() => launchApp('overview')}
+              onClick={() => launchApp("overview")}
               type="button"
               className="hover:text-[#111111] transition-colors cursor-pointer"
             >
               Overview
             </button>
             <button
-              onClick={() => launchApp('marks-entry')}
+              onClick={() => launchApp("marks-entry")}
               type="button"
               className="hover:text-[#111111] transition-colors cursor-pointer"
             >
               Marks Ledger
             </button>
             <button
-              onClick={() => launchApp('rankings')}
+              onClick={() => launchApp("rankings")}
               type="button"
               className="hover:text-[#111111] transition-colors cursor-pointer"
             >
               Rankings
             </button>
             <button
-              onClick={() => launchApp('report-cards')}
+              onClick={() => launchApp("report-cards")}
               type="button"
               className="hover:text-[#111111] transition-colors cursor-pointer"
             >
               Report Cards
             </button>
             <button
-              onClick={() => launchApp('settings')}
+              onClick={() => launchApp("settings")}
               type="button"
               className="hover:text-[#111111] transition-colors cursor-pointer"
             >
-              Backup &amp; Settings
+              Settings
+            </button>
+            <span className="text-[#DDD6C7] hidden md:inline">|</span>
+            <button
+              onClick={() => setLegalModal("privacy")}
+              type="button"
+              className="hover:text-[#C2410C] transition-colors cursor-pointer underline underline-offset-2"
+            >
+              Privacy Policy (DPA 2019)
+            </button>
+            <button
+              onClick={() => setLegalModal("terms")}
+              type="button"
+              className="hover:text-[#C2410C] transition-colors cursor-pointer underline underline-offset-2"
+            >
+              Terms of Service
+            </button>
+            <button
+              onClick={() => setLegalModal("compliance")}
+              type="button"
+              className="hover:text-[#C2410C] transition-colors cursor-pointer underline underline-offset-2"
+            >
+              MoE / KNEC
             </button>
           </div>
 
@@ -901,6 +964,12 @@ export const LandingPageView: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* Legal & Compliance Modal */}
+      <LegalModals
+        activeModal={legalModal}
+        onClose={() => setLegalModal(null)}
+      />
     </div>
   );
 };

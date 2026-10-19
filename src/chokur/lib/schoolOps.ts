@@ -2,9 +2,9 @@
  * School operations store: attendance, parent contacts, fees and bulk-SMS log.
  * Self-contained, persisted to localStorage, shared across views via useSyncExternalStore.
  */
-import { useSyncExternalStore } from 'react';
+import { useSyncExternalStore } from "react";
 
-export type AttendanceMark = 'P' | 'A' | 'L'; // Present / Absent / Late
+export type AttendanceMark = "P" | "A" | "L"; // Present / Absent / Late
 
 export interface ParentContact {
   parentName: string;
@@ -16,7 +16,7 @@ export interface FeePayment {
   studentId: string;
   amount: number;
   date: string;
-  method: 'M-Pesa' | 'Bank' | 'Cash' | 'Cheque';
+  method: "M-Pesa" | "Bank" | "Cash" | "Cheque";
   ref: string;
 }
 
@@ -39,7 +39,7 @@ export interface SchoolOpsState {
   smsLog: SmsLogEntry[];
 }
 
-const KEY = 'chokur_school_ops_v1';
+const KEY = "chokur_school_ops_v1";
 
 const seedPayments = (): FeePayment[] => [];
 
@@ -53,7 +53,7 @@ const initial = (): SchoolOpsState => ({
 
 const load = (): SchoolOpsState => {
   try {
-    const raw = typeof window !== 'undefined' ? window.localStorage.getItem(KEY) : null;
+    const raw = typeof window !== "undefined" ? window.localStorage.getItem(KEY) : null;
     if (raw) return { ...initial(), ...JSON.parse(raw) };
   } catch {
     /* ignore */
@@ -83,14 +83,14 @@ const uid = () => Math.random().toString(36).slice(2, 10);
 
 /** Deterministic placeholder contact so every student has a parent record to edit. */
 export const defaultContact = (admNo: string, studentName: string): ParentContact => {
-  const n = parseInt(admNo.replace(/\D/g, '') || '0', 10);
+  const n = parseInt(admNo.replace(/\D/g, "") || "0", 10);
   const tail = String(10000000 + ((n * 7919) % 89999999)).slice(0, 8);
-  return { parentName: `Parent of ${studentName.split(' ')[0]}`, phone: `+2547${tail}` };
+  return { parentName: `Parent of ${studentName.split(" ")[0]}`, phone: `+2547${tail}` };
 };
 
 export const getContact = (
   s: SchoolOpsState,
-  student: { id: string; admNo: string; name: string }
+  student: { id: string; admNo: string; name: string },
 ): ParentContact => s.contacts[student.id] || defaultContact(student.admNo, student.name);
 
 export const smsSegments = (text: string) => {
@@ -99,8 +99,14 @@ export const smsSegments = (text: string) => {
 };
 
 export const feeBalance = (s: SchoolOpsState, studentId: string) => {
-  const paid = s.payments.filter((p) => p.studentId === studentId).reduce((a, p) => a + p.amount, 0);
-  return { paid, balance: Math.max(0, s.feePerTerm - paid), overpaid: Math.max(0, paid - s.feePerTerm) };
+  const paid = s.payments
+    .filter((p) => p.studentId === studentId)
+    .reduce((a, p) => a + p.amount, 0);
+  return {
+    paid,
+    balance: Math.max(0, s.feePerTerm - paid),
+    overpaid: Math.max(0, paid - s.feePerTerm),
+  };
 };
 
 export const attendanceSummary = (s: SchoolOpsState, studentId: string) => {
@@ -109,12 +115,18 @@ export const attendanceSummary = (s: SchoolOpsState, studentId: string) => {
     absent = 0;
   Object.values(s.attendance).forEach((day) => {
     const m = day[studentId];
-    if (m === 'P') present++;
-    else if (m === 'L') late++;
-    else if (m === 'A') absent++;
+    if (m === "P") present++;
+    else if (m === "L") late++;
+    else if (m === "A") absent++;
   });
   const total = present + late + absent;
-  return { present, late, absent, total, rate: total ? Math.round(((present + late) / total) * 100) : null };
+  return {
+    present,
+    late,
+    absent,
+    total,
+    rate: total ? Math.round(((present + late) / total) * 100) : null,
+  };
 };
 
 export const ops = {
@@ -127,16 +139,34 @@ export const ops = {
   setFeePerTerm(amount: number) {
     commit({ ...state, feePerTerm: Math.max(0, amount) });
   },
-  addPayment(p: Omit<FeePayment, 'id'>) {
+  addPayment(p: Omit<FeePayment, "id">) {
     commit({ ...state, payments: [{ ...p, id: uid() }, ...state.payments] });
   },
   removePayment(id: string) {
     commit({ ...state, payments: state.payments.filter((p) => p.id !== id) });
   },
-  logSms(e: Omit<SmsLogEntry, 'id' | 'sentAt'>) {
-    commit({ ...state, smsLog: [{ ...e, id: uid(), sentAt: new Date().toISOString() }, ...state.smsLog].slice(0, 200) });
+  logSms(e: Omit<SmsLogEntry, "id" | "sentAt">) {
+    commit({
+      ...state,
+      smsLog: [{ ...e, id: uid(), sentAt: new Date().toISOString() }, ...state.smsLog].slice(
+        0,
+        200,
+      ),
+    });
   },
 };
 
+export const resetSchoolOps = () => {
+  commit(initial());
+};
+
+export const applyOpsState = (partial: Partial<SchoolOpsState>) => {
+  commit({ ...state, ...partial });
+};
+
 export const useSchoolOps = (): SchoolOpsState =>
-  useSyncExternalStore(subscribe, () => state, () => state);
+  useSyncExternalStore(
+    subscribe,
+    () => state,
+    () => state,
+  );

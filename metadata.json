@@ -1,0 +1,6 @@
+{
+  "name": "Chokur System",
+  "description": "Kenyan secondary school (KCSE) 12-point grading ledger, rapid spreadsheet marks entry, class rankings, subject analysis, and official printable report cards.",
+  "permissions": [],
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

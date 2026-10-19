@@ -1,11 +1,12 @@
-import React, { useMemo, useState } from 'react';
-import { GradeChip } from '../components/GradeChip';
-import { useGrading } from '../context/GradingContext';
-import { exportTableToCSV, getGradeFromScore } from '../utils/grading';
+import React, { useMemo, useState } from "react";
+import { GradeChip } from "../components/GradeChip";
+import { useGrading } from "../context/GradingContext";
+import { exportTableToCSV, getGradeFromScore } from "../utils/grading";
 
 export const SubjectAnalysisView: React.FC = () => {
-  const { subjectDepartmentalStats, classAverage, activeStream, activeExam } = useGrading();
-  const [selectedDepartment, setSelectedDepartment] = useState<string>('ALL');
+  const { subjectDepartmentalStats, classAverage, activeStream, activeExam, setActiveView } =
+    useGrading();
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("ALL");
   const [comparePrevious, setComparePrevious] = useState(true);
 
   // Departmental filter
@@ -18,7 +19,7 @@ export const SubjectAnalysisView: React.FC = () => {
   }, [subjectDepartmentalStats]);
 
   const filteredStats = useMemo(() => {
-    if (selectedDepartment === 'ALL') return subjectDepartmentalStats;
+    if (selectedDepartment === "ALL") return subjectDepartmentalStats;
     return subjectDepartmentalStats.filter((s) => s.subject.department === selectedDepartment);
   }, [subjectDepartmentalStats, selectedDepartment]);
 
@@ -29,17 +30,17 @@ export const SubjectAnalysisView: React.FC = () => {
 
   const handleExportCSV = () => {
     const headers = [
-      'Subject Code',
-      'Subject Name',
-      'Department',
-      'Subject Teacher',
-      'Entries',
-      'Average Score (%)',
-      'Mean Grade',
-      'Highest Mark',
-      'Lowest Mark',
-      'Pass Rate (%)',
-      'Vs Previous Exam',
+      "Subject Code",
+      "Subject Name",
+      "Department",
+      "Subject Teacher",
+      "Entries",
+      "Average Score (%)",
+      "Mean Grade",
+      "Highest Mark",
+      "Lowest Mark",
+      "Pass Rate (%)",
+      "Vs Previous Exam",
     ];
 
     const rows = filteredStats.map((s) => {
@@ -48,21 +49,21 @@ export const SubjectAnalysisView: React.FC = () => {
         s.subject.code,
         s.subject.name,
         s.subject.department,
-        s.subject.teacher || '—',
+        s.subject.teacher || "—",
         s.entered,
         s.average.toFixed(1),
         grade.grade,
         s.highest,
         s.lowest,
         `${s.passRate}%`,
-        `${s.diffFromLastExam >= 0 ? '+' : ''}${s.diffFromLastExam.toFixed(1)}`,
+        `${s.diffFromLastExam >= 0 ? "+" : ""}${s.diffFromLastExam.toFixed(1)}`,
       ];
     });
 
     exportTableToCSV(
-      `Subject_Analysis_${activeStream.replace(/\s+/g, '_')}_${activeExam.replace(/\s+/g, '_')}`,
+      `Subject_Analysis_${activeStream.replace(/\s+/g, "_")}_${activeExam.replace(/\s+/g, "_")}`,
       headers,
-      rows
+      rows,
     );
   };
 
@@ -75,7 +76,9 @@ export const SubjectAnalysisView: React.FC = () => {
       {/* Header & Controls */}
       <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-4 pb-4 sm:pb-6 border-b border-[#DDD6C7]">
         <div>
-          <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">Subject Analysis</h1>
+          <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">
+            Subject Analysis
+          </h1>
           <p className="font-body-md text-xs sm:text-body-md text-[#5F5E5E] mt-1">
             {activeStream} · {activeExam} · performance diagnostics &amp; curriculum benchmark
           </p>
@@ -86,9 +89,11 @@ export const SubjectAnalysisView: React.FC = () => {
           {/* Department Filter */}
           <div className="flex flex-wrap items-center border border-[#DDD6C7] rounded bg-[#FBF8F1] text-xs font-medium overflow-hidden max-w-full">
             <button
-              onClick={() => setSelectedDepartment('ALL')}
+              onClick={() => setSelectedDepartment("ALL")}
               className={`px-3 py-2 min-h-[40px] cursor-pointer ${
-                selectedDepartment === 'ALL' ? 'bg-[#111111] text-[#FEF9EF]' : 'text-[#5F5E5E] hover:bg-[#F2EDE3]'
+                selectedDepartment === "ALL"
+                  ? "bg-[#111111] text-[#FEF9EF]"
+                  : "text-[#5F5E5E] hover:bg-[#F2EDE3]"
               }`}
             >
               All Depts
@@ -98,7 +103,9 @@ export const SubjectAnalysisView: React.FC = () => {
                 key={dept}
                 onClick={() => setSelectedDepartment(dept)}
                 className={`px-2.5 sm:px-3 py-2 min-h-[40px] cursor-pointer truncate max-w-[90px] sm:max-w-none ${
-                  selectedDepartment === dept ? 'bg-[#111111] text-[#FEF9EF]' : 'text-[#5F5E5E] hover:bg-[#F2EDE3]'
+                  selectedDepartment === dept
+                    ? "bg-[#111111] text-[#FEF9EF]"
+                    : "text-[#5F5E5E] hover:bg-[#F2EDE3]"
                 }`}
               >
                 {dept}
@@ -132,13 +139,16 @@ export const SubjectAnalysisView: React.FC = () => {
       {dragSubjects.length > 0 && (
         <div className="my-4 sm:my-6 p-4 bg-[#FBF8F1] border-l-4 border-[#C2410C] border-y border-r border-[#DDD6C7]">
           <div className="flex items-start gap-3">
-            <span className="material-symbols-outlined text-[#C2410C] text-[20px] mt-0.5">priority_high</span>
+            <span className="material-symbols-outlined text-[#C2410C] text-[20px] mt-0.5">
+              priority_high
+            </span>
             <div>
               <h3 className="font-headline-sm text-headline-sm text-[#111111]">
                 Curriculum Drag Diagnostic
               </h3>
               <p className="font-body-sm text-xs sm:text-body-sm text-[#5F5E5E] mt-0.5">
-                The following subject{dragSubjects.length > 1 ? 's are' : ' is'} performing significantly below the class average of {classAverage.toFixed(1)}%:
+                The following subject{dragSubjects.length > 1 ? "s are" : " is"} performing
+                significantly below the class average of {classAverage.toFixed(1)}%:
               </p>
               <div className="flex flex-wrap gap-2 mt-2">
                 {dragSubjects.map((d) => (
@@ -146,7 +156,10 @@ export const SubjectAnalysisView: React.FC = () => {
                     key={d.subject.code}
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#FFFFFF] border border-[#DDD6C7] text-xs font-medium text-[#111111]"
                   >
-                    <strong>{d.subject.code} ({d.subject.name}):</strong> {d.average.toFixed(1)}% mean
+                    <strong>
+                      {d.subject.code} ({d.subject.name}):
+                    </strong>{" "}
+                    {d.average.toFixed(1)}% mean
                     <span className="text-[#C2410C] font-semibold">
                       ({(d.average - classAverage).toFixed(1)}% vs class avg)
                     </span>
@@ -185,7 +198,7 @@ export const SubjectAnalysisView: React.FC = () => {
           {/* Vertical 55% C+ Benchmark Line */}
           <div
             className="absolute top-0 bottom-6 border-r-2 border-dashed border-[#111111] z-10 pointer-events-none"
-            style={{ left: '55%' }}
+            style={{ left: "55%" }}
           >
             <span className="absolute -top-3 -translate-x-1/2 bg-[#111111] text-[#FEF9EF] text-[10px] font-bold px-1.5 py-0.2 rounded-[2px]">
               55% C+
@@ -199,14 +212,18 @@ export const SubjectAnalysisView: React.FC = () => {
             return (
               <div key={stat.subject.code} className="flex items-center gap-2 sm:gap-3">
                 <div className="w-14 sm:w-24 text-right shrink-0">
-                  <span className="font-semibold text-xs text-[#111111] block">{stat.subject.code}</span>
-                  <span className="text-[10px] text-[#5F5E5E] truncate hidden sm:block">{stat.subject.department}</span>
+                  <span className="font-semibold text-xs text-[#111111] block">
+                    {stat.subject.code}
+                  </span>
+                  <span className="text-[10px] text-[#5F5E5E] truncate hidden sm:block">
+                    {stat.subject.department}
+                  </span>
                 </div>
 
                 <div className="flex-1 bg-[#F2EDE3] h-6 rounded-none relative overflow-hidden flex items-center">
                   <div
                     className={`h-full transition-all duration-300 flex items-center justify-end pr-2 text-xs font-bold text-[#FEF9EF] ${
-                      isPassing ? 'bg-[#111111]' : 'bg-[#C2410C]'
+                      isPassing ? "bg-[#111111]" : "bg-[#C2410C]"
                     }`}
                     style={{ width: `${Math.min(100, Math.max(10, stat.average))}%` }}
                   >
@@ -219,10 +236,12 @@ export const SubjectAnalysisView: React.FC = () => {
                   {comparePrevious && (
                     <span
                       className={`text-[10px] sm:text-[11px] font-tabular-sm font-semibold hidden sm:inline ${
-                        stat.diffFromLastExam >= 0 ? 'text-emerald-800' : 'text-red-700'
+                        stat.diffFromLastExam >= 0 ? "text-emerald-800" : "text-red-700"
                       }`}
                     >
-                      {stat.diffFromLastExam >= 0 ? `+${stat.diffFromLastExam.toFixed(1)}` : stat.diffFromLastExam.toFixed(1)}
+                      {stat.diffFromLastExam >= 0
+                        ? `+${stat.diffFromLastExam.toFixed(1)}`
+                        : stat.diffFromLastExam.toFixed(1)}
                     </span>
                   )}
                 </div>
@@ -239,7 +258,10 @@ export const SubjectAnalysisView: React.FC = () => {
         {filteredStats.map((stat) => {
           const grade = getGradeFromScore(stat.average);
           return (
-            <div key={stat.subject.code} className="bg-[#FBF8F1] border border-[#DDD6C7] rounded p-3.5 shadow-xs">
+            <div
+              key={stat.subject.code}
+              className="bg-[#FBF8F1] border border-[#DDD6C7] rounded p-3.5 shadow-xs"
+            >
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
@@ -247,7 +269,7 @@ export const SubjectAnalysisView: React.FC = () => {
                     <span className="text-xs text-[#5F5E5E] font-medium">{stat.subject.name}</span>
                   </div>
                   <div className="text-[10px] text-[#9A958A] mt-0.5">
-                    {stat.subject.department} · Teacher: {stat.subject.teacher || 'Unassigned'}
+                    {stat.subject.department} · Teacher: {stat.subject.teacher || "Unassigned"}
                   </div>
                 </div>
                 <GradeChip grade={grade.grade} size="md" />
@@ -255,21 +277,33 @@ export const SubjectAnalysisView: React.FC = () => {
 
               <div className="grid grid-cols-3 gap-2 py-2.5 my-2 border-y border-[#DDD6C7]/60 text-center text-xs">
                 <div>
-                  <span className="text-[10px] text-[#5F5E5E] uppercase block font-label-caps">Average</span>
-                  <span className="font-tabular-md font-bold text-[#111111]">{stat.average.toFixed(1)}%</span>
+                  <span className="text-[10px] text-[#5F5E5E] uppercase block font-label-caps">
+                    Average
+                  </span>
+                  <span className="font-tabular-md font-bold text-[#111111]">
+                    {stat.average.toFixed(1)}%
+                  </span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-[#5F5E5E] uppercase block font-label-caps">Pass Rate</span>
+                  <span className="text-[10px] text-[#5F5E5E] uppercase block font-label-caps">
+                    Pass Rate
+                  </span>
                   <span
                     className={`font-tabular-md font-bold ${
-                      stat.passRate >= 70 ? 'text-emerald-800' : stat.passRate < 50 ? 'text-red-700' : 'text-[#111111]'
+                      stat.passRate >= 70
+                        ? "text-emerald-800"
+                        : stat.passRate < 50
+                          ? "text-red-700"
+                          : "text-[#111111]"
                     }`}
                   >
                     {stat.passRate}%
                   </span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-[#5F5E5E] uppercase block font-label-caps">High / Low</span>
+                  <span className="text-[10px] text-[#5F5E5E] uppercase block font-label-caps">
+                    High / Low
+                  </span>
                   <span className="font-tabular-md font-medium text-[#111111]">
                     {stat.highest} / {stat.lowest}
                   </span>
@@ -277,13 +311,19 @@ export const SubjectAnalysisView: React.FC = () => {
               </div>
 
               <div className="flex items-center justify-between text-xs pt-0.5">
-                <span className="text-[#5F5E5E] text-[11px] font-tabular-sm">{stat.entered} Candidates Entered</span>
+                <span className="text-[#5F5E5E] text-[11px] font-tabular-sm">
+                  {stat.entered} Candidates Entered
+                </span>
                 <span
                   className={`font-tabular-sm text-xs font-semibold ${
-                    stat.diffFromLastExam >= 0 ? 'text-emerald-800' : 'text-red-700'
+                    stat.diffFromLastExam >= 0 ? "text-emerald-800" : "text-red-700"
                   }`}
                 >
-                  Trend: {stat.diffFromLastExam >= 0 ? `+${stat.diffFromLastExam.toFixed(1)}` : stat.diffFromLastExam.toFixed(1)}%
+                  Trend:{" "}
+                  {stat.diffFromLastExam >= 0
+                    ? `+${stat.diffFromLastExam.toFixed(1)}`
+                    : stat.diffFromLastExam.toFixed(1)}
+                  %
                 </span>
               </div>
             </div>
@@ -317,11 +357,15 @@ export const SubjectAnalysisView: React.FC = () => {
 
                 return (
                   <tr key={stat.subject.code} className="h-11 hover:bg-[#F2EDE3] transition-colors">
-                    <td className="px-4 font-tabular-sm font-bold text-[#111111]">{stat.subject.code}</td>
+                    <td className="px-4 font-tabular-sm font-bold text-[#111111]">
+                      {stat.subject.code}
+                    </td>
                     <td className="px-4 font-medium text-[#111111]">{stat.subject.name}</td>
                     <td className="px-4 text-[#5F5E5E]">{stat.subject.department}</td>
-                    <td className="px-4 text-[#111111]">{stat.subject.teacher || '—'}</td>
-                    <td className="px-3 text-right font-tabular-sm text-[#5F5E5E]">{stat.entered}</td>
+                    <td className="px-4 text-[#111111]">{stat.subject.teacher || "—"}</td>
+                    <td className="px-3 text-right font-tabular-sm text-[#5F5E5E]">
+                      {stat.entered}
+                    </td>
                     <td className="px-3 text-right font-tabular-md font-semibold text-[#111111]">
                       {stat.average.toFixed(1)}%
                     </td>
@@ -332,13 +376,25 @@ export const SubjectAnalysisView: React.FC = () => {
                       {stat.highest} / {stat.lowest}
                     </td>
                     <td className="px-3 text-right font-tabular-sm font-medium">
-                      <span className={stat.passRate >= 70 ? 'text-emerald-800' : stat.passRate < 50 ? 'text-red-700' : 'text-[#111111]'}>
+                      <span
+                        className={
+                          stat.passRate >= 70
+                            ? "text-emerald-800"
+                            : stat.passRate < 50
+                              ? "text-red-700"
+                              : "text-[#111111]"
+                        }
+                      >
                         {stat.passRate}%
                       </span>
                     </td>
                     <td className="px-4 text-right font-tabular-sm font-semibold">
-                      <span className={stat.diffFromLastExam >= 0 ? 'text-emerald-800' : 'text-red-700'}>
-                        {stat.diffFromLastExam >= 0 ? `↑ +${stat.diffFromLastExam.toFixed(1)}` : `↓ ${stat.diffFromLastExam.toFixed(1)}`}
+                      <span
+                        className={stat.diffFromLastExam >= 0 ? "text-emerald-800" : "text-red-700"}
+                      >
+                        {stat.diffFromLastExam >= 0
+                          ? `↑ +${stat.diffFromLastExam.toFixed(1)}`
+                          : `↓ ${stat.diffFromLastExam.toFixed(1)}`}
                       </span>
                     </td>
                   </tr>
@@ -346,6 +402,52 @@ export const SubjectAnalysisView: React.FC = () => {
               })}
             </tbody>
           </table>
+        </div>
+      </section>
+
+      {/* Workflow Next Steps Banner */}
+      <section className="mt-6 p-4 sm:p-5 bg-[#FBF8F1] border border-[#DDD6C7] rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h4 className="font-semibold text-sm text-[#111111] flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-[18px] text-[#C2410C]">route</span>
+            <span>Subject Analysis: Next Steps</span>
+          </h4>
+          <p className="text-xs text-[#5F5E5E] mt-0.5">
+            Compare distributions across grades, view overall student rankings, or adjust marks.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setActiveView("overview")}
+            className="px-3 py-2 text-xs font-medium border border-[#DDD6C7] rounded bg-white hover:bg-[#F2EDE3] text-[#111111] cursor-pointer"
+          >
+            ← Overview
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("grade-distribution")}
+            className="px-3.5 py-2 text-xs font-semibold bg-[#111111] text-white hover:bg-neutral-800 rounded flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">bar_chart</span>
+            <span>Grade Distribution →</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("rankings")}
+            className="px-3.5 py-2 text-xs font-semibold border border-[#111111] hover:bg-[#F2EDE3] text-[#111111] rounded flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">format_list_numbered</span>
+            <span>Class Rankings →</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("marks-entry")}
+            className="px-3.5 py-2 text-xs font-semibold bg-[#C2410C] text-white hover:opacity-90 rounded flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">edit_note</span>
+            <span>Edit Marks →</span>
+          </button>
         </div>
       </section>
     </div>

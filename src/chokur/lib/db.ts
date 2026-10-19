@@ -13,7 +13,7 @@ import {
   INITIAL_TEACHER_PROFILE,
   INITIAL_TERMS,
   INITIAL_WHATSAPP_MESSAGES,
-} from '../data/initialData';
+} from "../data/initialData";
 import {
   ClassStream,
   ExamPeriod,
@@ -25,9 +25,9 @@ import {
   TermConfig,
   ViewType,
   WhatsAppMessage,
-} from '../types';
+} from "../types";
 
-export const DB_NAME = 'ChokurSystemDB';
+export const DB_NAME = "ChokurSystemDB";
 export const DB_VERSION = 2;
 
 export interface AppStateData {
@@ -50,7 +50,7 @@ export interface AppStateData {
   };
 }
 
-const LOCAL_STORAGE_PREFIX = 'chokur_system_v2';
+const LOCAL_STORAGE_PREFIX = "chokur_system_v2";
 
 export const getInitialAppState = (): AppStateData => {
   return {
@@ -66,10 +66,10 @@ export const getInitialAppState = (): AppStateData => {
     terms: INITIAL_TERMS,
     marks: INITIAL_MARKS,
     uiState: {
-      activeStream: 'Form 4 East',
-      activeExam: 'End-term Exam, Term 2 2026',
-      activeView: 'overview',
-      selectedStudentId: 's-1',
+      activeStream: "Form 4 East",
+      activeExam: "End-term Exam, Term 2 2026",
+      activeView: "overview",
+      selectedStudentId: "s-1",
     },
   };
 };
@@ -79,7 +79,7 @@ export const getInitialAppState = (): AppStateData => {
  */
 export const loadSynchronousStorageState = (): AppStateData => {
   const defaults = getInitialAppState();
-  if (typeof window === 'undefined' || !window.localStorage) {
+  if (typeof window === "undefined" || !window.localStorage) {
     return defaults;
   }
 
@@ -91,11 +91,22 @@ export const loadSynchronousStorageState = (): AppStateData => {
         ...defaults,
         ...parsed,
         schoolConfig: parsed.schoolConfig || defaults.schoolConfig,
-        students: Array.isArray(parsed.students) && parsed.students.length > 0 ? parsed.students : defaults.students,
-        subjects: Array.isArray(parsed.subjects) && parsed.subjects.length > 0 ? parsed.subjects : defaults.subjects,
-        streams: Array.isArray(parsed.streams) && parsed.streams.length > 0 ? parsed.streams : defaults.streams,
-        exams: Array.isArray(parsed.exams) && parsed.exams.length > 0 ? parsed.exams : defaults.exams,
-        terms: Array.isArray(parsed.terms) && parsed.terms.length > 0 ? parsed.terms : defaults.terms,
+        students:
+          Array.isArray(parsed.students) && parsed.students.length > 0
+            ? parsed.students
+            : defaults.students,
+        subjects:
+          Array.isArray(parsed.subjects) && parsed.subjects.length > 0
+            ? parsed.subjects
+            : defaults.subjects,
+        streams:
+          Array.isArray(parsed.streams) && parsed.streams.length > 0
+            ? parsed.streams
+            : defaults.streams,
+        exams:
+          Array.isArray(parsed.exams) && parsed.exams.length > 0 ? parsed.exams : defaults.exams,
+        terms:
+          Array.isArray(parsed.terms) && parsed.terms.length > 0 ? parsed.terms : defaults.terms,
         marks: parsed.marks || defaults.marks,
         uiState: {
           ...defaults.uiState,
@@ -105,10 +116,10 @@ export const loadSynchronousStorageState = (): AppStateData => {
     }
 
     // Check older localStorage format for seamless migration
-    const oldConfig = localStorage.getItem('chokur_system_ledger_v2_config');
-    const oldStudents = localStorage.getItem('chokur_system_ledger_v2_students');
-    const oldSubjects = localStorage.getItem('chokur_system_ledger_v2_subjects');
-    const oldMarks = localStorage.getItem('chokur_system_ledger_v2_marks');
+    const oldConfig = localStorage.getItem("chokur_system_ledger_v2_config");
+    const oldStudents = localStorage.getItem("chokur_system_ledger_v2_students");
+    const oldSubjects = localStorage.getItem("chokur_system_ledger_v2_subjects");
+    const oldMarks = localStorage.getItem("chokur_system_ledger_v2_marks");
 
     if (oldStudents || oldMarks) {
       const migrated: AppStateData = {
@@ -122,7 +133,7 @@ export const loadSynchronousStorageState = (): AppStateData => {
       return migrated;
     }
   } catch (err) {
-    console.warn('[Chokur DB] Error reading synchronous localStorage cache:', err);
+    console.warn("[Chokur DB] Error reading synchronous localStorage cache:", err);
   }
 
   return defaults;
@@ -132,11 +143,11 @@ export const loadSynchronousStorageState = (): AppStateData => {
  * Synchronous local storage write for instant safety
  */
 export const saveSynchronousStorageState = (state: AppStateData): void => {
-  if (typeof window === 'undefined' || !window.localStorage) return;
+  if (typeof window === "undefined" || !window.localStorage) return;
   try {
     localStorage.setItem(`${LOCAL_STORAGE_PREFIX}_snapshot`, JSON.stringify(state));
   } catch (err) {
-    console.warn('[Chokur DB] Error writing synchronous localStorage cache:', err);
+    console.warn("[Chokur DB] Error writing synchronous localStorage cache:", err);
   }
 };
 
@@ -145,8 +156,8 @@ export const saveSynchronousStorageState = (state: AppStateData): void => {
  */
 export const openDatabase = (): Promise<IDBDatabase> => {
   return new Promise((resolve, reject) => {
-    if (typeof window === 'undefined' || !window.indexedDB) {
-      reject(new Error('IndexedDB not supported'));
+    if (typeof window === "undefined" || !window.indexedDB) {
+      reject(new Error("IndexedDB not supported"));
       return;
     }
 
@@ -154,7 +165,15 @@ export const openDatabase = (): Promise<IDBDatabase> => {
 
     request.onupgradeneeded = (event) => {
       const db = (event.target as IDBOpenDBRequest).result;
-      const storeNames = ['appState', 'students', 'subjects', 'marks', 'streams', 'exams', 'config'];
+      const storeNames = [
+        "appState",
+        "students",
+        "subjects",
+        "marks",
+        "streams",
+        "exams",
+        "config",
+      ];
       storeNames.forEach((name) => {
         if (!db.objectStoreNames.contains(name)) {
           db.createObjectStore(name);
@@ -182,9 +201,9 @@ export const persistAppState = async (state: AppStateData): Promise<void> => {
   try {
     const db = await openDatabase();
     return new Promise((resolve, reject) => {
-      const transaction = db.transaction(['appState'], 'readwrite');
-      const store = transaction.objectStore('appState');
-      const putRequest = store.put(state, 'current');
+      const transaction = db.transaction(["appState"], "readwrite");
+      const store = transaction.objectStore("appState");
+      const putRequest = store.put(state, "current");
 
       putRequest.onsuccess = () => resolve();
       putRequest.onerror = () => reject(putRequest.error);
@@ -192,7 +211,7 @@ export const persistAppState = async (state: AppStateData): Promise<void> => {
     });
   } catch (err) {
     // If IndexedDB fails (e.g. strict sandbox iframe), localStorage mirror keeps state alive
-    console.warn('[Chokur DB] IndexedDB write fallback to localStorage:', err);
+    console.warn("[Chokur DB] IndexedDB write fallback to localStorage:", err);
   }
 };
 
@@ -203,9 +222,9 @@ export const retrieveAppState = async (): Promise<AppStateData | null> => {
   try {
     const db = await openDatabase();
     return new Promise((resolve, reject) => {
-      const transaction = db.transaction(['appState'], 'readonly');
-      const store = transaction.objectStore('appState');
-      const getRequest = store.get('current');
+      const transaction = db.transaction(["appState"], "readonly");
+      const store = transaction.objectStore("appState");
+      const getRequest = store.get("current");
 
       getRequest.onsuccess = () => {
         const result = getRequest.result as AppStateData | undefined;
@@ -214,7 +233,7 @@ export const retrieveAppState = async (): Promise<AppStateData | null> => {
       getRequest.onerror = () => reject(getRequest.error);
     });
   } catch (err) {
-    console.warn('[Chokur DB] IndexedDB read fallback to synchronous cache:', err);
+    console.warn("[Chokur DB] IndexedDB read fallback to synchronous cache:", err);
     return null;
   }
 };
@@ -228,14 +247,14 @@ export const resetDatabaseToDefaults = async (): Promise<AppStateData> => {
   try {
     const db = await openDatabase();
     await new Promise<void>((resolve, reject) => {
-      const transaction = db.transaction(['appState'], 'readwrite');
-      const store = transaction.objectStore('appState');
-      const putRequest = store.put(fresh, 'current');
+      const transaction = db.transaction(["appState"], "readwrite");
+      const store = transaction.objectStore("appState");
+      const putRequest = store.put(fresh, "current");
       putRequest.onsuccess = () => resolve();
       putRequest.onerror = () => reject(putRequest.error);
     });
   } catch (err) {
-    console.warn('[Chokur DB] Reset IndexedDB fallback:', err);
+    console.warn("[Chokur DB] Reset IndexedDB fallback:", err);
   }
   return fresh;
 };

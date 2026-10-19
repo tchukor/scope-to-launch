@@ -2,24 +2,19 @@
  * Service Worker for Chokur System (Offline-First KCSE Academic Ledger)
  */
 
-const CACHE_NAME = 'chokur-cache-v2';
-const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.webmanifest',
-  '/icon.svg',
-];
+const CACHE_NAME = "chokur-cache-v2";
+const STATIC_ASSETS = ["/", "/index.html", "/manifest.webmanifest", "/icon.svg"];
 
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_ASSETS);
-    })
+    }),
   );
   self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
@@ -27,15 +22,15 @@ self.addEventListener('activate', (event) => {
           if (key !== CACHE_NAME) {
             return caches.delete(key);
           }
-        })
+        }),
       );
-    })
+    }),
   );
   self.clients.claim();
 });
 
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
 
   // Stale-while-revalidate for local assets and HTML navigation
   event.respondWith(
@@ -46,8 +41,8 @@ self.addEventListener('fetch', (event) => {
             networkResponse &&
             networkResponse.status === 200 &&
             (event.request.url.startsWith(self.location.origin) ||
-              event.request.url.includes('fonts.googleapis.com') ||
-              event.request.url.includes('fonts.gstatic.com'))
+              event.request.url.includes("fonts.googleapis.com") ||
+              event.request.url.includes("fonts.gstatic.com"))
           ) {
             const responseToCache = networkResponse.clone();
             caches.open(CACHE_NAME).then((cache) => {
@@ -58,13 +53,13 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => {
           // If offline and request is navigation, return cached / or index.html
-          if (event.request.mode === 'navigate') {
-            return caches.match('/') || caches.match('/index.html');
+          if (event.request.mode === "navigate") {
+            return caches.match("/") || caches.match("/index.html");
           }
           return cachedResponse;
         });
 
       return cachedResponse || fetchPromise;
-    })
+    }),
   );
 });

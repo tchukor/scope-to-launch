@@ -1,6 +1,6 @@
-import React from 'react';
-import { GradeChip } from '../components/GradeChip';
-import { useGrading } from '../context/GradingContext';
+import React from "react";
+import { GradeChip } from "../components/GradeChip";
+import { useGrading } from "../context/GradingContext";
 
 export const OverviewView: React.FC = () => {
   const {
@@ -16,24 +16,30 @@ export const OverviewView: React.FC = () => {
     setSelectedStudentId,
     activeStream,
     activeExam,
+    students,
+    role,
+    schoolConfig,
+    teacherProfile,
+    resetToDemoData,
   } = useGrading();
 
   const top5 = rankings.slice(0, 5);
 
   // Distribution tiers for mini-ledger
   const honorsCount = rankings.filter(
-    (r) => r.meanGrade === 'A' || r.meanGrade === 'A-' || r.meanGrade === 'B+'
+    (r) => r.meanGrade === "A" || r.meanGrade === "A-" || r.meanGrade === "B+",
   ).length;
   const honorsPct = studentsRanked > 0 ? Math.round((honorsCount / studentsRanked) * 1000) / 10 : 0;
 
   const passTierCount = rankings.filter(
-    (r) => r.meanGrade === 'B' || r.meanGrade === 'B-' || r.meanGrade === 'C+'
+    (r) => r.meanGrade === "B" || r.meanGrade === "B-" || r.meanGrade === "C+",
   ).length;
-  const passTierPct = studentsRanked > 0 ? Math.round((passTierCount / studentsRanked) * 1000) / 10 : 0;
+  const passTierPct =
+    studentsRanked > 0 ? Math.round((passTierCount / studentsRanked) * 1000) / 10 : 0;
 
   const handleViewCard = (studentId: string) => {
     setSelectedStudentId(studentId);
-    setActiveView('report-cards');
+    setActiveView("report-cards");
   };
 
   return (
@@ -41,7 +47,9 @@ export const OverviewView: React.FC = () => {
       {/* Page Header Area */}
       <section className="flex flex-col xl:flex-row xl:items-end justify-between pb-4 sm:pb-6 border-b border-[#DDD6C7] gap-4">
         <div>
-          <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">Overview</h1>
+          <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">
+            Overview
+          </h1>
           <p className="font-body-md text-xs sm:text-body-md text-[#5F5E5E] mt-1">
             {activeStream} · {activeExam} · academic performance ledger
           </p>
@@ -50,7 +58,7 @@ export const OverviewView: React.FC = () => {
         {/* Quick action buttons: Enter marks, View rankings, Print report cards */}
         <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
           <button
-            onClick={() => setActiveView('marks-entry')}
+            onClick={() => setActiveView("marks-entry")}
             type="button"
             className="flex-1 sm:flex-none bg-[#C2410C] text-[#FEF9EF] hover:opacity-95 rounded px-4 py-2 font-headline-sm text-xs sm:text-[13px] flex items-center justify-center gap-2 transition-opacity cursor-pointer shadow-none min-h-[44px]"
           >
@@ -59,7 +67,7 @@ export const OverviewView: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setActiveView('rankings')}
+            onClick={() => setActiveView("rankings")}
             type="button"
             className="flex-1 sm:flex-none bg-transparent border border-[#111111] text-[#111111] hover:bg-[#F2EDE3] rounded px-3.5 py-2 font-body-sm text-xs sm:text-[13px] font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer min-h-[44px]"
           >
@@ -68,7 +76,7 @@ export const OverviewView: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setActiveView('report-cards')}
+            onClick={() => setActiveView("report-cards")}
             type="button"
             className="w-full sm:w-auto bg-transparent border border-[#111111] text-[#111111] hover:bg-[#F2EDE3] rounded px-3.5 py-2 font-body-sm text-xs sm:text-[13px] font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer min-h-[44px]"
           >
@@ -78,11 +86,127 @@ export const OverviewView: React.FC = () => {
         </div>
       </section>
 
+      {/* Role & Secondary Operations Shortcut Ribbon */}
+      <section className="py-3 px-3.5 my-3 bg-[#FBF8F1] border border-[#DDD6C7] rounded flex flex-wrap items-center justify-between gap-2.5 text-xs">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1 font-semibold text-[#111111]">
+            <span className="material-symbols-outlined text-[16px] text-[#C2410C]">
+              {role === "Admin" ? "shield_person" : "school"}
+            </span>
+            <span>
+              {role === "Admin"
+                ? "Administrator Workspace"
+                : `Teacher Workspace (${teacherProfile.name})`}
+            </span>
+          </span>
+          <span className="text-[#9A958A]">•</span>
+          <span className="text-[#5F5E5E]">
+            {schoolConfig.schoolName} ({schoolConfig.academicYear} · {schoolConfig.term})
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[11px] font-label-caps uppercase text-[#9A958A] hidden md:inline">
+            Jump to:
+          </span>
+          <button
+            type="button"
+            onClick={() => setActiveView("attendance")}
+            className="px-2 py-1 bg-white border border-[#DDD6C7] hover:bg-[#F2EDE3] rounded text-[11px] font-medium text-[#111111] flex items-center gap-1 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[14px]">fact_check</span>
+            <span>Attendance</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("messaging")}
+            className="px-2 py-1 bg-white border border-[#DDD6C7] hover:bg-[#F2EDE3] rounded text-[11px] font-medium text-[#111111] flex items-center gap-1 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[14px]">sms</span>
+            <span>Bulk SMS</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("subject-analysis")}
+            className="px-2 py-1 bg-white border border-[#DDD6C7] hover:bg-[#F2EDE3] rounded text-[11px] font-medium text-[#111111] flex items-center gap-1 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[14px]">analytics</span>
+            <span>Subjects</span>
+          </button>
+          {role === "Admin" && (
+            <button
+              type="button"
+              onClick={() => setActiveView("fees")}
+              className="px-2 py-1 bg-white border border-[#DDD6C7] hover:bg-[#F2EDE3] rounded text-[11px] font-medium text-[#111111] flex items-center gap-1 cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[14px]">payments</span>
+              <span>Fees</span>
+            </button>
+          )}
+        </div>
+      </section>
+
+      {/* First-Time User / Empty Database Onboarding Banner */}
+      {students.length === 0 && (
+        <section className="mb-6 p-5 sm:p-6 bg-amber-50/70 border border-amber-200 rounded-lg">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[22px] text-amber-700">school</span>
+                <h3 className="font-headline-md font-bold text-amber-900">
+                  Welcome to Chokur System
+                </h3>
+              </div>
+              <p className="text-xs sm:text-sm text-amber-800 mt-1 max-w-2xl leading-relaxed">
+                No enrolled candidates found in the database. You can start by enrolling candidates,
+                configuring your school profile, or loading the official sample KCSE cohort to
+                explore all features immediately.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setActiveView("settings")}
+                  className="underline font-semibold text-amber-900"
+                >
+                  1. Setup School Profile →
+                </button>
+                <span className="text-amber-400">•</span>
+                <button
+                  type="button"
+                  onClick={() => setActiveView("students")}
+                  className="underline font-semibold text-amber-900"
+                >
+                  2. Enroll Students →
+                </button>
+                <span className="text-amber-400">•</span>
+                <button
+                  type="button"
+                  onClick={() => setActiveView("marks-entry")}
+                  className="underline font-semibold text-amber-900"
+                >
+                  3. Enter Marks →
+                </button>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => resetToDemoData()}
+              className="px-4 py-2 bg-[#C2410C] text-white rounded font-medium text-xs hover:opacity-90 shadow-sm shrink-0 cursor-pointer min-h-[40px] flex items-center gap-1.5"
+            >
+              <span className="material-symbols-outlined text-[16px]">sync</span>
+              <span>Load Sample Cohort (42 Students)</span>
+            </button>
+          </div>
+        </section>
+      )}
+
       {/* Metric Strip (Row of 4 ledger metrics separated by thin hairlines) */}
       <section className="grid grid-cols-2 md:grid-cols-4 border-b border-[#DDD6C7] py-6">
         {/* Metric 1 */}
         <div className="pr-6 pb-4 md:pb-0">
-          <span className="block font-label-caps text-label-caps text-[#5F5E5E] mb-1">CLASS AVERAGE</span>
+          <span className="block font-label-caps text-label-caps text-[#5F5E5E] mb-1">
+            CLASS AVERAGE
+          </span>
           <div className="font-display-stat text-display-stat text-[#111111] leading-none">
             {classAverage.toFixed(1)}%
           </div>
@@ -90,7 +214,9 @@ export const OverviewView: React.FC = () => {
 
         {/* Metric 2 */}
         <div className="px-0 md:px-6 pb-4 md:pb-0 border-l-0 md:border-l border-[#DDD6C7]">
-          <span className="block font-label-caps text-label-caps text-[#5F5E5E] mb-1">UNIVERSITY PASS RATE</span>
+          <span className="block font-label-caps text-label-caps text-[#5F5E5E] mb-1">
+            UNIVERSITY PASS RATE
+          </span>
           <div className="font-display-stat text-display-stat text-[#111111] leading-none">
             {passRate}%
           </div>
@@ -98,7 +224,9 @@ export const OverviewView: React.FC = () => {
 
         {/* Metric 3 */}
         <div className="pr-6 md:px-6 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-[#DDD6C7]">
-          <span className="block font-label-caps text-label-caps text-[#5F5E5E] mb-1">MEAN GRADE</span>
+          <span className="block font-label-caps text-label-caps text-[#5F5E5E] mb-1">
+            MEAN GRADE
+          </span>
           <div className="font-display-stat text-display-stat text-[#111111] leading-none">
             {meanGrade}
           </div>
@@ -106,7 +234,9 @@ export const OverviewView: React.FC = () => {
 
         {/* Metric 4 */}
         <div className="px-0 md:px-6 pt-4 md:pt-0 border-t md:border-t-0 border-l-0 md:border-l border-[#DDD6C7]">
-          <span className="block font-label-caps text-label-caps text-[#5F5E5E] mb-1">STUDENTS RANKED</span>
+          <span className="block font-label-caps text-label-caps text-[#5F5E5E] mb-1">
+            STUDENTS RANKED
+          </span>
           <div className="font-display-stat text-display-stat text-[#111111] leading-none">
             {studentsRanked}
           </div>
@@ -124,7 +254,7 @@ export const OverviewView: React.FC = () => {
                 Subjects at a glance
               </h2>
               <button
-                onClick={() => setActiveView('subject-analysis')}
+                onClick={() => setActiveView("subject-analysis")}
                 className="text-[#C2410C] text-xs font-semibold hover:underline inline-flex items-center gap-0.5 cursor-pointer bg-transparent border-none p-0"
               >
                 <span>Full Subject Analysis</span>
@@ -135,18 +265,18 @@ export const OverviewView: React.FC = () => {
               <div className="flex items-baseline justify-between font-body-md text-body-md">
                 <span className="text-[#5F5E5E]">Strongest Subject:</span>
                 <span className="text-[#111111] font-medium">
-                  {strongestSubject?.name || 'Kiswahili'}, average{' '}
+                  {strongestSubject?.name || "Kiswahili"}, average{" "}
                   <span className="font-tabular-md text-tabular-md font-semibold">
-                    {strongestSubject?.average?.toFixed(1) || '0.0'}%
+                    {strongestSubject?.average?.toFixed(1) || "0.0"}%
                   </span>
                 </span>
               </div>
               <div className="flex items-baseline justify-between font-body-md text-body-md">
                 <span className="text-[#5F5E5E]">Weakest Subject:</span>
                 <span className="text-[#111111] font-medium">
-                  {weakestSubject?.name || 'Chemistry'}, average{' '}
+                  {weakestSubject?.name || "Chemistry"}, average{" "}
                   <span className="font-tabular-md text-tabular-md font-semibold text-[#C2410C]">
-                    {weakestSubject?.average?.toFixed(1) || '0.0'}%
+                    {weakestSubject?.average?.toFixed(1) || "0.0"}%
                   </span>
                 </span>
               </div>
@@ -158,7 +288,8 @@ export const OverviewView: React.FC = () => {
             <div className="pb-3 border-b border-[#DDD6C7]">
               <h2 className="font-headline-sm text-headline-sm text-[#111111]">Near the line</h2>
               <p className="font-caption text-caption text-[#5F5E5E] mt-0.5">
-                Students within 1–2 points of the C+ university threshold (targeted academic intervention)
+                Students within 1–2 points of the C+ university threshold (targeted academic
+                intervention)
               </p>
             </div>
 
@@ -167,16 +298,29 @@ export const OverviewView: React.FC = () => {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-[#DDD6C7] text-[11px]">
-                    <th className="py-2.5 font-label-caps text-label-caps text-[#5F5E5E]">STUDENT</th>
-                    <th className="py-2.5 font-label-caps text-label-caps text-[#5F5E5E] text-right">MEAN POINTS</th>
-                    <th className="py-2.5 font-label-caps text-label-caps text-[#5F5E5E] text-right">AGGREGATE</th>
-                    <th className="py-2.5 font-label-caps text-label-caps text-[#5F5E5E] pl-6">WEAKEST SUBJECT</th>
-                    <th className="py-2.5 font-label-caps text-label-caps text-[#5F5E5E] text-right">ACTION</th>
+                    <th className="py-2.5 font-label-caps text-label-caps text-[#5F5E5E]">
+                      STUDENT
+                    </th>
+                    <th className="py-2.5 font-label-caps text-label-caps text-[#5F5E5E] text-right">
+                      MEAN POINTS
+                    </th>
+                    <th className="py-2.5 font-label-caps text-label-caps text-[#5F5E5E] text-right">
+                      AGGREGATE
+                    </th>
+                    <th className="py-2.5 font-label-caps text-label-caps text-[#5F5E5E] pl-6">
+                      WEAKEST SUBJECT
+                    </th>
+                    <th className="py-2.5 font-label-caps text-label-caps text-[#5F5E5E] text-right">
+                      ACTION
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#DDD6C7]">
                   {nearTheLineStudents.slice(0, 6).map((record) => (
-                    <tr key={record.student.id} className="h-[44px] hover:bg-[#FBF8F1] transition-colors">
+                    <tr
+                      key={record.student.id}
+                      className="h-[44px] hover:bg-[#FBF8F1] transition-colors"
+                    >
                       <td className="font-body-md text-body-md text-[#111111] font-medium">
                         {record.student.name}
                       </td>
@@ -189,8 +333,7 @@ export const OverviewView: React.FC = () => {
                       <td className="font-body-sm text-body-sm text-[#5F5E5E] pl-6">
                         {record.weakestSubject ? (
                           <span className="font-mono text-xs text-[#111111]">
-                            {record.weakestSubject.code}{' '}
-                            <span className="text-[#9A958A]">·</span>{' '}
+                            {record.weakestSubject.code} <span className="text-[#9A958A]">·</span>{" "}
                             <span className="font-bold text-[#C2410C]">
                               {record.weakestSubject.score}%
                             </span>
@@ -236,7 +379,9 @@ export const OverviewView: React.FC = () => {
           {/* Top 5 Section */}
           <section>
             <div className="pb-3 border-b border-[#DDD6C7] flex items-baseline justify-between">
-              <h2 className="font-headline-sm text-headline-sm text-[#111111]">Top 5 Cohort Leaderboard</h2>
+              <h2 className="font-headline-sm text-headline-sm text-[#111111]">
+                Top 5 Cohort Leaderboard
+              </h2>
               <span className="font-label-caps text-label-caps text-[#5F5E5E]">TERM STANDING</span>
             </div>
 
@@ -248,7 +393,7 @@ export const OverviewView: React.FC = () => {
                   className="h-[44px] flex items-center justify-between px-1 hover:bg-[#FBF8F1] transition-colors cursor-pointer"
                   onClick={() => handleViewCard(student.student.id)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
+                    if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
                       handleViewCard(student.student.id);
                     }
@@ -282,7 +427,7 @@ export const OverviewView: React.FC = () => {
                 Showing {Math.min(5, studentsRanked)} of {studentsRanked} ranked
               </span>
               <button
-                onClick={() => setActiveView('rankings')}
+                onClick={() => setActiveView("rankings")}
                 type="button"
                 className="text-[#C2410C] font-headline-sm text-caption hover:underline inline-flex items-center gap-1 cursor-pointer bg-transparent border-none p-0"
               >
@@ -306,19 +451,27 @@ export const OverviewView: React.FC = () => {
                   </span>
                 </div>
                 <div className="w-full bg-[#F2EDE3] h-1.5 rounded-none overflow-hidden">
-                  <div className="bg-[#111111] h-full" style={{ width: `${Math.min(100, honorsPct)}%` }}></div>
+                  <div
+                    className="bg-[#111111] h-full"
+                    style={{ width: `${Math.min(100, honorsPct)}%` }}
+                  ></div>
                 </div>
               </div>
 
               <div>
                 <div className="flex items-center text-caption justify-between mb-1.5 pt-1">
-                  <span className="text-[#5F5E5E] font-tabular-sm">Competent Pass Tier (C+ to B)</span>
+                  <span className="text-[#5F5E5E] font-tabular-sm">
+                    Competent Pass Tier (C+ to B)
+                  </span>
                   <span className="font-tabular-md text-[#111111] font-semibold">
                     {passTierCount} students ({passTierPct}%)
                   </span>
                 </div>
                 <div className="w-full bg-[#F2EDE3] h-1.5 rounded-none overflow-hidden">
-                  <div className="bg-[#5F5E5E] h-full" style={{ width: `${Math.min(100, passTierPct)}%` }}></div>
+                  <div
+                    className="bg-[#5F5E5E] h-full"
+                    style={{ width: `${Math.min(100, passTierPct)}%` }}
+                  ></div>
                 </div>
               </div>
             </div>

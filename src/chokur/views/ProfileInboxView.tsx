@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react';
-import { useGrading } from '../context/GradingContext';
-import { WhatsAppMessage } from '../types';
+import React, { useMemo, useState } from "react";
+import { useGrading } from "../context/GradingContext";
+import { WhatsAppMessage } from "../types";
 
 export const ProfileInboxView: React.FC = () => {
   const {
@@ -16,9 +16,9 @@ export const ProfileInboxView: React.FC = () => {
   } = useGrading();
 
   const [selectedStudentId, setSelectedStudentId] = useState<string>(
-    filteredStudents[0]?.id || 's-1'
+    filteredStudents[0]?.id || "s-1",
   );
-  const [composerText, setComposerText] = useState('');
+  const [composerText, setComposerText] = useState("");
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profileForm, setProfileForm] = useState(teacherProfile);
   const [copiedNotification, setCopiedNotification] = useState(false);
@@ -39,7 +39,7 @@ export const ProfileInboxView: React.FC = () => {
 
   // Generate official KCSE progress text
   const generateOfficialReportMessage = () => {
-    if (!currentStudent || !currentStanding) return '';
+    if (!currentStudent || !currentStanding) return "";
     return `Good day, this is ${teacherProfile.name} (Class Teacher, ${activeStream}) from ${schoolConfig.schoolName}.
 
 *OFFICIAL KCSE PROGRESS UPDATE*
@@ -49,10 +49,10 @@ Rank: #${currentStanding.rank} of ${filteredStudents.length} candidates
 Mean Grade: ${currentStanding.meanGrade} (${currentStanding.meanPoints.toFixed(1)} pts)
 Best 7 Aggregate: ${currentStanding.aggregate} / 84
 Subjects Passed: ${currentStanding.subjectsPassed} / ${currentStanding.enteredSubjectsCount}
-University Qualification: ${currentStanding.qualifies ? 'YES (Qualified for Degree entry)' : 'Needs improvement'}
+University Qualification: ${currentStanding.qualifies ? "YES (Qualified for Degree entry)" : "Needs improvement"}
 
-Term Next Opening: ${schoolConfig.termOpeningDate || 'TBA'}.
-Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
+Term Next Opening: ${schoolConfig.termOpeningDate || "TBA"}.
+Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
   };
 
   const handleSendOfficialBroadcast = () => {
@@ -64,8 +64,8 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
       studentAdm: currentStudent.admNo,
       studentName: currentStudent.name,
       parentName: `Parent of ${currentStudent.name}`,
-      parentPhone: '+254 712 000 111',
-      sender: 'teacher',
+      parentPhone: "+254 712 000 111",
+      sender: "teacher",
       text,
     });
   };
@@ -79,12 +79,12 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
       studentAdm: currentStudent.admNo,
       studentName: currentStudent.name,
       parentName: `Parent of ${currentStudent.name}`,
-      parentPhone: '+254 712 000 111',
-      sender: 'teacher',
+      parentPhone: "+254 712 000 111",
+      sender: "teacher",
       text: composerText.trim(),
     });
 
-    setComposerText('');
+    setComposerText("");
   };
 
   const handleCopyText = () => {
@@ -108,7 +108,9 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
           <div className="flex items-center gap-2 text-xs font-caption text-[#5F5E5E] mb-1">
             <span>Staff Portal</span>
             <span>/</span>
-            <span className="text-[#C2410C] font-medium">Profile &amp; WhatsApp Communication Hub</span>
+            <span className="text-[#C2410C] font-medium">
+              Profile &amp; WhatsApp Communication Hub
+            </span>
           </div>
           <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">
             Teacher Profile &amp; Parent Broadcast
@@ -138,10 +140,10 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
           <div className="flex items-start sm:items-center gap-3.5">
             <div className="w-12 h-12 rounded-full bg-[#111111] text-[#FEF9EF] flex items-center justify-center font-tabular-md font-bold text-lg shrink-0">
               {teacherProfile.name
-                .split(' ')
+                .split(" ")
                 .map((n) => n[0])
                 .slice(-2)
-                .join('')}
+                .join("")}
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">
@@ -164,12 +166,16 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
 
           <div className="flex flex-wrap items-center gap-2 text-xs text-[#5F5E5E] pt-2 md:pt-0 border-t md:border-t-0 border-[#DDD6C7]">
             <div className="px-2.5 py-1.5 rounded bg-[#FEF9EF] border border-[#DDD6C7]">
-              <span className="text-[#9A958A] block text-[10px] uppercase font-label-caps">Phone</span>
+              <span className="text-[#9A958A] block text-[10px] uppercase font-label-caps">
+                Phone
+              </span>
               <span className="font-tabular-sm text-[#111111]">{teacherProfile.phone}</span>
             </div>
             <div className="px-2.5 py-1.5 rounded bg-[#FEF9EF] border border-[#DDD6C7]">
-              <span className="text-[#9A958A] block text-[10px] uppercase font-label-caps">Subjects</span>
-              <span className="text-[#111111]">{teacherProfile.subjectsTaught.join(', ')}</span>
+              <span className="text-[#9A958A] block text-[10px] uppercase font-label-caps">
+                Subjects
+              </span>
+              <span className="text-[#111111]">{teacherProfile.subjectsTaught.join(", ")}</span>
             </div>
           </div>
         </div>
@@ -183,7 +189,9 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
             <span className="font-label-caps text-label-caps text-[#5F5E5E] uppercase tracking-wider text-[11px]">
               Class Roster ({filteredStudents.length})
             </span>
-            <span className="text-xs font-tabular-sm text-[#C2410C] font-semibold">{activeStream}</span>
+            <span className="text-xs font-tabular-sm text-[#C2410C] font-semibold">
+              {activeStream}
+            </span>
           </div>
 
           {/* Student List */}
@@ -191,7 +199,9 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
             {filteredStudents.map((student) => {
               const standing = rankings.find((r) => r.student.id === student.id);
               const isSelected = student.id === selectedStudentId;
-              const studentMsgCount = whatsAppMessages.filter((m) => m.studentId === student.id).length;
+              const studentMsgCount = whatsAppMessages.filter(
+                (m) => m.studentId === student.id,
+              ).length;
 
               return (
                 <button
@@ -199,9 +209,7 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
                   onClick={() => setSelectedStudentId(student.id)}
                   type="button"
                   className={`w-full text-left p-3 flex items-center justify-between min-h-[54px] transition-colors cursor-pointer ${
-                    isSelected
-                      ? 'bg-[#F2EDE3] border-l-3 border-[#C2410C]'
-                      : 'hover:bg-[#F8F3E9]'
+                    isSelected ? "bg-[#F2EDE3] border-l-3 border-[#C2410C]" : "hover:bg-[#F8F3E9]"
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
@@ -209,9 +217,12 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
                       {student.name.charAt(0)}
                     </div>
                     <div>
-                      <div className="font-medium text-xs text-[#111111] line-clamp-1">{student.name}</div>
+                      <div className="font-medium text-xs text-[#111111] line-clamp-1">
+                        {student.name}
+                      </div>
                       <div className="text-[10px] text-[#5F5E5E] font-tabular-sm">
-                        ADM {student.admNo} · {standing ? `#${standing.rank} (${standing.meanGrade})` : ''}
+                        ADM {student.admNo} ·{" "}
+                        {standing ? `#${standing.rank} (${standing.meanGrade})` : ""}
                       </div>
                     </div>
                   </div>
@@ -222,7 +233,9 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
                         {studentMsgCount}
                       </span>
                     )}
-                    <span className="material-symbols-outlined text-[16px] text-[#9A958A]">chevron_right</span>
+                    <span className="material-symbols-outlined text-[16px] text-[#9A958A]">
+                      chevron_right
+                    </span>
                   </div>
                 </button>
               );
@@ -245,7 +258,8 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
                   <span className="text-[10px] font-normal text-emerald-700">WhatsApp Active</span>
                 </div>
                 <div className="text-[11px] text-[#5F5E5E] font-tabular-sm">
-                  Candidate ADM: {currentStudent?.admNo} · Mean: {currentStanding?.meanGrade} ({currentStanding?.meanPoints.toFixed(1)} pts) · Rank: #{currentStanding?.rank}
+                  Candidate ADM: {currentStudent?.admNo} · Mean: {currentStanding?.meanGrade} (
+                  {currentStanding?.meanPoints.toFixed(1)} pts) · Rank: #{currentStanding?.rank}
                 </div>
               </div>
             </div>
@@ -280,7 +294,7 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
             <button
               onClick={() =>
                 setComposerText(
-                  `Dear Parent, ${currentStudent?.name} scored ${currentStanding?.meanGrade} in ${activeExam}. Please review weak subjects with extra homework.`
+                  `Dear Parent, ${currentStudent?.name} scored ${currentStanding?.meanGrade} in ${activeExam}. Please review weak subjects with extra homework.`,
                 )
               }
               type="button"
@@ -291,7 +305,7 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
             <button
               onClick={() =>
                 setComposerText(
-                  `Congratulations! ${currentStudent?.name} ranked #${currentStanding?.rank} in ${activeStream} with Grade ${currentStanding?.meanGrade}. Keep up the great spirit!`
+                  `Congratulations! ${currentStudent?.name} ranked #${currentStanding?.rank} in ${activeStream} with Grade ${currentStanding?.meanGrade}. Keep up the great spirit!`,
                 )
               }
               type="button"
@@ -302,7 +316,7 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
             <button
               onClick={() =>
                 setComposerText(
-                  `Reminder: Term 3 commences on ${schoolConfig.termOpeningDate || '1st Sept'}. Ensure all clearance forms are signed.`
+                  `Reminder: Term 3 commences on ${schoolConfig.termOpeningDate || "1st Sept"}. Ensure all clearance forms are signed.`,
                 )
               }
               type="button"
@@ -325,21 +339,21 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
               </div>
             ) : (
               threadMessages.map((msg) => {
-                const isTeacher = msg.sender === 'teacher';
+                const isTeacher = msg.sender === "teacher";
                 return (
                   <div
                     key={msg.id}
-                    className={`flex flex-col ${isTeacher ? 'items-end' : 'items-start'}`}
+                    className={`flex flex-col ${isTeacher ? "items-end" : "items-start"}`}
                   >
                     <div
                       className={`max-w-[85%] sm:max-w-[75%] p-3 rounded-lg text-xs leading-relaxed shadow-xs whitespace-pre-wrap ${
                         isTeacher
-                          ? 'bg-[#DCF8C6] text-[#111111] rounded-tr-none'
-                          : 'bg-white text-[#111111] rounded-tl-none border border-[#DDD6C7]'
+                          ? "bg-[#DCF8C6] text-[#111111] rounded-tr-none"
+                          : "bg-white text-[#111111] rounded-tl-none border border-[#DDD6C7]"
                       }`}
                     >
                       <div className="font-semibold text-[10px] text-[#5F5E5E] mb-1">
-                        {isTeacher ? 'You (Class Teacher)' : msg.parentName}
+                        {isTeacher ? "You (Class Teacher)" : msg.parentName}
                       </div>
                       <div>{msg.text}</div>
                       <div className="flex items-center justify-end gap-1 mt-1.5 text-[9px] text-[#5F5E5E] font-tabular-sm">
@@ -347,7 +361,7 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
                         {isTeacher && (
                           <span
                             className={`text-[12px] font-bold ${
-                              msg.status === 'read' ? 'text-blue-500' : 'text-[#9A958A]'
+                              msg.status === "read" ? "text-blue-500" : "text-[#9A958A]"
                             }`}
                           >
                             ✓✓
@@ -369,11 +383,11 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
             <textarea
               value={composerText}
               onChange={(e) => setComposerText(e.target.value)}
-              placeholder={`Message parent of ${currentStudent?.name || 'student'}...`}
+              placeholder={`Message parent of ${currentStudent?.name || "student"}...`}
               rows={1}
               className="flex-1 p-2.5 text-xs sm:text-sm bg-white border border-[#DDD6C7] rounded focus:outline-none focus:border-[#C2410C] resize-none min-h-[44px]"
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
+                if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
                   handleSendCustomMessage();
                 }
@@ -387,7 +401,7 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
               title="Copy message text"
             >
               <span className="material-symbols-outlined text-[18px]">
-                {copiedNotification ? 'check' : 'content_copy'}
+                {copiedNotification ? "check" : "content_copy"}
               </span>
             </button>
 
@@ -481,7 +495,9 @@ Principal: ${schoolConfig.principalName || 'Mrs. J. K. Cheruiyot'}.`;
                   <input
                     type="text"
                     value={profileForm.assignedStream}
-                    onChange={(e) => setProfileForm({ ...profileForm, assignedStream: e.target.value })}
+                    onChange={(e) =>
+                      setProfileForm({ ...profileForm, assignedStream: e.target.value })
+                    }
                     className="w-full p-2.5 bg-white border border-[#DDD6C7] rounded text-xs sm:text-sm"
                   />
                 </div>

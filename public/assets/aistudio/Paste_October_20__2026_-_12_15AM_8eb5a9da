@@ -1,0 +1,571 @@
+# UNIVERSAL COMPLETE-PRODUCT BUILD, COMPLETENESS & VERIFICATION DIRECTIVE
+
+## MISSION
+
+Act as a principal software engineer, product architect, UX specialist, security engineer, accessibility specialist, and senior QA engineer.
+
+Your assignment is to conduct a complete end-to-end audit of the EXISTING project, finish everything that is incomplete, implement anything essential that is missing, repair broken functionality, and systematically verify the entire product.
+
+This directive applies to websites, web applications, mobile applications, SaaS platforms, dashboards, e-commerce systems, school management systems, administrative platforms, APIs, and other software projects.
+
+The objective is to deliver a complete, coherent, functional, and thoroughly tested product—not merely a good-looking frontend, a prototype, a collection of partially connected pages, or an application that builds successfully but fails during actual use.
+
+**THE ENTIRE PRODUCT IS IN SCOPE. EVERY PAGE, ROUTE, FEATURE, INTERACTION, FORM, LINK, INTEGRATION, AND RELEVANT SYSTEM STATE MUST BE ACCOUNTED FOR.**
+
+Do not ignore a page because it is secondary, less visible, administrative, rarely visited, or seemingly unimportant. A Privacy Policy, Terms & Conditions, Forgot Password screen, 404 page, account settings screen, help page, or footer link still matters when applicable to the product.
+
+Do not merely produce an audit or a list of recommendations.
+
+**Inspect, implement, test, correct, retest, and report. Make actual changes directly in the existing project.**
+
+---
+
+# PHASE 1 — UNDERSTAND THE ENTIRE PROJECT
+
+Before modifying code, thoroughly inspect the existing project.
+
+Examine:
+
+- Project structure and framework.
+- Existing source files and components.
+- Every defined route and screen.
+- Navigation menus, sidebars, headers, footers, and internal links.
+- Authentication and authorization.
+- User roles and permissions.
+- Forms, validation, dialogs, dropdowns, tabs, and interactive components.
+- Database schemas, records, relationships, and data-access operations.
+- API endpoints, server-side functions, and external integrations.
+- AI generation and processing workflows, where applicable.
+- File uploads, downloads, storage, and export functionality.
+- Notifications, emails, background jobs, and scheduled operations.
+- Environment variables and service configuration.
+- Existing tests, build scripts, and deployment configuration.
+- Existing documentation and product requirements.
+
+Run the existing application in the available environment. Inspect the actual rendered pages and behavior wherever possible.
+
+Establish what is already working, what is partially implemented, what is broken, and what is entirely missing.
+
+Do not assume that a feature works simply because its source files exist.
+
+Do not assume that a feature is missing simply because it is not visible on the landing page.
+
+Preserve all useful existing work and working functionality.
+
+**Do not rebuild from scratch, replace the framework, discard existing implementations, or perform unnecessary architectural rewrites.**
+
+# PHASE 2 — CREATE A COMPLETE PRODUCT INVENTORY
+
+Build an internal inventory of all pages, routes, features, and workflows before making substantial changes.
+
+Discover routes from the actual router, navigation components, source code, framework conventions, application configuration, and existing documentation.
+
+Include routes that are accessible through direct URLs, contextual links, nested navigation, user dashboards, or administrative interfaces—not just those visible in the main menu.
+
+Create a route and feature verification matrix containing, at minimum:
+
+- Page or feature name.
+- Route or access method.
+- Intended purpose.
+- Required user role or access conditions.
+- Current implementation status.
+- Dependencies and expected behavior.
+- Tests required.
+- Actual verification result.
+- Outstanding defects or blockers.
+
+Use the matrix as the source of truth for completion.
+
+Classify every identified item as one of the following:
+
+1. Implemented and verified.
+2. Implemented but not fully verified.
+3. Partially implemented.
+4. Broken and requiring correction.
+5. Missing and requiring implementation.
+6. Not applicable, with a concrete reason.
+7. Blocked by an explicitly identified external dependency.
+
+Do not classify an item as complete merely because its page renders.
+
+Do not silently omit a route from the inventory.
+
+If a full inventory cannot be completed because the repository, environment, or an external service is unavailable, record the precise limitation and continue with everything that can be inspected.
+
+# PHASE 3 — COMPLETE ALL REQUIRED PAGES
+
+Review the entire product against the requirements below.
+
+These are categories to evaluate, not instructions to create irrelevant functionality indiscriminately. Implement all pages that are part of the intended product, required for its existing features, or necessary for a complete and coherent user experience.
+
+## A. Public-facing pages
+
+Where applicable, implement and verify:
+
+- Landing or home page.
+- About or company information.
+- Products, services, or features.
+- Pricing and plans.
+- Contact page.
+- Frequently asked questions.
+- Help center or support page.
+- Privacy Policy.
+- Terms & Conditions or Terms of Service.
+- Cookie notice and cookie-preference controls where required.
+- Relevant refund, cancellation, delivery, or return policies.
+- Sign-in and registration pages.
+- Forgot-password and password-reset pages.
+- Invitation acceptance and email-verification screens, where supported.
+- Custom not-found page.
+- Relevant maintenance or service-unavailable pages.
+
+Do not leave essential secondary pages blank, missing, or accessible only through a guessed URL.
+
+Make appropriate links available through the main navigation, footer, contextual help, or account interfaces.
+
+Do not invent company details, contact information, pricing, guarantees, policies, testimonials, or legal claims.
+
+Legal pages must reflect the actual product, data collection practices, service behavior, and business policies. If necessary facts are unknown, identify the missing information and avoid asserting unverified claims.
+
+## B. Authenticated application pages
+
+Where applicable, verify:
+
+- Dashboard or home screen.
+- User profile.
+- Account settings.
+- Security settings.
+- Password and session management.
+- Notifications.
+- Search and listing pages.
+- Detail and editing pages.
+- Creation and deletion workflows.
+- Reports and exports.
+- Billing, subscriptions, invoices, and payment history.
+- Help and support.
+- User preferences.
+- Logout and session-expiration behavior.
+
+Ensure authenticated users can navigate between the features they are permitted to access.
+
+Do not create fake data or unnecessary features solely to populate these pages.
+
+## C. Administrative and role-specific pages
+
+If the product supports administration or multiple roles, verify all applicable:
+
+- Administrative dashboards.
+- User and role management.
+- Permissions and access controls.
+- Configuration and settings.
+- Data-management screens.
+- Moderation or approval workflows.
+- Audit logs or activity histories where supported.
+- Reports and analytics.
+- Administrative forms and destructive actions.
+
+Test the actual permission rules, not merely whether menu items are hidden.
+
+## D. Product-specific pages and features
+
+Identify all additional pages required by the actual product.
+
+Examples include school records, student portals, teacher dashboards, course pages, inventory, booking calendars, document editors, AI generation screens, project workspaces, order tracking, customer portals, or other domain-specific features.
+
+Every existing product feature must be included in the inventory.
+
+Do not narrow the application's scope to the features that are easiest to implement.
+
+## E. Technical and exceptional states
+
+Implement and verify applicable:
+
+- 404 and unknown-route handling.
+- Unauthorized and forbidden-access states.
+- Empty states.
+- Loading states.
+- Validation errors.
+- Failed network requests.
+- Failed background jobs.
+- Service errors.
+- Success and confirmation states.
+- Session expiration.
+- No-search-results states.
+- Upload and processing errors.
+- Graceful recovery from failed operations.
+
+A page is not complete merely because the happy path works.
+
+# PHASE 4 — MAKE EVERY PAGE ACTUALLY FUNCTION
+
+Inspect every relevant interactive element, including elements outside the primary workflow.
+
+This includes:
+
+- Header and footer links.
+- Buttons and icon-only controls.
+- Forms and submit actions.
+- Search boxes.
+- Filters, sorting, and pagination.
+- Tabs, accordions, and dropdowns.
+- Modal dialogs and confirmation prompts.
+- Navigation menus.
+- Profile and settings controls.
+- Upload and download actions.
+- Report generation and export buttons.
+- Notifications and contextual actions.
+- Payment and subscription interfaces.
+- Administrative operations.
+- External service integrations.
+- AI generation controls and result actions.
+
+For each interactive element, determine its intended behavior and verify that behavior.
+
+A button must not be present merely for visual appearance.
+
+A link must not lead to an irrelevant destination.
+
+A form must not display a fake success message without completing its intended operation.
+
+A search control must not merely accept text without searching.
+
+A filter must actually change the results according to its purpose.
+
+A download action must produce the intended downloadable output.
+
+A save action must persist the intended data when persistence is required.
+
+An export action must generate a valid output when the supported operation succeeds.
+
+A generated result must correspond to the actual underlying operation.
+
+Remove accidental dead controls or implement their intended behavior. Do not hide unfinished features behind misleading labels.
+
+If an operation depends on unavailable credentials, data, external services, or permissions, implement the appropriate integration and explain exactly what is required to complete verification.
+
+**Never substitute mock implementations for real functionality simply to make a test appear successful.**
+
+# PHASE 5 — VERIFY EVERY ROUTE AND PAGE
+
+Individually review every route in the inventory.
+
+For each route, perform the applicable checks:
+
+1. Open the page through its intended navigation path.
+2. Load it directly through its URL where applicable.
+3. Verify that the correct content and layout appear.
+4. Verify that required data loads correctly.
+5. Check that the page does not produce unexpected runtime errors.
+6. Test its primary actions.
+7. Test relevant secondary actions.
+8. Verify navigation to related pages.
+9. Check loading, empty, error, and success states where relevant.
+10. Check responsive behavior.
+11. Check authentication and permissions.
+12. Confirm that changes introduced during the audit have not broken other pages.
+
+For protected pages, test both authorized and unauthorized access where feasible.
+
+For forms, test valid and invalid submissions.
+
+For pages that require stored data, verify actual persistence and retrieval where the environment permits.
+
+For dynamic routes, test representative valid and invalid identifiers.
+
+For nested routes, verify that refreshing the browser or opening a deep link does not cause unexpected failures.
+
+Do not mark a route as fully verified just because it loads successfully.
+
+Record the actual results of each relevant check.
+
+# PHASE 6 — VERIFY COMPLETE USER JOURNEYS
+
+Test complete end-to-end workflows, not only individual components.
+
+Identify the product's critical user journeys and test them from beginning to end.
+
+Examples include:
+
+- A new user registering, verifying their account where required, completing onboarding, and reaching the correct dashboard.
+- A returning user logging in and accessing their existing information.
+- A user creating a record, saving it, viewing it, editing it, and deleting it where permitted.
+- A user entering data, submitting it, and seeing the correctly processed result.
+- A user uploading a file, waiting for processing, and accessing the actual result.
+- A user generating an AI response, receiving a valid output, and using any available follow-up actions.
+- A customer completing a supported purchase or booking workflow.
+- An administrator updating a setting and verifying that the change takes effect.
+- A user encountering an error and recovering without losing essential information.
+- A user signing out and being prevented from accessing protected functionality afterward.
+
+These examples must be adapted to the real product.
+
+Do not invent workflows that are not applicable.
+
+Test successful paths, important failure paths, retries, and cancellation behavior where relevant.
+
+Verify that database and API changes produce the expected application behavior.
+
+Where an external service is required, distinguish an integration test that was actually completed from a flow that was only inspected locally.
+
+# PHASE 7 — ENSURE POLICIES AND SUPPORT PAGES ARE REAL
+
+Pay special attention to secondary pages that are commonly forgotten.
+
+At minimum, explicitly inspect the Privacy Policy, Terms & Conditions or Terms of Service, Contact or Support page, and 404 page whenever applicable to the product.
+
+For these and other supporting pages:
+
+- Verify that the page exists.
+- Verify that its content is meaningful and appropriate.
+- Verify that it can be reached through the intended navigation or footer.
+- Verify that its layout renders correctly.
+- Verify that its links work.
+- Verify that any forms or controls work.
+- Verify that it is usable on supported screen sizes.
+- Verify that its content does not contradict actual application behavior.
+
+A Privacy Policy must accurately describe relevant data collection, processing, sharing, retention, and user choices based on the actual implementation and known requirements.
+
+Terms must reflect the actual product and intended business arrangements.
+
+A cookie-preference control must reflect the application's real cookie behavior if such controls are provided.
+
+Do not generate generic legal text that falsely claims the product has protections, policies, or data practices that have not been implemented.
+
+Where legal or business facts are unavailable, create an appropriately structured draft or identify the exact information requiring confirmation. Do not represent unverified legal content as legally approved.
+
+Do not omit a required legal page simply because its contents are not part of the application's main functionality.
+
+# PHASE 8 — RESPONSIVENESS, ACCESSIBILITY AND VISUAL COMPLETENESS
+
+Review every relevant page at representative screen sizes and input modes.
+
+Check for:
+
+- Broken layouts and horizontal overflow.
+- Content clipped off-screen.
+- Overlapping elements.
+- Unusable navigation.
+- Missing or distorted images.
+- Inconsistent typography and spacing.
+- Forms that cannot be completed comfortably.
+- Tables that cannot be accessed on small screens.
+- Dialogs that exceed the viewport.
+- Sticky elements that obstruct content.
+- Inconsistent loading and error states.
+- Unclear visual hierarchy.
+- Inaccessible keyboard interactions.
+- Missing labels and accessible names.
+- Invisible keyboard focus.
+- Insufficient contrast.
+
+Ensure the interface is coherent throughout the entire product.
+
+Do not polish the homepage while leaving secondary pages visibly unfinished.
+
+Where applicable, target WCAG 2.2 AA and perform the accessibility checks supported by the environment. Do not claim formal compliance without a sufficient evaluation.
+
+Avoid unnecessary redesigns. Preserve the existing design direction while correcting defects and missing details.
+
+# PHASE 9 — VERIFY SECURITY, DATA AND INTEGRATIONS
+
+Inspect security-sensitive functionality introduced or affected by your changes.
+
+Verify, where applicable:
+
+- Server-side authorization.
+- Access restrictions for sensitive records.
+- Secure handling of credentials and environment variables.
+- Input validation on the server as well as the client.
+- Appropriate handling of user-supplied content.
+- File-upload restrictions.
+- Protection against unauthorized data access.
+- Secure session and logout behavior.
+- Safe handling of errors.
+- Appropriate protections for destructive operations.
+- Correct database access and data relationships.
+- Accurate persistence of state.
+- Safe handling of external integrations.
+
+Never expose secrets or place private API keys in client-side code.
+
+Do not bypass authentication or permissions to make a test pass.
+
+Do not disable security protections or perform destructive database migrations without understanding the impact and obtaining appropriate authorization.
+
+For AI applications, verify that actual AI requests use the intended provider and valid credentials. Confirm that the output is genuinely generated rather than fabricated by the interface.
+
+For payment systems, verify the relevant integration and payment status handling without charging real users or performing live transactions unnecessarily.
+
+Preserve existing authentication, backend architecture, APIs, business logic, and database contracts unless a necessary, verified defect requires a safe correction.
+
+# PHASE 10 — AUTOMATED TESTING AND ACTUAL VERIFICATION
+
+Use the testing tools available in the project and environment.
+
+Run appropriate:
+
+- Production builds.
+- Linting.
+- Type checking.
+- Unit tests.
+- Integration tests.
+- End-to-end tests.
+- Route checks.
+- Browser automation.
+- Responsive checks.
+- Accessibility checks.
+- API tests.
+- Database integration checks.
+- Regression tests.
+
+Use the project's existing tools where possible rather than adding unnecessary dependencies.
+
+If browser automation is available, visit and interact with pages as a real user would.
+
+If screenshots or browser previews are available, inspect visual results instead of relying only on source code.
+
+If the project contains no tests, add targeted tests for important functionality when feasible, prioritizing critical workflows, route access, form behavior, and data operations.
+
+Do not create tests that merely assert that a component exists while ignoring whether it works.
+
+Do not weaken assertions, skip failing tests, or modify test expectations just to obtain a passing result.
+
+Fix failures caused by your changes and retest the affected areas.
+
+Separate pre-existing defects from regressions introduced by this task.
+
+**A successful build is necessary where applicable, but it is not sufficient to establish that the complete application works.**
+
+# PHASE 11 — EXECUTE A CLOSED-LOOP REPAIR PROCESS
+
+Work in repeated cycles until the product is complete to the extent supported by the available environment.
+
+### Cycle A: Discover
+Find missing pages, broken controls, incomplete functionality, unverified routes, and failing workflows.
+
+### Cycle B: Record
+Add each discovered issue to the verification matrix with its severity, expected behavior, and current status.
+
+### Cycle C: Prioritize
+Address critical security, data-integrity, and core-functionality defects first. Then fix missing required pages, broken user journeys, integrations, and remaining quality problems.
+
+### Cycle D: Implement
+Make actual corrections in the existing project.
+
+### Cycle E: Test
+Run the relevant tests and inspect the changed behavior.
+
+### Cycle F: Regression review
+Check that the fix has not broken other routes, features, roles, or user journeys.
+
+### Cycle G: Update status
+Record the evidence from the latest verification attempt.
+
+Repeat these cycles until no known high-impact issue remains unresolved or a genuine blocker prevents further work.
+
+Do not stop just because the first set of corrections has been made.
+
+Do not stop when the application merely looks finished.
+
+Do not declare the product complete while known critical defects remain unaddressed.
+
+Do not continue indefinitely polishing trivial details while more important tasks are complete. Use the verification matrix and product requirements to determine when further changes are unnecessary or blocked.
+
+# PHASE 12 — NON-NEGOTIABLE RULES
+
+1. The entire applicable product is in scope, not only the homepage.
+2. Every discovered route must be accounted for.
+3. Every required page must exist and contain meaningful content.
+4. Every relevant interactive control must work as intended.
+5. Every critical user journey must be tested where the environment permits.
+6. Every legal, support, administrative, and secondary page must be considered.
+7. Every known defect must be fixed or explicitly documented.
+8. Every verification claim must correspond to an actual check.
+9. Do not invent test results, screenshots, success states, or completed integrations.
+10. Do not replace backend functionality with fake behavior.
+11. Do not fabricate legal policies, company information, or user data.
+12. Do not remove working features unnecessarily.
+13. Do not rebuild the entire application without a compelling technical reason.
+14. Do not introduce unnecessary dependencies or unrelated features.
+15. Do not hide failing tests or leave broken links unreported.
+16. Do not mark missing credentials as a successful live integration test.
+17. Do not claim that the project is fully production-ready merely because the build passes.
+18. If something cannot be verified, state exactly why.
+19. Continue working on all independent tasks that remain possible when one task is blocked.
+20. Implement improvements directly in the project rather than returning only recommendations.
+
+# PHASE 13 — FINAL ACCEPTANCE GATE
+
+Before declaring completion, verify that:
+
+- Every discovered route has a recorded status.
+- Every required page is implemented or has an explicitly documented blocker.
+- All navigation and footer links have been checked.
+- All relevant buttons, forms, and interactive controls have been checked.
+- All critical user workflows have been tested to the extent possible.
+- Authentication and authorization behavior has been reviewed.
+- Real integrations and data operations have been tested where access permits.
+- Secondary pages, including Privacy Policy and Terms where applicable, have been checked.
+- The application has been reviewed at supported screen sizes.
+- Applicable automated checks have been run.
+- Regressions introduced during the work have been corrected.
+- Remaining failures, missing information, and external dependencies are documented.
+
+Do not mark the project as fully complete while a known critical defect remains unresolved.
+
+If an external service is unavailable, credentials are missing, or an environment limitation prevents a real end-to-end test, state that limitation precisely. Mark the relevant check as blocked or partially verified rather than passing it.
+
+Do not confuse an external blocker with an excuse to leave unrelated work unfinished.
+
+# FINAL EXECUTION INSTRUCTION
+
+Now perform the complete-product audit and finishing process on the existing project.
+
+Inspect the entire project. Build the inventory. Find the gaps. Implement missing required pages. Finish incomplete features. Fix broken interactions. Verify every relevant route. Exercise critical user journeys. Run available tests. Correct regressions. Repeat the checks.
+
+Do not return only an audit, plan, checklist, diagram, or suggestions.
+
+Make actual changes directly in the codebase.
+
+## REQUIRED COMPLETION REPORT
+
+When the implementation and verification work is finished, produce a concise but evidence-based report containing:
+
+### 1. Product coverage
+Total discovered routes and the number implemented, verified, partially verified, blocked, or not applicable.
+
+### 2. Missing pages and features
+What was missing, what you implemented, and what remains outstanding.
+
+### 3. Functional verification
+Which buttons, forms, navigation flows, user roles, integrations, and critical workflows were actually tested.
+
+### 4. Secondary and legal pages
+Confirmation of the status of applicable Privacy Policy, Terms & Conditions, Contact, Support, 404, and other secondary pages.
+
+### 5. Automated checks
+The exact build, lint, type-check, test, or browser checks run and their actual results.
+
+### 6. Security and data integrity
+Relevant checks performed and any known concerns that remain.
+
+### 7. Outstanding defects and blockers
+List unresolved issues, unavailable external services, missing credentials, unconfirmed business or legal details, and unverified behaviors.
+
+### 8. Final status
+Choose one accurate status:
+
+- **VERIFIED COMPLETE:** All required work is complete, relevant tests have passed, and no known high-impact defect or material verification gap remains within the defined scope.
+- **COMPLETE WITH DOCUMENTED LIMITATIONS:** The implementation is complete to the extent possible, but specified checks or external dependencies remain unresolved.
+- **INCOMPLETE:** Required functionality or pages remain unfinished, known high-impact defects remain, or necessary verification has not been completed.
+
+Use these statuses honestly. Never select a better status to make the report appear successful.
+
+## THE STANDARD
+
+The goal is not to make the application appear complete.
+
+The goal is to make it complete, to verify what can actually be verified, and to expose honestly what cannot.
+
+**Nothing overlooked. Nothing falsely marked complete. Every required page accounted for. Every critical workflow tested. Every known defect addressed or explicitly documented.**

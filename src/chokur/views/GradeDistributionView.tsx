@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
-import { GradeChip } from '../components/GradeChip';
-import { useGrading } from '../context/GradingContext';
-import { exportTableToCSV, getGradeFromScore, KCSE_GRADING_TABLE } from '../utils/grading';
-import { GradeDistributionTier, KCSEGrade } from '../types';
+import React, { useMemo, useState } from "react";
+import { GradeChip } from "../components/GradeChip";
+import { useGrading } from "../context/GradingContext";
+import { exportTableToCSV, getGradeFromScore, KCSE_GRADING_TABLE } from "../utils/grading";
+import { GradeDistributionTier, KCSEGrade } from "../types";
 
 export const GradeDistributionView: React.FC = () => {
   const {
@@ -15,21 +15,22 @@ export const GradeDistributionView: React.FC = () => {
     passRate,
     activeStream,
     activeExam,
+    setActiveView,
   } = useGrading();
 
-  const [selectedSubjectFilter, setSelectedSubjectFilter] = useState<string>('ALL');
+  const [selectedSubjectFilter, setSelectedSubjectFilter] = useState<string>("ALL");
   const [showSubjectDropdown, setShowSubjectDropdown] = useState(false);
 
   // Compute 12-tier distribution based on selected filter (ALL or specific subject)
   const activeDistributionTiers = useMemo<GradeDistributionTier[]>(() => {
     let gradeList: KCSEGrade[] = [];
 
-    if (selectedSubjectFilter === 'ALL') {
+    if (selectedSubjectFilter === "ALL") {
       gradeList = rankings.map((r) => r.meanGrade);
     } else {
       students.forEach((s) => {
         const val = marks[s.id]?.[selectedSubjectFilter];
-        if (typeof val === 'number') {
+        if (typeof val === "number") {
           gradeList.push(getGradeFromScore(val).grade);
         }
       });
@@ -57,12 +58,12 @@ export const GradeDistributionView: React.FC = () => {
   const letterCategoryStats = useMemo(() => {
     let gradesList: string[] = [];
 
-    if (selectedSubjectFilter === 'ALL') {
+    if (selectedSubjectFilter === "ALL") {
       gradesList = rankings.map((r) => r.meanGrade);
     } else {
       students.forEach((s) => {
         const val = marks[s.id]?.[selectedSubjectFilter];
-        if (typeof val === 'number') {
+        if (typeof val === "number") {
           gradesList.push(getGradeFromScore(val).grade);
         }
       });
@@ -70,11 +71,11 @@ export const GradeDistributionView: React.FC = () => {
 
     const total = gradesList.length || 1;
 
-    const countA = gradesList.filter((g) => g.startsWith('A')).length;
-    const countB = gradesList.filter((g) => g.startsWith('B')).length;
-    const countC = gradesList.filter((g) => g.startsWith('C')).length;
-    const countD = gradesList.filter((g) => g.startsWith('D')).length;
-    const countE = gradesList.filter((g) => g.startsWith('E')).length;
+    const countA = gradesList.filter((g) => g.startsWith("A")).length;
+    const countB = gradesList.filter((g) => g.startsWith("B")).length;
+    const countC = gradesList.filter((g) => g.startsWith("C")).length;
+    const countD = gradesList.filter((g) => g.startsWith("D")).length;
+    const countE = gradesList.filter((g) => g.startsWith("E")).length;
 
     const pctA = Math.round((countA / total) * 100);
     const pctB = Math.round((countB / total) * 100);
@@ -83,24 +84,24 @@ export const GradeDistributionView: React.FC = () => {
     const pctE = Math.round((countE / total) * 100);
 
     return [
-      { letter: 'A', count: countA, pct: pctA },
-      { letter: 'B', count: countB, pct: pctB },
-      { letter: 'C', count: countC, pct: pctC },
-      { letter: 'D', count: countD, pct: pctD },
-      { letter: 'E', count: countE, pct: pctE },
+      { letter: "A", count: countA, pct: pctA },
+      { letter: "B", count: countB, pct: pctB },
+      { letter: "C", count: countC, pct: pctC },
+      { letter: "D", count: countD, pct: pctD },
+      { letter: "E", count: countE, pct: pctE },
     ];
   }, [rankings, selectedSubjectFilter, students, marks]);
 
   const maxBarCount = Math.max(...letterCategoryStats.map((c) => c.count), 1);
 
   const evaluatedCount =
-    selectedSubjectFilter === 'ALL'
+    selectedSubjectFilter === "ALL"
       ? rankings.length
-      : students.filter((s) => typeof marks[s.id]?.[selectedSubjectFilter] === 'number').length;
+      : students.filter((s) => typeof marks[s.id]?.[selectedSubjectFilter] === "number").length;
 
   const selectedSubjectName =
-    selectedSubjectFilter === 'ALL'
-      ? 'Class Aggregate Standing'
+    selectedSubjectFilter === "ALL"
+      ? "Class Aggregate Standing"
       : subjects.find((s) => s.code === selectedSubjectFilter)?.name || selectedSubjectFilter;
 
   // University pass metrics
@@ -114,12 +115,12 @@ export const GradeDistributionView: React.FC = () => {
 
   const handleExportDistribution = () => {
     const headers = [
-      'KCSE Grade',
-      'Points Equivalent',
-      'Candidate Count',
-      'Cohort Share (%)',
-      'Cumulative (%)',
-      'University Eligible',
+      "KCSE Grade",
+      "Points Equivalent",
+      "Candidate Count",
+      "Cohort Share (%)",
+      "Cumulative (%)",
+      "University Eligible",
     ];
 
     const rows = activeDistributionTiers.map((t) => [
@@ -128,13 +129,13 @@ export const GradeDistributionView: React.FC = () => {
       String(t.studentCount),
       `${t.cohortShare.toFixed(1)}%`,
       `${t.cumulativePercentage.toFixed(1)}%`,
-      t.pointsEquivalent >= 7 ? 'YES' : 'NO',
+      t.pointsEquivalent >= 7 ? "YES" : "NO",
     ]);
 
     exportTableToCSV(
-      `KCSE_Grade_Distribution_${selectedSubjectFilter}_${activeStream.replace(/\s+/g, '_')}_${activeExam.replace(/\s+/g, '_')}`,
+      `KCSE_Grade_Distribution_${selectedSubjectFilter}_${activeStream.replace(/\s+/g, "_")}_${activeExam.replace(/\s+/g, "_")}`,
       headers,
-      rows
+      rows,
     );
   };
 
@@ -143,7 +144,9 @@ export const GradeDistributionView: React.FC = () => {
       {/* Header Section */}
       <section className="flex flex-col xl:flex-row xl:items-end justify-between pb-4 sm:pb-6 border-b border-[#DDD6C7] gap-4">
         <div>
-          <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">Grade Distribution</h1>
+          <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">
+            Grade Distribution
+          </h1>
           <p className="font-body-md text-xs sm:text-body-md text-[#5F5E5E] mt-1">
             {activeStream} · {activeExam} · 12-tier KNEC cohort frequency distribution
           </p>
@@ -158,24 +161,32 @@ export const GradeDistributionView: React.FC = () => {
               type="button"
               className="bg-[#FBF8F1] border border-[#DDD6C7] hover:border-[#111111] rounded px-3 py-2 text-xs sm:text-[13px] font-medium flex items-center gap-2 cursor-pointer min-h-[40px]"
             >
-              <span className="material-symbols-outlined text-[16px] text-[#C2410C]">filter_list</span>
-              <span>Filter: {selectedSubjectFilter === 'ALL' ? 'Cohort Mean' : selectedSubjectFilter}</span>
-              <span className="material-symbols-outlined text-[16px] text-[#5F5E5E]">expand_more</span>
+              <span className="material-symbols-outlined text-[16px] text-[#C2410C]">
+                filter_list
+              </span>
+              <span>
+                Filter: {selectedSubjectFilter === "ALL" ? "Cohort Mean" : selectedSubjectFilter}
+              </span>
+              <span className="material-symbols-outlined text-[16px] text-[#5F5E5E]">
+                expand_more
+              </span>
             </button>
 
             {showSubjectDropdown && (
               <div className="absolute right-0 top-full mt-1 w-56 bg-[#FBF8F1] border border-[#DDD6C7] shadow-lg py-1 z-50 rounded">
                 <button
                   onClick={() => {
-                    setSelectedSubjectFilter('ALL');
+                    setSelectedSubjectFilter("ALL");
                     setShowSubjectDropdown(false);
                   }}
                   className={`w-full text-left px-3 py-2 text-xs hover:bg-[#F2EDE3] flex items-center justify-between cursor-pointer ${
-                    selectedSubjectFilter === 'ALL' ? 'font-medium text-[#C2410C] bg-[#F8F3E9]' : 'text-[#111111]'
+                    selectedSubjectFilter === "ALL"
+                      ? "font-medium text-[#C2410C] bg-[#F8F3E9]"
+                      : "text-[#111111]"
                   }`}
                 >
                   <span>Cohort KCSE Mean Grade</span>
-                  {selectedSubjectFilter === 'ALL' && <span>✓</span>}
+                  {selectedSubjectFilter === "ALL" && <span>✓</span>}
                 </button>
                 <div className="border-t border-[#DDD6C7]/50 my-1"></div>
                 {subjects.map((s) => (
@@ -187,8 +198,8 @@ export const GradeDistributionView: React.FC = () => {
                     }}
                     className={`w-full text-left px-3 py-2 text-xs hover:bg-[#F2EDE3] flex items-center justify-between cursor-pointer ${
                       selectedSubjectFilter === s.code
-                        ? 'font-medium text-[#C2410C] bg-[#F8F3E9]'
-                        : 'text-[#111111]'
+                        ? "font-medium text-[#C2410C] bg-[#F8F3E9]"
+                        : "text-[#111111]"
                     }`}
                   >
                     <span>
@@ -217,7 +228,9 @@ export const GradeDistributionView: React.FC = () => {
       <section className="bg-[#FBF8F1] border border-[#DDD6C7] p-3 sm:p-6 my-4 sm:my-6 rounded shadow-xs">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-1">
           <div className="font-label-caps text-label-caps text-[#5F5E5E] tracking-wider uppercase text-[11px]">
-            {selectedSubjectFilter === 'ALL' ? 'COHORT MEAN GRADE FREQUENCY' : `${selectedSubjectFilter} GRADE FREQUENCY`}
+            {selectedSubjectFilter === "ALL"
+              ? "COHORT MEAN GRADE FREQUENCY"
+              : `${selectedSubjectFilter} GRADE FREQUENCY`}
           </div>
           <div className="font-tabular-sm text-xs sm:text-tabular-sm text-[#5F5E5E]">
             Evaluated cohort: {evaluatedCount} candidates
@@ -235,22 +248,25 @@ export const GradeDistributionView: React.FC = () => {
               const barHeightPct = maxBarCount > 0 ? (cat.count / maxBarCount) * 85 : 0;
 
               return (
-                <div key={cat.letter} className="flex flex-col items-center h-full justify-end group">
+                <div
+                  key={cat.letter}
+                  className="flex flex-col items-center h-full justify-end group"
+                >
                   <div className="font-tabular-sm text-xs sm:text-tabular-sm text-[#111111] mb-1.5 text-center whitespace-nowrap">
-                    <span className={isTallest ? 'font-bold' : 'font-medium'}>{cat.count}</span>{' '}
+                    <span className={isTallest ? "font-bold" : "font-medium"}>{cat.count}</span>{" "}
                     <span className="text-[#5F5E5E] hidden sm:inline">· {cat.pct}%</span>
                   </div>
 
                   <div
                     className={`w-full max-w-[48px] sm:max-w-[68px] transition-all duration-300 ${
-                      isTallest ? 'bg-[#111111]' : 'bg-[#5F5E5E]'
+                      isTallest ? "bg-[#111111]" : "bg-[#5F5E5E]"
                     }`}
                     style={{ height: `${Math.max(4, barHeightPct)}%` }}
                   ></div>
 
                   <div
                     className={`mt-2 sm:mt-3 font-tabular-md text-sm sm:text-tabular-md ${
-                      isTallest ? 'font-bold text-[#111111]' : 'font-semibold text-[#111111]'
+                      isTallest ? "font-bold text-[#111111]" : "font-semibold text-[#111111]"
                     }`}
                   >
                     {cat.letter}
@@ -275,9 +291,13 @@ export const GradeDistributionView: React.FC = () => {
       {/* Summary Statistics Ledger */}
       <section className="border-y border-[#DDD6C7] divide-y divide-[#DDD6C7] mb-6 bg-[#FBF8F1]">
         <div className="flex items-center justify-between py-3 px-3 sm:px-4">
-          <span className="font-body-md text-xs sm:text-body-md text-[#5F5E5E]">Class Mean Grade</span>
+          <span className="font-body-md text-xs sm:text-body-md text-[#5F5E5E]">
+            Class Mean Grade
+          </span>
           <div className="flex items-baseline gap-2">
-            <span className="font-tabular-lg text-lg sm:text-tabular-lg font-bold text-[#111111]">{meanGrade}</span>
+            <span className="font-tabular-lg text-lg sm:text-tabular-lg font-bold text-[#111111]">
+              {meanGrade}
+            </span>
             <span className="font-tabular-sm text-xs sm:text-tabular-sm text-[#5F5E5E]">
               ({classAverage.toFixed(1)}% mean score)
             </span>
@@ -299,10 +319,14 @@ export const GradeDistributionView: React.FC = () => {
         </div>
 
         <div className="flex items-center justify-between py-3 px-3 sm:px-4">
-          <span className="font-body-md text-xs sm:text-body-md text-[#5F5E5E]">Candidates Below C+ Threshold</span>
+          <span className="font-body-md text-xs sm:text-body-md text-[#5F5E5E]">
+            Candidates Below C+ Threshold
+          </span>
           <div className="font-tabular-lg text-lg sm:text-tabular-lg font-bold text-[#111111]">
-            {belowCutoffCount}{' '}
-            <span className="font-body-sm text-xs sm:text-body-sm font-normal text-[#5F5E5E]">candidates</span>
+            {belowCutoffCount}{" "}
+            <span className="font-body-sm text-xs sm:text-body-sm font-normal text-[#5F5E5E]">
+              candidates
+            </span>
           </div>
         </div>
       </section>
@@ -315,18 +339,22 @@ export const GradeDistributionView: React.FC = () => {
           KCSE 12-Grade Breakdown — {selectedSubjectName}
         </h2>
         {activeDistributionTiers.map((tier) => {
-          const isCPlus = tier.grade === 'C+';
+          const isCPlus = tier.grade === "C+";
           return (
             <React.Fragment key={tier.grade}>
               <div className="bg-[#FBF8F1] border border-[#DDD6C7] rounded p-2.5 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <GradeChip grade={tier.grade} size="sm" />
-                  <span className="text-xs text-[#5F5E5E] font-tabular-sm">{tier.pointsEquivalent} pts</span>
+                  <span className="text-xs text-[#5F5E5E] font-tabular-sm">
+                    {tier.pointsEquivalent} pts
+                  </span>
                 </div>
                 <div className="flex items-center gap-3 text-xs font-tabular-sm">
                   <span className="font-bold text-[#111111]">{tier.studentCount} students</span>
                   <span className="text-[#5F5E5E]">({tier.cohortShare.toFixed(1)}%)</span>
-                  <span className="text-[10px] text-[#9A958A]">Cum: {tier.cumulativePercentage.toFixed(1)}%</span>
+                  <span className="text-[10px] text-[#9A958A]">
+                    Cum: {tier.cumulativePercentage.toFixed(1)}%
+                  </span>
                 </div>
               </div>
 
@@ -380,7 +408,7 @@ export const GradeDistributionView: React.FC = () => {
 
             <tbody className="divide-y divide-[#DDD6C7] font-body-sm text-body-sm">
               {activeDistributionTiers.map((tier) => {
-                const isCPlus = tier.grade === 'C+';
+                const isCPlus = tier.grade === "C+";
 
                 return (
                   <React.Fragment key={tier.grade}>
@@ -425,7 +453,9 @@ export const GradeDistributionView: React.FC = () => {
 
             <tfoot>
               <tr className="border-t-2 border-[#111111] bg-[#FEF9EF] font-semibold">
-                <td className="py-3 px-4 font-body-sm text-body-sm text-[#111111]">Total Cohort Evaluated</td>
+                <td className="py-3 px-4 font-body-sm text-body-sm text-[#111111]">
+                  Total Cohort Evaluated
+                </td>
                 <td className="py-3 px-4 font-tabular-sm text-tabular-sm text-[#5F5E5E]">—</td>
                 <td className="py-3 px-4 text-right font-tabular-md text-tabular-md text-[#111111]">
                   {evaluatedCount} Candidates
@@ -439,6 +469,45 @@ export const GradeDistributionView: React.FC = () => {
               </tr>
             </tfoot>
           </table>
+        </div>
+      </section>
+
+      {/* Workflow Next Steps Banner */}
+      <section className="mt-6 p-4 sm:p-5 bg-[#FBF8F1] border border-[#DDD6C7] rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h4 className="font-semibold text-sm text-[#111111] flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-[18px] text-[#C2410C]">route</span>
+            <span>Grade Distribution: Next Steps</span>
+          </h4>
+          <p className="text-xs text-[#5F5E5E] mt-0.5">
+            Verify cohort standing, review individual student positions, or produce official report
+            cards.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setActiveView("overview")}
+            className="px-3 py-2 text-xs font-medium border border-[#DDD6C7] rounded bg-white hover:bg-[#F2EDE3] text-[#111111] cursor-pointer"
+          >
+            ← Overview
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("rankings")}
+            className="px-3.5 py-2 text-xs font-semibold bg-[#111111] text-white hover:bg-neutral-800 rounded flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">format_list_numbered</span>
+            <span>Class Rankings →</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("report-cards")}
+            className="px-3.5 py-2 text-xs font-semibold bg-[#C2410C] text-white hover:opacity-90 rounded flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">badge</span>
+            <span>Report Cards →</span>
+          </button>
         </div>
       </section>
     </div>
