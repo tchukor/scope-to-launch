@@ -309,7 +309,13 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       hash += `?${queryString}`;
     }
     if (window.location.hash !== hash) {
-      window.history.replaceState(null, '', hash);
+      // New screen = new history entry so browser/phone Back works; same screen details replace.
+      const currentView = window.location.hash.replace(/^#/, '').split('?')[0];
+      if (currentView && currentView !== view) {
+        window.history.pushState({ chokur: true }, '', hash);
+      } else {
+        window.history.replaceState(window.history.state, '', hash);
+      }
     }
   };
 
