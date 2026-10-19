@@ -15,7 +15,7 @@ export const BulkSmsView: React.FC = () => {
   const { students, filteredStudents, rankings, schoolConfig, activeStream, activeExam } = useGrading();
   const store = useSchoolOps();
   const [audience, setAudience] = useState<Audience>('stream');
-  const [text, setText] = useState(TEMPLATES[0].text);
+  const [text, setText] = useState(TEMPLATES[0]?.text ?? '');
   const [result, setResult] = useState('');
 
   const pool = audience === 'all' ? students : filteredStudents;
@@ -46,7 +46,7 @@ export const BulkSmsView: React.FC = () => {
 
   const send = () => {
     if (!recipients.length || !text.trim()) return;
-    ops.logSms({ audience: label, recipients: recipients.length, segments: segs * recipients.length, text, sample: getContact(store, recipients[0]).phone });
+    ops.logSms({ audience: label, recipients: recipients.length, segments: segs * recipients.length, text, sample: getContact(store, recipients[0]!).phone });
     setResult(`${recipients.length} message(s) queued (${segs * recipients.length} SMS units).`);
   };
 
