@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChokurLogo } from './brand/ChokurLogo';
 import { useGrading } from '../context/GradingContext';
 import { ViewType } from '../types';
+import { ROLES, Role, canSee, homeFor, loadRole, saveRole } from '../utils/roles';
 
 interface NavItem {
   id: ViewType;
@@ -36,6 +37,23 @@ const ALL_NAV_ITEMS: NavItem[] = [
 export const Sidebar: React.FC = () => {
   const { activeView, setActiveView } = useGrading();
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
+  const [role, setRole] = useState<Role>('Admin');
+  useEffect(() => setRole(loadRole()), []);
+  useEffect(() => {
+    if (!canSee(role, activeView)) setActiveView(homeFor(role));
+  }, [role, activeView, setActiveView]);
+  const changeRole = (r: Role) => { setRole(r); saveRole(r); setActiveView(homeFor(r)); };
+  const NAV = ALL_NAV_ITEMS.filter((i) => canSee(role, i.id));
+  const TABS = role === 'Parent' ? NAV : PRIMARY_MOBILE_TABS.filter((i) => canSee(role, i.id));
+  const roleSwitch = (
+    <label className="flex flex-col gap-1 px-2 py-1">
+      <span className="hidden lg:inline text-[10px] font-mono tracking-wider uppercase text-[#9A958A]">Using as</span>
+      <select aria-label="Using Chokur as" value={role} onChange={(e) => changeRole(e.target.value as Role)}
+        className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded text-[11px] font-semibold text-[#111111] px-1 py-1 cursor-pointer">
+        {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+      </select>
+    </label>
+  );
 
   return (
     <>
@@ -64,7 +82,7 @@ export const Sidebar: React.FC = () => {
 
           {/* Navigation Items */}
           <nav className="flex flex-col space-y-0.5 px-1 lg:px-0">
-            {ALL_NAV_ITEMS.map((item) => {
+            {NAV.map((item) => {
               const isActive = activeView === item.id;
               return (
                 <button
