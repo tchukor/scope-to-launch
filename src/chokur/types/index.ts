@@ -12,7 +12,8 @@ export type ViewType =
   | "parent-portal"
   | "profile"
   | "settings"
-  | "landing";
+  | "landing"
+  | "legal";
 
 export interface WhatsAppMessage {
   id: string;

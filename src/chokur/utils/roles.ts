@@ -19,7 +19,7 @@ const TEACHER: ViewType[] = [
 export const ROLE_VIEWS: Record<Role, ViewType[] | "all"> = {
   Admin: "all",
   Teacher: TEACHER,
-  Parent: ["parent-portal", "report-cards"],
+  Parent: ["parent-portal", "report-cards", "legal"],
 };
 
 export const canSee = (role: Role, view: ViewType): boolean => {

@@ -11,6 +11,14 @@ export interface ViewMeta {
 }
 
 export const VIEW_METADATA: Record<ViewType, ViewMeta> = {
+  legal: {
+    id: "legal",
+    title: "Legal &amp; Compliance Center",
+    category: "Portal",
+    icon: "gavel",
+    description:
+      "Simplified privacy, terms, and MoE/KNEC compliance summaries for non-technical viewers.",
+  },
   overview: {
     id: "overview",
     title: "Overview",
