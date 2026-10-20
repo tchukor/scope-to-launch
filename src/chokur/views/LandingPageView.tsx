@@ -28,7 +28,8 @@ const PRESET_PROFILES = [
   },
 ];
 
-export const LandingPageView: React.FC = () => {
+interface LandingPageViewProps { onLaunch: (targetView?: ViewType) => void; }
+export const LandingPageView: React.FC<LandingPageViewProps> = ({ onLaunch }) => {
   const [legalModal, setLegalModal] = useState<LegalModalType>(null);
   const { setActiveView } = useGrading();
 
@@ -89,6 +90,7 @@ export const LandingPageView: React.FC = () => {
   const qualifiesForUniversity = meanPoints >= 6.5; // C+ and above is KUCCPS qualification
 
   const launchApp = (targetView: ViewType = "overview") => {
+    onLaunch(targetView);
     setActiveView(targetView);
     window.location.hash = `#${targetView}`;
     window.scrollTo({ top: 0, behavior: "smooth" });

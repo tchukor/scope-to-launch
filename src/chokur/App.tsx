@@ -3,17 +3,20 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Sidebar } from "./components/Sidebar";
 import { TopNavBar } from "./components/TopNavBar";
+import { Breadcrumbs } from "./components/Breadcrumbs";
+import { KeyboardHelp } from "./components/KeyboardHelp";
 import { GradingProvider, useGrading } from "./context/GradingContext";
 import { canSee, homeFor } from "./utils/roles";
+import { ProtectedView } from "./components/ProtectedView";
+import { OnboardingFlow } from "./components/OnboardingFlow";
 import { AttendanceView } from "./views/AttendanceView";
 import { BulkSmsView } from "./views/BulkSmsView";
 import { FeesView } from "./views/FeesView";
 import { ParentPortalView } from "./views/ParentPortalView";
 import { GradeDistributionView } from "./views/GradeDistributionView";
-import { LandingPageView } from "./views/LandingPageView";
 import { MarksEntryView } from "./views/MarksEntryView";
 import { OverviewView } from "./views/OverviewView";
 import { ProfileInboxView } from "./views/ProfileInboxView";
@@ -24,11 +27,17 @@ import { StudentsClassesView } from "./views/StudentsClassesView";
 import { SubjectAnalysisView } from "./views/SubjectAnalysisView";
 
 const MainContent: React.FC = () => {
-  const { activeView, role, setActiveView } = useGrading();
+  const { activeView, role, setActiveView, students } = useGrading();
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
-  // Full-bleed Marketing Landing Page & Technical Spec Sheet
-  if (activeView === "landing") {
-    return <LandingPageView />;
+  useEffect(() => {
+    const hasCompleted = localStorage.getItem("chokur.onboarding_complete");
+    const hasUsedApp = localStorage.getItem("chokur.has_used_app");
+    if (!hasCompleted && !hasUsedApp && students.length === 0) setShowOnboarding(true);
+  }, [students.length]);
+
+  if (showOnboarding) {
+    return <OnboardingFlow onComplete={() => { localStorage.setItem("chokur.has_used_app", "true"); setShowOnboarding(false); }} />;
   }
 
   // Role Access Guard: Prevent unauthorized view access
@@ -64,30 +73,34 @@ const MainContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#FEF9EF] text-[#111111] flex flex-col font-body-md text-body-md select-text">
-      {/* Responsive Navigation Shell (Sidebar on Tablet/Desktop, Bottom Bar on Phone) */}
-      <Sidebar />
+    <ProtectedView>
+      <div className="min-h-screen bg-[#FEF9EF] text-[#111111] flex flex-col font-body-md text-body-md select-text">
+        {/* Responsive Navigation Shell (Sidebar on Tablet/Desktop, Bottom Bar on Phone) */}
+        <Sidebar />
 
-      {/* Responsive Fixed Top Context Bar */}
-      <TopNavBar />
+        {/* Responsive Fixed Top Context Bar */}
+        <TopNavBar />
 
-      {/* Main Workspace Canvas with responsive offsets and ultrawide centering */}
-      <main className="pb-20 md:pb-6 md:ml-[72px] lg:ml-[200px] xl:ml-[220px] pt-14 min-h-screen flex-1 flex flex-col bg-[#FEF9EF] min-w-0 transition-all duration-200">
-        {activeView === "overview" && <OverviewView />}
-        {activeView === "marks-entry" && <MarksEntryView />}
-        {activeView === "rankings" && <RankingsView />}
-        {activeView === "subject-analysis" && <SubjectAnalysisView />}
-        {activeView === "grade-distribution" && <GradeDistributionView />}
-        {activeView === "report-cards" && <ReportCardsView />}
-        {activeView === "students" && <StudentsClassesView />}
-        {activeView === "attendance" && <AttendanceView />}
-        {activeView === "messaging" && <BulkSmsView />}
-        {activeView === "fees" && <FeesView />}
-        {activeView === "parent-portal" && <ParentPortalView />}
-        {activeView === "profile" && <ProfileInboxView />}
-        {activeView === "settings" && <SettingsView />}
-      </main>
-    </div>
+        {/* Main Workspace Canvas with responsive offsets and ultrawide centering */}
+        <main className="pb-20 md:pb-6 md:ml-[72px] lg:ml-[200px] xl:ml-[220px] pt-14 min-h-screen flex-1 flex flex-col bg-[#FEF9EF] min-w-0 transition-all duration-200">
+          <Breadcrumbs />
+          <KeyboardHelp />
+          {activeView === "overview" && <OverviewView />}
+          {activeView === "marks-entry" && <MarksEntryView />}
+          {activeView === "rankings" && <RankingsView />}
+          {activeView === "subject-analysis" && <SubjectAnalysisView />}
+          {activeView === "grade-distribution" && <GradeDistributionView />}
+          {activeView === "report-cards" && <ReportCardsView />}
+          {activeView === "students" && <StudentsClassesView />}
+          {activeView === "attendance" && <AttendanceView />}
+          {activeView === "messaging" && <BulkSmsView />}
+          {activeView === "fees" && <FeesView />}
+          {activeView === "parent-portal" && <ParentPortalView />}
+          {activeView === "profile" && <ProfileInboxView />}
+          {activeView === "settings" && <SettingsView />}
+        </main>
+      </div>
+    </ProtectedView>
   );
 };
 

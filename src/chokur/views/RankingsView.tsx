@@ -30,9 +30,31 @@ export const RankingsView: React.FC = () => {
     setActiveView,
   } = useGrading();
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [genderFilter, setGenderFilter] = useState<"all" | "Female" | "Male">("all");
-  const [statusFilter, setStatusFilter] = useState<"all" | "qualified" | "unqualified">("all");
+  const [savedSearch, setSavedSearch] = useState(() => {
+    try {
+      return sessionStorage.getItem("chokur.rankings_search") || "";
+    } catch {
+      return "";
+    }
+  });
+  const [savedGender, setSavedGender] = useState<"all" | "Female" | "Male">(() => {
+    try {
+      return (sessionStorage.getItem("chokur.rankings_gender") as any) || "all";
+    } catch {
+      return "all";
+    }
+  });
+  const [savedStatus, setSavedStatus] = useState<"all" | "qualified" | "unqualified">(() => {
+    try {
+      return (sessionStorage.getItem("chokur.rankings_status") as any) || "all";
+    } catch {
+      return "all";
+    }
+  });
+
+  const [searchQuery, setSearchQuery] = useState(savedSearch);
+  const [genderFilter, setGenderFilter] = useState(savedGender);
+  const [statusFilter, setStatusFilter] = useState(savedStatus);
   const [showSubjectCols, setShowSubjectCols] = useState(false);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [expandedStudentId, setExpandedStudentId] = useState<string | null>(null);
@@ -110,6 +132,22 @@ export const RankingsView: React.FC = () => {
 
     return result;
   }, [rankings, searchQuery, genderFilter, statusFilter, sortField, sortDirection, marks]);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem("chokur.rankings_search", searchQuery);
+    } catch {}
+  }, [searchQuery]);
+  useEffect(() => {
+    try {
+      sessionStorage.setItem("chokur.rankings_gender", genderFilter);
+    } catch {}
+  }, [genderFilter]);
+  useEffect(() => {
+    try {
+      sessionStorage.setItem("chokur.rankings_status", statusFilter);
+    } catch {}
+  }, [statusFilter]);
 
   // Identify where the C+ cutoff line falls
   const firstBelowCPlusIdx = useMemo(() => {

@@ -5,6 +5,7 @@ import { ROLES, Role } from "../utils/roles";
 import { getBreadcrumbs, VIEW_METADATA } from "../utils/navigation";
 import { TestPresetsModal } from "./TestPresetsModal";
 import { LegalModals, LegalModalType } from "./LegalModals";
+import { KeyboardHelp } from "./KeyboardHelp";
 
 export const TopNavBar: React.FC = () => {
   const {
@@ -251,6 +252,8 @@ export const TopNavBar: React.FC = () => {
             <span className="material-symbols-outlined text-[15px] text-[#C2410C]">info</span>
             <span className="text-xs font-medium">Spec</span>
           </button>
+
+          <KeyboardHelp />
 
           {/* Save Status Indicator */}
           <div className="flex items-center gap-1.5">

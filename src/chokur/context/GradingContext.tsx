@@ -357,12 +357,11 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       hash += `?${queryString}`;
     }
     if (window.location.hash !== hash) {
-      // New screen = new history entry so browser/phone Back works; same screen details replace.
       const currentView = window.location.hash.replace(/^#/, "").split("?")[0];
       if (currentView && currentView !== view) {
-        window.history.pushState({ chokur: true }, "", hash);
+        window.history.pushState({ chokur: true, view }, "", hash);
       } else {
-        window.history.replaceState(window.history.state, "", hash);
+        window.history.replaceState({ chokur: true, view }, "", hash);
       }
     }
   };
@@ -377,8 +376,18 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (subTab) setActiveSubTabInternal(subTab);
     };
 
+    const handlePopState = (e: PopStateEvent) => {
+      if (e.state?.chokur) {
+        handleHashChange();
+      }
+    };
+
     window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+      window.removeEventListener("popstate", handlePopState);
+    };
   }, [role]);
 
   // Central persistence effect whenever state changes

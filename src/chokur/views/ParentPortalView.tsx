@@ -20,7 +20,9 @@ export const ParentPortalView: React.FC = () => {
   const [studentId, setStudentId] = useState<string | null>(() => {
     try {
       if (typeof window !== "undefined") {
-        return sessionStorage.getItem("chokur.parent_auth_student_id");
+        const sessionId = sessionStorage.getItem("chokur.parent_auth_student_id");
+        if (sessionId) return sessionId;
+        return localStorage.getItem("chokur.parent_auth_student_id");
       }
     } catch {
       // ignore
@@ -44,6 +46,7 @@ export const ParentPortalView: React.FC = () => {
     setSelectedStudentId(s.id);
     try {
       sessionStorage.setItem("chokur.parent_auth_student_id", s.id);
+      localStorage.setItem("chokur.parent_auth_student_id", s.id);
     } catch {
       // ignore
     }
@@ -52,6 +55,7 @@ export const ParentPortalView: React.FC = () => {
   const handleSignOut = () => {
     try {
       sessionStorage.removeItem("chokur.parent_auth_student_id");
+      localStorage.removeItem("chokur.parent_auth_student_id");
     } catch {
       // ignore
     }

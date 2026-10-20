@@ -901,8 +901,36 @@ export const SettingsView: React.FC = () => {
         </section>
       </div>
 
-      {/* Responsive Bottom Action Bar */}
-      <footer className="fixed bottom-16 md:bottom-0 right-0 left-0 md:left-[72px] lg:left-[200px] xl:left-[220px] bg-[#FBF8F1] border-t border-[#DDD6C7] py-3 px-4 sm:px-6 z-30 no-print transition-all duration-200">
+      {/* Mobile footer - not fixed */}
+      <footer className="sticky bottom-0 z-20 bg-[#FBF8F1] border-t border-[#DDD6C7] py-3 px-4 sm:px-6 md:hidden">
+        <div className="max-w-[1200px] mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[16px] text-[#5F5E5E]">info</span>
+            <span className="font-caption text-caption text-[#5F5E5E] text-xs">
+              Configuration changes are cached locally until explicitly confirmed.
+            </span>
+          </div>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleDiscard}
+              type="button"
+              className="text-[#5C5850] hover:text-[#111111] font-body-md text-xs sm:text-body-md font-medium cursor-pointer bg-transparent border-0 p-0"
+            >
+              Discard changes
+            </button>
+            <button
+              onClick={handleSave}
+              type="button"
+              className="bg-[#C2410C] text-[#FEF9EF] px-4 sm:px-5 py-2 rounded font-body-md text-xs sm:text-body-md font-semibold hover:opacity-95 focus:outline-none transition-opacity cursor-pointer shadow-sm"
+            >
+              Save changes
+            </button>
+          </div>
+        </div>
+      </footer>
+
+      {/* Desktop fixed footer */}
+      <footer className="hidden md:fixed bottom-0 right-0 left-[72px] lg:left-[200px] xl:left-[220px] bg-[#FBF8F1] border-t border-[#DDD6C7] py-3 px-4 sm:px-6 z-30 no-print transition-all duration-200">
         <div className="max-w-[1200px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-[16px] text-[#5F5E5E]">info</span>
