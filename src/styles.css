@@ -3,6 +3,7 @@
 
 @layer base {
   :root {
+    /* Light Mode (Default) */
     --color-surface: #fef9ef;
     --color-surface-dim: #ded6ca;
     --color-surface-bright: #fef9ef;
@@ -23,14 +24,36 @@
     --color-on-primary: #ffffff;
   }
 
+  /* Dark Mode */
+  .dark {
+    --color-surface: #1a1814;
+    --color-surface-dim: #12110e;
+    --color-surface-bright: #23201a;
+    --color-surface-container-lowest: #141310;
+    --color-surface-container-low: #1e1c17;
+    --color-surface-container: #28251f;
+    --color-surface-container-high: #322e27;
+    --color-surface-container-highest: #3c372f;
+    --color-surface-panel: #1f1d18;
+    --color-hairline-border: #3a352d;
+    --color-on-surface: #f5f0e6;
+    --color-on-surface-dark: #ffffff;
+    --color-secondary: #b8b3a8;
+    --color-secondary-dark: #c4bfb4;
+    --color-text-muted: #8a857a;
+    --color-primary: #e07a3a;
+    --color-primary-container: #d96d2e;
+    --color-on-primary: #1a1814;
+  }
+
   html {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    background-color: #fef9ef;
-    color: #1d1c16;
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
     font-family:
       "Inter",
       -apple-system,
@@ -45,8 +68,54 @@
 
   /* Consistent, high-visibility focus rings */
   :focus-visible {
-    outline: 2px solid #c2410c;
+    outline: 2px solid var(--color-primary-container);
     outline-offset: 2px;
+  }
+
+  /* shadcn/ui semantic color aliases (auto-switch with .dark) */
+  :root {
+    --background: var(--color-surface);
+    --foreground: var(--color-on-surface);
+    --card: var(--color-surface-container-lowest);
+    --card-foreground: var(--color-on-surface);
+    --popover: var(--color-surface-container-lowest);
+    --popover-foreground: var(--color-on-surface);
+    --primary: var(--color-primary-container);
+    --primary-foreground: var(--color-on-primary);
+    --secondary: var(--color-surface-container);
+    --secondary-foreground: var(--color-on-surface);
+    --muted: var(--color-surface-container);
+    --muted-foreground: var(--color-text-muted);
+    --accent: var(--color-surface-container-high);
+    --accent-foreground: var(--color-on-surface);
+    --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
+    --border: var(--color-hairline-border);
+    --input: var(--color-hairline-border);
+    --ring: var(--color-primary-container);
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: var(--color-surface);
+    --foreground: var(--color-on-surface);
+    --card: var(--color-surface-container-lowest);
+    --card-foreground: var(--color-on-surface);
+    --popover: var(--color-surface-container-lowest);
+    --popover-foreground: var(--color-on-surface);
+    --primary: var(--color-primary-container);
+    --primary-foreground: var(--color-on-primary);
+    --secondary: var(--color-surface-container);
+    --secondary-foreground: var(--color-on-surface);
+    --muted: var(--color-surface-container);
+    --muted-foreground: var(--color-text-muted);
+    --accent: var(--color-surface-container-high);
+    --accent-foreground: var(--color-on-surface);
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: var(--color-hairline-border);
+    --input: var(--color-hairline-border);
+    --ring: var(--color-primary-container);
   }
 }
 

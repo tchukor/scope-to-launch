@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UiComponentsRouteImport } from './routes/ui-components'
+import { Route as UiShowcaseRouteImport } from './routes/ui-showcase'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UiComponentsRoute = UiComponentsRouteImport.update({
+  id: '/ui-components',
+  path: '/ui-components',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UiShowcaseRoute = UiShowcaseRouteImport.update({
+  id: '/ui-showcase',
+  path: '/ui-showcase',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ui-components': typeof UiComponentsRoute
+  '/ui-showcase': typeof UiShowcaseRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ui-components': typeof UiComponentsRoute
+  '/ui-showcase': typeof UiShowcaseRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ui-components': typeof UiComponentsRoute
+  '/ui-showcase': typeof UiShowcaseRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/ui-components' | '/ui-showcase'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/ui-components' | '/ui-showcase'
+  id: '__root__' | '/' | '/ui-components' | '/ui-showcase'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  UiComponentsRoute: typeof UiComponentsRoute
+  UiShowcaseRoute: typeof UiShowcaseRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ui-components': {
+      id: '/ui-components'
+      path: '/ui-components'
+      fullPath: '/ui-components'
+      preLoaderRoute: typeof UiComponentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ui-showcase': {
+      id: '/ui-showcase'
+      path: '/ui-showcase'
+      fullPath: '/ui-showcase'
+      preLoaderRoute: typeof UiShowcaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  UiComponentsRoute: UiComponentsRoute,
+  UiShowcaseRoute: UiShowcaseRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
