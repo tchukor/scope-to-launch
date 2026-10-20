@@ -1,7 +1,7 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": ".output/public",
-  "framework": "tanstackstart",
+  "outputDirectory": ".vercel/output/static",
+  "framework": "tanstack-start",
   "installCommand": "npm install",
   "devCommand": "npm run dev",
   "regions": ["iad1"],
@@ -36,12 +36,6 @@
           "value": "1; mode=block"
         }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
     }
   ]
 }
