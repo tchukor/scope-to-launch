@@ -59,15 +59,15 @@ An end-to-end audit, workflow completion, and verification blueprint for the Cho
 ## 3. Key Product Decisions & Trade-Offs
 
 - **Decision 1: Offline-First IndexedDB Storage with In-Memory Fallback**
-  - *Chosen Approach*: Persist all students, marks, streams, attendance, and fee transactions in browser IndexedDB via Dexie/local DB with automatic fallback to localStorage.
-  - *Why*: Kenyan secondary schools often experience intermittent power and rural connectivity issues. Offline persistence ensures teachers never lose entered marks during network blackouts.
-  - *Alternatives Considered*: Cloud SQL / Supabase was considered but ruled out for the primary client database per project guidelines (`AGENTS.md`).
+  - _Chosen Approach_: Persist all students, marks, streams, attendance, and fee transactions in browser IndexedDB via Dexie/local DB with automatic fallback to localStorage.
+  - _Why_: Kenyan secondary schools often experience intermittent power and rural connectivity issues. Offline persistence ensures teachers never lose entered marks during network blackouts.
+  - _Alternatives Considered_: Cloud SQL / Supabase was considered but ruled out for the primary client database per project guidelines (`AGENTS.md`).
 - **Decision 2: Strict Role-Based View Filtering & Guardian Privacy Guard**
-  - *Chosen Approach*: Enforce view-level permission checks both in sidebar and in `MainContent` view router. Prevent parents from browsing other student records in `ReportCardsView`.
-  - *Why*: Student performance and fee status are confidential under Kenyan pupil privacy standards.
+  - _Chosen Approach_: Enforce view-level permission checks both in sidebar and in `MainContent` view router. Prevent parents from browsing other student records in `ReportCardsView`.
+  - _Why_: Student performance and fee status are confidential under Kenyan pupil privacy standards.
 - **Decision 3: Dedicated Legal & Policy Modals**
-  - *Chosen Approach*: Interactive dialog modals detailing the School Privacy Notice, Data Protection Act 2019 compliance, and School Software Terms.
-  - *Why*: Allows instant inspection from both the landing page footer and in-app settings without navigating away or breaking offline application state.
+  - _Chosen Approach_: Interactive dialog modals detailing the School Privacy Notice, Data Protection Act 2019 compliance, and School Software Terms.
+  - _Why_: Allows instant inspection from both the landing page footer and in-app settings without navigating away or breaking offline application state.
 
 ---
 

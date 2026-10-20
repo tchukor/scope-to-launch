@@ -9,14 +9,8 @@ interface TestPresetsModalProps {
 }
 
 export const TestPresetsModal: React.FC<TestPresetsModalProps> = ({ isOpen, onClose }) => {
-  const {
-    setStudents,
-    setMarks,
-    setActiveStream,
-    setActiveExam,
-    setActiveView,
-    resetToDemoData,
-  } = useGrading();
+  const { setStudents, setMarks, setActiveStream, setActiveExam, setActiveView, resetToDemoData } =
+    useGrading();
 
   const [appliedPresetId, setAppliedPresetId] = useState<string | null>(null);
   const [confirmReset, setConfirmReset] = useState(false);
@@ -47,7 +41,13 @@ export const TestPresetsModal: React.FC<TestPresetsModalProps> = ({ isOpen, onCl
         ops.setFeePerTerm(data.opsData.feePerTerm);
       }
       if (data.opsData.payments) {
-        applyOpsState({ payments: data.opsData.payments.map((p, i) => ({ ...p, id: `pay-preset-${i}`, date: "2026-06-15" })) });
+        applyOpsState({
+          payments: data.opsData.payments.map((p, i) => ({
+            ...p,
+            id: `pay-preset-${i}`,
+            date: "2026-06-15",
+          })),
+        });
       }
       if (data.opsData.absentStudents && data.state.uiState?.activeStream) {
         const stream = data.state.uiState.activeStream;
@@ -96,7 +96,10 @@ export const TestPresetsModal: React.FC<TestPresetsModalProps> = ({ isOpen, onCl
           <div className="flex items-center gap-2.5">
             <span className="material-symbols-outlined text-[#C2410C] text-[24px]">science</span>
             <div>
-              <h2 id="presets-modal-title" className="font-headline-md text-base sm:text-lg font-bold text-[#111111]">
+              <h2
+                id="presets-modal-title"
+                className="font-headline-md text-base sm:text-lg font-bold text-[#111111]"
+              >
                 Test Data Presets &amp; Reset Sandbox
               </h2>
               <p className="text-xs text-[#5F5E5E]">
@@ -117,7 +120,9 @@ export const TestPresetsModal: React.FC<TestPresetsModalProps> = ({ isOpen, onCl
         {/* Feedback Banner */}
         {notification && (
           <div className="bg-emerald-100 border-b border-emerald-300 text-emerald-900 px-4 py-2.5 text-xs font-semibold flex items-center gap-2 shrink-0 animate-fadeIn">
-            <span className="material-symbols-outlined text-[18px] text-emerald-700">check_circle</span>
+            <span className="material-symbols-outlined text-[18px] text-emerald-700">
+              check_circle
+            </span>
             <span>{notification}</span>
           </div>
         )}
@@ -125,7 +130,10 @@ export const TestPresetsModal: React.FC<TestPresetsModalProps> = ({ isOpen, onCl
         {/* Preset Cards List */}
         <div className="p-4 sm:p-5 overflow-y-auto space-y-3.5 divide-y divide-[#DDD6C7]/60">
           {TEST_PRESETS.map((preset) => (
-            <div key={preset.id} className="pt-3.5 first:pt-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div
+              key={preset.id}
+              className="pt-3.5 first:pt-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+            >
               <div className="space-y-1 flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-bold text-sm text-[#111111]">{preset.name}</span>
@@ -133,12 +141,11 @@ export const TestPresetsModal: React.FC<TestPresetsModalProps> = ({ isOpen, onCl
                     {preset.category}
                   </span>
                   <span className="text-xs font-mono text-[#C2410C] font-semibold">
-                    Mean: {preset.meanGrade} ({preset.meanPoints > 0 ? `${preset.meanPoints} pts` : "Pending"})
+                    Mean: {preset.meanGrade} (
+                    {preset.meanPoints > 0 ? `${preset.meanPoints} pts` : "Pending"})
                   </span>
                 </div>
-                <p className="text-xs text-[#5F5E5E] leading-relaxed">
-                  {preset.highlight}
-                </p>
+                <p className="text-xs text-[#5F5E5E] leading-relaxed">{preset.highlight}</p>
                 <div className="text-[11px] font-mono text-[#9A958A] flex items-center gap-3">
                   <span>Roster: {preset.studentCount} candidates</span>
                   <span>·</span>

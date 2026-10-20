@@ -87,7 +87,8 @@ export const HelpSupportView: React.FC = () => {
             Help Center &amp; User Manual
           </h1>
           <p className="text-xs sm:text-sm text-[#5F5E5E] mt-1">
-            Guides for rapid marks entry, KCSE grading formulas, parent communication, and offline backups.
+            Guides for rapid marks entry, KCSE grading formulas, parent communication, and offline
+            backups.
           </p>
         </div>
 
@@ -109,19 +110,27 @@ export const HelpSupportView: React.FC = () => {
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
           <div className="p-2 bg-white border border-[#DDD6C7] rounded">
-            <kbd className="px-1.5 py-0.5 bg-[#EEE8DA] rounded font-mono text-[11px] font-bold">Tab / Enter</kbd>
+            <kbd className="px-1.5 py-0.5 bg-[#EEE8DA] rounded font-mono text-[11px] font-bold">
+              Tab / Enter
+            </kbd>
             <p className="text-[11px] text-[#5F5E5E] mt-1">Move to next student / subject cell</p>
           </div>
           <div className="p-2 bg-white border border-[#DDD6C7] rounded">
-            <kbd className="px-1.5 py-0.5 bg-[#EEE8DA] rounded font-mono text-[11px] font-bold">Arrow Keys</kbd>
+            <kbd className="px-1.5 py-0.5 bg-[#EEE8DA] rounded font-mono text-[11px] font-bold">
+              Arrow Keys
+            </kbd>
             <p className="text-[11px] text-[#5F5E5E] mt-1">Navigate grid up/down/left/right</p>
           </div>
           <div className="p-2 bg-white border border-[#DDD6C7] rounded">
-            <kbd className="px-1.5 py-0.5 bg-[#EEE8DA] rounded font-mono text-[11px] font-bold">[ and ]</kbd>
+            <kbd className="px-1.5 py-0.5 bg-[#EEE8DA] rounded font-mono text-[11px] font-bold">
+              [ and ]
+            </kbd>
             <p className="text-[11px] text-[#5F5E5E] mt-1">Prev / Next report card in roster</p>
           </div>
           <div className="p-2 bg-white border border-[#DDD6C7] rounded">
-            <kbd className="px-1.5 py-0.5 bg-[#EEE8DA] rounded font-mono text-[11px] font-bold">Ctrl + V</kbd>
+            <kbd className="px-1.5 py-0.5 bg-[#EEE8DA] rounded font-mono text-[11px] font-bold">
+              Ctrl + V
+            </kbd>
             <p className="text-[11px] text-[#5F5E5E] mt-1">Paste rectangular block from Excel</p>
           </div>
         </div>
@@ -148,7 +157,9 @@ export const HelpSupportView: React.FC = () => {
               {KCSE_GRADING_TABLE.map((row) => (
                 <tr key={row.grade} className="hover:bg-[#F2EDE3]">
                   <td className="p-2.5 font-bold font-sans">{row.grade}</td>
-                  <td className="p-2.5">{row.minScore} – {row.maxScore}%</td>
+                  <td className="p-2.5">
+                    {row.minScore} – {row.maxScore}%
+                  </td>
                   <td className="p-2.5 text-center font-bold text-[#C2410C]">{row.points}</td>
                   <td className="p-2.5 capitalize">{row.tier}</td>
                   <td className="p-2.5 font-sans">
@@ -204,7 +215,8 @@ export const HelpSupportView: React.FC = () => {
       <div className="space-y-3 mb-10">
         {filteredFaqs.length === 0 ? (
           <div className="p-6 text-center text-xs text-[#5F5E5E] bg-[#FBF8F1] border border-[#DDD6C7] rounded">
-            No FAQ articles match your search query. Try searching for &quot;grading&quot;, &quot;offline&quot;, or &quot;CSV&quot;.
+            No FAQ articles match your search query. Try searching for &quot;grading&quot;,
+            &quot;offline&quot;, or &quot;CSV&quot;.
           </div>
         ) : (
           filteredFaqs.map((faq, idx) => (
@@ -234,17 +246,25 @@ export const HelpSupportView: React.FC = () => {
       {/* Support Contact Form */}
       <section className="p-5 bg-[#FBF8F1] border border-[#DDD6C7] rounded-lg">
         <h3 className="font-headline-sm text-sm font-bold text-[#111111] mb-1 flex items-center gap-1.5">
-          <span className="material-symbols-outlined text-[18px] text-[#C2410C]">support_agent</span>
+          <span className="material-symbols-outlined text-[18px] text-[#C2410C]">
+            support_agent
+          </span>
           <span>Technical Support &amp; Assistance</span>
         </h3>
         <p className="text-xs text-[#5F5E5E] mb-4">
-          Need assistance with marks entry, school term roll-over, or report card templates? Contact institutional support for {schoolConfig.schoolName}.
+          Need assistance with marks entry, school term roll-over, or report card templates? Contact
+          institutional support for {schoolConfig.schoolName}.
         </p>
 
         {supportSent ? (
           <div className="p-3 bg-emerald-50 border border-emerald-300 rounded text-xs text-emerald-800 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
-            <span>Your support inquiry has been logged locally. Our technical administrator will follow up via your staff email or WhatsApp.</span>
+            <span className="material-symbols-outlined text-[16px] text-emerald-600">
+              check_circle
+            </span>
+            <span>
+              Your support inquiry has been logged locally. Our technical administrator will follow
+              up via your staff email or WhatsApp.
+            </span>
           </div>
         ) : (
           <form onSubmit={handleSendSupport} className="space-y-3">

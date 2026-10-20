@@ -966,10 +966,7 @@ export const LandingPageView: React.FC = () => {
       </footer>
 
       {/* Legal & Compliance Modal */}
-      <LegalModals
-        activeModal={legalModal}
-        onClose={() => setLegalModal(null)}
-      />
+      <LegalModals activeModal={legalModal} onClose={() => setLegalModal(null)} />
     </div>
   );
 };

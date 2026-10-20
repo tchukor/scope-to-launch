@@ -860,14 +860,15 @@ export const SettingsView: React.FC = () => {
               Legal &amp; Statutory Compliance
             </h2>
             <p className="font-caption text-caption text-[#5F5E5E] mt-1">
-              Institutional policies governed by the Kenya Basic Education Act and the Data Protection Act (DPA No. 24 of 2019).
+              Institutional policies governed by the Kenya Basic Education Act and the Data
+              Protection Act (DPA No. 24 of 2019).
             </p>
           </div>
           <div className="col-span-12 md:col-span-8 flex flex-col items-start gap-3">
             <div className="flex flex-wrap items-center gap-3">
               <button
                 type="button"
-                onClick={() => setLegalModal("privacy")}
+                onClick={() => setActiveView("legal", "privacy")}
                 className="border border-[#DDD6C7] bg-[#FBF8F1] hover:bg-[#F2EDE3] text-[#111111] px-3.5 py-2 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[16px] text-[#C2410C]">policy</span>
@@ -875,7 +876,7 @@ export const SettingsView: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setLegalModal("terms")}
+                onClick={() => setActiveView("legal", "terms")}
                 className="border border-[#DDD6C7] bg-[#FBF8F1] hover:bg-[#F2EDE3] text-[#111111] px-3.5 py-2 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[16px] text-[#5F5E5E]">gavel</span>
@@ -886,12 +887,15 @@ export const SettingsView: React.FC = () => {
                 onClick={() => setLegalModal("compliance")}
                 className="border border-[#DDD6C7] bg-[#FBF8F1] hover:bg-[#F2EDE3] text-[#111111] px-3.5 py-2 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[16px] text-emerald-700">verified</span>
+                <span className="material-symbols-outlined text-[16px] text-emerald-700">
+                  verified
+                </span>
                 <span>Ministry of Education &amp; KNEC</span>
               </button>
             </div>
             <p className="font-caption text-caption text-[#9A958A]">
-              Learner personal data is protected under Section 31 of Kenya DPA. Zero cloud telemetry or external third-party scraping.
+              Learner personal data is protected under Section 31 of Kenya DPA. Zero cloud telemetry
+              or external third-party scraping.
             </p>
           </div>
         </section>
@@ -1015,16 +1019,10 @@ export const SettingsView: React.FC = () => {
       )}
 
       {/* Test Presets & Scenarios Modal */}
-      <TestPresetsModal
-        isOpen={isPresetsModalOpen}
-        onClose={() => setIsPresetsModalOpen(false)}
-      />
+      <TestPresetsModal isOpen={isPresetsModalOpen} onClose={() => setIsPresetsModalOpen(false)} />
 
       {/* Legal & Compliance Modal */}
-      <LegalModals
-        activeModal={legalModal}
-        onClose={() => setLegalModal(null)}
-      />
+      <LegalModals activeModal={legalModal} onClose={() => setLegalModal(null)} />
     </div>
   );
 };

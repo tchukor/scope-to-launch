@@ -17,7 +17,8 @@ export const PrivacyPolicyView: React.FC = () => {
             Privacy Policy &amp; Data Residency
           </h1>
           <p className="text-xs sm:text-sm text-[#5F5E5E] mt-1">
-            Institutional guidelines for candidate academic records, student confidentiality, and offline storage.
+            Institutional guidelines for candidate academic records, student confidentiality, and
+            offline storage.
           </p>
         </div>
 
@@ -40,16 +41,26 @@ export const PrivacyPolicyView: React.FC = () => {
             <span>1. Offline-First Architecture &amp; Local Data Residency</span>
           </h2>
           <p>
-            Chokur System is engineered as a zero-cloud, client-authoritative academic ledger. All student demographic
-            profiles, KCSE score entries, subject means, attendance logs, and parent contact registers reside
-            exclusively inside your device&apos;s sandboxed browser storage (IndexedDB and encrypted LocalStorage).
+            Chokur System is engineered as a zero-cloud, client-authoritative academic ledger. All
+            student demographic profiles, KCSE score entries, subject means, attendance logs, and
+            parent contact registers reside exclusively inside your device&apos;s sandboxed browser
+            storage (IndexedDB and encrypted LocalStorage).
           </p>
           <div className="p-4 bg-[#FBF8F1] border border-[#DDD6C7] rounded text-xs space-y-1.5">
             <div className="font-semibold text-[#111111]">Key Storage Guarantees:</div>
             <ul className="list-disc list-inside space-y-1 text-[#5F5E5E]">
-              <li>No candidate scores or marks are transmitted to remote cloud databases or third-party analytical brokers.</li>
-              <li>Calculations for the 12-point KCSE scale, aggregate points (/84), and university admission cutoff run client-side.</li>
-              <li>Network disconnects do not impede grading, ranking generation, or official report card printing.</li>
+              <li>
+                No candidate scores or marks are transmitted to remote cloud databases or
+                third-party analytical brokers.
+              </li>
+              <li>
+                Calculations for the 12-point KCSE scale, aggregate points (/84), and university
+                admission cutoff run client-side.
+              </li>
+              <li>
+                Network disconnects do not impede grading, ranking generation, or official report
+                card printing.
+              </li>
             </ul>
           </div>
         </section>
@@ -57,23 +68,32 @@ export const PrivacyPolicyView: React.FC = () => {
         {/* Section 2 */}
         <section className="space-y-3">
           <h2 className="font-headline-md text-base sm:text-lg font-bold text-[#111111] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[#C2410C]">person_search</span>
+            <span className="material-symbols-outlined text-[20px] text-[#C2410C]">
+              person_search
+            </span>
             <span>2. Candidate &amp; Parent Information Collected</span>
           </h2>
           <p>
-            The software processes data strictly entered by authorized school teachers, principals, and administrative staff:
+            The software processes data strictly entered by authorized school teachers, principals,
+            and administrative staff:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
             <div className="p-3 bg-[#FBF8F1] border border-[#DDD6C7] rounded">
-              <span className="font-semibold block text-[#111111] mb-1">Student &amp; Academic Data:</span>
+              <span className="font-semibold block text-[#111111] mb-1">
+                Student &amp; Academic Data:
+              </span>
               <p className="text-[#5F5E5E]">
-                Official Admission Number, Full Legal Name, Class Form &amp; Stream, Gender, KCPE Baseline Entry Marks, and Subject Assessment Scores (0–100 or ABS).
+                Official Admission Number, Full Legal Name, Class Form &amp; Stream, Gender, KCPE
+                Baseline Entry Marks, and Subject Assessment Scores (0–100 or ABS).
               </p>
             </div>
             <div className="p-3 bg-[#FBF8F1] border border-[#DDD6C7] rounded">
-              <span className="font-semibold block text-[#111111] mb-1">Parent &amp; Operational Contacts:</span>
+              <span className="font-semibold block text-[#111111] mb-1">
+                Parent &amp; Operational Contacts:
+              </span>
               <p className="text-[#5F5E5E]">
-                Parent/Guardian Legal Name, Registered Mobile Phone Number (+254 standard format), Roll-call attendance status, and Term Tuition Ledger balance.
+                Parent/Guardian Legal Name, Registered Mobile Phone Number (+254 standard format),
+                Roll-call attendance status, and Term Tuition Ledger balance.
               </p>
             </div>
           </div>
@@ -86,11 +106,13 @@ export const PrivacyPolicyView: React.FC = () => {
             <span>3. Parent Portal Confidentiality &amp; Access Controls</span>
           </h2>
           <p>
-            The Parent Portal strictly enforces single-student confidentiality. A parent is authenticated exclusively
-            against matching records of their child&apos;s Admission Number and registered phone number.
+            The Parent Portal strictly enforces single-student confidentiality. A parent is
+            authenticated exclusively against matching records of their child&apos;s Admission
+            Number and registered phone number.
           </p>
           <p className="text-xs text-[#5F5E5E]">
-            Parents cannot browse, search, inspect, or print the marks, rankings, or report cards of any other learner in the cohort.
+            Parents cannot browse, search, inspect, or print the marks, rankings, or report cards of
+            any other learner in the cohort.
           </p>
         </section>
 
@@ -100,28 +122,40 @@ export const PrivacyPolicyView: React.FC = () => {
             <span className="material-symbols-outlined text-[20px] text-[#C2410C]">download</span>
             <span>4. Data Backup, Export &amp; Erasure Rights</span>
           </h2>
-          <p>
-            School administrators retain 100% sovereign ownership over institutional data:
-          </p>
+          <p>School administrators retain 100% sovereign ownership over institutional data:</p>
           <ul className="list-disc list-inside space-y-1.5 text-xs text-[#5F5E5E]">
-            <li><strong>JSON Backups:</strong> Administrators can export the complete database to an offline, encrypted JSON snapshot at any time under Settings &amp; Backups.</li>
-            <li><strong>CSV Export:</strong> Class rankings, subject departmental analyses, and fee ledgers can be exported directly to standard CSV format.</li>
-            <li><strong>Complete Erasure:</strong> The &quot;Reset to Defaults&quot; tool allows complete erasure of local candidate data from the device browser storage upon session termination.</li>
+            <li>
+              <strong>JSON Backups:</strong> Administrators can export the complete database to an
+              offline, encrypted JSON snapshot at any time under Settings &amp; Backups.
+            </li>
+            <li>
+              <strong>CSV Export:</strong> Class rankings, subject departmental analyses, and fee
+              ledgers can be exported directly to standard CSV format.
+            </li>
+            <li>
+              <strong>Complete Erasure:</strong> The &quot;Reset to Defaults&quot; tool allows
+              complete erasure of local candidate data from the device browser storage upon session
+              termination.
+            </li>
           </ul>
         </section>
 
         {/* Section 5 */}
         <section className="space-y-3">
           <h2 className="font-headline-md text-base sm:text-lg font-bold text-[#111111] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[#C2410C]">support_agent</span>
+            <span className="material-symbols-outlined text-[20px] text-[#C2410C]">
+              support_agent
+            </span>
             <span>5. Institutional Data Controller</span>
           </h2>
           <p>
-            Under the provisions of the Kenya Data Protection Act (2019), the designated institution (<strong>{schoolConfig.schoolName}</strong>) acts
-            as the Data Controller. The software author acts solely as the technical provider of the offline toolset.
+            Under the provisions of the Kenya Data Protection Act (2019), the designated institution
+            (<strong>{schoolConfig.schoolName}</strong>) acts as the Data Controller. The software
+            author acts solely as the technical provider of the offline toolset.
           </p>
           <p className="text-xs text-[#5F5E5E]">
-            For data inquiries or candidate record modifications, contact: {schoolConfig.contactPhoneEmail} ({schoolConfig.postalAddress}).
+            For data inquiries or candidate record modifications, contact:{" "}
+            {schoolConfig.contactPhoneEmail} ({schoolConfig.postalAddress}).
           </p>
         </section>
       </div>
@@ -131,7 +165,7 @@ export const PrivacyPolicyView: React.FC = () => {
         <span>Chokur Academic System v2.4 · KCSE Compliant</span>
         <button
           type="button"
-          onClick={() => setActiveView("terms")}
+          onClick={() => setActiveView("legal", "terms")}
           className="underline hover:text-[#111111] cursor-pointer"
         >
           View Terms &amp; Conditions →

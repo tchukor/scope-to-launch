@@ -235,7 +235,9 @@ export const TopNavBar: React.FC = () => {
             className="hidden xl:flex items-center gap-1 text-[#5F5E5E] hover:text-[#111111] transition-colors px-2 py-1 rounded hover:bg-[#F2EDE3] cursor-pointer min-h-[36px]"
             title="Kenya DPA 2019 Privacy & School Terms"
           >
-            <span className="material-symbols-outlined text-[15px] text-[#5F5E5E]">verified_user</span>
+            <span className="material-symbols-outlined text-[15px] text-[#5F5E5E]">
+              verified_user
+            </span>
             <span className="text-xs font-medium">Policies</span>
           </button>
 
@@ -373,16 +375,10 @@ export const TopNavBar: React.FC = () => {
       )}
 
       {/* Test Presets Modal */}
-      <TestPresetsModal
-        isOpen={showPresetsModal}
-        onClose={() => setShowPresetsModal(false)}
-      />
+      <TestPresetsModal isOpen={showPresetsModal} onClose={() => setShowPresetsModal(false)} />
 
       {/* Kenya DPA & School Legal Modals */}
-      <LegalModals
-        activeModal={legalModal}
-        onClose={() => setLegalModal(null)}
-      />
+      <LegalModals activeModal={legalModal} onClose={() => setLegalModal(null)} />
     </>
   );
 };

@@ -1,5 +1,11 @@
 import { Student, Subject, ClassStream, ExamPeriod, SchoolConfig, AppStateData } from "../types";
-import { INITIAL_SCHOOL_CONFIG, INITIAL_SUBJECTS, INITIAL_STREAMS, INITIAL_EXAMS, INITIAL_TERMS } from "../data/initialData";
+import {
+  INITIAL_SCHOOL_CONFIG,
+  INITIAL_SUBJECTS,
+  INITIAL_STREAMS,
+  INITIAL_EXAMS,
+  INITIAL_TERMS,
+} from "../data/initialData";
 import { ops, resetSchoolOps } from "./schoolOps";
 
 export interface TestPreset {
@@ -18,7 +24,12 @@ export interface TestPreset {
     opsData?: {
       feePerTerm: number;
       absentStudents?: string[];
-      payments?: { studentId: string; amount: number; method: "M-Pesa" | "Bank" | "Cash"; ref: string }[];
+      payments?: {
+        studentId: string;
+        amount: number;
+        method: "M-Pesa" | "Bank" | "Cash";
+        ref: string;
+      }[];
     };
   };
 }
@@ -33,7 +44,8 @@ export const TEST_PRESETS: TestPreset[] = [
     studentCount: 42,
     meanGrade: "B-",
     meanPoints: 7.21,
-    highlight: "Standard distribution from A down to D- across 8 subjects. Ideal for checking general rankings and report card generation.",
+    highlight:
+      "Standard distribution from A down to D- across 8 subjects. Ideal for checking general rankings and report card generation.",
     category: "Standard",
     generate: () => {
       // Returns standard initial cohort
@@ -59,25 +71,52 @@ export const TEST_PRESETS: TestPreset[] = [
     studentCount: 38,
     meanGrade: "B+",
     meanPoints: 9.35,
-    highlight: "Multiple A and A- grades with high subject means in Mathematics, Chemistry, Physics, and Biology. Minimal fee arrears.",
+    highlight:
+      "Multiple A and A- grades with high subject means in Mathematics, Chemistry, Physics, and Biology. Minimal fee arrears.",
     category: "STEM",
     generate: () => {
       const stemStudents: Student[] = Array.from({ length: 38 }, (_, i) => {
         const id = `stem-${i + 1}`;
         const adm = `38${String(10 + i).padStart(2, "0")}`;
         const names = [
-          "Otieno Brian Kevin", "Kiprono Mercy Jepchumba", "Njoroge Samuel Kamau",
-          "Achieng Stephanie Nicole", "Kariuki Emmanuel Mwangi", "Mutua Daniel Kyalo",
-          "Chepkirui Joyline", "Wamalwa Victor Barasa", "Mwangi Dennis Githinji",
-          "Onyango Cynthia Akoth", "Kipchumba Festus", "Maina Grace Wambui",
-          "Koech Kelvin Kiprotich", "Wambua Faith Mwende", "Korir Allan Kiprop",
-          "Mwende Christine", "Njuguna Ian Ndung'u", "Chebet Gloria",
-          "Kimani David Macharia", "Atieno Lavender", "Simiyu Collins",
-          "Kiptoo Evans", "Muthoni Sharon", "Ouma George", "Kosgei Brenda",
-          "Cheruiyot Gideon", "Moraa Janet", "Rono Dominic", "Wairimu Lucy",
-          "Kibet Hillary", "Jepkemboi Vivian", "Ndegwa Peter", "Auma Belinda",
-          "Rotich Nathan", "Njeri Beatrice", "Kiptanui Silas", "Wanja Esther",
-          "Kipruto Titus"
+          "Otieno Brian Kevin",
+          "Kiprono Mercy Jepchumba",
+          "Njoroge Samuel Kamau",
+          "Achieng Stephanie Nicole",
+          "Kariuki Emmanuel Mwangi",
+          "Mutua Daniel Kyalo",
+          "Chepkirui Joyline",
+          "Wamalwa Victor Barasa",
+          "Mwangi Dennis Githinji",
+          "Onyango Cynthia Akoth",
+          "Kipchumba Festus",
+          "Maina Grace Wambui",
+          "Koech Kelvin Kiprotich",
+          "Wambua Faith Mwende",
+          "Korir Allan Kiprop",
+          "Mwende Christine",
+          "Njuguna Ian Ndung'u",
+          "Chebet Gloria",
+          "Kimani David Macharia",
+          "Atieno Lavender",
+          "Simiyu Collins",
+          "Kiptoo Evans",
+          "Muthoni Sharon",
+          "Ouma George",
+          "Kosgei Brenda",
+          "Cheruiyot Gideon",
+          "Moraa Janet",
+          "Rono Dominic",
+          "Wairimu Lucy",
+          "Kibet Hillary",
+          "Jepkemboi Vivian",
+          "Ndegwa Peter",
+          "Auma Belinda",
+          "Rotich Nathan",
+          "Njeri Beatrice",
+          "Kiptanui Silas",
+          "Wanja Esther",
+          "Kipruto Titus",
         ];
         return {
           id,
@@ -137,23 +176,44 @@ export const TEST_PRESETS: TestPreset[] = [
     studentCount: 30,
     meanGrade: "C-",
     meanPoints: 4.85,
-    highlight: "Significant grade dip in Mathematics and Chemistry with 12 candidates in D and E grade tiers. Tests bulk SMS intervention and parent alerts.",
+    highlight:
+      "Significant grade dip in Mathematics and Chemistry with 12 candidates in D and E grade tiers. Tests bulk SMS intervention and parent alerts.",
     category: "Remedial",
     generate: () => {
       const remedialStudents: Student[] = Array.from({ length: 30 }, (_, i) => {
         const id = `rem-${i + 1}`;
         const adm = `29${String(20 + i).padStart(2, "0")}`;
         const names = [
-          "Karanja Paul Mwangi", "Wanjala Moses Wekesa", "Adhiambo Cynthia",
-          "Kipkoech Brian", "Nekesa Mercy", "Murimi Antony",
-          "Chepkoech Lilian", "Wafula Dennis", "Mwangi Kelvin",
-          "Akoth Millicent", "Koech Collins", "Njoki Faith",
-          "Ochieng Kennedy", "Chepngetich Daisy", "Kariuki Francis",
-          "Auma Everlyne", "Kiprotich Dan", "Wambui Mary",
-          "Odhiambo Philip", "Jeptoo Maureen", "Mutiso Justus",
-          "Muthoni Jane", "Kiptoo Amos", "Wanjiru Ann",
-          "Barasa Felix", "Chebet Sheila", "Ndung'u Joseph",
-          "Awino Grace", "Kipkemoi Eric", "Wangari Sarah"
+          "Karanja Paul Mwangi",
+          "Wanjala Moses Wekesa",
+          "Adhiambo Cynthia",
+          "Kipkoech Brian",
+          "Nekesa Mercy",
+          "Murimi Antony",
+          "Chepkoech Lilian",
+          "Wafula Dennis",
+          "Mwangi Kelvin",
+          "Akoth Millicent",
+          "Koech Collins",
+          "Njoki Faith",
+          "Ochieng Kennedy",
+          "Chepngetich Daisy",
+          "Kariuki Francis",
+          "Auma Everlyne",
+          "Kiprotich Dan",
+          "Wambui Mary",
+          "Odhiambo Philip",
+          "Jeptoo Maureen",
+          "Mutiso Justus",
+          "Muthoni Jane",
+          "Kiptoo Amos",
+          "Wanjiru Ann",
+          "Barasa Felix",
+          "Chebet Sheila",
+          "Ndung'u Joseph",
+          "Awino Grace",
+          "Kipkemoi Eric",
+          "Wangari Sarah",
         ];
         return {
           id,
@@ -216,25 +276,49 @@ export const TEST_PRESETS: TestPreset[] = [
     studentCount: 35,
     meanGrade: "B-",
     meanPoints: 6.94,
-    highlight: "Simulates Term 2 fee ledger with KES 850,000+ total arrears. Prepares instant bulk SMS reminder broadcasts and bursar payment records.",
+    highlight:
+      "Simulates Term 2 fee ledger with KES 850,000+ total arrears. Prepares instant bulk SMS reminder broadcasts and bursar payment records.",
     category: "Finance",
     generate: () => {
       const feeStudents: Student[] = Array.from({ length: 35 }, (_, i) => {
         const id = `fee-${i + 1}`;
         const adm = `44${String(10 + i).padStart(2, "0")}`;
         const names = [
-          "Mokua Geoffrey", "Kipchirchir Enock", "Wanjohi Simon",
-          "Chemutai Sharon", "Omondi Patrick", "Gathoni Priscillah",
-          "Kiptalam Noah", "Wamalwa Collins", "Achieng Beatrice",
-          "Kipruto Mathew", "Nyambura Caroline", "Mutuku Boniface",
-          "Jemutai Gladys", "Ouma Victor", "Kariuki Benson",
-          "Chepkorir Jackline", "Kipng'etich Ronald", "Njeri Damaris",
-          "Maina Stephen", "Awuor Hellen", "Kiprop Edwin",
-          "Muthomi Martin", "Cherotich Diana", "Simiyu Brian",
-          "Wangui Elizabeth", "Koech Wesley", "Akello Judith",
-          "Wanyonyi Samuel", "Chebet Purity", "Kimutai Alex",
-          "Mumbi Agnes", "Kiprono Dominic", "Atieno Linet",
-          "Nduta Mercy", "Kipkemoi Vincent"
+          "Mokua Geoffrey",
+          "Kipchirchir Enock",
+          "Wanjohi Simon",
+          "Chemutai Sharon",
+          "Omondi Patrick",
+          "Gathoni Priscillah",
+          "Kiptalam Noah",
+          "Wamalwa Collins",
+          "Achieng Beatrice",
+          "Kipruto Mathew",
+          "Nyambura Caroline",
+          "Mutuku Boniface",
+          "Jemutai Gladys",
+          "Ouma Victor",
+          "Kariuki Benson",
+          "Chepkorir Jackline",
+          "Kipng'etich Ronald",
+          "Njeri Damaris",
+          "Maina Stephen",
+          "Awuor Hellen",
+          "Kiprop Edwin",
+          "Muthomi Martin",
+          "Cherotich Diana",
+          "Simiyu Brian",
+          "Wangui Elizabeth",
+          "Koech Wesley",
+          "Akello Judith",
+          "Wanyonyi Samuel",
+          "Chebet Purity",
+          "Kimutai Alex",
+          "Mumbi Agnes",
+          "Kiprono Dominic",
+          "Atieno Linet",
+          "Nduta Mercy",
+          "Kipkemoi Vincent",
         ];
         return {
           id,
@@ -271,7 +355,7 @@ export const TEST_PRESETS: TestPreset[] = [
         })),
         ...feeStudents.slice(8, 20).map((s, i) => ({
           studentId: s.id,
-          amount: 15000 + (i * 1500),
+          amount: 15000 + i * 1500,
           method: "M-Pesa" as const,
           ref: `MPESA-PART-${300 + i}`,
         })),
@@ -305,22 +389,46 @@ export const TEST_PRESETS: TestPreset[] = [
     studentCount: 32,
     meanGrade: "—",
     meanPoints: 0,
-    highlight: "Initial intake with admission numbers and KCPE entry scores ready for Term 1 marks entry. Excellent for testing zero-state and data entry.",
+    highlight:
+      "Initial intake with admission numbers and KCPE entry scores ready for Term 1 marks entry. Excellent for testing zero-state and data entry.",
     category: "Admissions",
     generate: () => {
       const f1Students: Student[] = Array.from({ length: 32 }, (_, i) => {
         const id = `f1-${i + 1}`;
         const adm = `51${String(1 + i).padStart(2, "0")}`;
         const names = [
-          "Mumo Daniel Musyoka", "Chepkemoi Mercy", "Oduor Michael Kevin",
-          "Njeri Sandra Wairimu", "Kiplangat Caleb", "Kwamboka Brenda",
-          "Wanjiku Brian Njuguna", "Nakhumicha Faith", "Kiprono Emmanuel",
-          "Atieno Joy", "Mutua Kelvin", "Jeptum Naomy", "Kariuki Dennis",
-          "Achieng Tracy", "Simiyu Abel", "Moraa Sharon", "Kibet Gideon",
-          "Wambui Claire", "Onyango Elvis", "Chebet Yvonne", "Ndung'u Allan",
-          "Akoth Irene", "Kiptoo Felix", "Muthoni Hope", "Barasa Bravin",
-          "Cherono Daisy", "Mwangi Ryan", "Awino Joan", "Rotich Ian",
-          "Wanja Ruth", "Kipchumba Seth", "Njoki Gloria"
+          "Mumo Daniel Musyoka",
+          "Chepkemoi Mercy",
+          "Oduor Michael Kevin",
+          "Njeri Sandra Wairimu",
+          "Kiplangat Caleb",
+          "Kwamboka Brenda",
+          "Wanjiku Brian Njuguna",
+          "Nakhumicha Faith",
+          "Kiprono Emmanuel",
+          "Atieno Joy",
+          "Mutua Kelvin",
+          "Jeptum Naomy",
+          "Kariuki Dennis",
+          "Achieng Tracy",
+          "Simiyu Abel",
+          "Moraa Sharon",
+          "Kibet Gideon",
+          "Wambui Claire",
+          "Onyango Elvis",
+          "Chebet Yvonne",
+          "Ndung'u Allan",
+          "Akoth Irene",
+          "Kiptoo Felix",
+          "Muthoni Hope",
+          "Barasa Bravin",
+          "Cherono Daisy",
+          "Mwangi Ryan",
+          "Awino Joan",
+          "Rotich Ian",
+          "Wanja Ruth",
+          "Kipchumba Seth",
+          "Njoki Gloria",
         ];
         return {
           id,
