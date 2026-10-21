@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { canSee, homeFor } from "./roles";
+import { canSee, homeFor } from "@/chokur/utils/roles";
 
 describe("roles", () => {
   it("admin sees fees and settings", () => {

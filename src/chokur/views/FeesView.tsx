@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { useGrading } from "../context/GradingContext";
 import { feeBalance, ops, useSchoolOps } from "../lib/schoolOps";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
-import { Button, IconButton } from "../components/ui/Button";
-import { Badge } from "../components/ui/Badge";
-import { Input, Select } from "../components/ui/Input";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "../components/ui/DataTable";
+import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
+import { Button, IconButton } from "@/chokur/components/ui";
+import { Badge } from "@/chokur/components/ui";
+import { Input, Select } from "@/chokur/components/ui";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "@/chokur/components/ui";
 
 const kes = (n: number) => `KES ${n.toLocaleString()}`;
 
@@ -51,7 +51,7 @@ export const FeesView: React.FC = () => {
     .slice(0, 8);
 
   return (
-    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 lg:px-8 font-body-md text-[var(--color-on-surface)]">
       <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-4 border-b border-[var(--color-hairline-border)]">
         <div>
           <h1 className="font-headline-lg text-headline-lg text-[var(--color-on-surface)] tracking-tight">

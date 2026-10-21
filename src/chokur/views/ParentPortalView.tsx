@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from "react";
-import { GradeChip } from "../components/GradeChip";
+import { GradeChip } from "@/chokur/components/data-display/GradeChip";
 import { useGrading } from "../context/GradingContext";
 import { attendanceSummary, feeBalance, getContact, ops, useSchoolOps } from "../lib/schoolOps";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
-import { Button, IconButton } from "../components/ui/Button";
-import { Badge } from "../components/ui/Badge";
-import { Input, Select } from "../components/ui/Input";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "../components/ui/DataTable";
+import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
+import { Button, IconButton } from "@/chokur/components/ui";
+import { Badge } from "@/chokur/components/ui";
+import { Input, Select } from "@/chokur/components/ui";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "@/chokur/components/ui";
 
 export const ParentPortalView: React.FC = () => {
   const {

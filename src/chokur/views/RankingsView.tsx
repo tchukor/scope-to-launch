@@ -1,14 +1,14 @@
 // @ts-nocheck -- original source kept verbatim; project tsconfig is stricter than the source
 import React, { useEffect, useMemo, useState } from "react";
-import { GradeChip } from "../components/GradeChip";
+import { GradeChip } from "@/chokur/components/data-display/GradeChip";
 import { useGrading } from "../context/GradingContext";
 import { exportTableToCSV, getGradeFromScore } from "../utils/grading";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
-import { Button, IconButton } from "../components/ui/Button";
-import { Badge, StatusBadge } from "../components/ui/Badge";
-import { Input, Select } from "../components/ui/Input";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "../components/ui/DataTable";
-import { Sheet, SheetTrigger } from "../components/ui/Sheet";
+import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
+import { Button, IconButton } from "@/chokur/components/ui";
+import { Badge, StatusBadge } from "@/chokur/components/ui";
+import { Input, Select } from "@/chokur/components/ui";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "@/chokur/components/ui";
+import { Sheet, SheetTrigger } from "@/chokur/components/ui";
 
 type SortField =
   | "rank"
@@ -236,7 +236,7 @@ export const RankingsView: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-w-0 max-w-[1440px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
+    <div className="w-full min-w-0 max-w-[1440px] mx-auto px-3 sm:px-6 py-4 sm:py-8 lg:px-8 font-body-md text-[var(--color-on-surface)]">
       {/* Print Official Header */}
       <div className="hidden print-only mb-6 text-center border-b-2 border-[var(--color-on-surface)] pb-4">
         <h1 className="text-xl font-bold uppercase tracking-tight">{schoolConfig.schoolName}</h1>

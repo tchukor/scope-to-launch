@@ -75,7 +75,7 @@ export const HelpSupportView: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-w-0 max-w-[1080px] mx-auto px-4 sm:px-8 py-6 sm:py-10 text-[#111111] font-body-md">
+    <div className="w-full min-w-0 max-w-[1080px] mx-auto px-4 sm:px-8 lg:px-10 py-6 sm:py-10 text-[#111111] font-body-md">
       {/* Header */}
       <section className="pb-6 border-b border-[#DDD6C7] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

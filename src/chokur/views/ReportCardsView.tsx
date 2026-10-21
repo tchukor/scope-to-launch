@@ -2,15 +2,15 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { ChokurLogo } from "../components/brand/ChokurLogo";
-import { GradeChip } from "../components/GradeChip";
+import { ChokurLogo } from "@/chokur/components/brand/ChokurLogo";
+import { GradeChip } from "@/chokur/components/data-display/GradeChip";
 import { useGrading } from "../context/GradingContext";
 import { getGradeFromScore } from "../utils/grading";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
-import { Button, IconButton } from "../components/ui/Button";
-import { Badge, StatusBadge } from "../components/ui/Badge";
-import { Input } from "../components/ui/Input";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "../components/ui/DataTable";
+import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
+import { Button, IconButton } from "@/chokur/components/ui";
+import { Badge, StatusBadge } from "@/chokur/components/ui";
+import { Input } from "@/chokur/components/ui";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "@/chokur/components/ui";
 
 const DEFAULT_SUBJECT_REMARKS: Record<string, string> = {
   MAT: "Excellent analytical problem solving and numerical skills.",
@@ -394,7 +394,7 @@ export const ReportCardsView: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-[var(--color-surface-container-low)] font-body-md text-[var(--color-on-surface)]">
+    <div className="flex-1 flex flex-col min-h-screen bg-[var(--color-surface-container-low)] font-body-md text-[var(--color-on-surface)] max-w-[1360px] mx-auto px-3 sm:px-6 lg:px-8">
       {/* Top Header Bar with Actions */}
       <section className="px-3 sm:px-6 py-3 sm:py-4 border-b border-[var(--color-hairline-border)] flex flex-col md:flex-row md:items-center justify-between gap-3 bg-[var(--color-surface-container-low)] no-print">
         <div className="flex items-center justify-between">

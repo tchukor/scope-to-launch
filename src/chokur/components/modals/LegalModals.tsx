@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ChokurLogo } from "./brand/ChokurLogo";
+import { ChokurLogo } from "../brand/ChokurLogo";
 
 export type LegalModalType = "privacy" | "terms" | "compliance" | null;
 

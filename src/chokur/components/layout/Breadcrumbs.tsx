@@ -1,6 +1,6 @@
 import React from "react";
-import { useGrading } from "../context/GradingContext";
-import { getBreadcrumbs } from "../utils/navigation";
+import { useGrading } from "@/chokur/context/GradingContext";
+import { getBreadcrumbs } from "@/chokur/utils/navigation";
 
 export const Breadcrumbs: React.FC = () => {
   const { activeView, role, setActiveView, selectedStudentId, students } = useGrading();

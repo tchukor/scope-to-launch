@@ -54,9 +54,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 
 // Custom Chokur Components
 import { ChokurLogo as ChokurLogoComp } from "@/chokur/components/brand/ChokurLogo";
-import { GradeChip } from "@/chokur/components/GradeChip";
-import { Sidebar } from "@/chokur/components/Sidebar";
-import { TopNavBar } from "@/chokur/components/TopNavBar";
+import { GradeChip } from "@/chokur/components/data-display/GradeChip";
+import { Sidebar } from "@/chokur/components/layout/Sidebar";
+import { TopNavBar } from "@/chokur/components/layout/TopNavBar";
 
 const TITLE = "Component Library — Chokur Design System";
 const DESC = "Complete component library showcase with all variants and states";

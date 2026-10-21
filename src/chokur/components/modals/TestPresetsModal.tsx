@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { TEST_PRESETS, TestPreset } from "../lib/presets";
-import { useGrading } from "../context/GradingContext";
-import { applyOpsState, ops } from "../lib/schoolOps";
+import { TEST_PRESETS, TestPreset } from "@/chokur/lib/presets";
+import { useGrading } from "@/chokur/context/GradingContext";
+import { applyOpsState, ops } from "@/chokur/lib/schoolOps";
 
 interface TestPresetsModalProps {
   isOpen: boolean;

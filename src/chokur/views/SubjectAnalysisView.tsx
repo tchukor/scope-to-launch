@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from "react";
-import { GradeChip } from "../components/GradeChip";
+import { GradeChip } from "@/chokur/components/data-display/GradeChip";
 import { useGrading } from "../context/GradingContext";
 import { exportTableToCSV, getGradeFromScore } from "../utils/grading";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
-import { Button, IconButton } from "../components/ui/Button";
-import { Badge, StatusBadge } from "../components/ui/Badge";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "../components/ui/DataTable";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/Tabs";
+import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
+import { Button, IconButton } from "@/chokur/components/ui";
+import { Badge, StatusBadge } from "@/chokur/components/ui";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "@/chokur/components/ui";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/chokur/components/ui";
 
 export const SubjectAnalysisView: React.FC = () => {
   const { subjectDepartmentalStats, classAverage, activeStream, activeExam, setActiveView } =
@@ -77,7 +77,7 @@ export const SubjectAnalysisView: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 lg:px-8 font-body-md text-[var(--color-on-surface)]">
       {/* Header & Controls */}
       <section className="flex flex-col xl:flex-row xl:items-end justify-between gap-4 pb-4 sm:pb-6 border-b border-[var(--color-hairline-border)]">
         <div>

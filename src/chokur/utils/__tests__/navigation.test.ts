@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getBreadcrumbs, VIEW_METADATA } from "./navigation";
+import { getBreadcrumbs, VIEW_METADATA } from "@/chokur/utils/navigation";
 
 describe("Navigation and Breadcrumbs", () => {
   it("provides valid metadata for all views", () => {

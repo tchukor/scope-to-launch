@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from "react";
 import { useGrading } from "../context/GradingContext";
 import { feeBalance, getContact, ops, smsSegments, useSchoolOps } from "../lib/schoolOps";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
-import { Button, IconButton } from "../components/ui/Button";
-import { Badge } from "../components/ui/Badge";
-import { Input, Textarea, Select } from "../components/ui/Input";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "../components/ui/DataTable";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/Tabs";
+import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
+import { Button, IconButton } from "@/chokur/components/ui";
+import { Badge } from "@/chokur/components/ui";
+import { Input, Textarea, Select } from "@/chokur/components/ui";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "@/chokur/components/ui";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/chokur/components/ui";
 
 const TEMPLATES: { name: string; text: string }[] = [
   {
@@ -93,7 +93,7 @@ export const BulkSmsView: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 lg:px-8 font-body-md text-[var(--color-on-surface)]">
       <section className="pb-4 border-b border-[var(--color-hairline-border)]">
         <h1 className="font-headline-lg text-headline-lg tracking-tight">Bulk SMS</h1>
         <p className="font-body-sm text-body-sm text-[var(--color-on-surface-muted)] mt-1">

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { ChokurLogo } from "./brand/ChokurLogo";
-import { useGrading } from "../context/GradingContext";
-import { ROLES, Role } from "../utils/roles";
-import { getBreadcrumbs, VIEW_METADATA } from "../utils/navigation";
-import { TestPresetsModal } from "./TestPresetsModal";
-import { LegalModals, LegalModalType } from "./LegalModals";
+import { ChokurLogo } from "../brand/ChokurLogo";
+import { useGrading } from "@/chokur/context/GradingContext";
+import { ROLES, Role } from "@/chokur/utils/roles";
+import { getBreadcrumbs, VIEW_METADATA } from "@/chokur/utils/navigation";
+import { TestPresetsModal } from "../modals/TestPresetsModal";
+import { LegalModals, LegalModalType } from "../modals/LegalModals";
 import { KeyboardHelp } from "./KeyboardHelp";
 
 export const TopNavBar: React.FC = () => {

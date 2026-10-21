@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getGradeFromScore } from "./grading";
+import { getGradeFromScore } from "@/chokur/utils/grading";
 
 describe("Brand & Landing Page KCSE Micro-Calculator Verification", () => {
   it("correctly calculates STEM High Achiever aggregate and university qualification", () => {

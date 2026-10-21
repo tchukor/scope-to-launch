@@ -4,14 +4,14 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Sidebar } from "./components/Sidebar";
-import { TopNavBar } from "./components/TopNavBar";
-import { Breadcrumbs } from "./components/Breadcrumbs";
-import { KeyboardHelp } from "./components/KeyboardHelp";
+import { Sidebar } from "./components/layout/Sidebar";
+import { TopNavBar } from "./components/layout/TopNavBar";
+import { Breadcrumbs } from "./components/layout/Breadcrumbs";
+import { KeyboardHelp } from "./components/layout/KeyboardHelp";
 import { GradingProvider, useGrading } from "./context/GradingContext";
 import { canSee, homeFor } from "./utils/roles";
-import { ProtectedView } from "./components/ProtectedView";
-import { OnboardingFlow } from "./components/OnboardingFlow";
+import { ProtectedView } from "./components/modals/ProtectedView";
+import { OnboardingFlow } from "./components/modals/OnboardingFlow";
 import { AttendanceView } from "./views/AttendanceView";
 import { BulkSmsView } from "./views/BulkSmsView";
 import { FeesView } from "./views/FeesView";
@@ -81,8 +81,8 @@ const MainContent: React.FC = () => {
         {/* Responsive Fixed Top Context Bar */}
         <TopNavBar />
 
-        {/* Main Workspace Canvas with responsive offsets and ultrawide centering */}
-        <main className="pb-20 md:pb-6 md:ml-[72px] lg:ml-[200px] xl:ml-[220px] pt-14 min-h-screen flex-1 flex flex-col bg-[#FEF9EF] min-w-0 transition-all duration-200">
+        {/* Main Workspace Canvas with responsive offsets and fluid centering */}
+        <main className="pb-20 md:pb-6 pt-14 md:ml-[72px] lg:ml-[200px] xl:ml-[220px] min-h-screen flex-1 flex flex-col bg-[#FEF9EF] min-w-0 transition-all duration-200">
           <Breadcrumbs />
           <KeyboardHelp />
           {activeView === "overview" && <OverviewView />}

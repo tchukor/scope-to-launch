@@ -1,8 +1,8 @@
 import React from "react";
 import { useGrading } from "../context/GradingContext";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
-import { Button, IconButton } from "../components/ui/Button";
-import { Badge } from "../components/ui/Badge";
+import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
+import { Button, IconButton } from "@/chokur/components/ui";
+import { Badge } from "@/chokur/components/ui";
 
 export const TermsOfServiceView: React.FC = () => {
   const { setActiveView, schoolConfig, role } = useGrading();

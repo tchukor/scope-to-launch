@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from "react";
 import { useGrading } from "../context/GradingContext";
 import { ClassStream, ExamPeriod, Student, Subject } from "../types";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
-import { Button, IconButton } from "../components/ui/Button";
-import { Badge, StatusBadge } from "../components/ui/Badge";
-import { Input, Textarea, Select } from "../components/ui/Input";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "../components/ui/DataTable";
-import { Sheet, SheetTrigger } from "../components/ui/Sheet";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/Tabs";
+import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
+import { Button, IconButton } from "@/chokur/components/ui";
+import { Badge, StatusBadge } from "@/chokur/components/ui";
+import { Input, Textarea, Select } from "@/chokur/components/ui";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "@/chokur/components/ui";
+import { Sheet, SheetTrigger } from "@/chokur/components/ui";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/chokur/components/ui";
 
 export const StudentsClassesView: React.FC = () => {
   const {
@@ -447,7 +447,7 @@ export const StudentsClassesView: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 lg:px-8 font-body-md text-[var(--color-on-surface)]">
       {/* Header */}
       <section className="mb-4 sm:mb-6 flex flex-col xl:flex-row xl:items-end justify-between gap-4 border-b border-[var(--color-hairline-border)] pb-4 sm:pb-6">
         <div>

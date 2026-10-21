@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { useGrading } from "../context/GradingContext";
-import { canSee, homeFor } from "../utils/roles";
-import { UnauthorizedState } from "./States";
+import { useGrading } from "@/chokur/context/GradingContext";
+import { canSee, homeFor } from "@/chokur/utils/roles";
+import { UnauthorizedState } from "../states/States";
 
 interface ProtectedViewProps { children: React.ReactNode; requiredRole?: string; }
 

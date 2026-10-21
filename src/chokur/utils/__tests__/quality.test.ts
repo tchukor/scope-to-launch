@@ -1,6 +1,6 @@
 // @ts-nocheck -- original source kept verbatim; project tsconfig is stricter than the source
 import { describe, expect, it } from "vitest";
-import { KCSE_GRADING_TABLE, getGradeFromPoints, getGradeFromScore } from "./grading";
+import { KCSE_GRADING_TABLE, getGradeFromPoints, getGradeFromScore } from "@/chokur/utils/grading";
 
 describe("Universal Product Quality Gate & Integrity Tests", () => {
   it("validates KCSE 12-point table completeness and ordering", () => {

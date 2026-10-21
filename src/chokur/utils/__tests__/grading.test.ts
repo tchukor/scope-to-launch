@@ -9,7 +9,7 @@ import {
   rankAllStudents,
   sanitizeCSVCell,
   sanitizeMarkInput,
-} from "./grading";
+} from "@/chokur/utils/grading";
 import { Student, Subject } from "../types";
 
 describe("KCSE 12-Point Grading Scale & Boundary Tests", () => {

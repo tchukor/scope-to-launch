@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { useGrading } from "../context/GradingContext";
 import { WhatsAppMessage } from "../types";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
-import { Button, IconButton } from "../components/ui/Button";
-import { Badge } from "../components/ui/Badge";
-import { Input, Textarea, Select } from "../components/ui/Input";
-import { Sheet, SheetTrigger } from "../components/ui/Sheet";
+import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
+import { Button, IconButton } from "@/chokur/components/ui";
+import { Badge } from "@/chokur/components/ui";
+import { Input, Textarea, Select } from "@/chokur/components/ui";
+import { Sheet, SheetTrigger } from "@/chokur/components/ui";
 
 export const ProfileInboxView: React.FC = () => {
   const {
@@ -106,7 +106,7 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
   };
 
   return (
-    <div className="flex-1 flex flex-col p-3 sm:p-4 md:p-6 lg:p-8 max-w-7xl mx-auto w-full font-body-md text-[var(--color-on-surface)]">
+    <div className="flex-1 flex flex-col p-3 sm:p-4 md:p-6 lg:p-8 max-w-[1360px] mx-auto w-full font-body-md text-[var(--color-on-surface)]">
       {/* Page Title & Breadcrumb */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-4 border-b border-[var(--color-hairline-border)] gap-3">
         <div>

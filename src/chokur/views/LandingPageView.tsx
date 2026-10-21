@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ChokurLogo } from "../components/brand/ChokurLogo";
-import { GradeChip } from "../components/GradeChip";
+import { ChokurLogo } from "@/chokur/components/brand/ChokurLogo";
+import { GradeChip } from "@/chokur/components/data-display/GradeChip";
 import { useGrading } from "../context/GradingContext";
 import { KCSEGrade, ViewType } from "../types";
 import { getGradeFromScore } from "../utils/grading";
-import { LegalModals, LegalModalType } from "../components/LegalModals";
-import { Card, CardContent } from "../components/ui/Card";
-import { StatTile, StatTileGrid } from "../components/ui/StatTile";
-import { Button } from "../components/ui/Button";
-import { Badge } from "../components/ui/Badge";
+import { LegalModals, LegalModalType } from "@/chokur/components/modals/LegalModals";
+import { Card, CardContent } from "@/chokur/components/ui";
+import { StatTile, StatTileGrid } from "@/chokur/components/ui";
+import { Button } from "@/chokur/components/ui";
+import { Badge } from "@/chokur/components/ui";
 
 interface CalculatorSubject {
   code: string;

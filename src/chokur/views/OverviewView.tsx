@@ -1,11 +1,11 @@
 import React from "react";
-import { GradeChip } from "../components/GradeChip";
+import { GradeChip } from "@/chokur/components/data-display/GradeChip";
 import { useGrading } from "../context/GradingContext";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/Card";
-import { StatTile, StatTileGrid } from "../components/ui/StatTile";
-import { Button } from "../components/ui/Button";
-import { Badge } from "../components/ui/Badge";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "../components/ui/DataTable";
+import { Card, CardContent, CardHeader, CardTitle } from "@/chokur/components/ui";
+import { StatTile, StatTileGrid } from "@/chokur/components/ui";
+import { Button } from "@/chokur/components/ui";
+import { Badge } from "@/chokur/components/ui";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "@/chokur/components/ui";
 
 export const OverviewView: React.FC = () => {
   const {
@@ -48,7 +48,7 @@ export const OverviewView: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 lg:px-8 font-body-md text-[var(--color-on-surface)]">
       {/* Page Header Area */}
       <section className="flex flex-col xl:flex-row xl:items-end justify-between pb-4 sm:pb-6 border-b border-[var(--color-hairline-border)] gap-4">
         <div>

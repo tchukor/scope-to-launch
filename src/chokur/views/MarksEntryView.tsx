@@ -1,15 +1,15 @@
 // @ts-nocheck -- original source kept verbatim; project tsconfig is stricter than the source
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { GradeChip } from "../components/GradeChip";
+import { GradeChip } from "@/chokur/components/data-display/GradeChip";
 import { useGrading } from "../context/GradingContext";
 import { MarkValue } from "../types";
 import { exportTableToCSV, getGradeFromScore, sanitizeMarkInput } from "../utils/grading";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
-import { Button, IconButton } from "../components/ui/Button";
-import { Badge } from "../components/ui/Badge";
-import { Input, Textarea, Select } from "../components/ui/Input";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "../components/ui/DataTable";
-import { Sheet, SheetTrigger } from "../components/ui/Sheet";
+import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
+import { Button, IconButton } from "@/chokur/components/ui";
+import { Badge } from "@/chokur/components/ui";
+import { Input, Textarea, Select } from "@/chokur/components/ui";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "@/chokur/components/ui";
+import { Sheet, SheetTrigger } from "@/chokur/components/ui";
 
 type EntryMode = "grid" | "student" | "subject";
 
@@ -397,7 +397,7 @@ export const MarksEntryView: React.FC = () => {
   }, [subjects, students, marks]);
 
   return (
-    <div className="w-full min-w-0 max-w-[1440px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)] flex flex-col">
+    <div className="w-full min-w-0 max-w-[1440px] mx-auto px-3 sm:px-6 py-4 sm:py-8 lg:px-8 font-body-md text-[var(--color-on-surface)] flex flex-col">
       {/* Header Section */}
       <section className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 mb-6 pb-4 border-b border-[var(--color-hairline-border)]">
         <div>

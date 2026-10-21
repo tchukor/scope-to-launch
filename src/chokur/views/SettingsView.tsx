@@ -1,16 +1,16 @@
 import React, { useRef, useState } from "react";
-import { GradeChip } from "../components/GradeChip";
+import { GradeChip } from "@/chokur/components/data-display/GradeChip";
 import { useGrading } from "../context/GradingContext";
 import { KCSE_GRADING_TABLE, parseMarksCSV, ParsedCSVResult } from "../utils/grading";
-import { LegalModals, LegalModalType } from "../components/LegalModals";
-import { TestPresetsModal } from "../components/TestPresetsModal";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
-import { Button, IconButton } from "../components/ui/Button";
-import { Badge } from "../components/ui/Badge";
-import { Input, Textarea, Select } from "../components/ui/Input";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "../components/ui/DataTable";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/Tabs";
-import { Sheet, SheetTrigger } from "../components/ui/Sheet";
+import { LegalModals, LegalModalType } from "@/chokur/components/modals/LegalModals";
+import { TestPresetsModal } from "@/chokur/components/modals/TestPresetsModal";
+import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
+import { Button, IconButton } from "@/chokur/components/ui";
+import { Badge } from "@/chokur/components/ui";
+import { Input, Textarea, Select } from "@/chokur/components/ui";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "@/chokur/components/ui";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/chokur/components/ui";
+import { Sheet, SheetTrigger } from "@/chokur/components/ui";
 
 export const SettingsView: React.FC = () => {
   const {
@@ -187,7 +187,7 @@ export const SettingsView: React.FC = () => {
   };
 
   return (
-    <div className="max-w-[1360px] w-full mx-auto px-3 sm:px-6 py-4 sm:py-8 pb-32 font-body-md text-[var(--color-on-surface)]">
+    <div className="max-w-[1360px] w-full mx-auto px-3 sm:px-6 py-4 sm:py-8 lg:px-8 pb-32 font-body-md text-[var(--color-on-surface)]">
       {/* Page Title & Subtitle Header */}
       <div className="pb-4 sm:pb-6 mb-4 sm:mb-6 border-b border-[var(--color-hairline-border)] flex flex-col md:flex-row md:items-baseline justify-between gap-2">
         <div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useGrading } from "../context/GradingContext";
-import { ChokurLogo } from "./brand/ChokurLogo";
+import { useGrading } from "@/chokur/context/GradingContext";
+import { ChokurLogo } from "../brand/ChokurLogo";
 
 interface OnboardingStep { id: string; title: string; description: string; component: React.ReactNode; isComplete: () => boolean; }
 

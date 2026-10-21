@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { ChokurLogo } from "./brand/ChokurLogo";
-import { useGrading } from "../context/GradingContext";
-import { ViewType } from "../types";
-import { ROLES, Role, canSee, homeFor, loadRole, saveRole } from "../utils/roles";
+import { ChokurLogo } from "../brand/ChokurLogo";
+import { useGrading } from "@/chokur/context/GradingContext";
+import { ViewType } from "@/chokur/types";
+import { ROLES, Role, canSee, homeFor, loadRole, saveRole } from "@/chokur/utils/roles";
 
 interface NavItem {
   id: ViewType;

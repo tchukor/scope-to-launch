@@ -8,11 +8,11 @@ import {
   smsSegments,
   useSchoolOps,
 } from "../lib/schoolOps";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
-import { Button, IconButton } from "../components/ui/Button";
-import { Badge, StatusBadge } from "../components/ui/Badge";
-import { Input } from "../components/ui/Input";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "../components/ui/DataTable";
+import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
+import { Button, IconButton } from "@/chokur/components/ui";
+import { Badge, StatusBadge } from "@/chokur/components/ui";
+import { Input } from "@/chokur/components/ui";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "@/chokur/components/ui";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -112,7 +112,7 @@ export const AttendanceView: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 lg:px-8 font-body-md text-[var(--color-on-surface)]">
       <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-4 border-b border-[var(--color-hairline-border)]">
         <div>
           <h1 className="font-headline-lg text-headline-lg text-[var(--color-on-surface)] tracking-tight">
