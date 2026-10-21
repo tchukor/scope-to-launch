@@ -1,54 +1,61 @@
 import React from "react";
 import { useGrading } from "../context/GradingContext";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
+import { Button, IconButton } from "../components/ui/Button";
+import { Badge } from "../components/ui/Badge";
 
 export const TermsOfServiceView: React.FC = () => {
   const { setActiveView, schoolConfig, role } = useGrading();
 
   return (
-    <div className="w-full min-w-0 max-w-[960px] mx-auto px-4 sm:px-8 py-6 sm:py-10 text-[#111111] font-body-md">
+    <div className="w-full min-w-0 max-w-[960px] mx-auto px-4 sm:px-8 py-6 sm:py-10 font-body-md text-[var(--color-on-surface)]">
       {/* Header */}
-      <section className="pb-6 border-b border-[#DDD6C7] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <section className="pb-6 border-b border-[var(--color-hairline-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-[#5C5850] uppercase tracking-wider mb-1">
-            <span className="w-2 h-2 rounded-full bg-[#C2410C]"></span>
+          <div className="flex items-center gap-2 text-xs font-mono text-[var(--color-on-surface-muted)] uppercase tracking-wider mb-1">
+            <Badge variant="default" className="w-2 h-2 p-0 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[8px]">verified</span>
+            </Badge>
             <span>Educational Software Terms · KNEC/MOE Standards</span>
           </div>
-          <h1 className="font-headline-lg text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]">
-            Terms of Service &amp; Operational Standards
+          <h1 className="font-headline-lg text-headline-lg font-bold tracking-tight text-[var(--color-on-surface)]">
+            Terms of Service & Operational Standards
           </h1>
-          <p className="text-xs sm:text-sm text-[#5F5E5E] mt-1">
+          <p className="font-body-sm text-body-sm text-[var(--color-on-surface-muted)] mt-1">
             Terms governing examination marks entry, grading formulas, report card generation, and
             institutional licensing.
           </p>
         </div>
 
-        <button
-          type="button"
+        <Button
+          variant="outline"
+          size="sm"
           onClick={() => setActiveView(role === "Parent" ? "parent-portal" : "overview")}
-          className="px-3.5 py-2 border border-[#DDD6C7] rounded bg-[#FBF8F1] hover:bg-[#F2EDE3] text-xs font-semibold flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+          iconPosition="left"
+          icon={<span className="material-symbols-outlined text-[16px]">arrow_back</span>}
+          className="self-start sm:self-auto"
         >
-          <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-          <span>Return to {role === "Parent" ? "Parent Portal" : "Overview"}</span>
-        </button>
+          Return to {role === "Parent" ? "Parent Portal" : "Overview"}
+        </Button>
       </section>
 
       {/* Content */}
-      <div className="py-6 space-y-8 text-sm leading-relaxed text-[#1D1C16]">
+      <div className="py-6 space-y-8 text-sm leading-relaxed text-[var(--color-on-surface)]">
         {/* Section 1 */}
         <section className="space-y-3">
-          <h2 className="font-headline-md text-base sm:text-lg font-bold text-[#111111] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[#C2410C]">verified</span>
-            <span>1. KCSE 12-Point Grading &amp; Curriculum Compliance</span>
+          <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">verified</span>
+            <span>1. KCSE 12-Point Grading & Curriculum Compliance</span>
           </h2>
-          <p>
+          <p className="text-[var(--color-on-surface-muted)]">
             Chokur System implements the official Kenya National Examinations Council (KNEC)
             12-point grading scale (A=12 down to E=1) and the Kenya Universities and Colleges
             Central Placement Service (KUCCPS) degree eligibility cutoff (Grade C+ / 6.5 Mean Points
             and above).
           </p>
-          <div className="p-4 bg-[#FBF8F1] border border-[#DDD6C7] rounded text-xs space-y-1.5">
-            <div className="font-semibold text-[#111111]">Statutory Calculation Boundaries:</div>
-            <ul className="list-disc list-inside space-y-1 text-[#5F5E5E]">
+          <Card variant="outlined" className="p-4">
+            <div className="font-semibold text-[var(--color-on-surface)] text-sm mb-2">Statutory Calculation Boundaries:</div>
+            <ul className="list-disc list-inside space-y-1 text-[var(--color-on-surface-muted)] text-sm">
               <li>
                 <strong>Best 7 Aggregate Formula:</strong> Mathematics + 2 Languages (ENG, KIS) + 2
                 Sciences (BIO, CHE, PHY) + 1 Humanity + 1 best elective, totaling /84 aggregate
@@ -60,25 +67,25 @@ export const TermsOfServiceView: React.FC = () => {
               </li>
               <li>
                 Raw marks must be entered between 0 and 100 inclusive, or designated as
-                &quot;ABS&quot; (Absent with 0 points).
+                "ABS" (Absent with 0 points).
               </li>
             </ul>
-          </div>
+          </Card>
         </section>
 
         {/* Section 2 */}
         <section className="space-y-3">
-          <h2 className="font-headline-md text-base sm:text-lg font-bold text-[#111111] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[#C2410C]">badge</span>
-            <span>2. Official Report Cards &amp; Institutional Authority</span>
+          <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">badge</span>
+            <span>2. Official Report Cards & Institutional Authority</span>
           </h2>
-          <p>
+          <p className="text-[var(--color-on-surface-muted)]">
             Report cards generated by this software serve as school academic progress transcripts.
             Final certification is established only upon physical or authorized signing by the
             appointed Class Teacher and affixing of the official Principal&apos;s School Seal for{" "}
             <strong>{schoolConfig.schoolName}</strong>.
           </p>
-          <p className="text-xs text-[#5F5E5E]">
+          <p className="font-body-xs text-body-xs text-[var(--color-on-surface-muted)]">
             Tampering with printed transcripts or altering HTML/PDF export outputs outside
             authorized academic channels is strictly prohibited.
           </p>
@@ -86,16 +93,16 @@ export const TermsOfServiceView: React.FC = () => {
 
         {/* Section 3 */}
         <section className="space-y-3">
-          <h2 className="font-headline-md text-base sm:text-lg font-bold text-[#111111] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[#C2410C]">sms</span>
-            <span>3. Bulk SMS &amp; Parent Messaging Communications</span>
+          <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">sms</span>
+            <span>3. Bulk SMS & Parent Messaging Communications</span>
           </h2>
-          <p>
+          <p className="text-[var(--color-on-surface-muted)]">
             The Bulk SMS module is designed to facilitate transparent home-school collaboration
             regarding fee reminders, absentee notices, closing day advisories, and term report
             availability.
           </p>
-          <p className="text-xs text-[#5F5E5E]">
+          <p className="font-body-xs text-body-xs text-[var(--color-on-surface-muted)]">
             Users agree not to broadcast misleading communications, unsolicited advertisements, or
             unlawful messaging through school channels.
           </p>
@@ -103,25 +110,25 @@ export const TermsOfServiceView: React.FC = () => {
 
         {/* Section 4 */}
         <section className="space-y-3">
-          <h2 className="font-headline-md text-base sm:text-lg font-bold text-[#111111] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[#C2410C]">database</span>
-            <span>4. Offline Maintenance &amp; Backup Obligations</span>
+          <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">database</span>
+            <span>4. Offline Maintenance & Backup Obligations</span>
           </h2>
-          <p>
+          <p className="text-[var(--color-on-surface-muted)]">
             Because data is retained locally on your browser and hardware device, school
             administrators are responsible for generating periodic offline JSON backups (accessible
-            in Settings › Backup &amp; Restore) before major browser cache resets, system operating
+            in Settings › Backup & Restore) before major browser cache resets, system operating
             updates, or hardware replacements.
           </p>
         </section>
 
         {/* Section 5 */}
         <section className="space-y-3">
-          <h2 className="font-headline-md text-base sm:text-lg font-bold text-[#111111] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[#C2410C]">gavel</span>
-            <span>5. Jurisdiction &amp; Governing Law</span>
+          <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">gavel</span>
+            <span>5. Jurisdiction & Governing Law</span>
           </h2>
-          <p>
+          <p className="text-[var(--color-on-surface-muted)]">
             These operational terms are governed by the laws of the Republic of Kenya, including the
             Basic Education Act and the Kenya Information and Communications Act.
           </p>
@@ -129,15 +136,16 @@ export const TermsOfServiceView: React.FC = () => {
       </div>
 
       {/* Footer Return Link */}
-      <div className="pt-6 border-t border-[#DDD6C7] flex justify-between items-center text-xs text-[#5C5850]">
+      <div className="pt-6 border-t border-[var(--color-hairline-border)] flex justify-between items-center font-body-xs text-body-xs text-[var(--color-on-surface-muted)]">
         <span>Chokur Academic System v2.4</span>
-        <button
-          type="button"
-          onClick={() => setActiveView("legal", "privacy")}
-          className="underline hover:text-[#111111] cursor-pointer"
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setActiveView("legal")}
+          className="p-0 min-h-0 hover:text-[var(--color-on-surface)]"
         >
           View Privacy Policy →
-        </button>
+        </Button>
       </div>
     </div>
   );

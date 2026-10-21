@@ -3,6 +3,11 @@ import { GradeChip } from "../components/GradeChip";
 import { useGrading } from "../context/GradingContext";
 import { exportTableToCSV, getGradeFromScore, KCSE_GRADING_TABLE } from "../utils/grading";
 import { GradeDistributionTier, KCSEGrade } from "../types";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
+import { Button, IconButton } from "../components/ui/Button";
+import { Badge } from "../components/ui/Badge";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "../components/ui/DataTable";
+import { Select } from "../components/ui/Input";
 
 export const GradeDistributionView: React.FC = () => {
   const {
@@ -19,7 +24,6 @@ export const GradeDistributionView: React.FC = () => {
   } = useGrading();
 
   const [selectedSubjectFilter, setSelectedSubjectFilter] = useState<string>("ALL");
-  const [showSubjectDropdown, setShowSubjectDropdown] = useState(false);
 
   // Compute 12-tier distribution based on selected filter (ALL or specific subject)
   const activeDistributionTiers = useMemo<GradeDistributionTier[]>(() => {
@@ -140,14 +144,14 @@ export const GradeDistributionView: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[#111111]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
       {/* Header Section */}
-      <section className="flex flex-col xl:flex-row xl:items-end justify-between pb-4 sm:pb-6 border-b border-[#DDD6C7] gap-4">
+      <section className="flex flex-col xl:flex-row xl:items-end justify-between pb-4 sm:pb-6 border-b border-[var(--color-hairline-border)] gap-4">
         <div>
-          <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">
+          <h1 className="font-headline-lg text-headline-lg text-[var(--color-on-surface)] tracking-tight">
             Grade Distribution
           </h1>
-          <p className="font-body-md text-xs sm:text-body-md text-[#5F5E5E] mt-1">
+          <p className="font-body-md text-xs sm:text-body-md text-[var(--color-on-surface-muted)] mt-1">
             {activeStream} · {activeExam} · 12-tier KNEC cohort frequency distribution
           </p>
         </div>
@@ -155,216 +159,191 @@ export const GradeDistributionView: React.FC = () => {
         {/* Filter Controls Ribbon */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3 no-print">
           {/* Subject / Aggregate Switcher */}
-          <div className="relative">
-            <button
-              onClick={() => setShowSubjectDropdown(!showSubjectDropdown)}
-              type="button"
-              className="bg-[#FBF8F1] border border-[#DDD6C7] hover:border-[#111111] rounded px-3 py-2 text-xs sm:text-[13px] font-medium flex items-center gap-2 cursor-pointer min-h-[40px]"
-            >
-              <span className="material-symbols-outlined text-[16px] text-[#C2410C]">
-                filter_list
-              </span>
-              <span>
-                Filter: {selectedSubjectFilter === "ALL" ? "Cohort Mean" : selectedSubjectFilter}
-              </span>
-              <span className="material-symbols-outlined text-[16px] text-[#5F5E5E]">
-                expand_more
-              </span>
-            </button>
-
-            {showSubjectDropdown && (
-              <div className="absolute right-0 top-full mt-1 w-56 bg-[#FBF8F1] border border-[#DDD6C7] shadow-lg py-1 z-50 rounded">
-                <button
-                  onClick={() => {
-                    setSelectedSubjectFilter("ALL");
-                    setShowSubjectDropdown(false);
-                  }}
-                  className={`w-full text-left px-3 py-2 text-xs hover:bg-[#F2EDE3] flex items-center justify-between cursor-pointer ${
-                    selectedSubjectFilter === "ALL"
-                      ? "font-medium text-[#C2410C] bg-[#F8F3E9]"
-                      : "text-[#111111]"
-                  }`}
-                >
-                  <span>Cohort KCSE Mean Grade</span>
-                  {selectedSubjectFilter === "ALL" && <span>✓</span>}
-                </button>
-                <div className="border-t border-[#DDD6C7]/50 my-1"></div>
-                {subjects.map((s) => (
-                  <button
-                    key={s.code}
-                    onClick={() => {
-                      setSelectedSubjectFilter(s.code);
-                      setShowSubjectDropdown(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 text-xs hover:bg-[#F2EDE3] flex items-center justify-between cursor-pointer ${
-                      selectedSubjectFilter === s.code
-                        ? "font-medium text-[#C2410C] bg-[#F8F3E9]"
-                        : "text-[#111111]"
-                    }`}
-                  >
-                    <span>
-                      {s.code} — {s.name}
-                    </span>
-                    {selectedSubjectFilter === s.code && <span>✓</span>}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          <Select
+            value={selectedSubjectFilter}
+            onValueChange={setSelectedSubjectFilter}
+            className="min-w-[200px] sm:min-w-[240px]"
+            icon={<span className="material-symbols-outlined text-[16px] text-[var(--color-primary)]">filter_list</span>}
+          >
+            <option value="ALL">Cohort KCSE Mean Grade</option>
+            {subjects.map((s) => (
+              <option key={s.code} value={s.code}>
+                {s.code} — {s.name}
+              </option>
+            ))}
+          </Select>
 
           {/* Export Action */}
-          <button
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handleExportDistribution}
-            type="button"
-            className="inline-flex items-center gap-1.5 bg-transparent border border-[#111111] rounded px-3.5 py-2 text-[#111111] font-body-sm text-xs sm:text-[13px] hover:bg-[#F2EDE3] transition-colors cursor-pointer min-h-[40px]"
+            iconPosition="left"
+            icon={<span className="material-symbols-outlined text-[16px]">file_download</span>}
+            className="min-h-[40px]"
           >
-            <span className="material-symbols-outlined text-[16px]">file_download</span>
-            <span>Export CSV</span>
-          </button>
+            Export CSV
+          </Button>
         </div>
       </section>
 
       {/* Monochrome Column Chart Section */}
-      <section className="bg-[#FBF8F1] border border-[#DDD6C7] p-3 sm:p-6 my-4 sm:my-6 rounded shadow-xs">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-1">
-          <div className="font-label-caps text-label-caps text-[#5F5E5E] tracking-wider uppercase text-[11px]">
-            {selectedSubjectFilter === "ALL"
-              ? "COHORT MEAN GRADE FREQUENCY"
-              : `${selectedSubjectFilter} GRADE FREQUENCY`}
+      <Card variant="elevated" className="my-4 sm:my-6">
+        <CardHeader className="pb-3 border-b border-[var(--color-hairline-border)]">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-1">
+            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] tracking-wider uppercase text-[11px]">
+              {selectedSubjectFilter === "ALL"
+                ? "COHORT MEAN GRADE FREQUENCY"
+                : `${selectedSubjectFilter} GRADE FREQUENCY`}
+            </div>
+            <div className="font-tabular-sm text-xs sm:text-tabular-sm text-[var(--color-on-surface-muted)]">
+              Evaluated cohort: {evaluatedCount} candidates
+            </div>
           </div>
-          <div className="font-tabular-sm text-xs sm:text-tabular-sm text-[#5F5E5E]">
-            Evaluated cohort: {evaluatedCount} candidates
-          </div>
-        </div>
+        </CardHeader>
 
-        {/* The Chart Area */}
-        <div className="relative w-full h-[240px] sm:h-[280px] flex flex-col justify-end pt-6 pb-6 sm:pb-8 px-2 sm:px-4">
-          <div className="absolute inset-x-0 bottom-6 sm:bottom-8 border-b-2 border-[#111111]"></div>
+        <CardContent className="pt-2 pb-6">
+          {/* The Chart Area */}
+          <div className="relative w-full h-[240px] sm:h-[280px] flex flex-col justify-end pt-6 pb-6 sm:pb-8 px-2 sm:px-4">
+            <div className="absolute inset-x-0 bottom-6 sm:bottom-8 border-b-2 border-[var(--color-on-surface)]"></div>
 
-          {/* 5 Columns Grid */}
-          <div className="relative z-10 grid grid-cols-5 gap-2 sm:gap-8 lg:gap-12 h-full items-end pb-0.5">
-            {letterCategoryStats.map((cat) => {
-              const isTallest = cat.count === maxBarCount && cat.count > 0;
-              const barHeightPct = maxBarCount > 0 ? (cat.count / maxBarCount) * 85 : 0;
+            {/* 5 Columns Grid */}
+            <div className="relative z-10 grid grid-cols-5 gap-2 sm:gap-8 lg:gap-12 h-full items-end pb-0.5">
+              {letterCategoryStats.map((cat) => {
+                const isTallest = cat.count === maxBarCount && cat.count > 0;
+                const barHeightPct = maxBarCount > 0 ? (cat.count / maxBarCount) * 85 : 0;
 
-              return (
-                <div
-                  key={cat.letter}
-                  className="flex flex-col items-center h-full justify-end group"
-                >
-                  <div className="font-tabular-sm text-xs sm:text-tabular-sm text-[#111111] mb-1.5 text-center whitespace-nowrap">
-                    <span className={isTallest ? "font-bold" : "font-medium"}>{cat.count}</span>{" "}
-                    <span className="text-[#5F5E5E] hidden sm:inline">· {cat.pct}%</span>
-                  </div>
-
+                return (
                   <div
-                    className={`w-full max-w-[48px] sm:max-w-[68px] transition-all duration-300 ${
-                      isTallest ? "bg-[#111111]" : "bg-[#5F5E5E]"
-                    }`}
-                    style={{ height: `${Math.max(4, barHeightPct)}%` }}
-                  ></div>
-
-                  <div
-                    className={`mt-2 sm:mt-3 font-tabular-md text-sm sm:text-tabular-md ${
-                      isTallest ? "font-bold text-[#111111]" : "font-semibold text-[#111111]"
-                    }`}
+                    key={cat.letter}
+                    className="flex flex-col items-center h-full justify-end group"
                   >
-                    {cat.letter}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+                    <div className="font-tabular-sm text-xs sm:text-tabular-sm text-[var(--color-on-surface)] mb-1.5 text-center whitespace-nowrap">
+                      <span className={isTallest ? "font-bold" : "font-medium"}>{cat.count}</span>{" "}
+                      <span className="text-[var(--color-on-surface-muted)] hidden sm:inline">· {cat.pct}%</span>
+                    </div>
 
-        {/* Under-chart Text Note */}
-        <div className="mt-3 pt-2.5 border-t border-[#DDD6C7] flex flex-wrap items-center justify-between text-xs gap-1">
-          <div className="text-[#C2410C] font-body-sm font-medium flex items-center gap-1.5 text-[11px] sm:text-xs">
-            <span>KNEC: A, A-, B+, B, B-, C+, C, C-, D+, D, D-, E</span>
+                    <div
+                      className={`w-full max-w-[48px] sm:max-w-[68px] transition-all duration-300 ${
+                        isTallest ? "bg-[var(--color-on-surface)]" : "bg-[var(--color-on-surface-muted)]"
+                      }`}
+                      style={{ height: `${Math.max(4, barHeightPct)}%` }}
+                    ></div>
+
+                    <div
+                      className={`mt-2 sm:mt-3 font-tabular-md text-sm sm:text-tabular-md ${
+                        isTallest ? "font-bold text-[var(--color-on-surface)]" : "font-semibold text-[var(--color-on-surface)]"
+                      }`}
+                    >
+                      {cat.letter}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <span className="font-caption text-caption text-[#5F5E5E] text-[10px] sm:text-xs">
-            C+ Pass vs C Marginal
-          </span>
-        </div>
-      </section>
+
+          {/* Under-chart Text Note */}
+          <div className="mt-3 pt-2.5 border-t border-[var(--color-hairline-border)] flex flex-wrap items-center justify-between text-xs gap-1">
+            <div className="text-[var(--color-primary)] font-body-sm font-medium flex items-center gap-1.5 text-[11px] sm:text-xs">
+              <span>KNEC: A, A-, B+, B, B-, C+, C, C-, D+, D, D-, E</span>
+            </div>
+            <span className="font-caption text-caption text-[var(--color-on-surface-muted)] text-[10px] sm:text-xs">
+              C+ Pass vs C Marginal
+            </span>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Summary Statistics Ledger */}
-      <section className="border-y border-[#DDD6C7] divide-y divide-[#DDD6C7] mb-6 bg-[#FBF8F1]">
-        <div className="flex items-center justify-between py-3 px-3 sm:px-4">
-          <span className="font-body-md text-xs sm:text-body-md text-[#5F5E5E]">
-            Class Mean Grade
-          </span>
-          <div className="flex items-baseline gap-2">
-            <span className="font-tabular-lg text-lg sm:text-tabular-lg font-bold text-[#111111]">
-              {meanGrade}
-            </span>
-            <span className="font-tabular-sm text-xs sm:text-tabular-sm text-[#5F5E5E]">
-              ({classAverage.toFixed(1)}% mean score)
-            </span>
-          </div>
-        </div>
+      <Card variant="elevated" className="mb-6">
+        <CardContent className="p-0">
+          <div className="border-y border-[var(--color-hairline-border)] divide-y divide-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)]">
+            <div className="flex items-center justify-between py-3 px-3 sm:px-4">
+              <span className="font-body-md text-xs sm:text-body-md text-[var(--color-on-surface-muted)]">
+                Class Mean Grade
+              </span>
+              <div className="flex items-baseline gap-2">
+                <span className="font-tabular-lg text-lg sm:text-tabular-lg font-bold text-[var(--color-on-surface)]">
+                  {meanGrade}
+                </span>
+                <span className="font-tabular-sm text-xs sm:text-tabular-sm text-[var(--color-on-surface-muted)]">
+                  ({classAverage.toFixed(1)}% mean score)
+                </span>
+              </div>
+            </div>
 
-        <div className="flex items-center justify-between py-3 px-3 sm:px-4">
-          <span className="font-body-md text-xs sm:text-body-md text-[#5F5E5E]">
-            University Qualified (C+ &amp; Above)
-          </span>
-          <div className="flex items-baseline gap-2">
-            <span className="font-tabular-lg text-lg sm:text-tabular-lg font-bold text-[#111111]">
-              {evaluatedCount > 0 ? Math.round((qualifiedCount / evaluatedCount) * 100) : 0}%
-            </span>
-            <span className="font-tabular-sm text-xs sm:text-tabular-sm text-[#5F5E5E]">
-              ({qualifiedCount} of {evaluatedCount})
-            </span>
-          </div>
-        </div>
+            <div className="flex items-center justify-between py-3 px-3 sm:px-4">
+              <span className="font-body-md text-xs sm:text-body-md text-[var(--color-on-surface-muted)]">
+                University Qualified (C+ & Above)
+              </span>
+              <div className="flex items-baseline gap-2">
+                <span className="font-tabular-lg text-lg sm:text-tabular-lg font-bold text-[var(--color-on-surface)]">
+                  {evaluatedCount > 0 ? Math.round((qualifiedCount / evaluatedCount) * 100) : 0}%
+                </span>
+                <span className="font-tabular-sm text-xs sm:text-tabular-sm text-[var(--color-on-surface-muted)]">
+                  ({qualifiedCount} of {evaluatedCount})
+                </span>
+              </div>
+            </div>
 
-        <div className="flex items-center justify-between py-3 px-3 sm:px-4">
-          <span className="font-body-md text-xs sm:text-body-md text-[#5F5E5E]">
-            Candidates Below C+ Threshold
-          </span>
-          <div className="font-tabular-lg text-lg sm:text-tabular-lg font-bold text-[#111111]">
-            {belowCutoffCount}{" "}
-            <span className="font-body-sm text-xs sm:text-body-sm font-normal text-[#5F5E5E]">
-              candidates
-            </span>
+            <div className="flex items-center justify-between py-3 px-3 sm:px-4">
+              <span className="font-body-md text-xs sm:text-body-md text-[var(--color-on-surface-muted)]">
+                Candidates Below C+ Threshold
+              </span>
+              <div className="font-tabular-lg text-lg sm:text-tabular-lg font-bold text-[var(--color-on-surface)]">
+                {belowCutoffCount}{" "}
+                <span className="font-body-sm text-xs sm:text-body-sm font-normal text-[var(--color-on-surface-muted)]">
+                  candidates
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </CardContent>
+      </Card>
 
       {/* =========================================================================
           VIEW A: MOBILE TOUCH 12-TIER LEDGER (< 768px)
           ========================================================================= */}
       <div className="md:hidden space-y-2 mb-6">
-        <h2 className="font-headline-sm text-sm text-[#111111] font-semibold mb-2">
+        <h2 className="font-headline-sm text-sm text-[var(--color-on-surface)] font-semibold mb-2">
           KCSE 12-Grade Breakdown — {selectedSubjectName}
         </h2>
         {activeDistributionTiers.map((tier) => {
           const isCPlus = tier.grade === "C+";
           return (
             <React.Fragment key={tier.grade}>
-              <div className="bg-[#FBF8F1] border border-[#DDD6C7] rounded p-2.5 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <GradeChip grade={tier.grade} size="sm" />
-                  <span className="text-xs text-[#5F5E5E] font-tabular-sm">
-                    {tier.pointsEquivalent} pts
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 text-xs font-tabular-sm">
-                  <span className="font-bold text-[#111111]">{tier.studentCount} students</span>
-                  <span className="text-[#5F5E5E]">({tier.cohortShare.toFixed(1)}%)</span>
-                  <span className="text-[10px] text-[#9A958A]">
-                    Cum: {tier.cumulativePercentage.toFixed(1)}%
-                  </span>
-                </div>
-              </div>
+              <Card variant="elevated" className="p-0">
+                <CardContent className="p-2.5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <GradeChip grade={tier.grade} size="sm" />
+                      <span className="text-xs text-[var(--color-on-surface-muted)] font-tabular-sm">
+                        {tier.pointsEquivalent} pts
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 text-xs font-tabular-sm">
+                      <span className="font-bold text-[var(--color-on-surface)]">{tier.studentCount} students</span>
+                      <span className="text-[var(--color-on-surface-muted)]">({tier.cohortShare.toFixed(1)}%)</span>
+                      <span className="text-[10px] text-[var(--color-on-surface-disabled)]">
+                        Cum: {tier.cumulativePercentage.toFixed(1)}%
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
               {isCPlus && (
-                <div className="py-2 my-1 border-y-2 border-[#111111] bg-[#F8F3E9] px-3 flex items-center justify-between">
-                  <span className="text-[10px] font-label-caps font-bold uppercase text-[#111111]">
-                    C+ CUTOFF (DIRECT DEGREE ENTRY PASS LINE)
-                  </span>
-                  <span className="w-1.5 h-1.5 bg-[#111111] rounded-full"></span>
-                </div>
+                <Card variant="outlined" className="py-2 my-1 border-y-2 border-[var(--color-on-surface)] bg-[var(--color-surface-container-low)] px-3">
+                  <CardContent className="p-0">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-label-caps font-bold uppercase text-[var(--color-on-surface)]">
+                        C+ CUTOFF (DIRECT DEGREE ENTRY PASS LINE)
+                      </span>
+                      <span className="w-1.5 h-1.5 bg-[var(--color-on-surface)] rounded-full"></span>
+                    </div>
+                  </CardContent>
+                </Card>
               )}
             </React.Fragment>
           );
@@ -376,140 +355,120 @@ export const GradeDistributionView: React.FC = () => {
           ========================================================================= */}
       <section className="hidden md:block">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-headline-sm text-headline-sm text-[#111111]">
+          <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
             KCSE Full 12-Grade Ledger Breakdown — {selectedSubjectName}
           </h2>
-          <span className="font-label-caps text-label-caps text-[#5F5E5E] uppercase tracking-wider">
+          <span className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
             Normative Distribution
           </span>
         </div>
 
-        <div className="border border-[#DDD6C7] overflow-hidden bg-[#FBF8F1] rounded shadow-xs">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-[#DDD6C7] bg-[#FEF9EF] text-[11px]">
-                <th className="py-2.5 px-4 font-label-caps text-label-caps text-[#5F5E5E] uppercase tracking-wider w-28">
-                  KCSE Grade
-                </th>
-                <th className="py-2.5 px-4 font-label-caps text-label-caps text-[#5F5E5E] uppercase tracking-wider w-36">
-                  Points Equivalent
-                </th>
-                <th className="py-2.5 px-4 font-label-caps text-label-caps text-[#5F5E5E] uppercase tracking-wider text-right">
-                  Candidate Count
-                </th>
-                <th className="py-2.5 px-4 font-label-caps text-label-caps text-[#5F5E5E] uppercase tracking-wider text-right">
-                  Cohort Share
-                </th>
-                <th className="py-2.5 px-4 font-label-caps text-label-caps text-[#5F5E5E] uppercase tracking-wider text-right">
-                  Cumulative %
-                </th>
-              </tr>
-            </thead>
+        <Card variant="elevated" className="overflow-hidden">
+          <CardContent className="p-0">
+            <DataTable hoverable compact>
+              <TableHeader>
+                <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
+                  <TableHead scope="col" className="w-28 px-4">KCSE Grade</TableHead>
+                  <TableHead scope="col" className="w-36 px-4">Points Equivalent</TableHead>
+                  <TableHead scope="col" className="px-4 text-right">Candidate Count</TableHead>
+                  <TableHead scope="col" className="px-4 text-right">Cohort Share</TableHead>
+                  <TableHead scope="col" className="px-4 text-right">Cumulative %</TableHead>
+                </tr>
+              </TableHeader>
+              <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
+                {activeDistributionTiers.map((tier) => {
+                  const isCPlus = tier.grade === "C+";
 
-            <tbody className="divide-y divide-[#DDD6C7] font-body-sm text-body-sm">
-              {activeDistributionTiers.map((tier) => {
-                const isCPlus = tier.grade === "C+";
+                  return (
+                    <React.Fragment key={tier.grade}>
+                      <TableRow className="h-11 hover:bg-[var(--color-surface-container)] transition-colors">
+                        <TableCell className="px-4">
+                          <GradeChip grade={tier.grade} />
+                        </TableCell>
+                        <TableCell className="px-4 font-tabular-sm text-tabular-sm text-[var(--color-on-surface-muted)]">
+                          {tier.pointsEquivalent} Points
+                        </TableCell>
+                        <TableCell className="px-4 text-right font-tabular-md font-semibold text-[var(--color-on-surface)]">
+                          {tier.studentCount}
+                        </TableCell>
+                        <TableCell className="px-4 text-right font-tabular-sm text-[var(--color-on-surface-muted)]">
+                          {tier.cohortShare.toFixed(1)}%
+                        </TableCell>
+                        <TableCell className="px-4 text-right font-tabular-sm text-[var(--color-on-surface)]">
+                          {tier.cumulativePercentage.toFixed(1)}%
+                        </TableCell>
+                      </TableRow>
 
-                return (
-                  <React.Fragment key={tier.grade}>
-                    <tr className="h-[44px] hover:bg-[#F2EDE3] transition-colors">
-                      <td className="px-4">
-                        <GradeChip grade={tier.grade} />
-                      </td>
-                      <td className="px-4 font-tabular-sm text-tabular-sm text-[#5F5E5E]">
-                        {tier.pointsEquivalent} Points
-                      </td>
-                      <td className="px-4 text-right font-tabular-md text-tabular-md font-semibold text-[#111111]">
-                        {tier.studentCount}
-                      </td>
-                      <td className="px-4 text-right font-tabular-sm text-tabular-sm text-[#5F5E5E]">
-                        {tier.cohortShare.toFixed(1)}%
-                      </td>
-                      <td className="px-4 text-right font-tabular-sm text-tabular-sm text-[#111111]">
-                        {tier.cumulativePercentage.toFixed(1)}%
-                      </td>
-                    </tr>
-
-                    {/* The Cutoff Boundary Line after C+ */}
-                    {isCPlus && (
-                      <tr className="bg-[#FEF9EF]">
-                        <td colSpan={5} className="py-1 px-4 border-y-2 border-[#111111]">
-                          <div className="flex items-center justify-between">
-                            <span className="font-label-caps text-label-caps text-[#111111] uppercase tracking-widest font-bold flex items-center gap-2 text-xs">
-                              <span className="w-2 h-2 bg-[#111111] inline-block"></span>
-                              C+ Cutoff Boundary — Minimum Direct University Entry Requirement
-                            </span>
-                            <span className="font-tabular-sm text-tabular-sm text-[#111111] font-semibold text-xs">
-                              KUCCPS Pass Line
-                            </span>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </tbody>
-
-            <tfoot>
-              <tr className="border-t-2 border-[#111111] bg-[#FEF9EF] font-semibold">
-                <td className="py-3 px-4 font-body-sm text-body-sm text-[#111111]">
-                  Total Cohort Evaluated
-                </td>
-                <td className="py-3 px-4 font-tabular-sm text-tabular-sm text-[#5F5E5E]">—</td>
-                <td className="py-3 px-4 text-right font-tabular-md text-tabular-md text-[#111111]">
-                  {evaluatedCount} Candidates
-                </td>
-                <td className="py-3 px-4 text-right font-tabular-sm text-tabular-sm text-[#111111]">
-                  100.0%
-                </td>
-                <td className="py-3 px-4 text-right font-tabular-sm text-tabular-sm text-[#111111]">
-                  100.0%
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+                      {/* The Cutoff Boundary Line after C+ */}
+                      {isCPlus && (
+                        <TableRow className="bg-[var(--color-surface-container-low)]">
+                          <TableCell colSpan={5} className="py-1 px-4 border-y-2 border-[var(--color-on-surface)]">
+                            <div className="flex items-center justify-between">
+                              <span className="font-label-caps text-label-caps text-[var(--color-on-surface)] uppercase tracking-widest font-bold flex items-center gap-2 text-xs">
+                                <span className="w-2 h-2 bg-[var(--color-on-surface)] inline-block"></span>
+                                C+ Cutoff Boundary — Minimum Direct University Entry Requirement
+                              </span>
+                              <span className="font-tabular-sm text-[var(--color-on-surface)] font-semibold text-xs">
+                                KUCCPS Pass Line
+                              </span>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </tbody>
+              <TableFooter>
+                <tr className="border-t-2 border-[var(--color-on-surface)] bg-[var(--color-surface-container-low)] font-semibold">
+                  <TableCell className="py-3 px-4 font-body-sm text-body-sm text-[var(--color-on-surface)]">
+                    Total Cohort Evaluated
+                  </TableCell>
+                  <TableCell className="py-3 px-4 font-tabular-sm text-[var(--color-on-surface-muted)]">—</TableCell>
+                  <TableCell className="py-3 px-4 text-right font-tabular-md text-[var(--color-on-surface)]">
+                    {evaluatedCount} Candidates
+                  </TableCell>
+                  <TableCell className="py-3 px-4 text-right font-tabular-sm text-[var(--color-on-surface)]">
+                    100.0%
+                  </TableCell>
+                  <TableCell className="py-3 px-4 text-right font-tabular-sm text-[var(--color-on-surface)]">
+                    100.0%
+                  </TableCell>
+                </tr>
+              </TableFooter>
+            </DataTable>
+          </CardContent>
+        </Card>
       </section>
 
       {/* Workflow Next Steps Banner */}
-      <section className="mt-6 p-4 sm:p-5 bg-[#FBF8F1] border border-[#DDD6C7] rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h4 className="font-semibold text-sm text-[#111111] flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[18px] text-[#C2410C]">route</span>
-            <span>Grade Distribution: Next Steps</span>
-          </h4>
-          <p className="text-xs text-[#5F5E5E] mt-0.5">
-            Verify cohort standing, review individual student positions, or produce official report
-            cards.
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setActiveView("overview")}
-            className="px-3 py-2 text-xs font-medium border border-[#DDD6C7] rounded bg-white hover:bg-[#F2EDE3] text-[#111111] cursor-pointer"
-          >
-            ← Overview
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveView("rankings")}
-            className="px-3.5 py-2 text-xs font-semibold bg-[#111111] text-white hover:bg-neutral-800 rounded flex items-center gap-1.5 cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-[16px]">format_list_numbered</span>
-            <span>Class Rankings →</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveView("report-cards")}
-            className="px-3.5 py-2 text-xs font-semibold bg-[#C2410C] text-white hover:opacity-90 rounded flex items-center gap-1.5 cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-[16px]">badge</span>
-            <span>Report Cards →</span>
-          </button>
-        </div>
-      </section>
+      <Card variant="outlined" className="mt-6">
+        <CardContent className="p-4 sm:p-5">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h4 className="font-semibold text-sm text-[var(--color-on-surface)] flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">route</span>
+                <span>Grade Distribution: Next Steps</span>
+              </h4>
+              <p className="text-xs text-[var(--color-on-surface-muted)] mt-0.5">
+                Verify cohort standing, review individual student positions, or produce official report
+                cards.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="ghost" size="sm" onClick={() => setActiveView("overview")} className="px-3 py-2 text-xs">
+                ← Overview
+              </Button>
+              <Button size="sm" onClick={() => setActiveView("rankings")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">format_list_numbered</span>} className="px-3.5 py-2 text-xs">
+                Class Rankings →
+              </Button>
+              <Button variant="secondary" size="sm" onClick={() => setActiveView("report-cards")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">badge</span>} className="px-3.5 py-2 text-xs">
+                Report Cards →
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

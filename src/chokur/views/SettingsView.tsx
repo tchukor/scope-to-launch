@@ -4,6 +4,13 @@ import { useGrading } from "../context/GradingContext";
 import { KCSE_GRADING_TABLE, parseMarksCSV, ParsedCSVResult } from "../utils/grading";
 import { LegalModals, LegalModalType } from "../components/LegalModals";
 import { TestPresetsModal } from "../components/TestPresetsModal";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
+import { Button, IconButton } from "../components/ui/Button";
+import { Badge } from "../components/ui/Badge";
+import { Input, Textarea, Select } from "../components/ui/Input";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "../components/ui/DataTable";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/Tabs";
+import { Sheet, SheetTrigger } from "../components/ui/Sheet";
 
 export const SettingsView: React.FC = () => {
   const {
@@ -17,6 +24,7 @@ export const SettingsView: React.FC = () => {
     students,
     subjects,
     marks,
+    setActiveView,
   } = useGrading();
 
   const [formConfig, setFormConfig] = useState(schoolConfig);
@@ -179,111 +187,101 @@ export const SettingsView: React.FC = () => {
   };
 
   return (
-    <div className="max-w-[1360px] w-full mx-auto px-3 sm:px-6 py-4 sm:py-8 pb-32 font-body-md text-[#111111]">
+    <div className="max-w-[1360px] w-full mx-auto px-3 sm:px-6 py-4 sm:py-8 pb-32 font-body-md text-[var(--color-on-surface)]">
       {/* Page Title & Subtitle Header */}
-      <div className="pb-4 sm:pb-6 mb-4 sm:mb-6 border-b border-[#DDD6C7] flex flex-col md:flex-row md:items-baseline justify-between gap-2">
+      <div className="pb-4 sm:pb-6 mb-4 sm:mb-6 border-b border-[var(--color-hairline-border)] flex flex-col md:flex-row md:items-baseline justify-between gap-2">
         <div>
           <div className="flex items-baseline gap-3">
-            <h1 className="font-headline-lg text-headline-lg text-[#111111]">Settings</h1>
-            <span className="font-tabular-sm text-tabular-sm text-[#5F5E5E]">CONFIG_ACAD_2026</span>
+            <h1 className="font-headline-lg text-headline-lg text-[var(--color-on-surface)]">Settings</h1>
+            <span className="font-tabular-sm text-tabular-sm text-[var(--color-on-surface-muted)]">CONFIG_ACAD_2026</span>
           </div>
-          <p className="font-body-md text-body-md text-[#5F5E5E] mt-1">
+          <p className="font-body-md text-body-md text-[var(--color-on-surface-muted)] mt-1">
             Configure school metadata, grading scales, bulk CSV marks import, and offline data sync
           </p>
         </div>
 
         {saveSuccess && (
-          <div className="bg-[#111111] text-[#FEF9EF] px-3 py-1.5 rounded text-xs font-medium flex items-center gap-1.5 animate-fadeIn">
-            <span className="material-symbols-outlined text-[16px] text-emerald-400">
-              check_circle
-            </span>
+          <Badge variant="success" className="flex items-center gap-1.5 animate-fadeIn">
+            <span className="material-symbols-outlined text-[16px]">check_circle</span>
             <span>All configuration settings updated</span>
-          </div>
+          </Badge>
         )}
       </div>
 
       {/* Settings Sections (Planar, Hairline Separated) */}
       <div className="flex flex-col">
         {/* 1. School Information Section */}
-        <section className="py-6 border-b border-[#DDD6C7] grid grid-cols-12 gap-6">
+        <section className="py-6 border-b border-[var(--color-hairline-border)] grid grid-cols-12 gap-6">
           <div className="col-span-12 md:col-span-4 pr-4">
-            <h2 className="font-headline-sm text-headline-sm text-[#111111]">School Information</h2>
-            <p className="font-caption text-caption text-[#5F5E5E] mt-1">
+            <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">School Information</h2>
+            <p className="font-caption text-caption text-[var(--color-on-surface-muted)] mt-1">
               Official institutional identity printed across all term transcripts, KCSE result
               schedules, and student performance dossiers.
             </p>
           </div>
           <div className="col-span-12 md:col-span-8 flex flex-col space-y-4">
             <div>
-              <label className="block font-label-caps text-label-caps text-[#5F5E5E] uppercase mb-1.5">
+              <label className="block font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase mb-1.5">
                 School Name
               </label>
-              <input
+              <Input
                 type="text"
                 value={formConfig.schoolName}
                 onChange={(e) => setFormConfig({ ...formConfig, schoolName: e.target.value })}
-                className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-2 text-[#111111] font-body-md text-body-md focus:border-[#C2410C] focus:outline-none"
               />
             </div>
             <div>
-              <label className="block font-label-caps text-label-caps text-[#5F5E5E] uppercase mb-1.5">
+              <label className="block font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase mb-1.5">
                 School Motto
               </label>
-              <input
+              <Input
                 type="text"
                 value={formConfig.motto}
                 onChange={(e) => setFormConfig({ ...formConfig, motto: e.target.value })}
-                className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-2 text-[#111111] font-body-md text-body-md focus:border-[#C2410C] focus:outline-none"
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block font-label-caps text-label-caps text-[#5F5E5E] uppercase mb-1.5">
+                <label className="block font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase mb-1.5">
                   Postal Address
                 </label>
-                <input
+                <Input
                   type="text"
                   value={formConfig.postalAddress}
                   onChange={(e) => setFormConfig({ ...formConfig, postalAddress: e.target.value })}
-                  className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-2 text-[#111111] font-body-md text-body-md focus:border-[#C2410C] focus:outline-none"
                 />
               </div>
               <div>
-                <label className="block font-label-caps text-label-caps text-[#5F5E5E] uppercase mb-1.5">
+                <label className="block font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase mb-1.5">
                   Contact Phone / Email
                 </label>
-                <input
+                <Input
                   type="text"
                   value={formConfig.contactPhoneEmail}
-                  onChange={(e) =>
-                    setFormConfig({ ...formConfig, contactPhoneEmail: e.target.value })
-                  }
-                  className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-2 text-[#111111] font-body-md text-body-md focus:border-[#C2410C] focus:outline-none"
+                  onChange={(e) => setFormConfig({ ...formConfig, contactPhoneEmail: e.target.value })}
                 />
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block font-label-caps text-label-caps text-[#5F5E5E] uppercase mb-1.5">
+                <label className="block font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase mb-1.5">
                   Principal Name
                 </label>
-                <input
+                <Input
                   type="text"
                   value={formConfig.principalName || ""}
                   onChange={(e) => setFormConfig({ ...formConfig, principalName: e.target.value })}
                   placeholder="e.g. Dr. E. Kibet (PhD)"
-                  className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-2 text-[#111111] font-body-md text-body-md focus:border-[#C2410C] focus:outline-none"
                 />
               </div>
               <div>
-                <label className="block font-label-caps text-label-caps text-[#5F5E5E] uppercase mb-1.5">
+                <label className="block font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase mb-1.5">
                   Head of Curriculum / Class Teacher
                 </label>
-                <input
+                <Input
                   type="text"
                   value={formConfig.classTeacher}
                   onChange={(e) => setFormConfig({ ...formConfig, classTeacher: e.target.value })}
-                  className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-2 text-[#111111] font-body-md text-body-md focus:border-[#C2410C] focus:outline-none"
                 />
               </div>
             </div>
@@ -291,518 +289,505 @@ export const SettingsView: React.FC = () => {
         </section>
 
         {/* 2. Current Term & Academic Year Section */}
-        <section className="py-6 border-b border-[#DDD6C7] grid grid-cols-12 gap-6">
+        <section className="py-6 border-b border-[var(--color-hairline-border)] grid grid-cols-12 gap-6">
           <div className="col-span-12 md:col-span-4 pr-4">
-            <h2 className="font-headline-sm text-headline-sm text-[#111111]">
-              Current Term &amp; Academic Year
+            <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
+              Current Term & Academic Year
             </h2>
-            <p className="font-caption text-caption text-[#5F5E5E] mt-1">
+            <p className="font-caption text-caption text-[var(--color-on-surface-muted)] mt-1">
               Active evaluation window used for ledger aggregation, attendance intervals, and
               automated merit standings.
             </p>
           </div>
           <div className="col-span-12 md:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block font-label-caps text-label-caps text-[#5F5E5E] uppercase mb-1.5">
+              <label className="block font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase mb-1.5">
                 Academic Year
               </label>
-              <select
+              <Select
                 value={formConfig.academicYear}
-                onChange={(e) => setFormConfig({ ...formConfig, academicYear: e.target.value })}
-                className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-2 text-[#111111] font-body-md text-body-md focus:border-[#C2410C] focus:outline-none"
+                onValueChange={(value) => setFormConfig({ ...formConfig, academicYear: value })}
               >
                 <option value="2026">2026</option>
                 <option value="2025">2025</option>
                 <option value="2024">2024</option>
-              </select>
+              </Select>
             </div>
             <div>
-              <label className="block font-label-caps text-label-caps text-[#5F5E5E] uppercase mb-1.5">
+              <label className="block font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase mb-1.5">
                 Term
               </label>
-              <select
+              <Select
                 value={formConfig.term}
-                onChange={(e) => setFormConfig({ ...formConfig, term: e.target.value })}
-                className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-2 text-[#111111] font-body-md text-body-md focus:border-[#C2410C] focus:outline-none"
+                onValueChange={(value) => setFormConfig({ ...formConfig, term: value })}
               >
                 <option value="Term 1">Term 1</option>
                 <option value="Term 2">Term 2</option>
                 <option value="Term 3">Term 3</option>
-              </select>
+              </Select>
             </div>
             <div>
-              <label className="block font-label-caps text-label-caps text-[#5F5E5E] uppercase mb-1.5">
+              <label className="block font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase mb-1.5">
                 Term Opening Date
               </label>
-              <input
+              <Input
                 type="date"
                 value={formConfig.termOpeningDate}
                 onChange={(e) => setFormConfig({ ...formConfig, termOpeningDate: e.target.value })}
-                className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-2 text-[#111111] font-tabular-md text-tabular-md focus:border-[#C2410C] focus:outline-none"
               />
             </div>
             <div>
-              <label className="block font-label-caps text-label-caps text-[#5F5E5E] uppercase mb-1.5">
+              <label className="block font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase mb-1.5">
                 Term Closing Date
               </label>
-              <input
+              <Input
                 type="date"
                 value={formConfig.termClosingDate}
                 onChange={(e) => setFormConfig({ ...formConfig, termClosingDate: e.target.value })}
-                className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded px-3 py-2 text-[#111111] font-tabular-md text-tabular-md focus:border-[#C2410C] focus:outline-none"
               />
             </div>
           </div>
         </section>
 
         {/* 3. KCSE Grading Scale Section (12-Point Scale) */}
-        <section className="py-6 border-b border-[#DDD6C7] grid grid-cols-12 gap-6">
+        <section className="py-6 border-b border-[var(--color-hairline-border)] grid grid-cols-12 gap-6">
           <div className="col-span-12 md:col-span-4 pr-4">
-            <h2 className="font-headline-sm text-headline-sm text-[#111111]">
+            <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
               KCSE Grading Scale (12-Point Scale)
             </h2>
-            <p className="font-caption text-caption text-[#5F5E5E] mt-1">
+            <p className="font-caption text-caption text-[var(--color-on-surface-muted)] mt-1">
               Read-only standard ministerial metric. Points feed mean score calculations directly
               across all Form 1 to Form 4 classes.
             </p>
 
             {/* Calculation Method Switcher */}
-            <div className="mt-4 p-3 bg-[#FBF8F1] border border-[#DDD6C7]">
-              <span className="font-label-caps text-label-caps text-[#5F5E5E] block mb-2">
-                Calculation Standard
-              </span>
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-[#111111]">
-                  <input
-                    type="radio"
-                    name="calcMethod"
-                    checked={formConfig.calculationMethod === "best7"}
-                    onChange={() => setFormConfig({ ...formConfig, calculationMethod: "best7" })}
-                    className="accent-[#C2410C]"
-                  />
-                  <span>Best 7 Subjects Rule (KNEC Standard)</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-[#111111]">
-                  <input
-                    type="radio"
-                    name="calcMethod"
-                    checked={formConfig.calculationMethod === "simpleMean"}
-                    onChange={() =>
-                      setFormConfig({ ...formConfig, calculationMethod: "simpleMean" })
-                    }
-                    className="accent-[#C2410C]"
-                  />
-                  <span>Straight Mean across all subjects</span>
-                </label>
-              </div>
-            </div>
+            <Card variant="outlined" className="mt-4">
+              <CardContent className="p-3">
+                <span className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] block mb-2">
+                  Calculation Standard
+                </span>
+                <div className="space-y-2">
+                  <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-[var(--color-on-surface)]">
+                    <input
+                      type="radio"
+                      name="calcMethod"
+                      checked={formConfig.calculationMethod === "best7"}
+                      onChange={() => setFormConfig({ ...formConfig, calculationMethod: "best7" })}
+                      className="accent-[var(--color-primary)]"
+                    />
+                    <span>Best 7 Subjects Rule (KNEC Standard)</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-[var(--color-on-surface)]">
+                    <input
+                      type="radio"
+                      name="calcMethod"
+                      checked={formConfig.calculationMethod === "simpleMean"}
+                      onChange={() => setFormConfig({ ...formConfig, calculationMethod: "simpleMean" })}
+                      className="accent-[var(--color-primary)]"
+                    />
+                    <span>Straight Mean across all subjects</span>
+                  </label>
+                </div>
+              </CardContent>
+            </Card>
 
-            <div className="mt-4 p-3 bg-[#FBF8F1] border border-[#DDD6C7]">
-              <span className="font-label-caps text-label-caps text-[#5F5E5E] block mb-1">
-                Scale Paradigm
-              </span>
-              <p className="font-caption text-caption text-[#5F5E5E]">
-                Monochrome graphic hierarchy: Solid carbon indicates honors; outline indicates
-                competence; grey indicates marginal performance; dashed indicates critical remedial
-                intervention.
-              </p>
-            </div>
+            <Card variant="outlined" className="mt-4">
+              <CardContent className="p-3">
+                <span className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] block mb-1">
+                  Scale Paradigm
+                </span>
+                <p className="font-caption text-caption text-[var(--color-on-surface-muted)]">
+                  Monochrome graphic hierarchy: Solid carbon indicates honors; outline indicates
+                  competence; grey indicates marginal performance; dashed indicates critical remedial
+                  intervention.
+                </p>
+              </CardContent>
+            </Card>
           </div>
 
           <div className="col-span-12 md:col-span-8">
-            <div className="w-full overflow-hidden border border-[#DDD6C7]">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-[#FBF8F1] border-b border-[#DDD6C7] h-9">
-                    <th className="px-4 py-2 font-label-caps text-label-caps text-[#5F5E5E]">
-                      Marks Range
-                    </th>
-                    <th className="px-4 py-2 font-label-caps text-label-caps text-[#5F5E5E]">
-                      Grade
-                    </th>
-                    <th className="px-4 py-2 font-label-caps text-label-caps text-[#5F5E5E] text-right">
-                      Points
-                    </th>
-                    <th className="px-4 py-2 font-label-caps text-label-caps text-[#5F5E5E]">
-                      Description
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#DDD6C7] font-body-sm text-body-sm">
-                  {KCSE_GRADING_TABLE.map((row) => {
-                    const isCPlus = row.grade === "C+";
+            <Card variant="outlined" className="overflow-hidden">
+              <CardContent className="p-0">
+                <DataTable compact>
+                  <TableHeader>
+                    <tr className="h-9 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
+                      <TableHead scope="col" className="px-4 py-2">Marks Range</TableHead>
+                      <TableHead scope="col" className="px-4 py-2">Grade</TableHead>
+                      <TableHead scope="col" className="px-4 py-2 text-right">Points</TableHead>
+                      <TableHead scope="col" className="px-4 py-2">Description</TableHead>
+                    </tr>
+                  </TableHeader>
+                  <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
+                    {KCSE_GRADING_TABLE.map((row) => {
+                      const isCPlus = row.grade === "C+";
 
-                    return (
-                      <React.Fragment key={row.grade}>
-                        <tr className="h-11 bg-[#FBF8F1] hover:bg-[#F2EDE3] transition-colors">
-                          <td className="px-4 py-2 font-tabular-md text-tabular-md">
-                            {row.min} – {row.max}
-                          </td>
-                          <td className="px-4 py-2">
-                            <GradeChip grade={row.grade} />
-                          </td>
-                          <td className="px-4 py-2 font-tabular-md text-tabular-md text-right font-medium">
-                            {row.points}
-                          </td>
-                          <td className="px-4 py-2 text-[#111111]">{row.description}</td>
-                        </tr>
+                      return (
+                        <React.Fragment key={row.grade}>
+                          <TableRow className="h-11 bg-[var(--color-surface-container-low)] hover:bg-[var(--color-surface-container)] transition-colors">
+                            <TableCell className="px-4 py-2 font-tabular-md text-tabular-md">
+                              {row.min} – {row.max}
+                            </TableCell>
+                            <TableCell className="px-4 py-2">
+                              <GradeChip grade={row.grade} />
+                            </TableCell>
+                            <TableCell className="px-4 py-2 font-tabular-md text-tabular-md text-right font-medium">
+                              {row.points}
+                            </TableCell>
+                            <TableCell className="px-4 py-2 text-[var(--color-on-surface)]">{row.description}</TableCell>
+                          </TableRow>
 
-                        {/* Cutoff Pass Line */}
-                        {isCPlus && (
-                          <tr className="bg-[#FEF9EF]">
-                            <td colSpan={4} className="p-0">
-                              <div className="border-y border-[#111111] bg-[#EDE8DE]/40 px-4 py-1.5 flex items-center justify-between">
-                                <span className="font-label-caps text-label-caps text-[#111111] font-semibold uppercase tracking-wider">
-                                  Pass Line — Minimum University Direct Entry Requirement
-                                </span>
-                                <span className="font-tabular-sm text-tabular-sm text-[#5F5E5E]">
-                                  KUCCPS Benchmark: 7.00 Mean PTS
-                                </span>
-                              </div>
-                            </td>
-                          </tr>
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                          {/* Cutoff Pass Line */}
+                          {isCPlus && (
+                            <TableRow className="bg-[var(--color-surface-container-low)]">
+                              <TableCell colSpan={4} className="p-0">
+                                <div className="border-y border-[var(--color-on-surface)] bg-[var(--color-surface-container)]/40 px-4 py-1.5 flex items-center justify-between">
+                                  <span className="font-label-caps text-label-caps text-[var(--color-on-surface)] font-semibold uppercase tracking-wider">
+                                    Pass Line — Minimum University Direct Entry Requirement
+                                  </span>
+                                  <span className="font-tabular-sm text-tabular-sm text-[var(--color-on-surface-muted)]">
+                                    KUCCPS Benchmark: 7.00 Mean PTS
+                                  </span>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
+                  </tbody>
+                </DataTable>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
         {/* 4. Bulk Marks Import (CSV) Section - NEW & REQUESTED */}
-        <section className="py-6 border-b border-[#DDD6C7] grid grid-cols-12 gap-6 bg-[#FBF8F1]/50 p-4 rounded my-2">
+        <section className="py-6 border-b border-[var(--color-hairline-border)] grid grid-cols-12 gap-6 bg-[var(--color-surface-container-low)]/50 p-4 rounded my-2">
           <div className="col-span-12 md:col-span-4 pr-4">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#C2410C]">upload_file</span>
-              <h2 className="font-headline-sm text-headline-sm text-[#111111]">
+              <span className="material-symbols-outlined text-[var(--color-primary)]">upload_file</span>
+              <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
                 Bulk Marks Import (CSV)
               </h2>
             </div>
-            <p className="font-caption text-caption text-[#5F5E5E] mt-1.5">
+            <p className="font-caption text-caption text-[var(--color-on-surface-muted)] mt-1.5">
               Bulk-upload student examination marks directly into the central ledger. Automatically
               matches student admission numbers and KCSE subject codes (
-              <code className="font-tabular-sm text-[#111111]">
+              <code className="font-tabular-sm text-[var(--color-on-surface)]">
                 MAT, ENG, KIS, BIO, CHE, PHY, HIS, GEO, CRE, BST
               </code>
               ).
             </p>
 
             {/* Template Download Button */}
-            <div className="mt-4 pt-3 border-t border-[#DDD6C7]">
-              <span className="font-label-caps text-label-caps text-[#5F5E5E] block mb-1">
+            <div className="mt-4 pt-3 border-t border-[var(--color-hairline-border)]">
+              <span className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] block mb-1">
                 CSV Template
               </span>
-              <p className="font-caption text-caption text-[#5F5E5E] mb-2">
+              <p className="font-caption text-caption text-[var(--color-on-surface-muted)] mb-2">
                 Download a pre-filled spreadsheet containing current student admission numbers and
                 subject columns.
               </p>
-              <button
-                type="button"
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={downloadMarksTemplateCSV}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[#111111] bg-transparent text-[#111111] text-xs font-medium rounded hover:bg-[#F2EDE3] transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5"
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">file_download</span>}
               >
-                <span className="material-symbols-outlined text-[16px]">file_download</span>
-                <span>Download Sample CSV Template</span>
-              </button>
+                Download Sample CSV Template
+              </Button>
             </div>
           </div>
 
           <div className="col-span-12 md:col-span-8 flex flex-col justify-start space-y-4">
             {/* Mode Selector Tabs */}
-            <div className="flex items-center gap-3 border-b border-[#DDD6C7] pb-2 text-xs font-medium">
-              <button
-                type="button"
-                onClick={() => setCsvMode("upload")}
-                className={`flex items-center gap-1.5 pb-1 border-b-2 cursor-pointer ${
-                  csvMode === "upload"
-                    ? "border-[#C2410C] text-[#111111]"
-                    : "border-transparent text-[#5F5E5E] hover:text-[#111111]"
-                }`}
-              >
-                <span className="material-symbols-outlined text-[15px]">cloud_upload</span>
-                <span>Upload CSV File</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setCsvMode("paste")}
-                className={`flex items-center gap-1.5 pb-1 border-b-2 cursor-pointer ${
-                  csvMode === "paste"
-                    ? "border-[#C2410C] text-[#111111]"
-                    : "border-transparent text-[#5F5E5E] hover:text-[#111111]"
-                }`}
-              >
-                <span className="material-symbols-outlined text-[15px]">content_paste</span>
-                <span>Paste CSV / TSV Text</span>
-              </button>
-            </div>
+            <Tabs defaultValue={csvMode} onValueChange={(v) => setCsvMode(v as "upload" | "paste")} variant="underline" className="w-full">
+              <TabsList className="flex gap-1" aria-label="CSV import mode">
+                <TabsTrigger value="upload" className="px-3.5 py-2 min-h-[40px] whitespace-nowrap text-xs">
+                  <span className="material-symbols-outlined text-[15px] mr-1.5">cloud_upload</span>
+                  Upload CSV File
+                </TabsTrigger>
+                <TabsTrigger value="paste" className="px-3.5 py-2 min-h-[40px] whitespace-nowrap text-xs">
+                  <span className="material-symbols-outlined text-[15px] mr-1.5">content_paste</span>
+                  Paste CSV / TSV Text
+                </TabsTrigger>
+              </TabsList>
 
-            {/* Success message banner */}
-            {csvSuccessMessage && (
-              <div className="p-3 bg-emerald-50 border border-emerald-300 rounded text-emerald-900 text-xs flex items-center justify-between animate-fadeIn">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px] text-emerald-700">
-                    check_circle
-                  </span>
-                  <span className="font-medium">{csvSuccessMessage}</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setCsvSuccessMessage(null)}
-                  className="text-emerald-700 hover:text-emerald-950 font-bold ml-2 cursor-pointer"
-                >
-                  ✕
-                </button>
-              </div>
-            )}
+              <TabsContent value="upload" forceMount>
+                {/* Success message banner */}
+                {csvSuccessMessage && (
+                  <Badge variant="success" className="w-full justify-between animate-fadeIn flex items-center gap-2 mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                      <span className="font-medium">{csvSuccessMessage}</span>
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={() => setCsvSuccessMessage(null)} className="p-0 min-h-0 text-xs">
+                      ✕
+                    </Button>
+                  </Badge>
+                )}
 
-            {/* Mode 1: Drag & Drop File Upload */}
-            {csvMode === "upload" && (
-              <div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".csv,text/csv,text/plain"
-                  onChange={handleFileChange}
-                  className="hidden"
-                  id="csv-file-upload-input"
-                />
-                <div
-                  onDragOver={(e) => {
-                    e.preventDefault();
-                    setIsDragging(true);
-                  }}
-                  onDragLeave={() => setIsDragging(false)}
-                  onDrop={handleDrop}
-                  onClick={() => fileInputRef.current?.click()}
-                  className={`border-2 border-dashed rounded p-6 text-center cursor-pointer transition-colors ${
-                    isDragging
-                      ? "border-[#C2410C] bg-[#F2EDE3]"
-                      : "border-[#DDD6C7] bg-[#FEF9EF] hover:bg-[#F2EDE3]/50"
-                  }`}
-                >
-                  <span className="material-symbols-outlined text-[32px] text-[#5F5E5E] mb-2 block">
-                    upload_file
-                  </span>
-                  <div className="font-body-md text-sm font-medium text-[#111111]">
-                    {csvFileName ? (
-                      <span className="text-[#C2410C] font-semibold">{csvFileName}</span>
-                    ) : (
-                      "Click to select a CSV file or drag and drop here"
-                    )}
+                {/* Mode 1: Drag & Drop File Upload */}
+                <div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".csv,text/csv,text/plain"
+                    onChange={handleFileChange}
+                    className="hidden"
+                    id="csv-file-upload-input"
+                  />
+                  <div
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setIsDragging(true);
+                    }}
+                    onDragLeave={() => setIsDragging(false)}
+                    onDrop={handleDrop}
+                    onClick={() => fileInputRef.current?.click()}
+                    className={`border-2 border-dashed rounded p-6 text-center cursor-pointer transition-colors ${
+                      isDragging
+                        ? "border-[var(--color-primary)] bg-[var(--color-primary-container)]/30"
+                        : "border-[var(--color-hairline-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-container-low)]"
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-[32px] text-[var(--color-on-surface-disabled)] mb-2 block">
+                      upload_file
+                    </span>
+                    <div className="font-body-md text-sm font-medium text-[var(--color-on-surface)]">
+                      {csvFileName ? (
+                        <span className="text-[var(--color-primary)] font-semibold">{csvFileName}</span>
+                      ) : (
+                        "Click to select a CSV file or drag and drop here"
+                      )}
+                    </div>
+                    <p className="font-caption text-xs text-[var(--color-on-surface-muted)] mt-1">
+                      Accepts standard comma-separated or tab-separated spreadsheet exports (.csv)
+                    </p>
                   </div>
-                  <p className="font-caption text-xs text-[#5F5E5E] mt-1">
-                    Accepts standard comma-separated or tab-separated spreadsheet exports (.csv)
-                  </p>
                 </div>
-              </div>
-            )}
+              </TabsContent>
 
-            {/* Mode 2: Paste Raw CSV Text */}
-            {csvMode === "paste" && (
-              <div>
-                <label className="block font-label-caps text-label-caps text-[#5F5E5E] uppercase mb-1">
-                  Paste Tabular Marks Data
-                </label>
-                <textarea
-                  rows={5}
-                  value={csvInputText}
-                  onChange={(e) => handlePasteChange(e.target.value)}
-                  placeholder={`AdmNo,StudentName,MAT,ENG,KIS,BIO,CHE,PHY,HIS,GEO,CRE,BST\n3842,Grace Achieng,85,80,88,76,72,74,82,78,90,75\n3819,Daniel Kiprop,90,70,72,82,78,84,68,74,80,86`}
-                  className="w-full bg-[#FEF9EF] border border-[#DDD6C7] rounded p-3 text-xs font-tabular-sm text-[#111111] focus:border-[#C2410C] focus:outline-none"
-                />
-              </div>
-            )}
+              <TabsContent value="paste" forceMount>
+                {/* Success message banner */}
+                {csvSuccessMessage && (
+                  <Badge variant="success" className="w-full justify-between animate-fadeIn flex items-center gap-2 mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                      <span className="font-medium">{csvSuccessMessage}</span>
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={() => setCsvSuccessMessage(null)} className="p-0 min-h-0 text-xs">
+                      ✕
+                    </Button>
+                  </Badge>
+                )}
+
+                {/* Mode 2: Paste Raw CSV Text */}
+                <div>
+                  <label className="block font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase mb-1">
+                    Paste Tabular Marks Data
+                  </label>
+                  <Textarea
+                    rows={5}
+                    value={csvInputText}
+                    onChange={(e) => handlePasteChange(e.target.value)}
+                    placeholder={`AdmNo,StudentName,MAT,ENG,KIS,BIO,CHE,PHY,HIS,GEO,CRE,BST&#10;3842,Grace Achieng,85,80,88,76,72,74,82,78,90,75&#10;3819,Daniel Kiprop,90,70,72,82,78,84,68,74,80,86`}
+                  />
+                </div>
+              </TabsContent>
+            </Tabs>
 
             {/* Inspection & Parse Preview Card */}
             {parsedPreview && (
-              <div className="p-4 bg-[#FEF9EF] border border-[#DDD6C7] rounded space-y-3">
-                <div className="flex items-center justify-between pb-2 border-b border-[#DDD6C7]">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-2.5 h-2.5 rounded-full ${
-                        parsedPreview.success ? "bg-emerald-600" : "bg-red-600"
-                      }`}
-                    ></span>
-                    <span className="font-headline-sm text-xs font-semibold text-[#111111]">
-                      {parsedPreview.success
-                        ? "File Parsed Successfully"
-                        : "Parse Errors Encountered"}
-                    </span>
-                  </div>
-                  <span className="font-tabular-sm text-xs text-[#5F5E5E]">
-                    {parsedPreview.updates.length} students matched ·{" "}
-                    {parsedPreview.mappedSubjects.length} subjects
-                  </span>
-                </div>
-
-                {/* Errors display */}
-                {parsedPreview.errors.length > 0 && (
-                  <div className="p-2.5 bg-red-50 border border-red-200 rounded text-red-900 text-xs">
-                    <div className="font-semibold mb-1">Validation Errors:</div>
-                    <ul className="list-disc list-inside space-y-0.5">
-                      {parsedPreview.errors.map((err, i) => (
-                        <li key={i}>{err}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Warnings display */}
-                {parsedPreview.warnings.length > 0 && (
-                  <div className="p-2.5 bg-amber-50 border border-amber-200 rounded text-amber-900 text-xs">
-                    <div className="font-semibold mb-1">Warnings:</div>
-                    <ul className="list-disc list-inside space-y-0.5">
-                      {parsedPreview.warnings.map((warn, i) => (
-                        <li key={i}>{warn}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Mapped Subjects Badges */}
-                {parsedPreview.mappedSubjects.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-1.5 text-xs">
-                    <span className="text-[#5F5E5E] font-label-caps text-[10px]">
-                      Mapped Subjects:
-                    </span>
-                    {parsedPreview.mappedSubjects.map((sub) => (
+              <Card variant="outlined" className="space-y-3">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between pb-2 border-b border-[var(--color-hairline-border)]">
+                    <div className="flex items-center gap-2">
                       <span
-                        key={sub}
-                        className="px-1.5 py-0.5 bg-[#F2EDE3] border border-[#DDD6C7] text-[#111111] font-tabular-sm text-[11px] rounded-[2px]"
-                      >
-                        {sub}
+                        className={`w-2.5 h-2.5 rounded-full ${
+                          parsedPreview.success ? "bg-[var(--color-success)]" : "bg-[var(--color-error)]"
+                        }`}
+                      ></span>
+                      <span className="font-headline-sm text-xs font-semibold text-[var(--color-on-surface)]">
+                        {parsedPreview.success
+                          ? "File Parsed Successfully"
+                          : "Parse Errors Encountered"}
                       </span>
-                    ))}
-                  </div>
-                )}
-
-                {/* Preview Table of first 5 records */}
-                {parsedPreview.updates.length > 0 && (
-                  <div>
-                    <div className="text-[11px] font-label-caps text-[#5F5E5E] uppercase mb-1">
-                      Data Sample Preview (First {Math.min(5, parsedPreview.updates.length)} Rows)
                     </div>
-                    <div className="overflow-x-auto border border-[#DDD6C7] bg-[#FBF8F1]">
-                      <table className="w-full text-left border-collapse text-xs">
-                        <thead>
-                          <tr className="bg-[#FEF9EF] border-b border-[#DDD6C7] text-[10px] font-label-caps text-[#5F5E5E]">
-                            <th className="px-2 py-1.5">ADM</th>
-                            <th className="px-2 py-1.5">NAME</th>
-                            {parsedPreview.mappedSubjects.slice(0, 6).map((sub) => (
-                              <th key={sub} className="px-2 py-1.5 text-right">
-                                {sub}
-                              </th>
-                            ))}
-                            {parsedPreview.mappedSubjects.length > 6 && (
-                              <th className="px-2 py-1.5 text-right">
-                                +{parsedPreview.mappedSubjects.length - 6} more
-                              </th>
-                            )}
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[#DDD6C7] font-tabular-sm">
-                          {parsedPreview.updates.slice(0, 5).map((u) => (
-                            <tr key={u.studentId} className="h-7 hover:bg-[#F2EDE3]">
-                              <td className="px-2 py-1 font-medium">{u.admNo}</td>
-                              <td className="px-2 py-1 text-[#111111]">{u.studentName}</td>
-                              {parsedPreview.mappedSubjects.slice(0, 6).map((sub) => (
-                                <td key={sub} className="px-2 py-1 text-right text-[#111111]">
-                                  {u.marks[sub] !== undefined ? String(u.marks[sub]) : "—"}
-                                </td>
-                              ))}
-                              {parsedPreview.mappedSubjects.length > 6 && (
-                                <td className="px-2 py-1 text-right text-[#5F5E5E]">...</td>
-                              )}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                )}
-
-                {/* Unmatched students note */}
-                {parsedPreview.unmatchedStudents.length > 0 && (
-                  <div className="text-xs text-[#5F5E5E]">
-                    <span className="text-amber-700 font-medium">
-                      {parsedPreview.unmatchedStudents.length} rows in CSV did not match active
-                      students
-                    </span>{" "}
-                    (e.g. {parsedPreview.unmatchedStudents.slice(0, 3).join(", ")}
-                    {parsedPreview.unmatchedStudents.length > 3 ? "..." : ""}).
-                  </div>
-                )}
-
-                {/* Action Buttons */}
-                <div className="pt-2 flex items-center justify-end gap-3 border-t border-[#DDD6C7]">
-                  <button
-                    type="button"
-                    onClick={handleClearCSV}
-                    className="px-3 py-1.5 text-xs text-[#5F5E5E] hover:text-[#111111] cursor-pointer"
-                  >
-                    Clear &amp; Cancel
-                  </button>
-                  <button
-                    type="button"
-                    disabled={!parsedPreview.success || parsedPreview.updates.length === 0}
-                    onClick={handleConfirmCSVImport}
-                    className="px-4 py-1.5 bg-[#C2410C] text-[#FEF9EF] text-xs font-medium rounded hover:opacity-90 disabled:opacity-50 transition-opacity cursor-pointer flex items-center gap-1.5"
-                  >
-                    <span className="material-symbols-outlined text-[15px]">publish</span>
-                    <span>
-                      Commit Marks to Central Ledger ({parsedPreview.updates.length} Students)
+                    <span className="font-tabular-sm text-xs text-[var(--color-on-surface-muted)]">
+                      {parsedPreview.updates.length} students matched ·{" "}
+                      {parsedPreview.mappedSubjects.length} subjects
                     </span>
-                  </button>
-                </div>
-              </div>
+                  </div>
+
+                  {/* Errors display */}
+                  {parsedPreview.errors.length > 0 && (
+                    <Badge variant="error" className="w-full justify-start p-2.5 text-xs">
+                      <div className="font-semibold mb-1">Validation Errors:</div>
+                      <ul className="list-disc list-inside space-y-0.5">
+                        {parsedPreview.errors.map((err, i) => (
+                          <li key={i}>{err}</li>
+                        ))}
+                      </ul>
+                    </Badge>
+                  )}
+
+                  {/* Warnings display */}
+                  {parsedPreview.warnings.length > 0 && (
+                    <Badge variant="warning" className="w-full justify-start p-2.5 text-xs">
+                      <div className="font-semibold mb-1">Warnings:</div>
+                      <ul className="list-disc list-inside space-y-0.5">
+                        {parsedPreview.warnings.map((warn, i) => (
+                          <li key={i}>{warn}</li>
+                        ))}
+                      </ul>
+                    </Badge>
+                  )}
+
+                  {/* Mapped Subjects Badges */}
+                  {parsedPreview.mappedSubjects.length > 0 && (
+                    <div className="flex flex-wrap items-center gap-1.5 text-xs">
+                      <span className="text-[var(--color-on-surface-muted)] font-label-caps text-[10px]">
+                        Mapped Subjects:
+                      </span>
+                      {parsedPreview.mappedSubjects.map((sub) => (
+                        <Badge key={sub} variant="outline" className="text-[11px]">
+                          {sub}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Preview Table of first 5 records */}
+                  {parsedPreview.updates.length > 0 && (
+                    <div>
+                      <div className="text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase mb-1">
+                        Data Sample Preview (First {Math.min(5, parsedPreview.updates.length)} Rows)
+                      </div>
+                      <Card variant="outlined" className="overflow-hidden">
+                        <CardContent className="p-0">
+                          <DataTable compact>
+                            <TableHeader>
+                              <tr className="bg-[var(--color-surface-container-low)] border-b border-[var(--color-hairline-border)] text-[10px] font-label-caps text-[var(--color-on-surface-muted)]">
+                                <TableHead scope="col" className="px-2 py-1.5">ADM</TableHead>
+                                <TableHead scope="col" className="px-2 py-1.5">NAME</TableHead>
+                                {parsedPreview.mappedSubjects.slice(0, 6).map((sub) => (
+                                  <TableHead key={sub} scope="col" className="px-2 py-1.5 text-right">
+                                    {sub}
+                                  </TableHead>
+                                ))}
+                                {parsedPreview.mappedSubjects.length > 6 && (
+                                  <TableHead scope="col" className="px-2 py-1.5 text-right">
+                                    +{parsedPreview.mappedSubjects.length - 6} more
+                                  </TableHead>
+                                )}
+                              </tr>
+                            </TableHeader>
+                            <tbody className="divide-y divide-[var(--color-hairline-border)] font-tabular-sm">
+                              {parsedPreview.updates.slice(0, 5).map((u) => (
+                                <TableRow key={u.studentId} className="h-7 hover:bg-[var(--color-surface-container)]">
+                                  <TableCell className="px-2 py-1 font-medium">{u.admNo}</TableCell>
+                                  <TableCell className="px-2 py-1 text-[var(--color-on-surface)]">{u.studentName}</TableCell>
+                                  {parsedPreview.mappedSubjects.slice(0, 6).map((sub) => (
+                                    <TableCell key={sub} className="px-2 py-1 text-right text-[var(--color-on-surface)]">
+                                      {u.marks[sub] !== undefined ? String(u.marks[sub]) : "—"}
+                                    </TableCell>
+                                  ))}
+                                  {parsedPreview.mappedSubjects.length > 6 && (
+                                    <TableCell className="px-2 py-1 text-right text-[var(--color-on-surface-muted)]">...</TableCell>
+                                  )}
+                                </TableRow>
+                              ))}
+                            </tbody>
+                          </DataTable>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  )}
+
+                  {/* Unmatched students note */}
+                  {parsedPreview.unmatchedStudents.length > 0 && (
+                    <div className="text-xs text-[var(--color-on-surface-muted)]">
+                      <span className="text-[var(--color-warning)] font-medium">
+                        {parsedPreview.unmatchedStudents.length} rows in CSV did not match active
+                        students
+                      </span>{" "}
+                      (e.g. {parsedPreview.unmatchedStudents.slice(0, 3).join(", ")}
+                      {parsedPreview.unmatchedStudents.length > 3 ? "..." : ""}).
+                    </div>
+                  )}
+
+                  {/* Action Buttons */}
+                  <div className="pt-2 flex items-center justify-end gap-3 border-t border-[var(--color-hairline-border)]">
+                    <Button variant="ghost" size="sm" onClick={handleClearCSV}>
+                      Clear & Cancel
+                    </Button>
+                    <Button
+                      size="sm"
+                      disabled={!parsedPreview.success || parsedPreview.updates.length === 0}
+                      onClick={handleConfirmCSVImport}
+                      iconPosition="left"
+                      icon={<span className="material-symbols-outlined text-[15px]">publish</span>}
+                    >
+                      Commit Marks to Central Ledger ({parsedPreview.updates.length} Students)
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             )}
           </div>
         </section>
 
         {/* 5. Data & Backups Section */}
-        <section className="py-6 border-b border-[#DDD6C7] grid grid-cols-12 gap-6">
+        <section className="py-6 border-b border-[var(--color-hairline-border)] grid grid-cols-12 gap-6">
           <div className="col-span-12 md:col-span-4 pr-4">
-            <h2 className="font-headline-sm text-headline-sm text-[#111111]">Data &amp; Backups</h2>
-            <p className="font-caption text-caption text-[#5F5E5E] mt-1">
+            <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">Data & Backups</h2>
+            <p className="font-caption text-caption text-[var(--color-on-surface-muted)] mt-1">
               Direct cryptographic snapshots of the ledger state. Store cold archive files onto
               local physical storage keys.
             </p>
           </div>
           <div className="col-span-12 md:col-span-8 flex flex-col justify-start">
             <div className="flex flex-wrap items-center gap-3">
-              <button
+              <Button
                 onClick={() => setIsPresetsModalOpen(true)}
-                type="button"
-                className="border border-[#C2410C] bg-[#C2410C] text-[#FEF9EF] px-4 py-2 rounded font-body-sm text-body-sm font-semibold hover:opacity-90 transition-opacity cursor-pointer flex items-center gap-1.5"
+                className="flex items-center gap-1.5"
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">science</span>}
               >
-                <span className="material-symbols-outlined text-[16px]">science</span>
-                <span>Test Presets &amp; Scenarios</span>
-              </button>
-              <button
+                Test Presets & Scenarios
+              </Button>
+              <Button
+                variant="outline"
                 onClick={exportJSONBackup}
-                type="button"
-                className="border border-[#111111] bg-transparent text-[#111111] px-4 py-2 rounded font-body-sm text-body-sm font-medium hover:bg-[#F2EDE3] transition-colors cursor-pointer"
+                className="flex items-center gap-1.5"
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">download</span>}
               >
                 Export backup (JSON)
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="outline"
                 onClick={() => setIsRestoreModalOpen(true)}
-                type="button"
-                className="border border-[#111111] bg-transparent text-[#111111] px-4 py-2 rounded font-body-sm text-body-sm font-medium hover:bg-[#F2EDE3] transition-colors cursor-pointer"
+                className="flex items-center gap-1.5"
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">upload_file</span>}
               >
                 Restore from backup
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="destructive"
                 onClick={() => setIsResetModalOpen(true)}
-                type="button"
-                className="border border-[#BA1A1A] bg-transparent text-[#BA1A1A] px-4 py-2 rounded font-body-sm text-body-sm font-medium hover:bg-[#FFDAD6]/30 transition-colors cursor-pointer"
+                className="flex items-center gap-1.5"
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">delete_forever</span>}
               >
                 Reset demo data
-              </button>
+              </Button>
             </div>
-            <p className="font-caption text-caption text-[#9A958A] mt-3">
+            <p className="font-caption text-caption text-[var(--color-on-surface-disabled)] mt-3">
               All marks and student records are stored locally in IndexedDB / localStorage on this
               browser.
             </p>
@@ -812,40 +797,41 @@ export const SettingsView: React.FC = () => {
         {/* 6. Local Storage & Database Integrity Section */}
         <section className="py-6 grid grid-cols-12 gap-6">
           <div className="col-span-12 md:col-span-4 pr-4">
-            <h2 className="font-headline-sm text-headline-sm text-[#111111]">
-              Local Storage &amp; Database Health
+            <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
+              Local Storage & Database Health
             </h2>
-            <p className="font-caption text-caption text-[#5F5E5E] mt-1">
+            <p className="font-caption text-caption text-[var(--color-on-surface-muted)] mt-1">
               Zero-cloud privacy architecture. All student marks, subjects, and configurations are
               stored in your device's persistent IndexedDB database.
             </p>
           </div>
           <div className="col-span-12 md:col-span-8 flex flex-col items-start gap-3">
             <div className="flex flex-wrap items-center gap-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-[#DDD6C7] bg-[#FBF8F1] rounded">
+              <Badge variant={dbHealth.status === "healthy" ? "success" : "outline"} className="flex items-center gap-2 px-3 py-1.5">
                 <span
                   className={`w-2 h-2 rounded-full inline-block ${
-                    dbHealth.status === "healthy" ? "bg-emerald-600" : "bg-[#C2410C]"
+                    dbHealth.status === "healthy" ? "bg-[var(--color-success)]" : "bg-[var(--color-error)]"
                   }`}
                 ></span>
-                <span className="font-tabular-sm text-tabular-sm text-[#111111] font-medium">
+                <span className="font-tabular-sm text-tabular-sm text-[var(--color-on-surface)] font-medium">
                   {dbHealth.status === "checking"
                     ? "Verifying IndexedDB records & local cache..."
                     : dbHealth.status === "healthy"
                       ? `Healthy: ${dbHealth.totalStudents} candidates · ${dbHealth.totalMarksEntered} scores verified (~${dbHealth.estimatedStorageKB} KB)`
                       : `Offline Storage Active: ${students.length} candidates cached`}
                 </span>
-              </div>
-              <button
+              </Badge>
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={handleVerifyDatabaseIntegrity}
                 disabled={dbHealth.status === "checking"}
-                type="button"
-                className="border border-[#111111] bg-transparent text-[#111111] px-4 py-1.5 rounded font-body-sm text-body-sm font-medium hover:bg-[#F2EDE3] transition-colors disabled:opacity-50 cursor-pointer min-h-[36px]"
+                className="min-h-[36px]"
               >
                 {dbHealth.status === "checking" ? "Checking..." : "Verify Database Health"}
-              </button>
+              </Button>
             </div>
-            <span className="font-caption text-caption text-[#5F5E5E]">
+            <span className="font-caption text-caption text-[var(--color-on-surface-muted)]">
               {dbHealth.lastVerified
                 ? `Last integrity verification: ${dbHealth.lastVerified} · 100% local persistence`
                 : "100% offline-ready · Zero data transmitted to external servers"}
@@ -854,46 +840,50 @@ export const SettingsView: React.FC = () => {
         </section>
 
         {/* 7. Legal & Data Protection Compliance Section */}
-        <section className="py-6 border-t border-[#DDD6C7] grid grid-cols-12 gap-6">
+        <section className="py-6 border-t border-[var(--color-hairline-border)] grid grid-cols-12 gap-6">
           <div className="col-span-12 md:col-span-4 pr-4">
-            <h2 className="font-headline-sm text-headline-sm text-[#111111]">
-              Legal &amp; Statutory Compliance
+            <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
+              Legal & Statutory Compliance
             </h2>
-            <p className="font-caption text-caption text-[#5F5E5E] mt-1">
+            <p className="font-caption text-caption text-[var(--color-on-surface-muted)] mt-1">
               Institutional policies governed by the Kenya Basic Education Act and the Data
               Protection Act (DPA No. 24 of 2019).
             </p>
           </div>
           <div className="col-span-12 md:col-span-8 flex flex-col items-start gap-3">
             <div className="flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setActiveView("legal", "privacy")}
-                className="border border-[#DDD6C7] bg-[#FBF8F1] hover:bg-[#F2EDE3] text-[#111111] px-3.5 py-2 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setActiveView("legal")}
+                className="flex items-center gap-1.5"
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px] text-[var(--color-primary)]">policy</span>}
               >
-                <span className="material-symbols-outlined text-[16px] text-[#C2410C]">policy</span>
-                <span>Privacy Policy (DPA 2019)</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveView("legal", "terms")}
-                className="border border-[#DDD6C7] bg-[#FBF8F1] hover:bg-[#F2EDE3] text-[#111111] px-3.5 py-2 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                Privacy Policy (DPA 2019)
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setActiveView("legal")}
+                className="flex items-center gap-1.5"
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px] text-[var(--color-on-surface-muted)]">gavel</span>}
               >
-                <span className="material-symbols-outlined text-[16px] text-[#5F5E5E]">gavel</span>
-                <span>Terms of Service</span>
-              </button>
-              <button
-                type="button"
+                Terms of Service
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => setLegalModal("compliance")}
-                className="border border-[#DDD6C7] bg-[#FBF8F1] hover:bg-[#F2EDE3] text-[#111111] px-3.5 py-2 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="flex items-center gap-1.5"
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px] text-[var(--color-success)]">verified</span>}
               >
-                <span className="material-symbols-outlined text-[16px] text-emerald-700">
-                  verified
-                </span>
-                <span>Ministry of Education &amp; KNEC</span>
-              </button>
+                Ministry of Education & KNEC
+              </Button>
             </div>
-            <p className="font-caption text-caption text-[#9A958A]">
+            <p className="font-caption text-caption text-[var(--color-on-surface-disabled)]">
               Learner personal data is protected under Section 31 of Kenya DPA. Zero cloud telemetry
               or external third-party scraping.
             </p>
@@ -902,149 +892,113 @@ export const SettingsView: React.FC = () => {
       </div>
 
       {/* Mobile footer - not fixed */}
-      <footer className="sticky bottom-0 z-20 bg-[#FBF8F1] border-t border-[#DDD6C7] py-3 px-4 sm:px-6 md:hidden">
+      <footer className="sticky bottom-0 z-20 bg-[var(--color-surface-container-low)] border-t border-[var(--color-hairline-border)] py-3 px-4 sm:px-6 md:hidden">
         <div className="max-w-[1200px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[16px] text-[#5F5E5E]">info</span>
-            <span className="font-caption text-caption text-[#5F5E5E] text-xs">
+            <span className="material-symbols-outlined text-[16px] text-[var(--color-on-surface-muted)]">info</span>
+            <span className="font-caption text-caption text-[var(--color-on-surface-muted)] text-xs">
               Configuration changes are cached locally until explicitly confirmed.
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <button
-              onClick={handleDiscard}
-              type="button"
-              className="text-[#5C5850] hover:text-[#111111] font-body-md text-xs sm:text-body-md font-medium cursor-pointer bg-transparent border-0 p-0"
-            >
+            <Button variant="ghost" size="sm" onClick={handleDiscard}>
               Discard changes
-            </button>
-            <button
-              onClick={handleSave}
-              type="button"
-              className="bg-[#C2410C] text-[#FEF9EF] px-4 sm:px-5 py-2 rounded font-body-md text-xs sm:text-body-md font-semibold hover:opacity-95 focus:outline-none transition-opacity cursor-pointer shadow-sm"
-            >
+            </Button>
+            <Button size="sm" onClick={handleSave}>
               Save changes
-            </button>
+            </Button>
           </div>
         </div>
       </footer>
 
       {/* Desktop fixed footer */}
-      <footer className="hidden md:fixed bottom-0 right-0 left-[72px] lg:left-[200px] xl:left-[220px] bg-[#FBF8F1] border-t border-[#DDD6C7] py-3 px-4 sm:px-6 z-30 no-print transition-all duration-200">
+      <footer className="hidden md:fixed bottom-0 right-0 left-[72px] lg:left-[200px] xl:left-[220px] bg-[var(--color-surface-container-low)] border-t border-[var(--color-hairline-border)] py-3 px-4 sm:px-6 z-30 no-print transition-all duration-200">
         <div className="max-w-[1200px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[16px] text-[#5F5E5E]">info</span>
-            <span className="font-caption text-caption text-[#5F5E5E] text-xs">
+            <span className="material-symbols-outlined text-[16px] text-[var(--color-on-surface-muted)]">info</span>
+            <span className="font-caption text-caption text-[var(--color-on-surface-muted)] text-xs">
               Configuration changes are cached locally until explicitly confirmed.
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <button
-              onClick={handleDiscard}
-              type="button"
-              className="text-[#5C5850] hover:text-[#111111] font-body-md text-xs sm:text-body-md font-medium cursor-pointer bg-transparent border-0 p-0"
-            >
+            <Button variant="ghost" size="sm" onClick={handleDiscard}>
               Discard changes
-            </button>
-            <button
-              onClick={handleSave}
-              type="button"
-              className="bg-[#C2410C] text-[#FEF9EF] px-4 sm:px-5 py-2 rounded font-body-md text-xs sm:text-body-md font-semibold hover:opacity-95 focus:outline-none transition-opacity cursor-pointer shadow-sm"
-            >
+            </Button>
+            <Button size="sm" onClick={handleSave}>
               Save changes
-            </button>
+            </Button>
           </div>
         </div>
       </footer>
 
       {/* Restore JSON Modal */}
-      {isRestoreModalOpen && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-          <div className="bg-[#FEF9EF] border border-[#DDD6C7] rounded max-w-lg w-full p-6 shadow-md">
-            <div className="flex items-center justify-between pb-3 border-b border-[#DDD6C7] mb-3">
-              <h3 className="font-headline-sm text-headline-sm text-[#111111]">
-                Restore from JSON Backup
-              </h3>
-              <button
-                onClick={() => setIsRestoreModalOpen(false)}
-                className="text-[#5F5E5E] hover:text-[#111111] font-bold text-lg cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-            <p className="font-body-sm text-body-sm text-[#5F5E5E] mb-3">
-              Paste the contents of your previously exported JSON backup file below.
-            </p>
-            <textarea
-              rows={8}
-              value={restoreText}
-              onChange={(e) => setRestoreText(e.target.value)}
-              placeholder="Paste JSON here..."
-              className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded p-3 text-xs font-tabular-sm text-[#111111] focus:border-[#C2410C] focus:outline-none"
-            />
-            {restoreError && (
-              <p className="text-xs text-red-600 mt-2 font-medium">
-                Invalid JSON format or missing required ledger keys.
-              </p>
-            )}
-            <div className="flex justify-end gap-3 mt-4">
-              <button
-                onClick={() => setIsRestoreModalOpen(false)}
-                className="px-3 py-1.5 text-sm text-[#5F5E5E] hover:text-[#111111] cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleProcessRestore}
-                className="px-4 py-1.5 bg-[#C2410C] text-[#FEF9EF] rounded text-sm font-medium hover:opacity-90 cursor-pointer"
-              >
-                Restore Records
-              </button>
-            </div>
+      <Sheet open={isRestoreModalOpen} onOpenChange={setIsRestoreModalOpen} side="right">
+        <div className="max-w-lg w-full p-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[var(--color-hairline-border)] mb-3">
+            <CardTitle className="font-headline-sm text-headline-sm">Restore from JSON Backup</CardTitle>
+            <IconButton variant="ghost" size="sm" onClick={() => setIsRestoreModalOpen(false)} aria-label="Close">
+              <span className="material-symbols-outlined text-[20px]">close</span>
+            </IconButton>
+          </div>
+          <p className="font-body-sm text-body-sm text-[var(--color-on-surface-muted)] mb-3">
+            Paste the contents of your previously exported JSON backup file below.
+          </p>
+          <Textarea
+            rows={8}
+            value={restoreText}
+            onChange={(e) => setRestoreText(e.target.value)}
+            placeholder="Paste JSON here..."
+          />
+          {restoreError && (
+            <Badge variant="error" className="mt-2 w-full justify-center text-xs">
+              Invalid JSON format or missing required ledger keys.
+            </Badge>
+          )}
+          <div className="flex justify-end gap-3 mt-4">
+            <Button variant="ghost" size="sm" onClick={() => setIsRestoreModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="secondary" size="sm" onClick={handleProcessRestore}>
+              Restore Records
+            </Button>
           </div>
         </div>
-      )}
+      </Sheet>
 
       {/* Reset Confirmation Modal */}
-      {isResetModalOpen && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-          <div className="bg-[#FEF9EF] border-2 border-red-700 rounded max-w-md w-full p-6 shadow-xl">
-            <div className="flex items-center gap-2 text-red-700 mb-2">
-              <span className="material-symbols-outlined text-[24px]">warning</span>
-              <h3 className="font-headline-sm text-headline-sm">Reset to Demo Cohort Data</h3>
-            </div>
-            <p className="font-body-sm text-body-sm text-[#111111] mb-3">
-              This will restore the ledger to clean Form 4 East seed records (42 students, KNEC
-              12-point marks, and official school config).
-            </p>
-            <div className="bg-red-50 border border-red-200 text-red-800 p-3 text-xs mb-4">
-              <strong>Notice:</strong> All custom student additions and newly entered marks will be
-              overwritten with initial baseline data.
-            </div>
-            <div className="flex items-center justify-end gap-3">
-              <button
-                type="button"
-                onClick={() => setIsResetModalOpen(false)}
-                className="px-4 py-1.5 text-sm text-[#5F5E5E] hover:text-[#111111] cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={async () => {
-                  await resetToDemoData();
-                  setIsResetModalOpen(false);
-                  setSaveSuccess(true);
-                  setTimeout(() => setSaveSuccess(false), 2500);
-                }}
-                className="px-4 py-1.5 bg-red-700 text-white rounded text-sm font-medium hover:bg-red-800 cursor-pointer"
-              >
-                Confirm Reset
-              </button>
-            </div>
+      <Sheet open={isResetModalOpen} onOpenChange={setIsResetModalOpen} side="right">
+        <div className="max-w-md w-full p-4">
+          <div className="flex items-center gap-2 text-[var(--color-error)] mb-2">
+            <span className="material-symbols-outlined text-[24px]">warning</span>
+            <CardTitle className="font-headline-sm text-headline-sm">Reset to Demo Cohort Data</CardTitle>
+          </div>
+          <p className="font-body-sm text-body-sm text-[var(--color-on-surface)] mb-3">
+            This will restore the ledger to clean Form 4 East seed records (42 students, KNEC
+            12-point marks, and official school config).
+          </p>
+          <Badge variant="error" className="w-full justify-start p-3 text-xs mb-4">
+            <strong>Notice:</strong> All custom student additions and newly entered marks will be
+            overwritten with initial baseline data.
+          </Badge>
+          <div className="flex items-center justify-end gap-3">
+            <Button variant="ghost" size="sm" onClick={() => setIsResetModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={async () => {
+                await resetToDemoData();
+                setIsResetModalOpen(false);
+                setSaveSuccess(true);
+                setTimeout(() => setSaveSuccess(false), 2500);
+              }}
+            >
+              Confirm Reset
+            </Button>
           </div>
         </div>
-      )}
+      </Sheet>
 
       {/* Test Presets & Scenarios Modal */}
       <TestPresetsModal isOpen={isPresetsModalOpen} onClose={() => setIsPresetsModalOpen(false)} />

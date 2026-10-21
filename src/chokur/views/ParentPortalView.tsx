@@ -2,6 +2,11 @@ import React, { useMemo, useState } from "react";
 import { GradeChip } from "../components/GradeChip";
 import { useGrading } from "../context/GradingContext";
 import { attendanceSummary, feeBalance, getContact, ops, useSchoolOps } from "../lib/schoolOps";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
+import { Button, IconButton } from "../components/ui/Button";
+import { Badge } from "../components/ui/Badge";
+import { Input, Select } from "../components/ui/Input";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "../components/ui/DataTable";
 
 export const ParentPortalView: React.FC = () => {
   const {
@@ -73,42 +78,40 @@ export const ParentPortalView: React.FC = () => {
 
   if (!student || !contact || !fee || !att) {
     return (
-      <div className="w-full max-w-md mx-auto px-4 py-10 text-[#111111]">
+      <div className="w-full max-w-md mx-auto px-4 py-10 font-body-md text-[var(--color-on-surface)]">
         <h1 className="font-headline-lg text-headline-lg tracking-tight">Parent Portal</h1>
-        <p className="text-sm text-[#5F5E5E] mt-1 mb-6">
+        <p className="font-body-sm text-body-sm text-[var(--color-on-surface-muted)] mt-1 mb-6">
           See your child&apos;s results, attendance and fee balance.
         </p>
-        <div className="border border-[#DDD6C7] bg-[#FBF8F1] rounded p-4 space-y-3">
-          <input
+        <Card variant="outlined" className="p-4 space-y-3">
+          <Input
+            label="Child's Admission Number"
+            type="text"
             value={adm}
             onChange={(e) => setAdm(e.target.value)}
-            placeholder="Child's admission number"
-            className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm"
+            placeholder="Enter admission number"
           />
-          <input
+          <Input
+            label="Registered Parent Phone"
+            type="text"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            placeholder="Registered parent phone (+254…)"
-            className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm"
+            placeholder="+254..."
           />
-          {error && <p className="text-sm text-[#C2410C]">{error}</p>}
-          <button
-            type="button"
-            onClick={signIn}
-            className="w-full h-11 rounded bg-[#C2410C] text-white font-semibold text-sm"
-          >
+          {error && <Badge variant="error" className="w-full justify-center">{error}</Badge>}
+          <Button onClick={signIn} className="w-full" size="lg">
             View my child
-          </button>
-        </div>
-        <p className="text-[11px] text-[#9A958A] mt-3">
+          </Button>
+        </Card>
+        <p className="font-caption text-caption text-[var(--color-on-surface-muted)] mt-3">
           Demo: parent phone numbers are set under Parent Portal › Edit contact once signed in, or
           use a staff view. Data stays on this device.
         </p>
-        <details className="mt-4 text-sm">
-          <summary className="cursor-pointer text-[#5F5E5E]">
+        <details className="mt-4 font-body-sm text-body-sm">
+          <summary className="cursor-pointer text-[var(--color-on-surface-muted)]">
             Staff: look up a parent&apos;s registered phone
           </summary>
-          <select
+          <Select
             onChange={(e) => {
               const s = students.find((x) => x.id === e.target.value);
               if (s) {
@@ -116,7 +119,8 @@ export const ParentPortalView: React.FC = () => {
                 setPhone(getContact(store, s).phone);
               }
             }}
-            className="mt-2 w-full h-10 px-2 border border-[#DDD6C7] rounded bg-white"
+            className="mt-2 w-full"
+            placeholder="Pick a student to prefill…"
           >
             <option value="">Pick a student to prefill…</option>
             {students.map((s) => (
@@ -124,7 +128,7 @@ export const ParentPortalView: React.FC = () => {
                 {s.name} ({s.admNo})
               </option>
             ))}
-          </select>
+          </Select>
         </details>
       </div>
     );
@@ -135,132 +139,145 @@ export const ParentPortalView: React.FC = () => {
     .filter((r) => r.mark !== undefined && r.mark !== null);
 
   return (
-    <div className="w-full min-w-0 max-w-[900px] mx-auto px-3 sm:px-6 py-4 sm:py-8 text-[#111111]">
-      <section className="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-[#DDD6C7]">
+    <div className="w-full min-w-0 max-w-[900px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
+      <section className="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-[var(--color-hairline-border)]">
         <div>
-          <p className="text-[11px] uppercase tracking-wider text-[#5F5E5E]">
+          <p className="font-caption text-caption text-[var(--color-on-surface-muted)] uppercase tracking-wider">
             {schoolConfig.schoolName}
           </p>
           <h1 className="font-headline-lg text-headline-lg tracking-tight">{student.name}</h1>
-          <p className="text-sm text-[#5F5E5E]">
+          <p className="font-body-sm text-body-sm text-[var(--color-on-surface-muted)]">
             Adm {student.admNo} · {student.stream}
           </p>
         </div>
         <div className="flex gap-2">
-          <button
-            type="button"
+          <Button
+            variant="outline"
+            size="sm"
             onClick={() => {
               setSelectedStudentId(student.id);
               setActiveView("report-cards");
             }}
-            className="h-9 px-3 border border-[#DDD6C7] rounded text-sm hover:bg-[#F2EDE3]"
+            iconPosition="left"
+            icon={<span className="material-symbols-outlined text-[16px]">print</span>}
           >
             Printable report card
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={handleSignOut}
-            className="h-9 px-3 border border-[#DDD6C7] rounded text-sm hover:bg-[#F2EDE3] cursor-pointer"
+            iconPosition="left"
+            icon={<span className="material-symbols-outlined text-[16px]">logout</span>}
           >
             Sign out
-          </button>
+          </Button>
         </div>
       </section>
 
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3 py-4">
-        <div className="border border-[#DDD6C7] bg-[#FBF8F1] rounded p-3">
-          <div className="text-[11px] uppercase tracking-wider text-[#5F5E5E]">Mean grade</div>
-          <div className="mt-1">{standing ? <GradeChip grade={standing.meanGrade} /> : "—"}</div>
-        </div>
-        <div className="border border-[#DDD6C7] bg-[#FBF8F1] rounded p-3">
-          <div className="text-[11px] uppercase tracking-wider text-[#5F5E5E]">Class rank</div>
-          <div className="text-2xl font-bold">{standing ? `#${standing.rank}` : "—"}</div>
-        </div>
-        <div className="border border-[#DDD6C7] bg-[#FBF8F1] rounded p-3">
-          <div className="text-[11px] uppercase tracking-wider text-[#5F5E5E]">Attendance</div>
-          <div className="text-2xl font-bold">{att.rate === null ? "—" : `${att.rate}%`}</div>
-          <div className="text-[11px] text-[#5F5E5E]">{att.absent} absent</div>
-        </div>
-        <div className="border border-[#DDD6C7] bg-[#FBF8F1] rounded p-3">
-          <div className="text-[11px] uppercase tracking-wider text-[#5F5E5E]">Fee balance</div>
-          <div
-            className={`text-2xl font-bold ${fee.balance > 0 ? "text-[#C2410C]" : "text-emerald-700"}`}
-          >
-            KES {fee.balance.toLocaleString()}
-          </div>
-          <div className="text-[11px] text-[#5F5E5E]">Paid {fee.paid.toLocaleString()}</div>
-        </div>
+        <Card variant="elevated">
+          <CardContent className="p-3">
+            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase tracking-wider">Mean grade</div>
+            <div className="mt-1">{standing ? <GradeChip grade={standing.meanGrade} /> : "—"}</div>
+          </CardContent>
+        </Card>
+        <Card variant="elevated">
+          <CardContent className="p-3">
+            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase tracking-wider">Class rank</div>
+            <div className="font-headline-lg text-headline-lg font-bold text-[var(--color-on-surface)]">{standing ? `#${standing.rank}` : "—"}</div>
+          </CardContent>
+        </Card>
+        <Card variant="elevated">
+          <CardContent className="p-3">
+            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase tracking-wider">Attendance</div>
+            <div className="font-headline-lg text-headline-lg font-bold text-[var(--color-on-surface)]">{att.rate === null ? "—" : `${att.rate}%`}</div>
+            <div className="font-body-xs text-body-xs text-[var(--color-on-surface-muted)]">{att.absent} absent</div>
+          </CardContent>
+        </Card>
+        <Card variant="elevated">
+          <CardContent className="p-3">
+            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase tracking-wider">Fee balance</div>
+            <div className={`font-headline-lg text-headline-lg font-bold ${fee.balance > 0 ? "text-[var(--color-error)]" : "text-[var(--color-success)]"}`}>
+              KES {fee.balance.toLocaleString()}
+            </div>
+            <div className="font-body-xs text-body-xs text-[var(--color-on-surface-muted)]">Paid {fee.paid.toLocaleString()}</div>
+          </CardContent>
+        </Card>
       </section>
 
-      <h2 className="font-semibold text-sm mb-2">{activeExam}</h2>
-      <div className="border border-[#DDD6C7] rounded bg-[#FBF8F1] overflow-x-auto">
-        <table className="w-full text-sm min-w-[360px]">
-          <thead>
-            <tr className="text-left text-[11px] uppercase tracking-wider text-[#5F5E5E] border-b border-[#DDD6C7]">
-              <th className="p-3">Subject</th>
-              <th className="p-3 text-right">Mark</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.length === 0 && (
-              <tr>
-                <td className="p-3 text-[#5F5E5E]" colSpan={2}>
-                  No marks entered yet.
-                </td>
+      <h2 className="font-headline-sm text-headline-sm font-semibold mb-2">{activeExam}</h2>
+      <Card variant="outlined" className="overflow-x-auto">
+        <CardContent className="p-0">
+          <DataTable compact>
+            <TableHeader>
+              <tr className="h-9 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] font-label-caps text-label-caps text-[10px] text-[var(--color-on-surface-muted)] uppercase tracking-wider">
+                <TableHead scope="col" className="px-3">Subject</TableHead>
+                <TableHead scope="col" className="px-3 text-right">Mark</TableHead>
               </tr>
-            )}
-            {rows.map(({ sub, mark }) => (
-              <tr key={sub.id} className="border-b border-[#EEE8DA] last:border-0">
-                <td className="p-3">{sub.name}</td>
-                <td className="p-3 text-right font-semibold">{String(mark)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </TableHeader>
+            <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
+              {rows.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={2} className="px-3 py-4 text-center text-[var(--color-on-surface-muted)]">
+                    No marks entered yet.
+                  </TableCell>
+                </TableRow>
+              )}
+              {rows.map(({ sub, mark }) => (
+                <TableRow key={sub.id} className="h-9 hover:bg-[var(--color-surface-container)]">
+                  <TableCell className="px-3 text-[var(--color-on-surface)]">{sub.name}</TableCell>
+                  <TableCell className="px-3 text-right font-semibold font-tabular-sm text-[var(--color-on-surface)]">{String(mark)}</TableCell>
+                </TableRow>
+              ))}
+            </tbody>
+          </DataTable>
+        </CardContent>
+      </Card>
 
-      <div className="mt-5 border border-[#DDD6C7] rounded bg-[#FBF8F1] p-4 text-sm">
+      <Card variant="outlined" className="mt-5 p-4">
         {!editing ? (
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span>
-              {contact.parentName} · {contact.phone}
-            </span>
-            <button
-              type="button"
-              className="underline text-[#5F5E5E]"
+            <span className="text-[var(--color-on-surface)]">{contact.parentName} · {contact.phone}</span>
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => {
                 setForm(contact);
                 setEditing(true);
               }}
+              className="p-0 min-h-0 text-[var(--color-primary)] hover:text-[var(--color-primary)]"
             >
               Edit contact
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="flex flex-wrap gap-2">
-            <input
+            <Input
               value={form.parentName}
               onChange={(e) => setForm({ ...form, parentName: e.target.value })}
-              className="h-10 px-3 border border-[#DDD6C7] rounded bg-white flex-1 min-w-[160px]"
+              placeholder="Parent name"
+              className="flex-1 min-w-[160px]"
             />
-            <input
+            <Input
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              className="h-10 px-3 border border-[#DDD6C7] rounded bg-white flex-1 min-w-[160px]"
+              placeholder="Phone number"
+              className="flex-1 min-w-[160px]"
             />
-            <button
-              type="button"
+            <Button
+              size="sm"
               onClick={() => {
                 ops.setContact(student.id, form);
                 setEditing(false);
               }}
-              className="h-10 px-4 rounded bg-[#C2410C] text-white font-semibold"
+              className="min-h-[40px]"
             >
               Save
-            </button>
+            </Button>
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 };

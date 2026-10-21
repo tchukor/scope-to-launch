@@ -8,13 +8,18 @@ import {
   smsSegments,
   useSchoolOps,
 } from "../lib/schoolOps";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
+import { Button, IconButton } from "../components/ui/Button";
+import { Badge, StatusBadge } from "../components/ui/Badge";
+import { Input } from "../components/ui/Input";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "../components/ui/DataTable";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
-const MARKS: { id: AttendanceMark; label: string; on: string }[] = [
-  { id: "P", label: "Present", on: "bg-emerald-600 text-white border-emerald-600" },
-  { id: "L", label: "Late", on: "bg-amber-500 text-white border-amber-500" },
-  { id: "A", label: "Absent", on: "bg-[#C2410C] text-white border-[#C2410C]" },
+const MARKS: { id: AttendanceMark; label: string; variant: "success" | "warning" | "error" }[] = [
+  { id: "P", label: "Present", variant: "success" },
+  { id: "L", label: "Late", variant: "warning" },
+  { id: "A", label: "Absent", variant: "error" },
 ];
 
 export const AttendanceView: React.FC = () => {
@@ -107,132 +112,152 @@ export const AttendanceView: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 text-[#111111]">
-      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-4 border-b border-[#DDD6C7]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
+      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-4 border-b border-[var(--color-hairline-border)]">
         <div>
-          <h1 className="font-headline-lg text-headline-lg tracking-tight">Attendance</h1>
-          <p className="text-xs sm:text-sm text-[#5F5E5E] mt-1">
+          <h1 className="font-headline-lg text-headline-lg text-[var(--color-on-surface)] tracking-tight">
+            Attendance
+          </h1>
+          <p className="font-body-md text-xs sm:text-body-md text-[var(--color-on-surface-muted)] mt-1">
             {activeStream} · mark the register from your phone
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <input
+          <Input
             type="date"
             value={date}
             max={today()}
             onChange={(e) => setDate(e.target.value || today())}
-            className="h-10 px-3 border border-[#DDD6C7] bg-[#FBF8F1] rounded text-sm"
+            className="w-auto min-w-[160px]"
           />
-          <button
-            type="button"
+          <Button
+            variant="outline"
+            size="sm"
             onClick={() => markAll("P")}
-            className="h-10 px-3 border border-[#DDD6C7] rounded text-sm hover:bg-[#F2EDE3]"
+            className="min-h-[40px]"
           >
-            All present
-          </button>
-          <button
-            type="button"
+            All Present
+          </Button>
+          <Button
+            size="sm"
             onClick={save}
-            className="h-10 px-4 rounded text-sm font-semibold bg-[#C2410C] text-white hover:bg-[#9A3412]"
+            className="min-h-[40px]"
+            iconPosition="left"
+            icon={<span className="material-symbols-outlined text-[16px]">save</span>}
           >
-            Save register
-          </button>
+            Save Register
+          </Button>
         </div>
       </section>
 
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-4">
-        {[
-          ["Present", counts.P, "text-emerald-700"],
-          ["Late", counts.L, "text-amber-600"],
-          ["Absent", counts.A, "text-[#C2410C]"],
-          ["Not marked", counts.unmarked, "text-[#5F5E5E]"],
-        ].map(([label, n, color]) => (
-          <div key={label as string} className="border border-[#DDD6C7] bg-[#FBF8F1] rounded p-3">
-            <div className="text-[11px] uppercase tracking-wider text-[#5F5E5E]">{label}</div>
-            <div className={`text-2xl font-bold ${color}`}>{n as number}</div>
-          </div>
-        ))}
+        <Card variant="elevated">
+          <CardContent className="p-3">
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Present</div>
+            <div className="text-2xl font-bold text-[var(--color-success)]">{counts.P}</div>
+          </CardContent>
+        </Card>
+        <Card variant="elevated">
+          <CardContent className="p-3">
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Late</div>
+            <div className="text-2xl font-bold text-[var(--color-warning)]">{counts.L}</div>
+          </CardContent>
+        </Card>
+        <Card variant="elevated">
+          <CardContent className="p-3">
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Absent</div>
+            <div className="text-2xl font-bold text-[var(--color-error)]">{counts.A}</div>
+          </CardContent>
+        </Card>
+        <Card variant="elevated">
+          <CardContent className="p-3">
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Not Marked</div>
+            <div className="text-2xl font-bold text-[var(--color-on-surface-disabled)]">{counts.unmarked}</div>
+          </CardContent>
+        </Card>
       </section>
 
       <div className="flex flex-wrap items-center gap-3 pb-3 text-sm">
-        <button
-          type="button"
+        <Button
+          variant="outline"
+          size="sm"
           onClick={smsAbsentees}
-          className="h-9 px-3 border border-[#C2410C] text-[#C2410C] rounded hover:bg-[#FBF8F1]"
+          className="min-h-[36px] border-[var(--color-error)] text-[var(--color-error)] hover:bg-[var(--color-error-container)]"
         >
-          SMS parents of absentees
-        </button>
-        <button
-          type="button"
+          SMS Parents of Absentees
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
           onClick={exportCsv}
-          className="h-9 px-3 border border-[#DDD6C7] rounded hover:bg-[#F2EDE3]"
+          className="min-h-[36px]"
         >
-          Export term CSV
-        </button>
-        <button
-          type="button"
+          Export Term CSV
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => setActiveView("messaging")}
-          className="h-9 px-3 underline text-[#5F5E5E]"
+          className="min-h-[36px]"
         >
           Open Bulk SMS
-        </button>
-        {savedAt && <span className="text-emerald-700 font-medium">✓ {savedAt}</span>}
+        </Button>
+        {savedAt && <span className="text-[var(--color-success)] font-medium">✓ {savedAt}</span>}
         {notice && (
-          <span className="flex items-center gap-2 text-xs font-semibold px-2.5 py-1 bg-[#FBF8F1] border border-[#DDD6C7] text-[#111111] rounded">
+          <Badge variant={notice.includes("queued") ? "success" : "outline"} className="flex items-center gap-2">
             <span>{notice}</span>
             {notice.includes("queued") && (
-              <button
-                type="button"
-                onClick={() => setActiveView("messaging")}
-                className="underline font-bold text-[#C2410C] hover:text-[#9A3412] cursor-pointer"
-              >
+              <Button variant="ghost" size="sm" onClick={() => setActiveView("messaging")} className="p-0 min-h-0 text-xs">
                 View in Bulk SMS →
-              </button>
+              </Button>
             )}
-          </span>
+          </Badge>
         )}
       </div>
 
-      <div className="border border-[#DDD6C7] rounded overflow-x-auto bg-[#FBF8F1]">
-        <table className="w-full text-sm min-w-[560px]">
-          <thead>
-            <tr className="text-left text-[11px] uppercase tracking-wider text-[#5F5E5E] border-b border-[#DDD6C7]">
-              <th className="p-3">Adm</th>
-              <th className="p-3">Student</th>
-              <th className="p-3">Term attendance</th>
-              <th className="p-3">Today</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.map((s) => {
-              const a = attendanceSummary(store, s.id);
-              return (
-                <tr key={s.id} className="border-b border-[#EEE8DA] last:border-0">
-                  <td className="p-3 font-mono text-xs">{s.admNo}</td>
-                  <td className="p-3 font-medium">{s.name}</td>
-                  <td className="p-3 text-[#5F5E5E]">
-                    {a.rate === null ? "—" : `${a.rate}% (${a.absent} absent)`}
-                  </td>
-                  <td className="p-3">
-                    <div className="flex gap-1.5">
-                      {MARKS.map((m) => (
-                        <button
-                          key={m.id}
-                          type="button"
-                          onClick={() => setMark(s.id, m.id)}
-                          className={`min-h-[36px] px-3 rounded border text-xs font-medium ${draft[s.id] === m.id ? m.on : "border-[#DDD6C7] text-[#5F5E5E] hover:bg-[#F2EDE3]"}`}
-                        >
-                          {m.label}
-                        </button>
-                      ))}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <Card variant="elevated" className="overflow-hidden">
+        <CardContent className="p-0">
+          <DataTable hoverable compact>
+            <TableHeader>
+              <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
+                <TableHead scope="col" className="w-20 px-4">ADM</TableHead>
+                <TableHead scope="col" className="px-4">STUDENT</TableHead>
+                <TableHead scope="col" className="px-4">TERM ATTENDANCE</TableHead>
+                <TableHead scope="col" className="px-4">TODAY</TableHead>
+              </tr>
+            </TableHeader>
+            <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
+              {students.map((s) => {
+                const a = attendanceSummary(store, s.id);
+                return (
+                  <TableRow key={s.id} className="h-12 hover:bg-[var(--color-surface-container)] transition-colors">
+                    <TableCell className="px-4 font-tabular-sm text-[11px] text-[var(--color-on-surface-muted)]">{s.admNo}</TableCell>
+                    <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">{s.name}</TableCell>
+                    <TableCell className="px-4 text-[var(--color-on-surface-muted)]">
+                      {a.rate === null ? "—" : `${a.rate}% (${a.absent} absent)`}
+                    </TableCell>
+                    <TableCell className="px-4">
+                      <div className="flex gap-1.5">
+                        {MARKS.map((m) => (
+                          <Button
+                            key={m.id}
+                            variant={draft[s.id] === m.id ? "primary" : "ghost"}
+                            size="sm"
+                            onClick={() => setMark(s.id, m.id)}
+                            className="min-h-[36px] px-3 text-xs font-medium"
+                          >
+                            {m.label}
+                          </Button>
+                        ))}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </tbody>
+          </DataTable>
+        </CardContent>
+      </Card>
     </div>
   );
 };

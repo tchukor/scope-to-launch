@@ -1,6 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { useGrading } from "../context/GradingContext";
 import { feeBalance, ops, useSchoolOps } from "../lib/schoolOps";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
+import { Button, IconButton } from "../components/ui/Button";
+import { Badge } from "../components/ui/Badge";
+import { Input, Select } from "../components/ui/Input";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "../components/ui/DataTable";
 
 const kes = (n: number) => `KES ${n.toLocaleString()}`;
 
@@ -46,169 +51,195 @@ export const FeesView: React.FC = () => {
     .slice(0, 8);
 
   return (
-    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 text-[#111111]">
-      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-4 border-b border-[#DDD6C7]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
+      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-4 border-b border-[var(--color-hairline-border)]">
         <div>
-          <h1 className="font-headline-lg text-headline-lg tracking-tight">Fees</h1>
-          <p className="text-xs sm:text-sm text-[#5F5E5E] mt-1">
+          <h1 className="font-headline-lg text-headline-lg text-[var(--color-on-surface)] tracking-tight">
+            Fees
+          </h1>
+          <p className="font-body-md text-xs sm:text-body-md text-[var(--color-on-surface-muted)] mt-1">
             {activeStream} · {schoolConfig.term} {schoolConfig.academicYear}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <label className="text-sm flex items-center gap-2">
-            Fee per term (KES)
-            <input
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-[var(--color-on-surface-muted)]">Fee per term (KES)</label>
+            <Input
               type="number"
               min={0}
               value={store.feePerTerm}
               onChange={(e) => ops.setFeePerTerm(Number(e.target.value))}
-              className="h-10 w-32 px-3 border border-[#DDD6C7] bg-[#FBF8F1] rounded"
+              className="w-32"
             />
-          </label>
+          </div>
           {defaulters > 0 && (
-            <button
-              type="button"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => setActiveView("messaging")}
-              className="h-10 px-3 rounded bg-[#C2410C] text-white text-sm font-medium hover:opacity-90"
+              className="min-h-[40px]"
+              iconPosition="left"
+              icon={<span className="material-symbols-outlined text-[16px]">sms</span>}
             >
               Remind {defaulters} parent{defaulters === 1 ? "" : "s"} by SMS
-            </button>
+            </Button>
           )}
         </div>
       </section>
 
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 py-4">
-        {[
-          ["Expected", kes(expected)],
-          ["Collected", kes(collected)],
-          ["Collection rate", `${pct}%`],
-          ["With balance", `${defaulters} students`],
-        ].map(([l, v]) => (
-          <div key={l} className="border border-[#DDD6C7] bg-[#FBF8F1] rounded p-3">
-            <div className="text-[11px] uppercase tracking-wider text-[#5F5E5E]">{l}</div>
-            <div className="text-xl font-bold mt-0.5">{v}</div>
-          </div>
-        ))}
+        <Card variant="elevated">
+          <CardContent className="p-3">
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Expected</div>
+            <div className="text-xl font-bold text-[var(--color-on-surface)]">{kes(expected)}</div>
+          </CardContent>
+        </Card>
+        <Card variant="elevated">
+          <CardContent className="p-3">
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Collected</div>
+            <div className="text-xl font-bold text-[var(--color-success)]">{kes(collected)}</div>
+          </CardContent>
+        </Card>
+        <Card variant="elevated">
+          <CardContent className="p-3">
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Collection Rate</div>
+            <div className="text-xl font-bold text-[var(--color-on-surface)]">{pct}%</div>
+          </CardContent>
+        </Card>
+        <Card variant="elevated">
+          <CardContent className="p-3">
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">With Balance</div>
+            <div className="text-xl font-bold text-[var(--color-error)]">{defaulters} students</div>
+          </CardContent>
+        </Card>
       </section>
 
       <div className="grid lg:grid-cols-[1fr_340px] gap-6">
         <div>
-          <input
+          <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search name or adm no."
-            className="h-10 w-full sm:w-72 mb-3 px-3 border border-[#DDD6C7] bg-[#FBF8F1] rounded text-sm"
+            className="w-full sm:w-72 mb-3"
+            icon={<span className="material-symbols-outlined text-[18px]">search</span>}
           />
-          <div className="border border-[#DDD6C7] rounded overflow-x-auto bg-[#FBF8F1]">
-            <table className="w-full text-sm min-w-[520px]">
-              <thead>
-                <tr className="text-left text-[11px] uppercase tracking-wider text-[#5F5E5E] border-b border-[#DDD6C7]">
-                  <th className="p-3">Adm</th>
-                  <th className="p-3">Student</th>
-                  <th className="p-3 text-right">Paid</th>
-                  <th className="p-3 text-right">Balance</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map(({ s, paid, balance }) => (
-                  <tr
-                    key={s.id}
-                    className="border-b border-[#EEE8DA] last:border-0 cursor-pointer hover:bg-[#F2EDE3]"
-                    onClick={() => setStudentId(s.id)}
-                  >
-                    <td className="p-3 font-mono text-xs">{s.admNo}</td>
-                    <td className="p-3 font-medium">{s.name}</td>
-                    <td className="p-3 text-right">{paid.toLocaleString()}</td>
-                    <td
-                      className={`p-3 text-right font-semibold ${balance > 0 ? "text-[#C2410C]" : "text-emerald-700"}`}
-                    >
-                      {balance > 0 ? balance.toLocaleString() : "Cleared"}
-                    </td>
+          <Card variant="elevated" className="overflow-hidden">
+            <CardContent className="p-0">
+              <DataTable hoverable compact>
+                <TableHeader>
+                  <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
+                    <TableHead scope="col" className="w-20 px-4">ADM</TableHead>
+                    <TableHead scope="col" className="px-4">STUDENT</TableHead>
+                    <TableHead scope="col" className="w-28 px-3 text-right">PAID</TableHead>
+                    <TableHead scope="col" className="w-28 px-3 text-right">BALANCE</TableHead>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </TableHeader>
+                <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
+                  {rows.map(({ s, paid, balance }) => (
+                    <TableRow
+                      key={s.id}
+                      className="h-11 hover:bg-[var(--color-surface-container)] transition-colors cursor-pointer"
+                      onClick={() => setStudentId(s.id)}
+                    >
+                      <TableCell className="px-4 font-tabular-sm text-[11px] text-[var(--color-on-surface-muted)]">{s.admNo}</TableCell>
+                      <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">{s.name}</TableCell>
+                      <TableCell className="px-3 text-right font-tabular-sm text-[var(--color-on-surface)]">{paid.toLocaleString()}</TableCell>
+                      <TableCell className="px-3 text-right font-tabular-sm font-semibold">
+                        {balance > 0 ? (
+                          <span className="text-[var(--color-error)]">{balance.toLocaleString()}</span>
+                        ) : (
+                          <Badge variant="success" size="sm">Cleared</Badge>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </tbody>
+              </DataTable>
+            </CardContent>
+          </Card>
         </div>
 
         <aside className="space-y-4">
-          <div className="border border-[#DDD6C7] rounded bg-[#FBF8F1] p-4 space-y-3">
-            <h2 className="font-semibold text-sm">Record payment</h2>
-            <select
-              value={studentId}
-              onChange={(e) => setStudentId(e.target.value)}
-              className="w-full h-10 px-2 border border-[#DDD6C7] rounded bg-white text-sm"
-            >
-              <option value="">Select student…</option>
-              {filteredStudents.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name} ({s.admNo})
-                </option>
-              ))}
-            </select>
-            <input
-              type="number"
-              min={0}
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="Amount (KES)"
-              className="w-full h-10 px-3 border border-[#DDD6C7] rounded bg-white text-sm"
-            />
-            <div className="flex gap-2">
-              <select
-                value={method}
-                onChange={(e) => setMethod(e.target.value as typeof method)}
-                className="h-10 px-2 border border-[#DDD6C7] rounded bg-white text-sm"
+          <Card variant="elevated">
+            <CardHeader>
+              <CardTitle className="font-headline-sm text-headline-sm">Record Payment</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Select
+                value={studentId}
+                onValueChange={setStudentId}
+                placeholder="Select student…"
               >
-                {["M-Pesa", "Bank", "Cash", "Cheque"].map((m) => (
-                  <option key={m}>{m}</option>
+                <option value="">Select student…</option>
+                {filteredStudents.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name} ({s.admNo})
+                  </option>
                 ))}
-              </select>
-              <input
-                value={ref}
-                onChange={(e) => setRef(e.target.value)}
-                placeholder="Reference"
-                className="flex-1 min-w-0 h-10 px-3 border border-[#DDD6C7] rounded bg-white text-sm"
+              </Select>
+              <Input
+                type="number"
+                min={0}
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="Amount (KES)"
               />
-            </div>
-            <button
-              type="button"
-              onClick={record}
-              className="w-full h-10 rounded bg-[#C2410C] text-white font-semibold text-sm"
-            >
-              Save payment
-            </button>
-          </div>
-          <div className="border border-[#DDD6C7] rounded bg-[#FBF8F1] p-4">
-            <h2 className="font-semibold text-sm mb-2">Recent payments</h2>
-            {recent.length === 0 && <p className="text-sm text-[#5F5E5E]">None recorded.</p>}
-            <ul className="space-y-2">
-              {recent.map((p) => {
-                const st = filteredStudents.find((s) => s.id === p.studentId);
-                return (
-                  <li
-                    key={p.id}
-                    className="text-xs flex justify-between gap-2 border-b border-[#EEE8DA] pb-1.5"
-                  >
-                    <span>
-                      {st?.name} · {p.method} · {p.date}
-                    </span>
-                    <span className="flex items-center gap-2 font-semibold">
-                      {p.amount.toLocaleString()}
-                      <button
-                        type="button"
-                        aria-label="Delete payment"
-                        onClick={() => ops.removePayment(p.id)}
-                        className="text-[#9A958A] hover:text-[#C2410C]"
-                      >
-                        ✕
-                      </button>
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+              <div className="flex gap-2">
+                <Select
+                  value={method}
+                  onValueChange={(value) => setMethod(value as typeof method)}
+                  className="flex-1"
+                >
+                  <option value="M-Pesa">M-Pesa</option>
+                  <option value="Bank">Bank</option>
+                  <option value="Cash">Cash</option>
+                  <option value="Cheque">Cheque</option>
+                </Select>
+                <Input
+                  value={ref}
+                  onChange={(e) => setRef(e.target.value)}
+                  placeholder="Reference"
+                />
+              </div>
+              <Button size="sm" onClick={record} className="w-full">
+                Save Payment
+              </Button>
+            </CardContent>
+          </Card>
+          <Card variant="elevated">
+            <CardHeader>
+              <CardTitle className="font-headline-sm text-headline-sm">Recent Payments</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              {recent.length === 0 ? (
+                <div className="p-4 text-center text-[var(--color-on-surface-muted)] text-sm">None recorded.</div>
+              ) : (
+                <DataTable compact>
+                  <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
+                    {recent.map((p) => {
+                      const st = filteredStudents.find((s) => s.id === p.studentId);
+                      return (
+                        <TableRow key={p.id} className="h-10 hover:bg-[var(--color-surface-container)]">
+                          <TableCell className="px-4 text-[var(--color-on-surface)]">{st?.name} · {p.method} · {p.date}</TableCell>
+                          <TableCell className="px-4 text-right font-tabular-sm font-semibold flex items-center justify-end gap-2">
+                            <span>{p.amount.toLocaleString()}</span>
+                            <IconButton
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => ops.removePayment(p.id)}
+                              aria-label="Delete payment"
+                            >
+                              <span className="material-symbols-outlined text-[18px] text-[var(--color-on-surface-disabled)] hover:text-[var(--color-error)]">close</span>
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </tbody>
+                </DataTable>
+              )}
+            </CardContent>
+          </Card>
         </aside>
       </div>
     </div>

@@ -1,6 +1,12 @@
 import React, { useMemo, useState } from "react";
 import { useGrading } from "../context/GradingContext";
 import { feeBalance, getContact, ops, smsSegments, useSchoolOps } from "../lib/schoolOps";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
+import { Button, IconButton } from "../components/ui/Button";
+import { Badge } from "../components/ui/Badge";
+import { Input, Textarea, Select } from "../components/ui/Input";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "../components/ui/DataTable";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/Tabs";
 
 const TEMPLATES: { name: string; text: string }[] = [
   {
@@ -87,10 +93,10 @@ export const BulkSmsView: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 text-[#111111]">
-      <section className="pb-4 border-b border-[#DDD6C7]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
+      <section className="pb-4 border-b border-[var(--color-hairline-border)]">
         <h1 className="font-headline-lg text-headline-lg tracking-tight">Bulk SMS</h1>
-        <p className="text-xs sm:text-sm text-[#5F5E5E] mt-1">
+        <p className="font-body-sm text-body-sm text-[var(--color-on-surface-muted)] mt-1">
           Message many parents with one click. Merge fields personalise each text.
         </p>
       </section>
@@ -105,84 +111,109 @@ export const BulkSmsView: React.FC = () => {
                 ["defaulters", "Fee defaulters"],
               ] as [Audience, string][]
             ).map(([id, l]) => (
-              <button
+              <Button
                 key={id}
-                type="button"
+                variant={audience === id ? "primary" : "outline"}
+                size="sm"
                 onClick={() => setAudience(id)}
-                className={`h-9 px-3 rounded border text-sm ${audience === id ? "bg-[#111111] text-white border-[#111111]" : "border-[#DDD6C7] hover:bg-[#F2EDE3]"}`}
+                className="h-9 px-3 text-sm"
               >
                 {l}
-              </button>
+              </Button>
             ))}
           </div>
+
           <div className="flex flex-wrap gap-2">
             {TEMPLATES.map((t) => (
-              <button
+              <Button
                 key={t.name}
-                type="button"
+                variant="ghost"
+                size="sm"
                 onClick={() => setText(t.text)}
-                className="h-8 px-3 rounded-full border border-[#DDD6C7] text-xs hover:bg-[#F2EDE3]"
+                className="h-8 px-3 rounded-full text-xs"
               >
                 {t.name}
-              </button>
+              </Button>
             ))}
           </div>
-          <textarea
+
+          <Textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={6}
-            className="w-full border border-[#DDD6C7] bg-[#FBF8F1] rounded p-3 text-sm"
+            placeholder="Enter your message with merge fields..."
+            hint='Available fields: {parent} {student} {adm} {balance} {grade} {rank} {exam} {school} {closing}'
           />
-          <p className="text-[11px] text-[#5F5E5E] font-mono">
-            {"{parent} {student} {adm} {balance} {grade} {rank} {exam} {school} {closing}"}
-          </p>
-          <div className="border border-dashed border-[#DDD6C7] rounded p-3 text-sm bg-[#FBF8F1]">
-            <div className="text-[11px] uppercase tracking-wider text-[#5F5E5E] mb-1">
+
+          <Card variant="outlined" className="p-3">
+            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-xs uppercase tracking-wider mb-1">
               Preview · {recipients[0]?.name || "no recipients"}
             </div>
-            {preview || "—"}
-            <div className="text-[11px] text-[#5F5E5E] mt-2">
+            <p className="text-sm text-[var(--color-on-surface)] mb-2">{preview || "—"}</p>
+            <p className="font-tabular-sm text-tabular-sm text-[var(--color-on-surface-muted)] text-xs">
               {preview.length} chars · {segs} SMS per recipient
-            </div>
-          </div>
+            </p>
+          </Card>
+
           <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
+            <Button
               onClick={send}
               disabled={!recipients.length}
-              className="h-10 px-5 rounded bg-[#C2410C] text-white font-semibold text-sm disabled:opacity-40"
+              size="sm"
+              iconPosition="left"
+              icon={<span className="material-symbols-outlined text-[15px]">send</span>}
             >
               Send to {recipients.length} parent{recipients.length === 1 ? "" : "s"}
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
               onClick={copyNumbers}
-              className="h-10 px-4 rounded border border-[#DDD6C7] text-sm hover:bg-[#F2EDE3]"
+              className="min-h-[36px]"
             >
               Copy numbers
-            </button>
-            {result && <span className="text-sm text-[#5F5E5E]">{result}</span>}
+            </Button>
+            {result && (
+              <Badge variant={result.includes("queued") ? "success" : "outline"} className="text-sm">
+                {result}
+              </Badge>
+            )}
           </div>
-          <p className="text-[11px] text-[#9A958A]">
+          <p className="font-caption text-caption text-[var(--color-on-surface-muted)]">
             Messages are logged here. No SMS gateway is connected yet, so nothing leaves the device
             until you plug in a provider (e.g. Africa&apos;s Talking).
           </p>
         </div>
 
-        <aside className="border border-[#DDD6C7] rounded bg-[#FBF8F1] p-4 h-fit">
-          <h2 className="font-semibold text-sm mb-2">Sent log</h2>
-          {store.smsLog.length === 0 && <p className="text-sm text-[#5F5E5E]">Nothing sent yet.</p>}
-          <ul className="space-y-3 max-h-[480px] overflow-y-auto">
-            {store.smsLog.map((m) => (
-              <li key={m.id} className="text-xs border-b border-[#EEE8DA] pb-2">
-                <div className="font-medium">
-                  {m.audience} · {m.recipients} recipient{m.recipients === 1 ? "" : "s"}
-                </div>
-                <div className="text-[#5F5E5E]">{new Date(m.sentAt).toLocaleString()}</div>
-                <div className="mt-1 line-clamp-2">{m.text}</div>
-              </li>
-            ))}
-          </ul>
+        <aside className="space-y-4">
+          <Card variant="elevated">
+            <CardHeader>
+              <CardTitle className="font-headline-sm text-headline-sm">Sent Log</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              {store.smsLog.length === 0 ? (
+                <div className="p-4 text-center text-[var(--color-on-surface-muted)] text-sm">Nothing sent yet.</div>
+              ) : (
+                <DataTable compact>
+                  <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
+                    {store.smsLog.map((m) => (
+                      <TableRow key={m.id} className="h-12 hover:bg-[var(--color-surface-container)]">
+                        <TableCell className="px-4 py-2">
+                          <div className="font-medium text-[var(--color-on-surface)]">
+                            {m.audience} · {m.recipients} recipient{m.recipients === 1 ? "" : "s"}
+                          </div>
+                          <div className="font-tabular-sm text-tabular-sm text-[var(--color-on-surface-muted)]">
+                            {new Date(m.sentAt).toLocaleString()}
+                          </div>
+                          <div className="mt-1 line-clamp-2 text-[var(--color-on-surface)]">{m.text}</div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </tbody>
+                </DataTable>
+              )}
+            </CardContent>
+          </Card>
         </aside>
       </div>
     </div>

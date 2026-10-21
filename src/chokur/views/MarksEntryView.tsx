@@ -4,6 +4,12 @@ import { GradeChip } from "../components/GradeChip";
 import { useGrading } from "../context/GradingContext";
 import { MarkValue } from "../types";
 import { exportTableToCSV, getGradeFromScore, sanitizeMarkInput } from "../utils/grading";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
+import { Button, IconButton } from "../components/ui/Button";
+import { Badge } from "../components/ui/Badge";
+import { Input, Textarea, Select } from "../components/ui/Input";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "../components/ui/DataTable";
+import { Sheet, SheetTrigger } from "../components/ui/Sheet";
 
 type EntryMode = "grid" | "student" | "subject";
 
@@ -391,128 +397,124 @@ export const MarksEntryView: React.FC = () => {
   }, [subjects, students, marks]);
 
   return (
-    <div className="p-3 sm:p-4 md:p-6 max-w-[1440px] w-full mx-auto flex-1 flex flex-col font-body-md text-[#111111]">
+    <div className="w-full min-w-0 max-w-[1440px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)] flex flex-col">
       {/* Header Section */}
-      <section className="mb-3 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+      <section className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 mb-6 pb-4 border-b border-[var(--color-hairline-border)]">
         <div>
-          <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">
+          <h1 className="font-headline-lg text-headline-lg text-[var(--color-on-surface)] tracking-tight">
             Marks Entry
           </h1>
-          <p className="font-body-sm text-body-sm text-[#5F5E5E]">
+          <p className="font-body-sm text-body-sm text-[var(--color-on-surface-muted)] mt-1">
             {activeStream} · {activeExam} · spreadsheet ledger with instant KNEC recalculation
           </p>
         </div>
 
         {/* Save and Validation Toast */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {validationWarning && (
-            <div className="bg-amber-100 border border-amber-300 text-amber-900 px-3 py-1 rounded text-xs flex items-center gap-1.5 animate-fadeIn">
-              <span className="material-symbols-outlined text-[15px] text-amber-700">warning</span>
-              <span>{validationWarning}</span>
-            </div>
+            <Badge variant="warning" icon={<span className="material-symbols-outlined text-[14px]">warning</span>} className="animate-fade-in">
+              {validationWarning}
+            </Badge>
           )}
           {saveToast && (
-            <div className="bg-[#111111] text-[#FEF9EF] px-3 py-1 rounded text-xs font-medium flex items-center gap-1.5 animate-fadeIn">
-              <span className="material-symbols-outlined text-[16px] text-emerald-400">
-                check_circle
-              </span>
-              <span>All records synchronized and saved</span>
-            </div>
+            <Badge variant="success" icon={<span className="material-symbols-outlined text-[14px]">check_circle</span>} className="animate-fade-in">
+              All records synchronized and saved
+            </Badge>
           )}
         </div>
       </section>
 
       {/* Control Ribbon with Responsive Mode Switcher */}
-      <div className="py-2.5 mb-3 border-y border-[#DDD6C7] flex flex-wrap items-center justify-between gap-3 bg-[#FBF8F1] px-3 rounded">
-        {/* Mode Segmented Controls */}
-        <div className="flex items-center p-0.5 bg-[#EDE8DE] border border-[#DDD6C7] rounded">
-          <button
-            onClick={() => setEntryMode("student")}
-            type="button"
-            className={`px-3 py-1.5 text-xs font-medium rounded flex items-center gap-1.5 min-h-[36px] cursor-pointer transition-colors ${
-              entryMode === "student"
-                ? "bg-[#FEF9EF] text-[#111111] font-semibold shadow-xs"
-                : "text-[#5F5E5E] hover:text-[#111111]"
-            }`}
-          >
-            <span className="material-symbols-outlined text-[16px]">person</span>
-            <span>Student Mode</span>
-          </button>
-          <button
-            onClick={() => setEntryMode("subject")}
-            type="button"
-            className={`px-3 py-1.5 text-xs font-medium rounded flex items-center gap-1.5 min-h-[36px] cursor-pointer transition-colors ${
-              entryMode === "subject"
-                ? "bg-[#FEF9EF] text-[#111111] font-semibold shadow-xs"
-                : "text-[#5F5E5E] hover:text-[#111111]"
-            }`}
-          >
-            <span className="material-symbols-outlined text-[16px]">menu_book</span>
-            <span>Subject Mode</span>
-          </button>
-          <button
-            onClick={() => setEntryMode("grid")}
-            type="button"
-            className={`px-3 py-1.5 text-xs font-medium rounded flex items-center gap-1.5 min-h-[36px] cursor-pointer transition-colors ${
-              entryMode === "grid"
-                ? "bg-[#FEF9EF] text-[#111111] font-semibold shadow-xs"
-                : "text-[#5F5E5E] hover:text-[#111111]"
-            }`}
-          >
-            <span className="material-symbols-outlined text-[16px]">grid_on</span>
-            <span>Full Grid</span>
-          </button>
-        </div>
+      <Card variant="outlined" className="mb-6">
+        <CardContent className="p-3 sm:p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            {/* Mode Segmented Controls */}
+            <div className="flex items-center p-0.5 bg-[var(--color-surface-container)] border border-[var(--color-hairline-border)] rounded-lg" role="group" aria-label="Entry mode">
+              <Button
+                variant={entryMode === "student" ? "primary" : "ghost"}
+                size="sm"
+                onClick={() => setEntryMode("student")}
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">person</span>}
+                className="min-h-[40px] gap-1.5"
+              >
+                Student Mode
+              </Button>
+              <Button
+                variant={entryMode === "subject" ? "primary" : "ghost"}
+                size="sm"
+                onClick={() => setEntryMode("subject")}
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">menu_book</span>}
+                className="min-h-[40px] gap-1.5"
+              >
+                Subject Mode
+              </Button>
+              <Button
+                variant={entryMode === "grid" ? "primary" : "ghost"}
+                size="sm"
+                onClick={() => setEntryMode("grid")}
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">grid_on</span>}
+                className="min-h-[40px] gap-1.5"
+              >
+                Full Grid
+              </Button>
+            </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2">
-          {entryMode === "grid" && (
-            <button
-              onClick={() => setIsPastingModalOpen(true)}
-              type="button"
-              className="px-2.5 py-1.5 text-body-sm text-xs sm:text-[13px] font-medium text-[#111111] border border-[#111111] rounded bg-transparent hover:bg-[#F2EDE3] transition-colors flex items-center gap-1 cursor-pointer min-h-[40px]"
-            >
-              <span className="material-symbols-outlined text-[16px]">content_paste</span>
-              <span className="hidden sm:inline">Paste from Excel</span>
-            </button>
-          )}
+            {/* Action Buttons */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {entryMode === "grid" && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsPastingModalOpen(true)}
+                  iconPosition="left"
+                  icon={<span className="material-symbols-outlined text-[16px]">content_paste</span>}
+                  className="min-h-[40px]"
+                >
+                  Paste from Excel
+                </Button>
+              )}
 
-          <button
-            onClick={handleExportEnteredMarksCSV}
-            type="button"
-            className="px-2.5 py-1.5 text-body-sm text-xs sm:text-[13px] font-medium text-[#111111] border border-[#DDD6C7] rounded bg-transparent hover:bg-[#F2EDE3] transition-colors flex items-center gap-1 cursor-pointer min-h-[40px]"
-          >
-            <span className="material-symbols-outlined text-[16px]">download</span>
-            <span>Export CSV</span>
-          </button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleExportEnteredMarksCSV}
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">download</span>}
+                className="min-h-[40px]"
+              >
+                Export CSV
+              </Button>
 
-          <button
-            onClick={handleSaveAll}
-            type="button"
-            className="px-3.5 py-1.5 text-body-sm text-xs sm:text-[13px] font-medium text-[#FEF9EF] bg-[#C2410C] rounded hover:opacity-90 transition-opacity flex items-center gap-1 cursor-pointer min-h-[40px]"
-          >
-            <span className="material-symbols-outlined text-[16px]">save</span>
-            <span>Save All</span>
-          </button>
-        </div>
-      </div>
+              <Button
+                size="sm"
+                onClick={handleSaveAll}
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">save</span>}
+                className="min-h-[40px]"
+              >
+                Save All
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* =========================================================================
           MODE 1: STUDENT-BY-STUDENT TOUCH MODE (Optimized for Phones & Tablets)
           ========================================================================= */}
       {entryMode === "student" && currentStudent && (
-        <div className="flex-1 flex flex-col max-w-2xl mx-auto w-full">
-          {/* Candidate Card & Stepper Header */}
-          <div className="bg-[#FBF8F1] border border-[#DDD6C7] p-4 rounded mb-4 shadow-xs">
-            <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#DDD6C7]">
+        <Card variant="elevated" className="max-w-2xl mx-auto w-full mb-6">
+          <CardHeader className="pb-3 border-b border-[var(--color-hairline-border)]">
+            <div className="flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-label-caps text-[#5F5E5E] uppercase tracking-wider block">
+                <span className="text-[10px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider block">
                   Candidate {activeStudentIdx + 1} of {students.length}
                 </span>
-                <h2 className="font-headline-md text-headline-md text-[#111111] font-semibold">
-                  {currentStudent.name}
-                </h2>
-                <div className="text-xs text-[#5F5E5E] font-tabular-sm mt-0.5">
+                <CardTitle className="font-headline-md text-headline-md mt-1">{currentStudent.name}</CardTitle>
+                <div className="text-xs text-[var(--color-on-surface-muted)] font-tabular-sm mt-1">
                   ADM: <strong>{currentStudent.admNo}</strong> · KCPE: {currentStudent.kcpeMarks} ·{" "}
                   {currentStudent.gender}
                 </div>
@@ -522,517 +524,461 @@ export const MarksEntryView: React.FC = () => {
               {currentStudentCalc && (
                 <div className="text-right">
                   <div className="flex items-center justify-end gap-1.5">
-                    <span className="text-xs text-[#5F5E5E]">Rank: #{currentStudentCalc.rank}</span>
+                    <span className="text-xs text-[var(--color-on-surface-muted)]">Rank: #{currentStudentCalc.rank}</span>
                     <GradeChip grade={currentStudentCalc.meanGrade} size="md" />
                   </div>
-                  <div className="text-[11px] text-[#5F5E5E] font-tabular-sm mt-1">
+                  <div className="text-[11px] text-[var(--color-on-surface-muted)] font-tabular-sm mt-1">
                     Mean: {currentStudentCalc.meanPoints.toFixed(1)} pts · Best 7:{" "}
                     {currentStudentCalc.aggregate}/84
                   </div>
                 </div>
               )}
             </div>
+          </CardHeader>
 
-            {/* Stepper Navigation Buttons (min-h 48px touch targets) */}
+          {/* Stepper Navigation Buttons */}
+          <CardContent className="pt-3 pb-3 border-b border-[var(--color-hairline-border)]">
             <div className="flex items-center justify-between gap-2 sm:gap-3">
-              <button
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={handlePrevStudent}
                 disabled={activeStudentIdx === 0}
-                type="button"
-                className="flex-1 min-w-0 shrink-0 py-2.5 px-3 min-h-[48px] bg-[#FEF9EF] border border-[#DDD6C7] hover:bg-[#F2EDE3] disabled:opacity-30 rounded font-medium text-xs sm:text-sm flex items-center justify-center gap-1 cursor-pointer"
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[18px]">arrow_back</span>}
+                className="flex-1 min-w-0 min-h-[48px]"
               >
-                <span className="material-symbols-outlined text-[18px]">arrow_back</span>
-                <span>
-                  Prev<span className="hidden sm:inline">ious Student</span>
-                </span>
-              </button>
+                <span>Prev<span className="hidden sm:inline">vious Student</span></span>
+              </Button>
 
               {/* Quick Jump Selector */}
-              <select
-                value={activeStudentIdx}
-                onChange={(e) => setActiveStudentIdx(Number(e.target.value))}
-                className="min-w-0 max-w-[45%] py-2.5 px-2 min-h-[48px] bg-[#FEF9EF] border border-[#DDD6C7] rounded text-xs font-medium cursor-pointer"
+              <Select
+                value={String(activeStudentIdx)}
+                onValueChange={(e) => setActiveStudentIdx(Number(e.target.value))}
+                className="min-w-0 max-w-[45%]"
               >
                 {students.map((s, idx) => (
                   <option key={s.id} value={idx}>
                     #{idx + 1} {s.admNo} - {s.name}
                   </option>
                 ))}
-              </select>
+              </Select>
 
-              <button
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={handleNextStudent}
                 disabled={activeStudentIdx === students.length - 1}
-                type="button"
-                className="flex-1 min-w-0 shrink-0 py-2.5 px-3 min-h-[48px] bg-[#FEF9EF] border border-[#DDD6C7] hover:bg-[#F2EDE3] disabled:opacity-30 rounded font-medium text-xs sm:text-sm flex items-center justify-center gap-1 cursor-pointer"
+                iconPosition="right"
+                icon={<span className="material-symbols-outlined text-[18px]">arrow_forward</span>}
+                className="flex-1 min-w-0 min-h-[48px]"
               >
-                <span>
-                  Next<span className="hidden sm:inline"> Student</span>
-                </span>
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </button>
+                <span>Next<span className="hidden sm:inline"> Student</span></span>
+              </Button>
             </div>
-          </div>
+          </CardContent>
 
           {/* Subjects Mark Entry Form */}
-          <div className="bg-[#FBF8F1] border border-[#DDD6C7] rounded overflow-hidden divide-y divide-[#DDD6C7]/70 shadow-xs mb-6">
-            <div className="px-4 py-2.5 bg-[#FEF9EF] border-b border-[#DDD6C7] flex items-center justify-between">
-              <span className="font-label-caps text-label-caps text-[#5F5E5E] text-[11px] uppercase">
+          <CardContent className="p-0">
+            <div className="px-4 py-2.5 bg-[var(--color-surface-container-low)] border-b border-[var(--color-hairline-border)] flex items-center justify-between">
+              <span className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase">
                 Curriculum Subjects ({subjects.length})
               </span>
-              <span className="text-[11px] text-[#5F5E5E]">Enter 0–100 or ABS</span>
+              <span className="text-[11px] text-[var(--color-on-surface-muted)]">Enter 0–100 or ABS</span>
             </div>
 
-            {subjects.map((subj) => {
-              const currentVal = marks[currentStudent.id]?.[subj.code];
-              const scoreNum = typeof currentVal === "number" ? currentVal : null;
-              const grade = scoreNum !== null ? getGradeFromScore(scoreNum).grade : null;
+            <div className="divide-y divide-[var(--color-hairline-border)]/70">
+              {subjects.map((subj) => {
+                const currentVal = marks[currentStudent.id]?.[subj.code];
+                const scoreNum = typeof currentVal === "number" ? currentVal : null;
+                const grade = scoreNum !== null ? getGradeFromScore(scoreNum).grade : null;
 
-              return (
-                <div
-                  key={subj.code}
-                  className="p-3 sm:px-4 flex items-center justify-between gap-3 hover:bg-[#F8F3E9] transition-colors"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-xs sm:text-sm text-[#111111]">
-                        {subj.code}
+                return (
+                  <div
+                    key={subj.code}
+                    className="p-3 sm:px-4 flex items-center justify-between gap-3 hover:bg-[var(--color-surface-container-lowest)] transition-colors"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-xs sm:text-sm text-[var(--color-on-surface)]">
+                          {subj.code}
+                        </span>
+                        <span className="text-xs text-[var(--color-on-surface-muted)] truncate">{subj.name}</span>
+                      </div>
+                      <span className="text-[10px] text-[var(--color-on-surface-disabled)] uppercase font-label-caps">
+                        {subj.department}
                       </span>
-                      <span className="text-xs text-[#5F5E5E] truncate">{subj.name}</span>
                     </div>
-                    <span className="text-[10px] text-[#9A958A] uppercase font-label-caps">
-                      {subj.department}
-                    </span>
-                  </div>
 
-                  <div className="flex items-center gap-3 shrink-0">
-                    {/* Big Touch Numeric Input with inputmode="numeric" & text-base to prevent auto-zoom */}
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      enterKeyHint="next"
-                      value={
-                        currentVal === null || currentVal === undefined ? "" : String(currentVal)
-                      }
-                      onChange={(e) =>
-                        handleSingleMarkChange(currentStudent.id, subj.code, e.target.value)
-                      }
-                      placeholder="—"
-                      className="w-20 sm:w-24 h-12 text-center text-base sm:text-base font-tabular-md font-semibold bg-white border border-[#DDD6C7] focus:border-[#C2410C] focus:ring-1 focus:ring-[#C2410C] rounded focus:outline-none"
-                    />
+                    <div className="flex items-center gap-3 shrink-0">
+                      <Input
+                        type="text"
+                        inputMode="numeric"
+                        enterKeyHint="next"
+                        value={currentVal === null || currentVal === undefined ? "" : String(currentVal)}
+                        onChange={(e) => handleSingleMarkChange(currentStudent.id, subj.code, e.target.value)}
+                        placeholder="—"
+                        className="w-20 sm:w-24 h-12 text-center text-base font-tabular-md font-semibold"
+                      />
 
-                    {/* Live KCSE Grade Chip */}
-                    <div className="w-10 flex justify-center">
-                      {grade ? (
-                        <GradeChip grade={grade} size="sm" />
-                      ) : (
-                        <span className="text-[#9A958A] text-xs">—</span>
-                      )}
+                      <div className="w-10 flex justify-center">
+                        {grade ? (
+                          <GradeChip grade={grade} size="sm" />
+                        ) : (
+                          <span className="text-[var(--color-on-surface-disabled)] text-xs">—</span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* =========================================================================
           MODE 2: SUBJECT-BY-SUBJECT MODE (Rapid batch marking for a teacher)
           ========================================================================= */}
       {entryMode === "subject" && (
-        <div className="flex-1 flex flex-col max-w-3xl mx-auto w-full">
-          {/* Subject Horizontal Selector */}
-          <div className="flex items-center gap-1.5 overflow-x-auto hide-scrollbar pb-2 mb-3">
-            {subjects.map((subj) => (
-              <button
-                key={subj.code}
-                onClick={() => setActiveSubjectCode(subj.code)}
-                type="button"
-                className={`px-3 py-2 min-h-[44px] rounded text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors border ${
-                  activeSubjectCode === subj.code
-                    ? "bg-[#111111] text-[#FEF9EF] border-[#111111]"
-                    : "bg-[#FBF8F1] text-[#5F5E5E] border-[#DDD6C7] hover:border-[#111111]"
-                }`}
-              >
-                <span>{subj.code}</span>
-                <span className="text-[10px] font-normal opacity-80 block truncate max-w-[120px]">
-                  {subj.name}
-                </span>
-              </button>
-            ))}
-          </div>
-
-          {/* Student Roster for active subject */}
-          <div className="bg-[#FBF8F1] border border-[#DDD6C7] rounded overflow-hidden shadow-xs divide-y divide-[#DDD6C7]/70 mb-6">
-            <div className="px-4 py-2.5 bg-[#FEF9EF] border-b border-[#DDD6C7] flex items-center justify-between">
-              <span className="font-label-caps text-label-caps text-[#5F5E5E] text-[11px] uppercase">
-                Marking {activeSubjectCode} for {activeStream} ({students.length} Candidates)
-              </span>
-              <span className="text-[11px] text-[#5F5E5E]">
-                Tab / Enter steps to next candidate
-              </span>
+        <Card variant="elevated" className="max-w-3xl mx-auto w-full mb-6">
+          <CardContent className="p-0">
+            {/* Subject Horizontal Selector */}
+            <div className="px-4 py-3 bg-[var(--color-surface-container-low)] border-b border-[var(--color-hairline-border)] overflow-x-auto hide-scrollbar" role="group" aria-label="Select subject">
+              {subjects.map((subj) => (
+                <Button
+                  key={subj.code}
+                  variant={activeSubjectCode === subj.code ? "primary" : "ghost"}
+                  size="sm"
+                  onClick={() => setActiveSubjectCode(subj.code)}
+                  className="min-h-[44px] min-w-0 whitespace-nowrap px-3 py-2 gap-1.5"
+                >
+                  <span>{subj.code}</span>
+                  <span className="text-[10px] font-normal opacity-80 block truncate max-w-[120px] hidden sm:inline">
+                    {subj.name}
+                  </span>
+                </Button>
+              ))}
             </div>
 
-            {students.map((student, idx) => {
-              const currentVal = marks[student.id]?.[activeSubjectCode];
-              const scoreNum = typeof currentVal === "number" ? currentVal : null;
-              const grade = scoreNum !== null ? getGradeFromScore(scoreNum).grade : null;
+            {/* Student Roster for active subject */}
+            <div className="divide-y divide-[var(--color-hairline-border)]/70">
+              {students.map((student, idx) => {
+                const currentVal = marks[student.id]?.[activeSubjectCode];
+                const scoreNum = typeof currentVal === "number" ? currentVal : null;
+                const grade = scoreNum !== null ? getGradeFromScore(scoreNum).grade : null;
 
-              return (
-                <div
-                  key={student.id}
-                  className="p-3 sm:px-4 flex items-center justify-between gap-3 hover:bg-[#F8F3E9] transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="w-7 text-xs font-tabular-sm text-[#9A958A]">{idx + 1}.</span>
-                    <div>
-                      <div className="font-medium text-xs sm:text-sm text-[#111111]">
-                        {student.name}
+                return (
+                  <div
+                    key={student.id}
+                    className="p-3 sm:px-4 flex items-center justify-between gap-3 hover:bg-[var(--color-surface-container-lowest)] transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="w-7 text-xs font-tabular-sm text-[var(--color-on-surface-disabled)]">{idx + 1}.</span>
+                      <div>
+                        <div className="font-medium text-xs sm:text-sm text-[var(--color-on-surface)]">
+                          {student.name}
+                        </div>
+                        <div className="text-[10px] text-[var(--color-on-surface-muted)] font-tabular-sm">
+                          ADM {student.admNo} · KCPE {student.kcpeMarks}
+                        </div>
                       </div>
-                      <div className="text-[10px] text-[#5F5E5E] font-tabular-sm">
-                        ADM {student.admNo} · KCPE {student.kcpeMarks}
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <Input
+                        type="text"
+                        inputMode="numeric"
+                        enterKeyHint="next"
+                        value={currentVal === null || currentVal === undefined ? "" : String(currentVal)}
+                        onChange={(e) => handleSingleMarkChange(student.id, activeSubjectCode, e.target.value)}
+                        placeholder="—"
+                        className="w-20 sm:w-24 h-11 text-center text-base font-tabular-md font-semibold"
+                      />
+                      <div className="w-10 flex justify-center">
+                        {grade ? (
+                          <GradeChip grade={grade} size="sm" />
+                        ) : (
+                          <span className="text-[var(--color-on-surface-disabled)] text-xs">—</span>
+                        )}
                       </div>
                     </div>
                   </div>
-
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      enterKeyHint="next"
-                      value={
-                        currentVal === null || currentVal === undefined ? "" : String(currentVal)
-                      }
-                      onChange={(e) =>
-                        handleSingleMarkChange(student.id, activeSubjectCode, e.target.value)
-                      }
-                      placeholder="—"
-                      className="w-20 sm:w-24 h-11 text-center text-base font-tabular-md font-semibold bg-white border border-[#DDD6C7] focus:border-[#C2410C] focus:ring-1 focus:ring-[#C2410C] rounded focus:outline-none"
-                    />
-                    <div className="w-10 flex justify-center">
-                      {grade ? (
-                        <GradeChip grade={grade} size="sm" />
-                      ) : (
-                        <span className="text-[#9A958A] text-xs">—</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* =========================================================================
           MODE 3: FULL SPREADSHEET MATRIX (Grid Mode with Arrow Navigation & Paste)
           ========================================================================= */}
       {entryMode === "grid" && (
-        <div className="flex-1 border border-[#DDD6C7] bg-[#FBF8F1] overflow-hidden flex flex-col shadow-xs">
-          <div className="overflow-x-auto hide-scrollbar flex-1 relative max-h-[640px]">
-            <table className="w-full border-collapse text-left border-spacing-0">
-              {/* Table Header */}
-              <thead>
-                <tr className="h-10 bg-[#FEF9EF] border-b border-[#DDD6C7] sticky top-0 z-30">
-                  <th
-                    className="sticky left-0 z-30 bg-[#FEF9EF] border-r border-[#DDD6C7] px-3 py-2 w-64 min-w-[240px]"
-                    scope="col"
-                  >
-                    <div className="flex items-center justify-between font-label-caps text-label-caps text-[#5F5E5E] uppercase tracking-wider text-[11px]">
+        <Card variant="elevated" className="flex-1 overflow-hidden">
+          <CardContent className="p-0 overflow-hidden">
+            <div className="overflow-x-auto hide-scrollbar flex-1 relative max-h-[640px]">
+              <DataTable compact hoverable>
+                <TableHeader>
+                  <TableHead scope="col" className="sticky left-0 z-30 bg-[var(--color-surface-container-low)] border-r border-[var(--color-hairline-border)] w-64 min-w-[240px]">
+                    <div className="flex items-center justify-between font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider text-[11px]">
                       <span>ADM / STUDENT NAME ({students.length})</span>
                       <span className="material-symbols-outlined text-[14px]">unfold_more</span>
                     </div>
-                  </th>
+                  </TableHead>
 
                   {/* Subject Headers */}
                   {subjects.map((subj) => (
-                    <th
+                    <TableHead
                       key={subj.code}
-                      className="border-r border-[#DDD6C7] px-2 py-2 text-center w-20 min-w-[76px] font-label-caps text-label-caps text-[#5F5E5E]"
                       scope="col"
+                      className="border-r border-[var(--color-hairline-border)] text-center w-20 min-w-[76px] font-label-caps text-label-caps text-[var(--color-on-surface-muted)]"
                       title={subj.name}
                     >
                       {subj.code}
-                    </th>
+                    </TableHead>
                   ))}
 
                   {/* Summary Headers */}
-                  <th className="border-r border-[#DDD6C7] px-2 py-2 text-center w-16 font-label-caps text-label-caps text-[#5F5E5E]">
+                  <TableHead scope="col" className="border-r border-[var(--color-hairline-border)] text-center w-16 font-label-caps text-label-caps text-[var(--color-on-surface-muted)]">
                     AVG
-                  </th>
-                  <th className="border-r border-[#DDD6C7] px-2 py-2 text-center w-16 font-label-caps text-label-caps text-[#5F5E5E]">
+                  </TableHead>
+                  <TableHead scope="col" className="border-r border-[var(--color-hairline-border)] text-center w-16 font-label-caps text-label-caps text-[var(--color-on-surface-muted)]">
                     AGG
-                  </th>
-                  <th className="px-2 py-2 text-center w-16 font-label-caps text-label-caps text-[#5F5E5E]">
+                  </TableHead>
+                  <TableHead scope="col" className="text-center w-16 font-label-caps text-label-caps text-[var(--color-on-surface-muted)]">
                     GRADE
-                  </th>
-                </tr>
-              </thead>
+                  </TableHead>
+                </TableHeader>
 
-              {/* Table Body */}
-              <tbody className="divide-y divide-[#DDD6C7]">
-                {students.map((student, rowIdx) => {
-                  const studentMarks = marks[student.id] || {};
-                  const calc = rankingMap.get(student.id);
+                <tbody className="divide-y divide-[var(--color-hairline-border)]">
+                  {students.map((student, rowIdx) => {
+                    const studentMarks = marks[student.id] || {};
+                    const calc = rankingMap.get(student.id);
 
-                  return (
-                    <tr
-                      key={student.id}
-                      className="h-10 hover:bg-[#F8F3E9] transition-colors group"
-                    >
-                      {/* Sticky Student Identifier Column */}
-                      <td className="sticky left-0 z-20 bg-[#FBF8F1] group-hover:bg-[#F8F3E9] border-r border-[#DDD6C7] px-3 py-1.5 transition-colors">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2 truncate">
-                            <span className="font-tabular-sm text-xs font-semibold text-[#111111] shrink-0">
-                              {student.admNo}
-                            </span>
-                            <span
-                              className="text-body-sm text-xs truncate text-[#111111]"
-                              title={student.name}
-                            >
-                              {student.name}
+                    return (
+                      <TableRow key={student.id} className="h-10 hover:bg-[var(--color-surface-container-lowest)] group">
+                        {/* Sticky Student Identifier Column */}
+                        <TableCell className="sticky left-0 z-20 bg-[var(--color-surface-container-low)] group-hover:bg-[var(--color-surface-container-lowest)] border-r border-[var(--color-hairline-border)] px-3 py-1.5">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2 truncate">
+                              <span className="font-tabular-sm text-xs font-semibold text-[var(--color-on-surface)] shrink-0">
+                                {student.admNo}
+                              </span>
+                              <span className="text-body-sm text-xs truncate text-[var(--color-on-surface)]" title={student.name}>
+                                {student.name}
+                              </span>
+                            </div>
+                            <span className="font-tabular-sm text-[10px] text-[var(--color-on-surface-muted)] ml-1 shrink-0">
+                              {student.kcpeMarks}
                             </span>
                           </div>
-                          <span className="font-tabular-sm text-[10px] text-[#5F5E5E] ml-1 shrink-0">
-                            {student.kcpeMarks}
-                          </span>
-                        </div>
-                      </td>
+                        </TableCell>
 
-                      {/* Marks Cells */}
-                      {subjects.map((subj) => {
-                        const isFocused =
-                          focusedCell?.studentId === student.id &&
-                          focusedCell?.subjectCode === subj.code;
-                        const cellVal = studentMarks[subj.code];
-                        const isAbsent = cellVal === "ABS";
-                        const scoreNum = typeof cellVal === "number" ? cellVal : null;
-                        const grade = scoreNum !== null ? getGradeFromScore(scoreNum).grade : null;
+                        {/* Marks Cells */}
+                        {subjects.map((subj) => {
+                          const isFocused =
+                            focusedCell?.studentId === student.id &&
+                            focusedCell?.subjectCode === subj.code;
+                          const cellVal = studentMarks[subj.code];
+                          const isAbsent = cellVal === "ABS";
+                          const scoreNum = typeof cellVal === "number" ? cellVal : null;
+                          const grade = scoreNum !== null ? getGradeFromScore(scoreNum).grade : null;
 
-                        return (
-                          <td
-                            key={subj.code}
-                            onClick={() => {
-                              commitCellEdit();
-                              setFocusedCell({ studentId: student.id, subjectCode: subj.code });
-                            }}
-                            className={`border-r border-[#DDD6C7] p-0 text-center relative select-none cursor-pointer ${
-                              isFocused ? "ring-2 ring-[#C2410C] z-10 bg-[#FFFDF8]" : ""
-                            }`}
-                          >
-                            {isFocused ? (
-                              <input
-                                ref={gridInputRef}
-                                type="text"
-                                inputMode="numeric"
-                                value={editingValue}
-                                onChange={handleInputChange}
-                                onKeyDown={handleGridKeyDown}
-                                onBlur={handleCellBlur}
-                                className="w-full h-full text-center font-tabular-sm text-xs font-semibold bg-transparent border-none outline-none p-0 text-[#111111]"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center gap-1 px-1 py-1">
-                                <span
-                                  className={`font-tabular-sm text-xs ${
-                                    isAbsent
-                                      ? "text-red-700 font-bold"
-                                      : cellVal === null || cellVal === undefined
-                                        ? "text-[#9A958A]"
-                                        : "text-[#111111] font-medium"
-                                  }`}
-                                >
-                                  {isAbsent
-                                    ? "ABS"
-                                    : cellVal === null || cellVal === undefined
-                                      ? "—"
-                                      : cellVal}
-                                </span>
-                                {grade && <GradeChip grade={grade} size="sm" />}
-                              </div>
-                            )}
-                          </td>
-                        );
-                      })}
+                          return (
+                            <TableCell
+                              key={subj.code}
+                              onClick={() => {
+                                commitCellEdit();
+                                setFocusedCell({ studentId: student.id, subjectCode: subj.code });
+                              }}
+                              className={`border-r border-[var(--color-hairline-border)] p-0 text-center relative cursor-pointer ${
+                                isFocused ? "ring-2 ring-[var(--color-primary)] z-10 bg-[var(--color-primary-container)]/20" : ""
+                              }`}
+                            >
+                              {isFocused ? (
+                                <input
+                                  ref={gridInputRef}
+                                  type="text"
+                                  inputMode="numeric"
+                                  value={editingValue}
+                                  onChange={handleInputChange}
+                                  onKeyDown={handleGridKeyDown}
+                                  onBlur={handleCellBlur}
+                                  className="w-full h-full text-center font-tabular-sm text-xs font-semibold bg-transparent border-none outline-none p-0 text-[var(--color-on-surface)]"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center gap-1 px-1 py-1">
+                                  <span
+                                    className={`font-tabular-sm text-xs ${
+                                      isAbsent
+                                        ? "text-[var(--color-error)] font-bold"
+                                        : cellVal === null || cellVal === undefined
+                                        ? "text-[var(--color-on-surface-disabled)]"
+                                        : "text-[var(--color-on-surface)] font-medium"
+                                    }`}
+                                  >
+                                    {isAbsent ? "ABS" : cellVal === null || cellVal === undefined ? "—" : cellVal}
+                                  </span>
+                                  {grade && <GradeChip grade={grade} size="sm" />}
+                                </div>
+                              )}
+                            </TableCell>
+                          );
+                        })}
 
-                      {/* Summary Columns */}
-                      <td className="border-r border-[#DDD6C7] px-2 py-1 text-center font-tabular-sm text-xs font-medium text-[#111111] bg-[#FEF9EF]/50">
-                        {calc ? calc.average.toFixed(1) : "—"}
-                      </td>
-                      <td className="border-r border-[#DDD6C7] px-2 py-1 text-center font-tabular-sm text-xs font-semibold text-[#111111] bg-[#FEF9EF]/50">
-                        {calc ? calc.aggregate : "—"}
-                      </td>
-                      <td className="px-2 py-1 text-center bg-[#FEF9EF]/50">
-                        {calc ? <GradeChip grade={calc.meanGrade} size="sm" /> : "—"}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
+                        {/* Summary Columns */}
+                        <TableCell className="border-r border-[var(--color-hairline-border)] px-2 py-1 text-center font-tabular-sm text-xs font-medium text-[var(--color-on-surface)] bg-[var(--color-surface-container-low)]/50">
+                          {calc ? calc.average.toFixed(1) : "—"}
+                        </TableCell>
+                        <TableCell className="border-r border-[var(--color-hairline-border)] px-2 py-1 text-center font-tabular-sm text-xs font-semibold text-[var(--color-on-surface)] bg-[var(--color-surface-container-low)]/50">
+                          {calc ? calc.aggregate : "—"}
+                        </TableCell>
+                        <TableCell className="px-2 py-1 text-center bg-[var(--color-surface-container-low)]/50">
+                          {calc ? <GradeChip grade={calc.meanGrade} size="sm" /> : "—"}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </tbody>
 
-              {/* Table Footer: Subject Averages */}
-              <tfoot>
-                <tr className="h-10 bg-[#FEF9EF] border-t-2 border-[#111111] sticky bottom-0 z-30 font-semibold text-xs">
-                  <td className="sticky left-0 z-30 bg-[#FEF9EF] border-r border-[#DDD6C7] px-3 py-2 font-label-caps text-[#111111] uppercase tracking-wider">
+                {/* Table Footer: Subject Averages */}
+                <TableFooter className="h-10 bg-[var(--color-surface-container-low)] border-t-2 border-[var(--color-on-surface)] font-semibold text-xs">
+                  <TableCell className="sticky left-0 z-30 bg-[var(--color-surface-container-low)] border-r border-[var(--color-hairline-border)] px-3 py-2 font-label-caps text-[var(--color-on-surface)] uppercase tracking-wider">
                     SUBJECT MEANS ({students.length})
-                  </td>
+                  </TableCell>
                   {subjectAverages.map((avg, idx) => (
-                    <td
-                      key={subjects[idx].code}
-                      className="border-r border-[#DDD6C7] px-2 py-2 text-center font-tabular-sm text-[#111111]"
-                    >
+                    <TableCell key={subjects[idx].code} className="border-r border-[var(--color-hairline-border)] text-center font-tabular-sm text-[var(--color-on-surface)]">
                       {avg}
-                    </td>
+                    </TableCell>
                   ))}
-                  <td className="border-r border-[#DDD6C7] px-2 py-2 text-center font-tabular-sm text-[#C2410C]">
+                  <TableCell className="border-r border-[var(--color-hairline-border)] text-center font-tabular-sm text-[var(--color-primary)]">
                     {rankings.length > 0
                       ? (rankings.reduce((a, b) => a + b.average, 0) / rankings.length).toFixed(1)
                       : "—"}
-                  </td>
-                  <td className="border-r border-[#DDD6C7] px-2 py-2 text-center font-tabular-sm text-[#111111]">
+                  </TableCell>
+                  <TableCell className="border-r border-[var(--color-hairline-border)] text-center font-tabular-sm text-[var(--color-on-surface)]">
                     {rankings.length > 0
                       ? (rankings.reduce((a, b) => a + b.aggregate, 0) / rankings.length).toFixed(1)
                       : "—"}
-                  </td>
-                  <td className="px-2 py-2 text-center font-label-caps text-[#111111]">KCSE</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
+                  </TableCell>
+                  <TableCell className="text-center font-label-caps text-[var(--color-on-surface)]">KCSE</TableCell>
+                </TableFooter>
+              </DataTable>
+            </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* Workflow Next Steps Banner */}
-      <section className="mt-6 p-4 sm:p-5 bg-[#FBF8F1] border border-[#DDD6C7] rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h4 className="font-semibold text-sm text-[#111111] flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[18px] text-[#C2410C]">route</span>
-            <span>Marks Entry Workflow: Next Actions</span>
-          </h4>
-          <p className="text-xs text-[#5F5E5E] mt-0.5">
-            Your marks are saved locally in real time. Once scores are entered, continue to
-            performance analysis or certificate generation.
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setActiveView("overview")}
-            className="px-3 py-2 text-xs font-medium border border-[#DDD6C7] rounded bg-white hover:bg-[#F2EDE3] text-[#111111] cursor-pointer"
-          >
-            ← Overview
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveView("rankings")}
-            className="px-3.5 py-2 text-xs font-semibold bg-[#111111] text-white hover:bg-neutral-800 rounded flex items-center gap-1.5 cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-[16px]">format_list_numbered</span>
-            <span>Class Rankings →</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveView("subject-analysis")}
-            className="px-3.5 py-2 text-xs font-semibold border border-[#111111] hover:bg-[#F2EDE3] text-[#111111] rounded flex items-center gap-1.5 cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-[16px]">analytics</span>
-            <span>Subject Analysis →</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveView("report-cards")}
-            className="px-3.5 py-2 text-xs font-semibold bg-[#C2410C] text-white hover:opacity-90 rounded flex items-center gap-1.5 cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-[16px]">badge</span>
-            <span>Report Cards →</span>
-          </button>
-        </div>
-      </section>
-
-      {/* Paste from Excel / Sheets Modal */}
-      {isPastingModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-          <div className="bg-[#FEF9EF] border border-[#DDD6C7] rounded p-5 max-w-2xl w-full shadow-lg">
-            <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#DDD6C7]">
-              <div>
-                <h3 className="font-headline-md text-headline-md text-[#111111]">
-                  Paste Rectangular Marks Matrix
-                </h3>
-                <p className="text-xs text-[#5F5E5E]">
-                  Starting at focused cell:{" "}
-                  <strong>
-                    {focusedCell
-                      ? `${students.find((s) => s.id === focusedCell.studentId)?.name} (${focusedCell.subjectCode})`
-                      : "First cell"}
-                  </strong>
-                </p>
-              </div>
-              <button
-                onClick={() => setIsPastingModalOpen(false)}
-                type="button"
-                className="text-[#5F5E5E] hover:text-[#111111] p-1 cursor-pointer"
-              >
-                <span className="material-symbols-outlined">close</span>
-              </button>
+      <Card variant="outlined" className="mt-6">
+        <CardContent className="p-4 sm:p-5">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h4 className="font-semibold text-sm text-[var(--color-on-surface)] flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">route</span>
+                <span>Marks Entry Workflow: Next Actions</span>
+              </h4>
+              <p className="text-xs text-[var(--color-on-surface-muted)] mt-0.5">
+                Your marks are saved locally in real time. Once scores are entered, continue to
+                performance analysis or certificate generation.
+              </p>
             </div>
-
-            <textarea
-              value={pastedText}
-              onChange={(e) => setPastedText(e.target.value)}
-              placeholder="Paste tab-delimited or comma-delimited columns copied from Excel / Google Sheets here..."
-              rows={6}
-              className="w-full p-3 font-tabular-sm text-xs bg-white border border-[#DDD6C7] rounded focus:outline-none focus:border-[#C2410C]"
-            />
-
-            {/* Paste Preview & Cell Verification */}
-            {parsedPasteGrid && (
-              <div className="mt-3 p-3 bg-[#FBF8F1] border border-[#DDD6C7] rounded text-xs space-y-2">
-                <div className="flex items-center justify-between font-medium">
-                  <span>
-                    Detected {parsedPasteGrid.totalCells} cells (
-                    <strong className="text-emerald-700">
-                      {parsedPasteGrid.validUpdates.length} valid
-                    </strong>
-                    ,{" "}
-                    <strong className="text-amber-700">
-                      {parsedPasteGrid.invalidCount} invalid
-                    </strong>
-                    )
-                  </span>
-                </div>
-                <div className="text-[11px] text-[#5F5E5E] font-tabular-sm">
-                  {parsedPasteGrid.sampleRows.map((sample, idx) => (
-                    <span key={idx} className="mr-3 inline-block">
-                      {sample.studentName.split(" ")[0]} ({sample.subjectCode}):{" "}
-                      <strong>{String(sample.parsed)}</strong>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="flex justify-end gap-2 pt-3 border-t border-[#DDD6C7] mt-4">
-              <button
-                onClick={() => setIsPastingModalOpen(false)}
-                type="button"
-                className="px-4 py-2 border border-[#DDD6C7] rounded bg-transparent hover:bg-[#F2EDE3] font-medium text-xs min-h-[44px] cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleApplyPaste}
-                disabled={!parsedPasteGrid || parsedPasteGrid.validUpdates.length === 0}
-                type="button"
-                className="px-4 py-2 bg-[#C2410C] text-[#FEF9EF] rounded font-medium text-xs hover:opacity-90 disabled:opacity-40 min-h-[44px] cursor-pointer"
-              >
-                Apply {parsedPasteGrid?.validUpdates.length || 0} Marks
-              </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="ghost" size="sm" onClick={() => setActiveView("overview")} className="px-3 py-2 text-xs">
+                ← Overview
+              </Button>
+              <Button size="sm" onClick={() => setActiveView("rankings")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">format_list_numbered</span>} className="px-3.5 py-2 text-xs">
+                Class Rankings →
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => setActiveView("subject-analysis")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">analytics</span>} className="px-3.5 py-2 text-xs">
+                Subject Analysis →
+              </Button>
+              <Button size="sm" onClick={() => setActiveView("report-cards")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">badge</span>} className="px-3.5 py-2 text-xs">
+                Report Cards →
+              </Button>
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Paste from Excel / Sheets Modal - using Sheet component */}
+      <Sheet open={isPastingModalOpen} onOpenChange={setIsPastingModalOpen} side="bottom">
+        <div className="p-5 max-w-2xl w-full">
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-[var(--color-hairline-border)]">
+            <div>
+              <h3 className="font-headline-md text-headline-md text-[var(--color-on-surface)]">
+                Paste Rectangular Marks Matrix
+              </h3>
+              <p className="text-xs text-[var(--color-on-surface-muted)]">
+                Starting at focused cell:{" "}
+                <strong>
+                  {focusedCell
+                    ? `${students.find((s) => s.id === focusedCell.studentId)?.name} (${focusedCell.subjectCode})`
+                    : "First cell"}
+                </strong>
+              </p>
+            </div>
+            <IconButton
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsPastingModalOpen(false)}
+              aria-label="Close"
+            >
+              <span className="material-symbols-outlined text-[20px]">close</span>
+            </IconButton>
+          </div>
+
+          <Textarea
+            value={pastedText}
+            onChange={(e) => setPastedText(e.target.value)}
+            placeholder="Paste tab-delimited or comma-delimited columns copied from Excel / Google Sheets here..."
+            rows={6}
+            className="font-tabular-sm text-xs"
+          />
+
+          {/* Paste Preview & Cell Verification */}
+          {parsedPasteGrid && (
+            <div className="mt-3 p-3 bg-[var(--color-surface-container-low)] border border-[var(--color-hairline-border)] rounded text-xs space-y-2">
+              <div className="flex items-center justify-between font-medium">
+                <span>
+                  Detected {parsedPasteGrid.totalCells} cells (
+                  <strong className="text-[var(--color-success)]">
+                    {parsedPasteGrid.validUpdates.length} valid
+                  </strong>
+                  ,{" "}
+                  <strong className="text-[var(--color-warning)]">
+                    {parsedPasteGrid.invalidCount} invalid
+                  </strong>
+                  )
+                </span>
+              </div>
+              <div className="text-[11px] text-[var(--color-on-surface-muted)] font-tabular-sm">
+                {parsedPasteGrid.sampleRows.map((sample, idx) => (
+                  <span key={idx} className="mr-3 inline-block">
+                    {sample.studentName.split(" ")[0]} ({sample.subjectCode}):{" "}
+                    <strong>{String(sample.parsed)}</strong>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="flex justify-end gap-2 pt-3 border-t border-[var(--color-hairline-border)] mt-4">
+            <Button variant="outline" size="sm" onClick={() => setIsPastingModalOpen(false)} className="min-h-[44px]">
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleApplyPaste}
+              disabled={!parsedPasteGrid || parsedPasteGrid.validUpdates.length === 0}
+              className="min-h-[44px]"
+            >
+              Apply {parsedPasteGrid?.validUpdates.length || 0} Marks
+            </Button>
+          </div>
         </div>
-      )}
+      </Sheet>
     </div>
   );
 };

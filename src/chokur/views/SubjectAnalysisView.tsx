@@ -2,6 +2,11 @@ import React, { useMemo, useState } from "react";
 import { GradeChip } from "../components/GradeChip";
 import { useGrading } from "../context/GradingContext";
 import { exportTableToCSV, getGradeFromScore } from "../utils/grading";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
+import { Button, IconButton } from "../components/ui/Button";
+import { Badge, StatusBadge } from "../components/ui/Badge";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "../components/ui/DataTable";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/Tabs";
 
 export const SubjectAnalysisView: React.FC = () => {
   const { subjectDepartmentalStats, classAverage, activeStream, activeExam, setActiveView } =
@@ -72,384 +77,383 @@ export const SubjectAnalysisView: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[#111111]">
+    <div className="w-full min-w-0 max-w-[1360px] mx-auto px-3 sm:px-6 py-4 sm:py-8 font-body-md text-[var(--color-on-surface)]">
       {/* Header & Controls */}
-      <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-4 pb-4 sm:pb-6 border-b border-[#DDD6C7]">
+      <section className="flex flex-col xl:flex-row xl:items-end justify-between gap-4 pb-4 sm:pb-6 border-b border-[var(--color-hairline-border)]">
         <div>
-          <h1 className="font-headline-lg text-headline-lg text-[#111111] tracking-tight">
+          <h1 className="font-headline-lg text-headline-lg text-[var(--color-on-surface)] tracking-tight">
             Subject Analysis
           </h1>
-          <p className="font-body-md text-xs sm:text-body-md text-[#5F5E5E] mt-1">
-            {activeStream} · {activeExam} · performance diagnostics &amp; curriculum benchmark
+          <p className="font-body-md text-xs sm:text-body-md text-[var(--color-on-surface-muted)] mt-1">
+            {activeStream} · {activeExam} · performance diagnostics & curriculum benchmark
           </p>
         </div>
 
         {/* Controls */}
         <div className="flex items-center gap-2 sm:gap-3 flex-wrap no-print">
           {/* Department Filter */}
-          <div className="flex flex-wrap items-center border border-[#DDD6C7] rounded bg-[#FBF8F1] text-xs font-medium overflow-hidden max-w-full">
-            <button
+          <div className="flex flex-wrap items-center border border-[var(--color-hairline-border)] rounded-lg bg-[var(--color-surface-container-low)] text-xs font-medium overflow-hidden max-w-full" role="group" aria-label="Department filter">
+            <Button
+              variant={selectedDepartment === "ALL" ? "primary" : "ghost"}
+              size="sm"
               onClick={() => setSelectedDepartment("ALL")}
-              className={`px-3 py-2 min-h-[40px] cursor-pointer ${
-                selectedDepartment === "ALL"
-                  ? "bg-[#111111] text-[#FEF9EF]"
-                  : "text-[#5F5E5E] hover:bg-[#F2EDE3]"
-              }`}
+              className="min-h-[40px]"
             >
               All Depts
-            </button>
+            </Button>
             {departments.map((dept) => (
-              <button
+              <Button
                 key={dept}
+                variant={selectedDepartment === dept ? "primary" : "ghost"}
+                size="sm"
                 onClick={() => setSelectedDepartment(dept)}
-                className={`px-2.5 sm:px-3 py-2 min-h-[40px] cursor-pointer truncate max-w-[90px] sm:max-w-none ${
-                  selectedDepartment === dept
-                    ? "bg-[#111111] text-[#FEF9EF]"
-                    : "text-[#5F5E5E] hover:bg-[#F2EDE3]"
-                }`}
+                className="min-h-[40px] px-2.5 sm:px-3 truncate max-w-[90px] sm:max-w-none"
               >
                 {dept}
-              </button>
+              </Button>
             ))}
           </div>
 
           {/* Export CSV */}
-          <button
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handleExportCSV}
-            type="button"
-            className="px-3.5 py-2 bg-transparent border border-[#111111] rounded text-[#111111] font-body-sm text-xs sm:text-[13px] hover:bg-[#F2EDE3] transition-colors flex items-center gap-1.5 cursor-pointer min-h-[40px]"
+            iconPosition="left"
+            icon={<span className="material-symbols-outlined text-[16px]">download</span>}
+            className="min-h-[40px]"
           >
-            <span className="material-symbols-outlined text-[16px]">download</span>
-            <span>Export CSV</span>
-          </button>
+            Export CSV
+          </Button>
 
           {/* Print */}
-          <button
+          <Button
+            size="sm"
             onClick={handlePrint}
-            type="button"
-            className="px-3.5 py-2 bg-[#C2410C] text-[#FEF9EF] rounded font-body-sm text-xs sm:text-[13px] font-medium hover:opacity-95 transition-opacity flex items-center gap-1.5 cursor-pointer min-h-[40px]"
+            iconPosition="left"
+            icon={<span className="material-symbols-outlined text-[16px]">print</span>}
+            className="min-h-[40px]"
           >
-            <span className="material-symbols-outlined text-[16px]">print</span>
-            <span>Print</span>
-          </button>
+            Print
+          </Button>
         </div>
-      </div>
+      </section>
 
       {/* Critical Drag Warning Callouts */}
       {dragSubjects.length > 0 && (
-        <div className="my-4 sm:my-6 p-4 bg-[#FBF8F1] border-l-4 border-[#C2410C] border-y border-r border-[#DDD6C7]">
-          <div className="flex items-start gap-3">
-            <span className="material-symbols-outlined text-[#C2410C] text-[20px] mt-0.5">
-              priority_high
-            </span>
-            <div>
-              <h3 className="font-headline-sm text-headline-sm text-[#111111]">
-                Curriculum Drag Diagnostic
-              </h3>
-              <p className="font-body-sm text-xs sm:text-body-sm text-[#5F5E5E] mt-0.5">
-                The following subject{dragSubjects.length > 1 ? "s are" : " is"} performing
-                significantly below the class average of {classAverage.toFixed(1)}%:
-              </p>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {dragSubjects.map((d) => (
-                  <span
-                    key={d.subject.code}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#FFFFFF] border border-[#DDD6C7] text-xs font-medium text-[#111111]"
-                  >
-                    <strong>
-                      {d.subject.code} ({d.subject.name}):
-                    </strong>{" "}
-                    {d.average.toFixed(1)}% mean
-                    <span className="text-[#C2410C] font-semibold">
-                      ({(d.average - classAverage).toFixed(1)}% vs class avg)
-                    </span>
-                  </span>
-                ))}
+        <Card variant="outlined" className="my-4 sm:my-6 border-l-4 border-[var(--color-primary)]">
+          <CardContent className="p-4">
+            <div className="flex items-start gap-3">
+              <span className="material-symbols-outlined text-[var(--color-primary)] text-[20px] mt-0.5">
+                priority_high
+              </span>
+              <div>
+                <h3 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
+                  Curriculum Drag Diagnostic
+                </h3>
+                <p className="font-body-sm text-xs sm:text-body-sm text-[var(--color-on-surface-muted)] mt-0.5">
+                  The following subject{dragSubjects.length > 1 ? "s are" : " is"} performing
+                  significantly below the class average of {classAverage.toFixed(1)}%:
+                </p>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {dragSubjects.map((d) => (
+                    <Badge key={d.subject.code} variant="outline" className="gap-1.5">
+                      <strong>
+                        {d.subject.code} ({d.subject.name}):
+                      </strong>{" "}
+                      {d.average.toFixed(1)}% mean
+                      <span className="text-[var(--color-primary)] font-semibold">
+                        ({(d.average - classAverage).toFixed(1)}% vs class avg)
+                      </span>
+                    </Badge>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* HORIZONTAL BENCHMARK BAR CHART */}
-      <section className="my-4 sm:my-6 p-3 sm:p-6 border border-[#DDD6C7] bg-[#FBF8F1] rounded shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-          <div className="font-label-caps text-label-caps text-[#5F5E5E] uppercase tracking-wider text-[11px]">
-            SUBJECT MEAN SCORE BENCHMARK CHART
-          </div>
-          <div className="flex flex-wrap items-center gap-3 text-xs font-caption text-[#5F5E5E]">
-            <span className="flex items-center gap-1.5">
-              <span className="w-3 h-3 bg-[#111111] inline-block"></span>
-              <span>Above C+ (55%)</span>
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-3 h-3 bg-[#C2410C] inline-block"></span>
-              <span>Below C+ (55%)</span>
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-2.5 h-0.5 border-t-2 border-dashed border-[#111111] inline-block"></span>
-              <span>55% Cutoff line</span>
-            </span>
-          </div>
-        </div>
-
-        {/* Bar Chart Container */}
-        <div className="relative pt-2 pb-6 space-y-3">
-          {/* Vertical 55% C+ Benchmark Line */}
-          <div
-            className="absolute top-0 bottom-6 border-r-2 border-dashed border-[#111111] z-10 pointer-events-none"
-            style={{ left: "55%" }}
-          >
-            <span className="absolute -top-3 -translate-x-1/2 bg-[#111111] text-[#FEF9EF] text-[10px] font-bold px-1.5 py-0.2 rounded-[2px]">
-              55% C+
-            </span>
-          </div>
-
-          {filteredStats.map((stat) => {
-            const grade = getGradeFromScore(stat.average);
-            const isPassing = stat.average >= 55;
-
-            return (
-              <div key={stat.subject.code} className="flex items-center gap-2 sm:gap-3">
-                <div className="w-14 sm:w-24 text-right shrink-0">
-                  <span className="font-semibold text-xs text-[#111111] block">
-                    {stat.subject.code}
-                  </span>
-                  <span className="text-[10px] text-[#5F5E5E] truncate hidden sm:block">
-                    {stat.subject.department}
-                  </span>
-                </div>
-
-                <div className="flex-1 bg-[#F2EDE3] h-6 rounded-none relative overflow-hidden flex items-center">
-                  <div
-                    className={`h-full transition-all duration-300 flex items-center justify-end pr-2 text-xs font-bold text-[#FEF9EF] ${
-                      isPassing ? "bg-[#111111]" : "bg-[#C2410C]"
-                    }`}
-                    style={{ width: `${Math.min(100, Math.max(10, stat.average))}%` }}
-                  >
-                    <span className="font-tabular-sm text-[11px]">{stat.average.toFixed(1)}%</span>
-                  </div>
-                </div>
-
-                <div className="w-16 sm:w-20 shrink-0 flex items-center justify-end gap-1.5">
-                  <GradeChip grade={grade.grade} size="sm" />
-                  {comparePrevious && (
-                    <span
-                      className={`text-[10px] sm:text-[11px] font-tabular-sm font-semibold hidden sm:inline ${
-                        stat.diffFromLastExam >= 0 ? "text-emerald-800" : "text-red-700"
-                      }`}
-                    >
-                      {stat.diffFromLastExam >= 0
-                        ? `+${stat.diffFromLastExam.toFixed(1)}`
-                        : stat.diffFromLastExam.toFixed(1)}
-                    </span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* =========================================================================
-          VIEW A: MOBILE TOUCH SUBJECT CARDS (< 768px)
-          ========================================================================= */}
-      <div className="md:hidden space-y-3 mb-6 no-print">
-        {filteredStats.map((stat) => {
-          const grade = getGradeFromScore(stat.average);
-          return (
-            <div
-              key={stat.subject.code}
-              className="bg-[#FBF8F1] border border-[#DDD6C7] rounded p-3.5 shadow-xs"
-            >
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-xs text-[#111111]">{stat.subject.code}</span>
-                    <span className="text-xs text-[#5F5E5E] font-medium">{stat.subject.name}</span>
-                  </div>
-                  <div className="text-[10px] text-[#9A958A] mt-0.5">
-                    {stat.subject.department} · Teacher: {stat.subject.teacher || "Unassigned"}
-                  </div>
-                </div>
-                <GradeChip grade={grade.grade} size="md" />
-              </div>
-
-              <div className="grid grid-cols-3 gap-2 py-2.5 my-2 border-y border-[#DDD6C7]/60 text-center text-xs">
-                <div>
-                  <span className="text-[10px] text-[#5F5E5E] uppercase block font-label-caps">
-                    Average
-                  </span>
-                  <span className="font-tabular-md font-bold text-[#111111]">
-                    {stat.average.toFixed(1)}%
-                  </span>
-                </div>
-                <div>
-                  <span className="text-[10px] text-[#5F5E5E] uppercase block font-label-caps">
-                    Pass Rate
-                  </span>
-                  <span
-                    className={`font-tabular-md font-bold ${
-                      stat.passRate >= 70
-                        ? "text-emerald-800"
-                        : stat.passRate < 50
-                          ? "text-red-700"
-                          : "text-[#111111]"
-                    }`}
-                  >
-                    {stat.passRate}%
-                  </span>
-                </div>
-                <div>
-                  <span className="text-[10px] text-[#5F5E5E] uppercase block font-label-caps">
-                    High / Low
-                  </span>
-                  <span className="font-tabular-md font-medium text-[#111111]">
-                    {stat.highest} / {stat.lowest}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between text-xs pt-0.5">
-                <span className="text-[#5F5E5E] text-[11px] font-tabular-sm">
-                  {stat.entered} Candidates Entered
-                </span>
-                <span
-                  className={`font-tabular-sm text-xs font-semibold ${
-                    stat.diffFromLastExam >= 0 ? "text-emerald-800" : "text-red-700"
-                  }`}
-                >
-                  Trend:{" "}
-                  {stat.diffFromLastExam >= 0
-                    ? `+${stat.diffFromLastExam.toFixed(1)}`
-                    : stat.diffFromLastExam.toFixed(1)}
-                  %
-                </span>
-              </div>
+      <Card variant="outlined" className="my-4 sm:my-6">
+        <CardHeader className="pb-3 border-b border-[var(--color-hairline-border)]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider text-[11px]">
+              SUBJECT MEAN SCORE BENCHMARK CHART
             </div>
-          );
-        })}
-      </div>
+            <div className="flex flex-wrap items-center gap-3 text-xs font-caption text-[var(--color-on-surface-muted)]">
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-3 bg-[var(--color-on-surface)] inline-block"></span>
+                <span>Above C+ (55%)</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-3 bg-[var(--color-primary)] inline-block"></span>
+                <span>Below C+ (55%)</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-2.5 h-0.5 border-t-2 border-dashed border-[var(--color-on-surface)] inline-block"></span>
+                <span>55% Cutoff line</span>
+              </span>
+            </div>
+          </div>
+        </CardHeader>
 
-      {/* =========================================================================
-          VIEW B: DESKTOP & PRINT TABLE (≥ 768px)
-          ========================================================================= */}
-      <section className="hidden md:block border border-[#DDD6C7] rounded bg-[#FBF8F1] overflow-hidden shadow-xs">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="h-10 border-b border-[#DDD6C7] bg-[#F8F3E9] text-[11px] font-label-caps text-[#5F5E5E] uppercase tracking-wider">
-                <th className="w-20 px-4">CODE</th>
-                <th className="px-4">SUBJECT NAME</th>
-                <th className="px-4">DEPARTMENT</th>
-                <th className="px-4">TEACHER</th>
-                <th className="w-24 px-3 text-right">ENTRIES</th>
-                <th className="w-28 px-3 text-right">AVERAGE</th>
-                <th className="w-20 px-2 text-center">GRADE</th>
-                <th className="w-24 px-3 text-right">HIGH / LOW</th>
-                <th className="w-28 px-3 text-right">PASS RATE</th>
-                <th className="w-28 px-4 text-right">DEVIATION</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#DDD6C7] font-body-sm text-body-sm text-[#111111]">
-              {filteredStats.map((stat) => {
-                const grade = getGradeFromScore(stat.average);
+        <CardContent className="pt-2 pb-6">
+          {/* Bar Chart Container */}
+          <div className="relative space-y-3">
+            {/* Vertical 55% C+ Benchmark Line */}
+            <div
+              className="absolute top-0 bottom-6 border-r-2 border-dashed border-[var(--color-on-surface)] z-10 pointer-events-none"
+              style={{ left: "55%" }}
+            >
+              <span className="absolute -top-3 -translate-x-1/2 bg-[var(--color-on-surface)] text-[var(--color-on-surface)] text-[10px] font-bold px-1.5 py-0.2 rounded-[2px]">
+                55% C+
+              </span>
+            </div>
 
-                return (
-                  <tr key={stat.subject.code} className="h-11 hover:bg-[#F2EDE3] transition-colors">
-                    <td className="px-4 font-tabular-sm font-bold text-[#111111]">
+            {filteredStats.map((stat) => {
+              const grade = getGradeFromScore(stat.average);
+              const isPassing = stat.average >= 55;
+
+              return (
+                <div key={stat.subject.code} className="flex items-center gap-2 sm:gap-3">
+                  <div className="w-14 sm:w-24 text-right shrink-0">
+                    <span className="font-semibold text-xs text-[var(--color-on-surface)] block">
                       {stat.subject.code}
-                    </td>
-                    <td className="px-4 font-medium text-[#111111]">{stat.subject.name}</td>
-                    <td className="px-4 text-[#5F5E5E]">{stat.subject.department}</td>
-                    <td className="px-4 text-[#111111]">{stat.subject.teacher || "—"}</td>
-                    <td className="px-3 text-right font-tabular-sm text-[#5F5E5E]">
-                      {stat.entered}
-                    </td>
-                    <td className="px-3 text-right font-tabular-md font-semibold text-[#111111]">
-                      {stat.average.toFixed(1)}%
-                    </td>
-                    <td className="px-2 text-center">
-                      <GradeChip grade={grade.grade} size="sm" />
-                    </td>
-                    <td className="px-3 text-right font-tabular-sm text-[#5F5E5E]">
-                      {stat.highest} / {stat.lowest}
-                    </td>
-                    <td className="px-3 text-right font-tabular-sm font-medium">
+                    </span>
+                    <span className="text-[10px] text-[var(--color-on-surface-muted)] truncate hidden sm:block">
+                      {stat.subject.department}
+                    </span>
+                  </div>
+
+                  <div className="flex-1 bg-[var(--color-surface-container)] h-6 rounded-none relative overflow-hidden flex items-center">
+                    <div
+                      className={`h-full transition-all duration-300 flex items-center justify-end pr-2 text-xs font-bold text-[var(--color-on-primary)] ${
+                        isPassing ? "bg-[var(--color-on-surface)]" : "bg-[var(--color-primary)]"
+                      }`}
+                      style={{ width: `${Math.min(100, Math.max(10, stat.average))}%` }}
+                    >
+                      <span className="font-tabular-sm text-[11px]">{stat.average.toFixed(1)}%</span>
+                    </div>
+                  </div>
+
+                  <div className="w-16 sm:w-20 shrink-0 flex items-center justify-end gap-1.5">
+                    <GradeChip grade={grade.grade} size="sm" />
+                    {comparePrevious && (
                       <span
-                        className={
-                          stat.passRate >= 70
-                            ? "text-emerald-800"
-                            : stat.passRate < 50
-                              ? "text-red-700"
-                              : "text-[#111111]"
-                        }
-                      >
-                        {stat.passRate}%
-                      </span>
-                    </td>
-                    <td className="px-4 text-right font-tabular-sm font-semibold">
-                      <span
-                        className={stat.diffFromLastExam >= 0 ? "text-emerald-800" : "text-red-700"}
+                        className={`text-[10px] sm:text-[11px] font-tabular-sm font-semibold hidden sm:inline ${
+                          stat.diffFromLastExam >= 0 ? "text-[var(--color-success)]" : "text-[var(--color-error)]"
+                        }`}
                       >
                         {stat.diffFromLastExam >= 0
-                          ? `↑ +${stat.diffFromLastExam.toFixed(1)}`
-                          : `↓ ${stat.diffFromLastExam.toFixed(1)}`}
+                          ? `+${stat.diffFromLastExam.toFixed(1)}`
+                          : stat.diffFromLastExam.toFixed(1)}
                       </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </section>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Tabs for mobile/desktop views */}
+      <Tabs defaultValue="table" className="w-full" variant="underline">
+        <TabsList className="hidden md:flex" aria-label="View mode">
+          <TabsTrigger value="table">Table View</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="table" forceMount>
+          {/* =========================================================================
+              VIEW B: DESKTOP & PRINT TABLE (≥ 768px)
+              ========================================================================= */}
+          <Card variant="elevated" className="hidden md:block overflow-hidden">
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <DataTable hoverable compact>
+                  <TableHeader>
+                    <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
+                      <TableHead scope="col" className="w-20 px-4">CODE</TableHead>
+                      <TableHead scope="col" className="px-4">SUBJECT NAME</TableHead>
+                      <TableHead scope="col" className="px-4">DEPARTMENT</TableHead>
+                      <TableHead scope="col" className="px-4">TEACHER</TableHead>
+                      <TableHead scope="col" className="w-24 px-3 text-right">ENTRIES</TableHead>
+                      <TableHead scope="col" className="w-28 px-3 text-right">AVERAGE</TableHead>
+                      <TableHead scope="col" className="w-20 px-2 text-center">GRADE</TableHead>
+                      <TableHead scope="col" className="w-24 px-3 text-right">HIGH / LOW</TableHead>
+                      <TableHead scope="col" className="w-28 px-3 text-right">PASS RATE</TableHead>
+                      <TableHead scope="col" className="w-28 px-4 text-right">DEVIATION</TableHead>
+                    </tr>
+                  </TableHeader>
+                  <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm text-[var(--color-on-surface)]">
+                    {filteredStats.map((stat) => {
+                      const grade = getGradeFromScore(stat.average);
+
+                      return (
+                        <TableRow key={stat.subject.code} className="h-11 hover:bg-[var(--color-surface-container)] transition-colors">
+                          <TableCell className="px-4 font-tabular-sm font-bold text-[var(--color-on-surface)]">
+                            {stat.subject.code}
+                          </TableCell>
+                          <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">{stat.subject.name}</TableCell>
+                          <TableCell className="px-4 text-[var(--color-on-surface-muted)]">{stat.subject.department}</TableCell>
+                          <TableCell className="px-4 text-[var(--color-on-surface)]">{stat.subject.teacher || "—"}</TableCell>
+                          <TableCell className="px-3 text-right font-tabular-sm text-[var(--color-on-surface-muted)]">
+                            {stat.entered}
+                          </TableCell>
+                          <TableCell className="px-3 text-right font-tabular-md font-semibold text-[var(--color-on-surface)]">
+                            {stat.average.toFixed(1)}%
+                          </TableCell>
+                          <TableCell className="px-2 text-center">
+                            <GradeChip grade={grade.grade} size="sm" />
+                          </TableCell>
+                          <TableCell className="px-3 text-right font-tabular-sm text-[var(--color-on-surface-muted)]">
+                            {stat.highest} / {stat.lowest}
+                          </TableCell>
+                          <TableCell className="px-3 text-right font-tabular-sm font-medium">
+                            <span
+                              className={
+                                stat.passRate >= 70
+                                  ? "text-[var(--color-success)]"
+                                  : stat.passRate < 50
+                                  ? "text-[var(--color-error)]"
+                                  : "text-[var(--color-on-surface)]"
+                              }
+                            >
+                              {stat.passRate}%
+                            </span>
+                          </TableCell>
+                          <TableCell className="px-4 text-right font-tabular-sm font-semibold">
+                            <span
+                              className={stat.diffFromLastExam >= 0 ? "text-[var(--color-success)]" : "text-[var(--color-error)]"}
+                            >
+                              {stat.diffFromLastExam >= 0
+                                ? `↑ +${stat.diffFromLastExam.toFixed(1)}`
+                                : `↓ ${stat.diffFromLastExam.toFixed(1)}`}
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </tbody>
+                </DataTable>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="cards" forceMount>
+          {/* =========================================================================
+              VIEW A: MOBILE TOUCH SUBJECT CARDS (< 768px)
+              ========================================================================= */}
+          <div className="md:hidden space-y-3 mb-6 no-print">
+            {filteredStats.map((stat) => {
+              const grade = getGradeFromScore(stat.average);
+              return (
+                <Card key={stat.subject.code} variant="elevated">
+                  <CardContent className="p-3.5">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-xs text-[var(--color-on-surface)]">{stat.subject.code}</span>
+                          <span className="text-xs text-[var(--color-on-surface-muted)] font-medium">{stat.subject.name}</span>
+                        </div>
+                        <div className="text-[10px] text-[var(--color-on-surface-disabled)] mt-0.5">
+                          {stat.subject.department} · Teacher: {stat.subject.teacher || "Unassigned"}
+                        </div>
+                      </div>
+                      <GradeChip grade={grade.grade} size="md" />
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 py-2.5 my-2 border-y border-[var(--color-hairline-border)]/60 text-center text-xs">
+                      <div>
+                        <span className="text-[10px] text-[var(--color-on-surface-muted)] uppercase block font-label-caps">
+                          Average
+                        </span>
+                        <span className="font-tabular-md font-bold text-[var(--color-on-surface)]">
+                          {stat.average.toFixed(1)}%
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-[var(--color-on-surface-muted)] uppercase block font-label-caps">
+                          Pass Rate
+                        </span>
+                        <span
+                          className={`font-tabular-md font-bold ${
+                            stat.passRate >= 70
+                              ? "text-[var(--color-success)]"
+                              : stat.passRate < 50
+                              ? "text-[var(--color-error)]"
+                              : "text-[var(--color-on-surface)]"
+                          }`}
+                        >
+                          {stat.passRate}%
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-[var(--color-on-surface-muted)] uppercase block font-label-caps">
+                          High / Low
+                        </span>
+                        <span className="font-tabular-md font-medium text-[var(--color-on-surface)]">
+                          {stat.highest} / {stat.lowest}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs pt-0.5">
+                      <span className="text-[var(--color-on-surface-muted)] text-[11px] font-tabular-sm">
+                        {stat.entered} Candidates Entered
+                      </span>
+                      <span
+                        className={`font-tabular-sm text-xs font-semibold ${
+                          stat.diffFromLastExam >= 0 ? "text-[var(--color-success)]" : "text-[var(--color-error)]"
+                        }`}
+                      >
+                        Trend:{" "}
+                        {stat.diffFromLastExam >= 0
+                          ? `+${stat.diffFromLastExam.toFixed(1)}`
+                          : stat.diffFromLastExam.toFixed(1)}
+                        %
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </TabsContent>
+      </Tabs>
 
       {/* Workflow Next Steps Banner */}
-      <section className="mt-6 p-4 sm:p-5 bg-[#FBF8F1] border border-[#DDD6C7] rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h4 className="font-semibold text-sm text-[#111111] flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[18px] text-[#C2410C]">route</span>
-            <span>Subject Analysis: Next Steps</span>
-          </h4>
-          <p className="text-xs text-[#5F5E5E] mt-0.5">
-            Compare distributions across grades, view overall student rankings, or adjust marks.
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setActiveView("overview")}
-            className="px-3 py-2 text-xs font-medium border border-[#DDD6C7] rounded bg-white hover:bg-[#F2EDE3] text-[#111111] cursor-pointer"
-          >
-            ← Overview
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveView("grade-distribution")}
-            className="px-3.5 py-2 text-xs font-semibold bg-[#111111] text-white hover:bg-neutral-800 rounded flex items-center gap-1.5 cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-[16px]">bar_chart</span>
-            <span>Grade Distribution →</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveView("rankings")}
-            className="px-3.5 py-2 text-xs font-semibold border border-[#111111] hover:bg-[#F2EDE3] text-[#111111] rounded flex items-center gap-1.5 cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-[16px]">format_list_numbered</span>
-            <span>Class Rankings →</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveView("marks-entry")}
-            className="px-3.5 py-2 text-xs font-semibold bg-[#C2410C] text-white hover:opacity-90 rounded flex items-center gap-1.5 cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-[16px]">edit_note</span>
-            <span>Edit Marks →</span>
-          </button>
-        </div>
-      </section>
+      <Card variant="outlined" className="mt-6">
+        <CardContent className="p-4 sm:p-5">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h4 className="font-semibold text-sm text-[var(--color-on-surface)] flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">route</span>
+                <span>Subject Analysis: Next Steps</span>
+              </h4>
+              <p className="text-xs text-[var(--color-on-surface-muted)] mt-0.5">
+                Compare distributions across grades, view overall student rankings, or adjust marks.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="ghost" size="sm" onClick={() => setActiveView("overview")} className="px-3 py-2 text-xs">
+                ← Overview
+              </Button>
+              <Button variant="primary" size="sm" onClick={() => setActiveView("grade-distribution")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">bar_chart</span>} className="px-3.5 py-2 text-xs">
+                Grade Distribution →
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => setActiveView("rankings")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">format_list_numbered</span>} className="px-3.5 py-2 text-xs">
+                Class Rankings →
+              </Button>
+              <Button size="sm" onClick={() => setActiveView("marks-entry")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">edit_note</span>} className="px-3.5 py-2 text-xs">
+                Edit Marks →
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

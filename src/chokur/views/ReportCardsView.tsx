@@ -6,6 +6,11 @@ import { ChokurLogo } from "../components/brand/ChokurLogo";
 import { GradeChip } from "../components/GradeChip";
 import { useGrading } from "../context/GradingContext";
 import { getGradeFromScore } from "../utils/grading";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
+import { Button, IconButton } from "../components/ui/Button";
+import { Badge, StatusBadge } from "../components/ui/Badge";
+import { Input } from "../components/ui/Input";
+import { DataTable, TableHeader, TableHead, TableRow, TableCell } from "../components/ui/DataTable";
 
 const DEFAULT_SUBJECT_REMARKS: Record<string, string> = {
   MAT: "Excellent analytical problem solving and numerical skills.",
@@ -168,7 +173,7 @@ export const ReportCardsView: React.FC = () => {
 
   if (!selectedCalculation) {
     return (
-      <div className="p-8 text-center text-[#5F5E5E]">
+      <div className="p-8 text-center text-[var(--color-on-surface-muted)]">
         No active student records found in {activeStream}.
       </div>
     );
@@ -182,73 +187,73 @@ export const ReportCardsView: React.FC = () => {
       <article
         key={calc.student.id}
         ref={isMultiPage ? undefined : reportCardRef}
-        className={`w-full max-w-[820px] bg-[#FFFFFF] border border-[#DDD6C7] p-5 sm:p-8 md:p-10 shadow-sm text-[#111111] print-sheet ${
+        className={`w-full max-w-[820px] bg-[var(--color-surface)] border border-[var(--color-hairline-border)] p-5 sm:p-8 md:p-10 shadow-sm text-[var(--color-on-surface)] print-sheet ${
           isMultiPage ? "mb-12 page-break-always" : "mb-8"
         }`}
       >
         {/* School Archival Header with Official Chokur Seal */}
-        <div className="text-center pb-4 sm:pb-5 border-b-2 border-[#111111]">
+        <div className="text-center pb-4 sm:pb-5 border-b-2 border-[var(--color-on-surface)]">
           <div className="flex justify-center mb-2.5">
             <ChokurLogo variant="monochrome-dark" size={32} showSubtitle={false} />
           </div>
-          <h1 className="text-lg sm:text-[22px] font-bold tracking-tight uppercase font-headline-lg text-[#111111]">
+          <h1 className="text-lg sm:text-[22px] font-bold tracking-tight uppercase font-headline-lg text-[var(--color-on-surface)]">
             {schoolConfig.schoolName}
           </h1>
-          <p className="font-caption text-caption text-[#5F5E5E] tracking-wider mt-0.5 uppercase text-[10px] sm:text-xs">
+          <p className="font-caption text-caption text-[var(--color-on-surface-muted)] tracking-wider mt-0.5 uppercase text-[10px] sm:text-xs">
             {schoolConfig.postalAddress} · {schoolConfig.contactPhoneEmail}
           </p>
-          <p className="italic text-xs text-[#5F5E5E] mt-0.5">"{schoolConfig.motto}"</p>
-          <div className="mt-2.5 inline-block border-y border-[#DDD6C7] py-1 px-4 sm:px-6 bg-[#FBF8F1]">
-            <h2 className="font-headline-sm text-headline-sm uppercase tracking-wider font-semibold text-[#111111] text-xs sm:text-sm">
+          <p className="italic text-xs text-[var(--color-on-surface-muted)] mt-0.5">"{schoolConfig.motto}"</p>
+          <div className="mt-2.5 inline-block border-y border-[var(--color-hairline-border)] py-1 px-4 sm:px-6 bg-[var(--color-surface-container-low)]">
+            <h2 className="font-headline-sm text-headline-sm uppercase tracking-wider font-semibold text-[var(--color-on-surface)] text-xs sm:text-sm">
               Student Academic Report Card
             </h2>
           </div>
-          <p className="font-caption text-caption text-[#5F5E5E] uppercase tracking-widest mt-1 text-[10px] sm:text-xs">
+          <p className="font-caption text-caption text-[var(--color-on-surface-muted)] uppercase tracking-widest mt-1 text-[10px] sm:text-xs">
             {schoolConfig.term}, {schoolConfig.academicYear} · {activeExam}
           </p>
         </div>
 
         {/* Student Metadata Grid */}
-        <div className="my-3 sm:my-4 py-2 sm:py-3 border-b border-[#DDD6C7] grid grid-cols-1 sm:grid-cols-2 gap-x-6 sm:gap-x-8 gap-y-1.5 sm:gap-y-2 font-body-sm text-body-sm text-xs sm:text-[13px]">
-          <div className="flex justify-between border-b border-[#DDD6C7]/50 pb-1">
-            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
+        <div className="my-3 sm:my-4 py-2 sm:py-3 border-b border-[var(--color-hairline-border)] grid grid-cols-1 sm:grid-cols-2 gap-x-6 sm:gap-x-8 gap-y-1.5 sm:gap-y-2 font-body-sm text-body-sm text-xs sm:text-[13px]">
+          <div className="flex justify-between border-b border-[var(--color-hairline-border)]/50 pb-1">
+            <span className="text-[var(--color-on-surface-muted)] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
               STUDENT NAME:
             </span>
-            <span className="font-semibold text-[#111111]">{calc.student.name}</span>
+            <span className="font-semibold text-[var(--color-on-surface)]">{calc.student.name}</span>
           </div>
-          <div className="flex justify-between border-b border-[#DDD6C7]/50 pb-1">
-            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
+          <div className="flex justify-between border-b border-[var(--color-hairline-border)]/50 pb-1">
+            <span className="text-[var(--color-on-surface-muted)] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
               ADMISSION NO:
             </span>
-            <span className="font-tabular-sm text-tabular-sm font-semibold text-[#111111]">
+            <span className="font-tabular-sm text-tabular-sm font-semibold text-[var(--color-on-surface)]">
               {calc.student.admNo}
             </span>
           </div>
-          <div className="flex justify-between border-b border-[#DDD6C7]/50 pb-1">
-            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
-              CLASS &amp; STREAM:
+          <div className="flex justify-between border-b border-[var(--color-hairline-border)]/50 pb-1">
+            <span className="text-[var(--color-on-surface-muted)] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
+              CLASS & STREAM:
             </span>
-            <span className="font-semibold text-[#111111]">{calc.student.stream}</span>
+            <span className="font-semibold text-[var(--color-on-surface)]">{calc.student.stream}</span>
           </div>
-          <div className="flex justify-between border-b border-[#DDD6C7]/50 pb-1">
-            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
+          <div className="flex justify-between border-b border-[var(--color-hairline-border)]/50 pb-1">
+            <span className="text-[var(--color-on-surface-muted)] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
               CLASS TEACHER:
             </span>
-            <span className="text-[#111111]">{schoolConfig.classTeacher}</span>
+            <span className="text-[var(--color-on-surface)]">{schoolConfig.classTeacher}</span>
           </div>
           <div className="flex justify-between pb-1">
-            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
+            <span className="text-[var(--color-on-surface-muted)] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
               KCPE MARKS:
             </span>
-            <span className="font-tabular-sm text-tabular-sm text-[#111111] font-semibold">
+            <span className="font-tabular-sm text-tabular-sm text-[var(--color-on-surface)] font-semibold">
               {calc.student.kcpeMarks} / 500
             </span>
           </div>
           <div className="flex justify-between pb-1">
-            <span className="text-[#5F5E5E] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
+            <span className="text-[var(--color-on-surface-muted)] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
               STREAM POPULATION:
             </span>
-            <span className="font-tabular-sm text-tabular-sm text-[#111111]">
+            <span className="font-tabular-sm text-tabular-sm text-[var(--color-on-surface)]">
               {students.length} Candidates
             </span>
           </div>
@@ -258,7 +263,7 @@ export const ReportCardsView: React.FC = () => {
         <div className="my-3 overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="border-b-2 border-[#111111] bg-[#F8F3E9] text-[10px] sm:text-[11px] font-label-caps text-[#111111] uppercase tracking-wider">
+              <tr className="border-b-2 border-[var(--color-on-surface)] bg-[var(--color-surface-container-low)] text-[10px] sm:text-[11px] font-label-caps text-[var(--color-on-surface)] uppercase tracking-wider">
                 <th className="py-1.5 px-2">SUBJECT</th>
                 <th className="py-1.5 px-2 text-center w-14">SCORE</th>
                 <th className="py-1.5 px-2 text-center w-14">GRADE</th>
@@ -266,7 +271,7 @@ export const ReportCardsView: React.FC = () => {
                 <th className="py-1.5 px-2 hidden sm:table-cell">TEACHER'S EVALUATION REMARKS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#DDD6C7] font-body-sm text-[12px] sm:text-body-sm">
+            <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-[12px] sm:text-body-sm">
               {subjects.map((subj) => {
                 const val = studentMarks[subj.code];
                 const isAbs = val === "ABS";
@@ -275,32 +280,32 @@ export const ReportCardsView: React.FC = () => {
                   DEFAULT_SUBJECT_REMARKS[subj.code] || "Satisfactory academic effort.";
 
                 return (
-                  <tr key={subj.code} className="hover:bg-[#FBF8F1]">
+                  <tr key={subj.code} className="hover:bg-[var(--color-surface-container)]">
                     <td className="py-2 px-2 font-medium">
                       <span className="font-semibold">{subj.code}</span> · {subj.name}
                     </td>
                     <td className="py-2 px-2 text-center font-tabular-sm">
                       {isAbs ? (
-                        <span className="text-[#9A958A] font-bold">ABS</span>
+                        <span className="text-[var(--color-on-surface-disabled)] font-bold">ABS</span>
                       ) : val !== null && val !== undefined ? (
                         val
                       ) : (
-                        <span className="text-[#DDD6C7]">—</span>
+                        <span className="text-[var(--color-hairline-border)]">—</span>
                       )}
                     </td>
                     <td className="py-2 px-2 text-center">
                       {isAbs ? (
-                        <span className="text-[#9A958A] font-medium text-xs">X</span>
+                        <span className="text-[var(--color-on-surface-disabled)] font-medium text-xs">X</span>
                       ) : val !== null && val !== undefined ? (
                         <GradeChip grade={gradeInfo.grade} size="sm" />
                       ) : (
-                        <span className="text-[#DDD6C7]">—</span>
+                        <span className="text-[var(--color-hairline-border)]">—</span>
                       )}
                     </td>
                     <td className="py-2 px-2 text-center font-tabular-sm font-semibold">
                       {isAbs || val === null || val === undefined ? "0" : gradeInfo.points}
                     </td>
-                    <td className="py-2 px-2 text-[11px] text-[#5F5E5E] italic hidden sm:table-cell">
+                    <td className="py-2 px-2 text-[11px] text-[var(--color-on-surface-muted)] italic hidden sm:table-cell">
                       {remark}
                     </td>
                   </tr>
@@ -311,34 +316,34 @@ export const ReportCardsView: React.FC = () => {
         </div>
 
         {/* KCSE KNEC Aggregate Summary Matrix */}
-        <div className="my-4 border-2 border-[#111111] p-3 sm:p-4 bg-[#FBF8F1] grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-          <div className="border-r border-[#DDD6C7] pr-2">
-            <span className="text-[10px] font-label-caps uppercase text-[#5F5E5E] block">
+        <div className="my-4 border-2 border-[var(--color-on-surface)] p-3 sm:p-4 bg-[var(--color-surface-container-low)] grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div className="border-r border-[var(--color-hairline-border)] pr-2">
+            <span className="text-[10px] font-label-caps uppercase text-[var(--color-on-surface-muted)] block">
               STREAM RANK
             </span>
-            <span className="font-display-stat text-xl sm:text-2xl font-bold text-[#111111] block mt-0.5">
+            <span className="font-display-stat text-xl sm:text-2xl font-bold text-[var(--color-on-surface)] block mt-0.5">
               #{calc.rank}{" "}
-              <span className="text-xs text-[#5F5E5E] font-normal">of {students.length}</span>
+              <span className="text-xs text-[var(--color-on-surface-muted)] font-normal">of {students.length}</span>
             </span>
           </div>
-          <div className="sm:border-r border-[#DDD6C7] sm:pr-2">
-            <span className="text-[10px] font-label-caps uppercase text-[#5F5E5E] block">
+          <div className="sm:border-r border-[var(--color-hairline-border)] sm:pr-2">
+            <span className="text-[10px] font-label-caps uppercase text-[var(--color-on-surface-muted)] block">
               BEST 7 AGGREGATE
             </span>
-            <span className="font-display-stat text-xl sm:text-2xl font-bold text-[#111111] block mt-0.5">
-              {calc.aggregate} <span className="text-xs text-[#5F5E5E] font-normal">/ 84 pts</span>
+            <span className="font-display-stat text-xl sm:text-2xl font-bold text-[var(--color-on-surface)] block mt-0.5">
+              {calc.aggregate} <span className="text-xs text-[var(--color-on-surface-muted)] font-normal">/ 84 pts</span>
             </span>
           </div>
-          <div className="border-r border-[#DDD6C7] pr-2 pt-2 sm:pt-0 border-t sm:border-t-0">
-            <span className="text-[10px] font-label-caps uppercase text-[#5F5E5E] block">
+          <div className="border-r border-[var(--color-hairline-border)] pr-2 pt-2 sm:pt-0 border-t sm:border-t-0">
+            <span className="text-[10px] font-label-caps uppercase text-[var(--color-on-surface-muted)] block">
               MEAN SCORE
             </span>
-            <span className="font-display-stat text-xl sm:text-2xl font-bold text-[#111111] block mt-0.5">
+            <span className="font-display-stat text-xl sm:text-2xl font-bold text-[var(--color-on-surface)] block mt-0.5">
               {calc.average.toFixed(1)}%
             </span>
           </div>
           <div className="pt-2 sm:pt-0 border-t sm:border-t-0">
-            <span className="text-[10px] font-label-caps uppercase text-[#5F5E5E] block">
+            <span className="text-[10px] font-label-caps uppercase text-[var(--color-on-surface-muted)] block">
               KCSE MEAN GRADE
             </span>
             <div className="mt-1 flex justify-center">
@@ -348,31 +353,31 @@ export const ReportCardsView: React.FC = () => {
         </div>
 
         {/* Teacher & Principal Signatures */}
-        <div className="mt-5 pt-4 border-t border-[#DDD6C7] grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-          <div className="p-3 bg-[#FEF9EF] border border-[#DDD6C7] rounded">
-            <span className="font-semibold text-[#111111] block mb-1">
+        <div className="mt-5 pt-4 border-t border-[var(--color-hairline-border)] grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <div className="p-3 bg-[var(--color-surface-container-low)] border border-[var(--color-hairline-border)] rounded">
+            <span className="font-semibold text-[var(--color-on-surface)] block mb-1">
               Class Teacher's Remarks:
             </span>
-            <p className="italic text-[#5F5E5E] text-[11px] leading-relaxed">
+            <p className="italic text-[var(--color-on-surface-muted)] text-[11px] leading-relaxed">
               {calc.qualifies
                 ? "Commendable performance throughout this evaluation period. Qualifies for university degree admission. Maintain consistency in revision."
                 : "Steady effort observed. Needs intensive revision in weak subject areas to attain the university qualification cutoff threshold."}
             </p>
-            <div className="mt-3 pt-2 border-t border-dashed border-[#DDD6C7] flex justify-between text-[10px] text-[#5F5E5E]">
+            <div className="mt-3 pt-2 border-t border-dashed border-[var(--color-hairline-border)] flex justify-between text-[10px] text-[var(--color-on-surface-muted)]">
               <span>Sign: {schoolConfig.classTeacher}</span>
               <span>Date: {new Date().toLocaleDateString()}</span>
             </div>
           </div>
 
-          <div className="p-3 bg-[#FEF9EF] border border-[#DDD6C7] rounded">
-            <span className="font-semibold text-[#111111] block mb-1">
-              Principal's Seal &amp; Remarks:
+          <div className="p-3 bg-[var(--color-surface-container-low)] border border-[var(--color-hairline-border)] rounded">
+            <span className="font-semibold text-[var(--color-on-surface)] block mb-1">
+              Principal's Seal & Remarks:
             </span>
-            <p className="italic text-[#5F5E5E] text-[11px] leading-relaxed">
+            <p className="italic text-[var(--color-on-surface-muted)] text-[11px] leading-relaxed">
               Approved and certified by school administration. Official KNEC candidate academic
               standing.
             </p>
-            <div className="mt-3 pt-2 border-t border-dashed border-[#DDD6C7] flex justify-between text-[10px] text-[#5F5E5E]">
+            <div className="mt-3 pt-2 border-t border-dashed border-[var(--color-hairline-border)] flex justify-between text-[10px] text-[var(--color-on-surface-muted)]">
               <span>Principal: {schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}</span>
               <span>Official Stamp</span>
             </div>
@@ -380,7 +385,7 @@ export const ReportCardsView: React.FC = () => {
         </div>
 
         {/* Archival Footnote */}
-        <div className="mt-4 pt-2 border-t border-[#DDD6C7] flex flex-wrap justify-between items-center text-[10px] text-[#9A958A] font-caption">
+        <div className="mt-4 pt-2 border-t border-[var(--color-hairline-border)] flex flex-wrap justify-between items-center text-[10px] text-[var(--color-on-surface-disabled)] font-caption">
           <span>Official KCSE Grading Ledger · Chokur Academic System v2.4</span>
           <span>Next Term Opens: {schoolConfig.termOpeningDate || "TBA"}</span>
         </div>
@@ -389,29 +394,31 @@ export const ReportCardsView: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-[#FEF9EF] font-body-md text-[#111111]">
+    <div className="flex-1 flex flex-col min-h-screen bg-[var(--color-surface-container-low)] font-body-md text-[var(--color-on-surface)]">
       {/* Top Header Bar with Actions */}
-      <section className="px-3 sm:px-6 py-3 sm:py-4 border-b border-[#DDD6C7] flex flex-col md:flex-row md:items-center justify-between gap-3 bg-[#FEF9EF] no-print">
+      <section className="px-3 sm:px-6 py-3 sm:py-4 border-b border-[var(--color-hairline-border)] flex flex-col md:flex-row md:items-center justify-between gap-3 bg-[var(--color-surface-container-low)] no-print">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="font-headline-lg text-lg sm:text-headline-lg text-[#111111]">
+            <h2 className="font-headline-lg text-lg sm:text-headline-lg text-[var(--color-on-surface)]">
               Report Cards
             </h2>
-            <p className="font-body-sm text-xs sm:text-body-sm text-[#5F5E5E]">
+            <p className="font-body-sm text-xs sm:text-body-sm text-[var(--color-on-surface-muted)]">
               {activeStream} · {activeExam} · printable A4 certificates
             </p>
           </div>
 
           {/* Mobile Back to Roster button when viewing card */}
           {mobileView === "card" && (
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => setMobileView("roster")}
-              type="button"
-              className="md:hidden px-3 py-1.5 bg-[#FBF8F1] border border-[#DDD6C7] rounded text-xs font-semibold flex items-center gap-1 cursor-pointer min-h-[40px]"
+              className="md:hidden min-h-[40px]"
+              iconPosition="left"
+              icon={<span className="material-symbols-outlined text-[16px]">arrow_back</span>}
             >
-              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-              <span>Roster</span>
-            </button>
+              Roster
+            </Button>
           )}
         </div>
 
@@ -419,97 +426,113 @@ export const ReportCardsView: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2">
           {/* Contextual Back Button */}
           {role === "Parent" ? (
-            <button
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => setActiveView("parent-portal")}
-              type="button"
-              className="px-3 py-2 bg-[#FBF8F1] border border-[#DDD6C7] text-[#111111] rounded text-xs font-semibold hover:bg-[#F2EDE3] transition-colors flex items-center gap-1.5 cursor-pointer min-h-[40px]"
+              className="min-h-[40px]"
+              iconPosition="left"
+              icon={<span className="material-symbols-outlined text-[16px]">arrow_back</span>}
               title="Return to Parent Portal"
             >
-              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-              <span>Parent Portal</span>
-            </button>
+              Parent Portal
+            </Button>
           ) : (
-            <button
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => setActiveView("rankings")}
-              type="button"
-              className="px-3 py-2 bg-[#FBF8F1] border border-[#DDD6C7] text-[#111111] rounded text-xs font-semibold hover:bg-[#F2EDE3] transition-colors flex items-center gap-1.5 cursor-pointer min-h-[40px]"
+              className="min-h-[40px]"
+              iconPosition="left"
+              icon={<span className="material-symbols-outlined text-[16px]">arrow_back</span>}
               title="Return to Class Rankings ledger"
             >
-              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-              <span>Rankings</span>
-            </button>
+              Rankings
+            </Button>
           )}
 
           {/* Stepper Navigation Controls (Staff only) */}
           {role !== "Parent" && (
-            <div className="flex items-center border border-[#DDD6C7] rounded bg-[#FBF8F1] min-h-[40px]">
-              <button
+            <div className="flex items-center border border-[var(--color-hairline-border)] rounded bg-[var(--color-surface-container-low)] min-h-[40px]">
+              <IconButton
+                variant="ghost"
+                size="sm"
                 onClick={handlePrevStudent}
                 disabled={currentIndex <= 0}
-                className="p-2 text-[#5F5E5E] hover:text-[#111111] disabled:opacity-30 cursor-pointer min-h-[40px] min-w-[36px] flex items-center justify-center"
+                className="min-h-[40px] min-w-[36px]"
                 title="Previous Student (Press [)"
+                aria-label="Previous student"
               >
                 <span className="material-symbols-outlined text-[18px]">chevron_left</span>
-              </button>
-              <span className="text-xs font-tabular-sm px-2 text-[#5F5E5E]">
+              </IconButton>
+              <span className="text-xs font-tabular-sm px-2 text-[var(--color-on-surface-muted)]">
                 {currentIndex + 1} / {filteredRoster.length}
               </span>
-              <button
+              <IconButton
+                variant="ghost"
+                size="sm"
                 onClick={handleNextStudent}
                 disabled={currentIndex >= filteredRoster.length - 1}
-                className="p-2 text-[#5F5E5E] hover:text-[#111111] disabled:opacity-30 cursor-pointer min-h-[40px] min-w-[36px] flex items-center justify-center"
+                className="min-h-[40px] min-w-[36px]"
                 title="Next Student (Press ])"
+                aria-label="Next student"
               >
                 <span className="material-symbols-outlined text-[18px]">chevron_right</span>
-              </button>
+              </IconButton>
             </div>
           )}
 
           {/* Share via WhatsApp / Native Share */}
-          <button
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handleNativeShare}
-            type="button"
-            className="px-2.5 sm:px-3 py-2 bg-transparent border border-[#DDD6C7] text-[#111111] rounded text-xs font-medium hover:bg-[#F2EDE3] transition-colors flex items-center gap-1.5 cursor-pointer min-h-[40px]"
+            className="min-h-[40px]"
+            iconPosition="left"
+            icon={<span className="material-symbols-outlined text-[16px]">share</span>}
             title="Share report summary"
           >
-            <span className="material-symbols-outlined text-[16px]">share</span>
             <span className="hidden sm:inline">Share</span>
-          </button>
+          </Button>
 
           {/* Print Single Card */}
-          <button
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handlePrintSingle}
-            type="button"
-            className="px-2.5 sm:px-3 py-2 bg-transparent border border-[#111111] text-[#111111] rounded text-xs font-medium hover:bg-[#F2EDE3] transition-colors flex items-center gap-1.5 cursor-pointer min-h-[40px]"
+            className="min-h-[40px]"
+            iconPosition="left"
+            icon={<span className="material-symbols-outlined text-[16px]">print</span>}
           >
-            <span className="material-symbols-outlined text-[16px]">print</span>
-            <span>Print</span>
-          </button>
+            Print
+          </Button>
 
           {/* Download PDF via jsPDF */}
-          <button
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handleDownloadPDF}
             disabled={isGeneratingPDF}
-            type="button"
-            className="px-3 py-2 bg-transparent border border-[#111111] text-[#111111] rounded text-xs font-medium hover:bg-[#F2EDE3] transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50 min-h-[40px]"
+            className="min-h-[40px]"
+            iconPosition="left"
+            icon={<span className="material-symbols-outlined text-[16px]">{isGeneratingPDF ? "hourglass_empty" : "download"}</span>}
           >
-            <span className="material-symbols-outlined text-[16px]">
-              {isGeneratingPDF ? "hourglass_empty" : "download"}
-            </span>
-            <span>{isGeneratingPDF ? "PDF..." : "PDF"}</span>
-          </button>
+            {isGeneratingPDF ? "PDF..." : "PDF"}
+          </Button>
 
           {/* Print All Cards (Staff only) */}
           {role !== "Parent" && (
-            <button
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={handlePrintAll}
-              type="button"
-              className="px-3.5 py-2 bg-[#C2410C] text-[#FEF9EF] rounded text-xs font-semibold hover:opacity-95 transition-opacity flex items-center gap-1.5 cursor-pointer min-h-[40px]"
+              className="min-h-[40px]"
+              iconPosition="left"
+              icon={<span className="material-symbols-outlined text-[16px]">print</span>}
             >
-              <span className="material-symbols-outlined text-[16px]">print</span>
               <span className="hidden sm:inline">Print All ({students.length})</span>
               <span className="sm:hidden">All</span>
-            </button>
+            </Button>
           )}
         </div>
       </section>
@@ -518,33 +541,33 @@ export const ReportCardsView: React.FC = () => {
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
         {/* Left Panel: Searchable Class Roster Index (Hidden for parents or on mobile when card is open) */}
         <aside
-          className={`w-full md:w-80 shrink-0 border-r border-[#DDD6C7] flex flex-col bg-[#FEF9EF] overflow-hidden no-print ${
+          className={`w-full md:w-80 shrink-0 border-r border-[var(--color-hairline-border)] flex flex-col bg-[var(--color-surface-container-low)] overflow-hidden no-print ${
             role === "Parent" || mobileView === "card" ? "hidden" : "flex"
           }`}
         >
-          <div className="p-3 border-b border-[#DDD6C7] space-y-2 bg-[#FEF9EF]">
+          <div className="p-3 border-b border-[var(--color-hairline-border)] space-y-2 bg-[var(--color-surface-container-low)]">
             <div className="relative">
-              <span className="material-symbols-outlined absolute left-2.5 top-2.5 text-[17px] text-[#9A958A]">
+              <span className="material-symbols-outlined absolute left-2.5 top-2.5 text-[17px] text-[var(--color-on-surface-disabled)]">
                 search
               </span>
-              <input
+              <Input
                 type="text"
                 value={searchRoster}
                 onChange={(e) => setSearchRoster(e.target.value)}
                 placeholder="Search candidate name or adm..."
-                className="w-full bg-[#FBF8F1] border border-[#DDD6C7] rounded pl-8 pr-3 py-2 text-xs font-body-sm text-[#111111] placeholder:text-[#9A958A] focus:outline-none focus:border-[#C2410C] min-h-[44px]"
+                className="pl-9"
               />
             </div>
-            <div className="flex items-center justify-between text-xs px-1 text-[#5F5E5E]">
-              <span className="font-caption text-caption text-[#5F5E5E]">Class Candidates</span>
-              <span className="text-[#111111] font-semibold font-tabular-sm">
+            <div className="flex items-center justify-between text-xs px-1 text-[var(--color-on-surface-muted)]">
+              <span className="font-caption text-caption text-[var(--color-on-surface-muted)]">Class Candidates</span>
+              <span className="text-[var(--color-on-surface)] font-semibold font-tabular-sm">
                 {filteredRoster.length} Candidates
               </span>
             </div>
           </div>
 
           {/* Student list */}
-          <div className="flex-1 overflow-y-auto divide-y divide-[#DDD6C7] max-h-[calc(100vh-210px)]">
+          <div className="flex-1 overflow-y-auto divide-y divide-[var(--color-hairline-border)] max-h-[calc(100vh-210px)]">
             {filteredRoster.map((item) => {
               const isSelected = item.student.id === selectedCalculation?.student.id;
 
@@ -556,24 +579,24 @@ export const ReportCardsView: React.FC = () => {
                     setMobileView("card");
                   }}
                   className={`p-3 cursor-pointer transition-colors min-h-[56px] flex items-center justify-between ${
-                    isSelected ? "bg-[#FBF8F1] border-l-3 border-[#C2410C]" : "hover:bg-[#F2EDE3]"
+                    isSelected ? "bg-[var(--color-surface-container)] border-l-3 border-[var(--color-primary)]" : "hover:bg-[var(--color-surface-container)]"
                   }`}
                 >
                   <div className="flex-1 min-w-0 pr-2">
-                    <span className="font-tabular-sm text-[11px] text-[#9A958A] block">
+                    <span className="font-tabular-sm text-[11px] text-[var(--color-on-surface-disabled)] block">
                       ADM {item.student.admNo}
                     </span>
                     <h4
                       className={`leading-snug truncate ${
                         isSelected
-                          ? "font-semibold text-xs text-[#111111]"
-                          : "font-medium text-xs text-[#111111]"
+                          ? "font-semibold text-xs text-[var(--color-on-surface)]"
+                          : "font-medium text-xs text-[var(--color-on-surface)]"
                       }`}
                     >
                       {item.student.name}
                     </h4>
-                    <div className="mt-1 flex items-center gap-2 text-[10px] text-[#5F5E5E] font-tabular-sm">
-                      <span className="text-[#111111] font-semibold">Rank #{item.rank}</span>
+                    <div className="mt-1 flex items-center gap-2 text-[10px] text-[var(--color-on-surface-muted)] font-tabular-sm">
+                      <span className="text-[var(--color-on-surface)] font-semibold">Rank #{item.rank}</span>
                       <span>•</span>
                       <span>{item.aggregate}/84 pts</span>
                     </div>
@@ -581,7 +604,7 @@ export const ReportCardsView: React.FC = () => {
 
                   <div className="flex items-center gap-2 shrink-0">
                     <GradeChip grade={item.meanGrade} size="sm" />
-                    <span className="material-symbols-outlined text-[16px] text-[#9A958A] md:hidden">
+                    <span className="material-symbols-outlined text-[16px] text-[var(--color-on-surface-disabled)] md:hidden">
                       chevron_right
                     </span>
                   </div>
@@ -593,7 +616,7 @@ export const ReportCardsView: React.FC = () => {
 
         {/* Right Panel: Official Printable A4 Sheet Preview (Shown on desktop or when mobileView === 'card') */}
         <section
-          className={`flex-1 bg-[#F2EDE3] overflow-y-auto p-3 sm:p-6 md:p-8 flex flex-col items-center justify-start ${
+          className={`flex-1 bg-[var(--color-surface-container-low)] overflow-y-auto p-3 sm:p-6 md:p-8 flex flex-col items-center justify-start ${
             mobileView === "roster" ? "hidden md:flex" : "flex"
           }`}
         >
