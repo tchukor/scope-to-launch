@@ -101,6 +101,44 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap",
       },
     ],
+    scripts: [
+      {
+        children: `
+          // Complete $_TSR polyfill for hydration handshake
+          // This runs before the streaming polyfill. Make it non-writable so streaming
+          // polyfill's assignment (self.$_TSR = {...}) fails silently, then the streaming
+          // polyfill's $_TSR.router = ... and $_TSR.e() operate on our complete object.
+          (function() {
+            if (window.$_TSR) return;
+            var buffer = [];
+            var initialized = false;
+            var tsr = {
+              h: function() { this.hydrated = true; this.c(); },
+              e: function() { this.streamEnded = true; this.c(); },
+              c: function() { if (this.hydrated && this.streamEnded) { delete window.$_TSR; delete self.$R?.tsr; } },
+              p: function(fn) { if (this.initialized) fn(); else this.buffer.push(fn); },
+              buffer: buffer,
+              get initialized() { return initialized; },
+              set initialized(v) { initialized = v; if (v) { buffer.forEach(function(fn) { fn(); }); buffer.length = 0; } },
+              router: { manifest: {}, matches: [] },
+              t: new Map()
+            };
+            // Make $_TSR non-writable to prevent streaming polyfill from overwriting the reference
+            Object.defineProperty(window, '$_TSR', {
+              value: tsr,
+              writable: false,
+              configurable: false
+            });
+            console.log('[CHOKUR] Complete $_TSR polyfill installed (non-writable)', {
+              initialized: tsr.initialized,
+              buffer: tsr.buffer.length,
+              hasRouter: !!tsr.router,
+              hasT: !!tsr.t
+            });
+          })();
+        `,
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -116,7 +154,6 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
-        <Scripts />
       </body>
     </html>
   );
@@ -129,6 +166,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <Scripts />
     </QueryClientProvider>
   );
 }

@@ -14,5 +14,15 @@ export default defineConfig({
     nitro: {
       preset: "vercel",
     },
+    // Override output directories to match Nitro Vercel preset
+    outputDirectories: {
+      client: ".vercel/output/static",
+      server: ".vercel/output/functions/__server.func",
+    },
+  },
+  vite: {
+    build: {
+      outDir: ".vercel/output/static",
+    },
   },
 });

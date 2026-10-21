@@ -36,7 +36,6 @@ interface LandingPageViewProps { onLaunch: (targetView?: ViewType) => void; }
 export const LandingPageView: React.FC<LandingPageViewProps> = ({ onLaunch }) => {
   const [legalModal, setLegalModal] = useState<LegalModalType>(null);
   const { setActiveView } = useGrading();
-  const [isClient, setIsClient] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [animatedStats, setAnimatedStats] = useState(false);
 
@@ -100,41 +99,26 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({ onLaunch }) =>
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Scroll effect for header
+  // Scroll effect for header (client only)
   useEffect(() => {
-    if (!isClient) return;
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isClient]);
+  }, []);
 
   // Trigger animations when client mounts
   useEffect(() => {
-    if (isClient) {
-      setIsClient(true);
-      setTimeout(() => setAnimatedStats(true), 300);
-    }
+    setTimeout(() => setAnimatedStats(true), 300);
   }, []);
 
-  // Register service worker
+  // Register service worker (client only, production only)
   useEffect(() => {
-    if (isClient && "serviceWorker" in navigator && import.meta.env.PROD) {
+    if ("serviceWorker" in navigator && import.meta.env.PROD) {
       navigator.serviceWorker.register("/sw.js").catch((err) => {
         console.warn("[SW] Registration failed:", err);
       });
     }
-  }, [isClient]);
-
-  if (!isClient) {
-    return (
-      <div className="min-h-screen bg-[var(--color-surface)]" aria-hidden="true">
-        <header className="sticky top-0 z-40 border-b border-[var(--color-hairline-border)] px-4 sm:px-8 py-3 flex items-center justify-between bg-[var(--color-surface)]/95 backdrop-blur-sm">
-          <ChokurLogo variant="horizontal" size={32} className="cursor-pointer" />
-        </header>
-        <main className="flex-1" />
-      </div>
-    );
-  }
+  }, []);
 
   return (
     <div className="min-h-screen bg-[var(--color-surface)] text-[var(--color-on-surface)] font-sans antialiased selection:bg-[var(--color-primary-light)] selection:text-[var(--color-on-primary-container)]">

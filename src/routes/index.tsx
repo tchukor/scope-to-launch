@@ -1,4 +1,4 @@
-import { ClientOnly, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { GradingProvider } from "@/chokur/context/GradingContext";
 
@@ -29,14 +29,11 @@ function Index() {
       });
     }
   }, []);
-  if (!isClient) return <Fallback />;
   return (
-    <ClientOnly fallback={<Fallback />}>
-      <Suspense fallback={<Fallback />}>
-        <GradingProvider>
-          {showLanding ? <LandingPage onLaunch={() => { localStorage.setItem("chokur.has_used_app", "true"); setShowLanding(false); }} /> : <ChokurApp />}
-        </GradingProvider>
-      </Suspense>
-    </ClientOnly>
+    <Suspense fallback={<Fallback />}>
+      <GradingProvider>
+        {showLanding ? <LandingPage onLaunch={() => { localStorage.setItem("chokur.has_used_app", "true"); setShowLanding(false); }} /> : <ChokurApp />}
+      </GradingProvider>
+    </Suspense>
   );
 }

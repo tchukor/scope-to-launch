@@ -478,9 +478,13 @@ export const StudentsClassesView: React.FC = () => {
         </Tabs>
       </section>
 
-      {/* TAB 1: STUDENTS */}
-      <TabsContent value="students" forceMount>
-        <section>
+      {/* Tab Panels */}
+      <Tabs defaultValue={currentTab} onValueChange={setActiveSubTab} variant="underline" className="w-full max-w-full" aria-label="Admin sections">
+        <TabsList className="hidden" />
+
+        {/* TAB 1: STUDENTS */}
+        <TabsContent value="students" forceMount>
+          <section>
           {/* Controls */}
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center flex-wrap justify-between gap-3 mb-6">
             <div className="relative w-full sm:w-80">
@@ -801,6 +805,7 @@ export const StudentsClassesView: React.FC = () => {
           </Card>
         </section>
       </TabsContent>
+      </Tabs>
 
       {/* ADD / EDIT STUDENT MODAL - using Sheet */}
       <Sheet open={isAddModalOpen} onOpenChange={setIsAddModalOpen} side="right">
