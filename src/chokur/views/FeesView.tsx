@@ -63,7 +63,9 @@ export const FeesView: React.FC = () => {
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-[var(--color-on-surface-muted)]">Fee per term (KES)</label>
+            <label className="text-sm font-medium text-[var(--color-on-surface-muted)]">
+              Fee per term (KES)
+            </label>
             <Input
               type="number"
               min={0}
@@ -90,25 +92,33 @@ export const FeesView: React.FC = () => {
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 py-4">
         <Card variant="elevated">
           <CardContent className="p-3">
-            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Expected</div>
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">
+              Expected
+            </div>
             <div className="text-xl font-bold text-[var(--color-on-surface)]">{kes(expected)}</div>
           </CardContent>
         </Card>
         <Card variant="elevated">
           <CardContent className="p-3">
-            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Collected</div>
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">
+              Collected
+            </div>
             <div className="text-xl font-bold text-[var(--color-success)]">{kes(collected)}</div>
           </CardContent>
         </Card>
         <Card variant="elevated">
           <CardContent className="p-3">
-            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Collection Rate</div>
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">
+              Collection Rate
+            </div>
             <div className="text-xl font-bold text-[var(--color-on-surface)]">{pct}%</div>
           </CardContent>
         </Card>
         <Card variant="elevated">
           <CardContent className="p-3">
-            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">With Balance</div>
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">
+              With Balance
+            </div>
             <div className="text-xl font-bold text-[var(--color-error)]">{defaulters} students</div>
           </CardContent>
         </Card>
@@ -128,10 +138,18 @@ export const FeesView: React.FC = () => {
               <DataTable hoverable compact>
                 <TableHeader>
                   <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
-                    <TableHead scope="col" className="w-20 px-4">ADM</TableHead>
-                    <TableHead scope="col" className="px-4">STUDENT</TableHead>
-                    <TableHead scope="col" className="w-28 px-3 text-right">PAID</TableHead>
-                    <TableHead scope="col" className="w-28 px-3 text-right">BALANCE</TableHead>
+                    <TableHead scope="col" className="w-20 px-4">
+                      ADM
+                    </TableHead>
+                    <TableHead scope="col" className="px-4">
+                      STUDENT
+                    </TableHead>
+                    <TableHead scope="col" className="w-28 px-3 text-right">
+                      PAID
+                    </TableHead>
+                    <TableHead scope="col" className="w-28 px-3 text-right">
+                      BALANCE
+                    </TableHead>
                   </tr>
                 </TableHeader>
                 <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
@@ -141,14 +159,24 @@ export const FeesView: React.FC = () => {
                       className="h-11 hover:bg-[var(--color-surface-container)] transition-colors cursor-pointer"
                       onClick={() => setStudentId(s.id)}
                     >
-                      <TableCell className="px-4 font-tabular-sm text-[11px] text-[var(--color-on-surface-muted)]">{s.admNo}</TableCell>
-                      <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">{s.name}</TableCell>
-                      <TableCell className="px-3 text-right font-tabular-sm text-[var(--color-on-surface)]">{paid.toLocaleString()}</TableCell>
+                      <TableCell className="px-4 font-tabular-sm text-[11px] text-[var(--color-on-surface-muted)]">
+                        {s.admNo}
+                      </TableCell>
+                      <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">
+                        {s.name}
+                      </TableCell>
+                      <TableCell className="px-3 text-right font-tabular-sm text-[var(--color-on-surface)]">
+                        {paid.toLocaleString()}
+                      </TableCell>
                       <TableCell className="px-3 text-right font-tabular-sm font-semibold">
                         {balance > 0 ? (
-                          <span className="text-[var(--color-error)]">{balance.toLocaleString()}</span>
+                          <span className="text-[var(--color-error)]">
+                            {balance.toLocaleString()}
+                          </span>
                         ) : (
-                          <Badge variant="success" size="sm">Cleared</Badge>
+                          <Badge variant="success" size="sm">
+                            Cleared
+                          </Badge>
                         )}
                       </TableCell>
                     </TableRow>
@@ -165,11 +193,7 @@ export const FeesView: React.FC = () => {
               <CardTitle className="font-headline-sm text-headline-sm">Record Payment</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Select
-                value={studentId}
-                onValueChange={setStudentId}
-                placeholder="Select student…"
-              >
+              <Select value={studentId} onValueChange={setStudentId} placeholder="Select student…">
                 <option value="">Select student…</option>
                 {filteredStudents.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -212,15 +236,22 @@ export const FeesView: React.FC = () => {
             </CardHeader>
             <CardContent className="p-0">
               {recent.length === 0 ? (
-                <div className="p-4 text-center text-[var(--color-on-surface-muted)] text-sm">None recorded.</div>
+                <div className="p-4 text-center text-[var(--color-on-surface-muted)] text-sm">
+                  None recorded.
+                </div>
               ) : (
                 <DataTable compact>
                   <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
                     {recent.map((p) => {
                       const st = filteredStudents.find((s) => s.id === p.studentId);
                       return (
-                        <TableRow key={p.id} className="h-10 hover:bg-[var(--color-surface-container)]">
-                          <TableCell className="px-4 text-[var(--color-on-surface)]">{st?.name} · {p.method} · {p.date}</TableCell>
+                        <TableRow
+                          key={p.id}
+                          className="h-10 hover:bg-[var(--color-surface-container)]"
+                        >
+                          <TableCell className="px-4 text-[var(--color-on-surface)]">
+                            {st?.name} · {p.method} · {p.date}
+                          </TableCell>
                           <TableCell className="px-4 text-right font-tabular-sm font-semibold flex items-center justify-end gap-2">
                             <span>{p.amount.toLocaleString()}</span>
                             <IconButton
@@ -229,7 +260,9 @@ export const FeesView: React.FC = () => {
                               onClick={() => ops.removePayment(p.id)}
                               aria-label="Delete payment"
                             >
-                              <span className="material-symbols-outlined text-[18px] text-[var(--color-on-surface-disabled)] hover:text-[var(--color-error)]">close</span>
+                              <span className="material-symbols-outlined text-[18px] text-[var(--color-on-surface-disabled)] hover:text-[var(--color-error)]">
+                                close
+                              </span>
                             </IconButton>
                           </TableCell>
                         </TableRow>

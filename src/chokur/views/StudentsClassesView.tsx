@@ -5,7 +5,14 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui
 import { Button, IconButton } from "@/chokur/components/ui";
 import { Badge, StatusBadge } from "@/chokur/components/ui";
 import { Input, Textarea, Select } from "@/chokur/components/ui";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "@/chokur/components/ui";
+import {
+  DataTable,
+  TableHeader,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableFooter,
+} from "@/chokur/components/ui";
 import { Sheet, SheetTrigger } from "@/chokur/components/ui";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/chokur/components/ui";
 
@@ -460,18 +467,36 @@ export const StudentsClassesView: React.FC = () => {
         </div>
 
         {/* Top Tab Bar with Mobile Scroll */}
-        <Tabs defaultValue={currentTab} onValueChange={setActiveSubTab} variant="underline" className="w-full max-w-full" aria-label="Admin sections">
+        <Tabs
+          defaultValue={currentTab}
+          onValueChange={setActiveSubTab}
+          variant="underline"
+          className="w-full max-w-full"
+          aria-label="Admin sections"
+        >
           <TabsList className="flex gap-1 overflow-x-auto hide-scrollbar">
-            <TabsTrigger value="students" className="px-3.5 sm:px-4 py-2.5 min-h-[44px] whitespace-nowrap">
+            <TabsTrigger
+              value="students"
+              className="px-3.5 sm:px-4 py-2.5 min-h-[44px] whitespace-nowrap"
+            >
               Students Register
             </TabsTrigger>
-            <TabsTrigger value="classes" className="px-3.5 sm:px-4 py-2.5 min-h-[44px] whitespace-nowrap">
+            <TabsTrigger
+              value="classes"
+              className="px-3.5 sm:px-4 py-2.5 min-h-[44px] whitespace-nowrap"
+            >
               Classes & Streams ({streams.length})
             </TabsTrigger>
-            <TabsTrigger value="subjects" className="px-3.5 sm:px-4 py-2.5 min-h-[44px] whitespace-nowrap">
+            <TabsTrigger
+              value="subjects"
+              className="px-3.5 sm:px-4 py-2.5 min-h-[44px] whitespace-nowrap"
+            >
               Subjects ({subjects.length})
             </TabsTrigger>
-            <TabsTrigger value="periods" className="px-3.5 sm:px-4 py-2.5 min-h-[44px] whitespace-nowrap">
+            <TabsTrigger
+              value="periods"
+              className="px-3.5 sm:px-4 py-2.5 min-h-[44px] whitespace-nowrap"
+            >
               Exam Periods ({exams.length})
             </TabsTrigger>
           </TabsList>
@@ -479,332 +504,474 @@ export const StudentsClassesView: React.FC = () => {
       </section>
 
       {/* Tab Panels */}
-      <Tabs defaultValue={currentTab} onValueChange={setActiveSubTab} variant="underline" className="w-full max-w-full" aria-label="Admin sections">
+      <Tabs
+        defaultValue={currentTab}
+        onValueChange={setActiveSubTab}
+        variant="underline"
+        className="w-full max-w-full"
+        aria-label="Admin sections"
+      >
         <TabsList className="hidden" />
 
         {/* TAB 1: STUDENTS */}
         <TabsContent value="students" forceMount>
           <section>
-          {/* Controls */}
-          <div className="flex flex-col lg:flex-row items-stretch lg:items-center flex-wrap justify-between gap-3 mb-6">
-            <div className="relative w-full sm:w-80">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-on-surface-disabled)] text-[18px]">
-                search
-              </span>
-              <Input
-                type="text"
-                value={searchStudent}
-                onChange={(e) => {
-                  setSearchStudent(e.target.value);
-                  setCurrentPage(1);
-                }}
-                placeholder={`Search in ${activeStream}...`}
-                className="pl-9"
-              />
+            {/* Controls */}
+            <div className="flex flex-col lg:flex-row items-stretch lg:items-center flex-wrap justify-between gap-3 mb-6">
+              <div className="relative w-full sm:w-80">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-on-surface-disabled)] text-[18px]">
+                  search
+                </span>
+                <Input
+                  type="text"
+                  value={searchStudent}
+                  onChange={(e) => {
+                    setSearchStudent(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  placeholder={`Search in ${activeStream}...`}
+                  className="pl-9"
+                />
+              </div>
+
+              <div className="flex items-center gap-2.5">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setCsvText("");
+                    setCsvImportResult(null);
+                    setIsCSVModalOpen(true);
+                  }}
+                  iconPosition="left"
+                  icon={<span className="material-symbols-outlined text-[16px]">upload_file</span>}
+                >
+                  Bulk Import Students
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleOpenAddStudent}
+                  iconPosition="left"
+                  icon={<span className="material-symbols-outlined text-[16px]">person_add</span>}
+                >
+                  Add Student
+                </Button>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2.5">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setCsvText("");
-                  setCsvImportResult(null);
-                  setIsCSVModalOpen(true);
-                }}
-                iconPosition="left"
-                icon={<span className="material-symbols-outlined text-[16px]">upload_file</span>}
-              >
-                Bulk Import Students
-              </Button>
-              <Button
-                size="sm"
-                onClick={handleOpenAddStudent}
-                iconPosition="left"
-                icon={<span className="material-symbols-outlined text-[16px]">person_add</span>}
-              >
-                Add Student
-              </Button>
-            </div>
-          </div>
-
-          {/* Table */}
-          <Card variant="elevated" className="overflow-hidden">
-            <CardContent className="p-0">
-              <DataTable hoverable compact>
-                <TableHeader>
-                  <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
-                    <TableHead scope="col" className="w-24 px-4">ADM NO</TableHead>
-                    <TableHead scope="col" className="px-4">FULL NAME</TableHead>
-                    <TableHead scope="col" className="w-24 px-3">GENDER</TableHead>
-                    <TableHead scope="col" className="w-32 px-3 text-right">KCPE MARKS</TableHead>
-                    <TableHead scope="col" className="w-32 px-3">STREAM</TableHead>
-                    <TableHead scope="col" className="w-24 px-3 text-center">STATUS</TableHead>
-                    <TableHead scope="col" className="w-32 px-4 text-right">ACTIONS</TableHead>
-                  </tr>
-                </TableHeader>
-                <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
-                  {paginatedStudents.map((student) => (
-                    <TableRow key={student.id} className="h-11 hover:bg-[var(--color-surface-container)] transition-colors">
-                      <TableCell className="px-4 font-tabular-sm text-tabular-sm font-semibold text-[var(--color-on-surface)]">
-                        {student.admNo}
-                      </TableCell>
-                      <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">{student.name}</TableCell>
-                      <TableCell className="px-3 text-[var(--color-on-surface-muted)]">{student.gender}</TableCell>
-                      <TableCell className="px-3 text-right font-tabular-sm text-[var(--color-on-surface)]">
-                        {student.kcpeMarks} / 500
-                      </TableCell>
-                      <TableCell className="px-3 text-[var(--color-on-surface-muted)]">{student.stream}</TableCell>
-                      <TableCell className="px-3 text-center">
-                        <StatusBadge status={student.status === "Active" ? "active" : "inactive"} size="sm">
-                          {student.status}
-                        </StatusBadge>
-                      </TableCell>
-                      <TableCell className="px-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <Button variant="ghost" size="sm" onClick={() => handleOpenEditStudent(student)} className="p-0 min-h-0 text-xs">
-                            Edit
-                          </Button>
-                          <span className="text-[var(--color-hairline-border)]">|</span>
-                          <Button variant="ghost" size="sm" onClick={() => setDeletingStudent(student)} className="p-0 min-h-0 text-xs text-[var(--color-error)] hover:text-[var(--color-error)]/80">
-                            Delete
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {paginatedStudents.length === 0 && (
-                    <TableRow>
-                      <TableCell colSpan={7} className="text-center py-8 text-[var(--color-on-surface-muted)]">
-                        No student records found in {activeStream}.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </tbody>
-              </DataTable>
-            </CardContent>
-          </Card>
-
-          {/* Pagination */}
-          <div className="mt-4 flex items-center justify-between text-xs text-[var(--color-on-surface-muted)] font-tabular-sm">
-            <span>
-              Showing {filteredStudents.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}–
-              {Math.min(currentPage * pageSize, filteredStudents.length)} of{" "}
-              {filteredStudents.length} candidates
-            </span>
-            <div className="flex items-center gap-1">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="min-h-[36px] px-2.5 py-1"
-              >
-                Previous
-              </Button>
-              <span className="px-2">
-                Page {currentPage} of {totalPages}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                className="min-h-[36px] px-2.5 py-1"
-              >
-                Next
-              </Button>
-            </div>
-          </div>
-        </section>
-      </TabsContent>
-
-      {/* TAB 2: CLASSES & STREAMS */}
-      <TabsContent value="classes" forceMount>
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-body-sm text-[var(--color-on-surface-muted)]">
-              Registered classes and class teachers. Switching streams updates student filters
-              across all views.
-            </p>
-            <Button
-              size="sm"
-              onClick={handleOpenAddStream}
-              iconPosition="left"
-              icon={<span className="material-symbols-outlined text-[16px]">add</span>}
-            >
-              Add Class Stream
-            </Button>
-          </div>
-
-          <Card variant="elevated" className="overflow-hidden">
-            <CardContent className="p-0">
-              <DataTable hoverable compact>
-                <TableHeader>
-                  <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
-                    <TableHead scope="col" className="px-4">CLASS / STREAM</TableHead>
-                    <TableHead scope="col" className="px-4">FORM LEVEL</TableHead>
-                    <TableHead scope="col" className="px-4">STREAM NAME</TableHead>
-                    <TableHead scope="col" className="px-4">CLASS TEACHER</TableHead>
-                    <TableHead scope="col" className="px-4 text-right">ENROLLED STUDENTS</TableHead>
-                    <TableHead scope="col" className="px-4 text-right">ACTIONS</TableHead>
-                  </tr>
-                </TableHeader>
-                <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
-                  {streams.map((str) => {
-                    const count = students.filter((s) => s.stream === str.name).length;
-                    const isCurrentActive = activeStream === str.name;
-
-                    return (
-                      <TableRow key={str.id} className="h-11 hover:bg-[var(--color-surface-container)] transition-colors">
-                        <TableCell className="px-4 font-semibold text-[var(--color-on-surface)] flex items-center gap-2">
-                          <span>{str.name}</span>
-                          {isCurrentActive && (
-                            <StatusBadge status="active" size="sm">ACTIVE</StatusBadge>
-                          )}
+            {/* Table */}
+            <Card variant="elevated" className="overflow-hidden">
+              <CardContent className="p-0">
+                <DataTable hoverable compact>
+                  <TableHeader>
+                    <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
+                      <TableHead scope="col" className="w-24 px-4">
+                        ADM NO
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        FULL NAME
+                      </TableHead>
+                      <TableHead scope="col" className="w-24 px-3">
+                        GENDER
+                      </TableHead>
+                      <TableHead scope="col" className="w-32 px-3 text-right">
+                        KCPE MARKS
+                      </TableHead>
+                      <TableHead scope="col" className="w-32 px-3">
+                        STREAM
+                      </TableHead>
+                      <TableHead scope="col" className="w-24 px-3 text-center">
+                        STATUS
+                      </TableHead>
+                      <TableHead scope="col" className="w-32 px-4 text-right">
+                        ACTIONS
+                      </TableHead>
+                    </tr>
+                  </TableHeader>
+                  <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
+                    {paginatedStudents.map((student) => (
+                      <TableRow
+                        key={student.id}
+                        className="h-11 hover:bg-[var(--color-surface-container)] transition-colors"
+                      >
+                        <TableCell className="px-4 font-tabular-sm text-tabular-sm font-semibold text-[var(--color-on-surface)]">
+                          {student.admNo}
                         </TableCell>
-                        <TableCell className="px-4 text-[var(--color-on-surface-muted)]">{str.form}</TableCell>
-                        <TableCell className="px-4 text-[var(--color-on-surface-muted)]">{str.stream}</TableCell>
-                        <TableCell className="px-4 text-[var(--color-on-surface)]">{str.classTeacher || "—"}</TableCell>
-                        <TableCell className="px-4 text-right font-tabular-sm text-tabular-sm font-medium">
-                          {count} Students
+                        <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">
+                          {student.name}
+                        </TableCell>
+                        <TableCell className="px-3 text-[var(--color-on-surface-muted)]">
+                          {student.gender}
+                        </TableCell>
+                        <TableCell className="px-3 text-right font-tabular-sm text-[var(--color-on-surface)]">
+                          {student.kcpeMarks} / 500
+                        </TableCell>
+                        <TableCell className="px-3 text-[var(--color-on-surface-muted)]">
+                          {student.stream}
+                        </TableCell>
+                        <TableCell className="px-3 text-center">
+                          <StatusBadge
+                            status={student.status === "Active" ? "active" : "inactive"}
+                            size="sm"
+                          >
+                            {student.status}
+                          </StatusBadge>
                         </TableCell>
                         <TableCell className="px-4 text-right">
                           <div className="flex items-center justify-end gap-2">
-                            {!isCurrentActive && (
-                              <Button variant="ghost" size="sm" onClick={() => setActiveStream(str.name)} className="p-0 min-h-0 text-xs text-[var(--color-primary)]">
-                                Switch to
-                              </Button>
-                            )}
-                            <span className="text-[var(--color-hairline-border)]">|</span>
-                            <Button variant="ghost" size="sm" onClick={() => handleOpenEditStream(str)} className="p-0 min-h-0 text-xs">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleOpenEditStudent(student)}
+                              className="p-0 min-h-0 text-xs"
+                            >
                               Edit
                             </Button>
                             <span className="text-[var(--color-hairline-border)]">|</span>
-                            <Button variant="ghost" size="sm" onClick={() => setDeletingStream(str)} className="p-0 min-h-0 text-xs text-[var(--color-error)] hover:text-[var(--color-error)]/80">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setDeletingStudent(student)}
+                              className="p-0 min-h-0 text-xs text-[var(--color-error)] hover:text-[var(--color-error)]/80"
+                            >
                               Delete
                             </Button>
                           </div>
                         </TableCell>
                       </TableRow>
-                    );
-                  })}
-                </tbody>
-              </DataTable>
-            </CardContent>
-          </Card>
-        </section>
-      </TabsContent>
+                    ))}
+                    {paginatedStudents.length === 0 && (
+                      <TableRow>
+                        <TableCell
+                          colSpan={7}
+                          className="text-center py-8 text-[var(--color-on-surface-muted)]"
+                        >
+                          No student records found in {activeStream}.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </tbody>
+                </DataTable>
+              </CardContent>
+            </Card>
 
-      {/* TAB 3: SUBJECTS */}
-      <TabsContent value="subjects" forceMount>
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-body-sm text-[var(--color-on-surface-muted)]">
-              KCSE subjects configured in the curriculum ledger.
-            </p>
-            <Button
-              size="sm"
-              onClick={handleOpenAddSubject}
-              iconPosition="left"
-              icon={<span className="material-symbols-outlined text-[16px]">add</span>}
-            >
-              Add Subject
-            </Button>
-          </div>
+            {/* Pagination */}
+            <div className="mt-4 flex items-center justify-between text-xs text-[var(--color-on-surface-muted)] font-tabular-sm">
+              <span>
+                Showing {filteredStudents.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}–
+                {Math.min(currentPage * pageSize, filteredStudents.length)} of{" "}
+                {filteredStudents.length} candidates
+              </span>
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="min-h-[36px] px-2.5 py-1"
+                >
+                  Previous
+                </Button>
+                <span className="px-2">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="min-h-[36px] px-2.5 py-1"
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+          </section>
+        </TabsContent>
 
-          <Card variant="elevated" className="overflow-hidden">
-            <CardContent className="p-0">
-              <DataTable hoverable compact>
-                <TableHeader>
-                  <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
-                    <TableHead scope="col" className="w-24 px-4">CODE</TableHead>
-                    <TableHead scope="col" className="px-4">SUBJECT NAME</TableHead>
-                    <TableHead scope="col" className="px-4">DEPARTMENT</TableHead>
-                    <TableHead scope="col" className="px-4">SUBJECT TEACHER</TableHead>
-                    <TableHead scope="col" className="px-4 text-right">BENCHMARK MEAN</TableHead>
-                    <TableHead scope="col" className="px-4 text-right">ACTIONS</TableHead>
-                  </tr>
-                </TableHeader>
-                <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
-                  {subjects.map((subj) => (
-                    <TableRow key={subj.id} className="h-11 hover:bg-[var(--color-surface-container)] transition-colors">
-                      <TableCell className="px-4 font-tabular-sm text-tabular-sm font-bold text-[var(--color-on-surface)]">
-                        {subj.code}
-                      </TableCell>
-                      <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">{subj.name}</TableCell>
-                      <TableCell className="px-4 text-[var(--color-on-surface-muted)]">{subj.department}</TableCell>
-                      <TableCell className="px-4 text-[var(--color-on-surface)]">{subj.teacher || "—"}</TableCell>
-                      <TableCell className="px-4 text-right font-tabular-sm text-[var(--color-on-surface)]">
-                        {subj.lastExamMean.toFixed(1)}%
-                      </TableCell>
-                      <TableCell className="px-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <Button variant="ghost" size="sm" onClick={() => handleOpenEditSubject(subj)} className="p-0 min-h-0 text-xs">
-                            Edit
-                          </Button>
-                          <span className="text-[var(--color-hairline-border)]">|</span>
-                          <Button variant="ghost" size="sm" onClick={() => setDeletingSubject(subj)} className="p-0 min-h-0 text-xs text-[var(--color-error)] hover:text-[var(--color-error)]/80">
+        {/* TAB 2: CLASSES & STREAMS */}
+        <TabsContent value="classes" forceMount>
+          <section>
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-body-sm text-[var(--color-on-surface-muted)]">
+                Registered classes and class teachers. Switching streams updates student filters
+                across all views.
+              </p>
+              <Button
+                size="sm"
+                onClick={handleOpenAddStream}
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">add</span>}
+              >
+                Add Class Stream
+              </Button>
+            </div>
+
+            <Card variant="elevated" className="overflow-hidden">
+              <CardContent className="p-0">
+                <DataTable hoverable compact>
+                  <TableHeader>
+                    <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
+                      <TableHead scope="col" className="px-4">
+                        CLASS / STREAM
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        FORM LEVEL
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        STREAM NAME
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        CLASS TEACHER
+                      </TableHead>
+                      <TableHead scope="col" className="px-4 text-right">
+                        ENROLLED STUDENTS
+                      </TableHead>
+                      <TableHead scope="col" className="px-4 text-right">
+                        ACTIONS
+                      </TableHead>
+                    </tr>
+                  </TableHeader>
+                  <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
+                    {streams.map((str) => {
+                      const count = students.filter((s) => s.stream === str.name).length;
+                      const isCurrentActive = activeStream === str.name;
+
+                      return (
+                        <TableRow
+                          key={str.id}
+                          className="h-11 hover:bg-[var(--color-surface-container)] transition-colors"
+                        >
+                          <TableCell className="px-4 font-semibold text-[var(--color-on-surface)] flex items-center gap-2">
+                            <span>{str.name}</span>
+                            {isCurrentActive && (
+                              <StatusBadge status="active" size="sm">
+                                ACTIVE
+                              </StatusBadge>
+                            )}
+                          </TableCell>
+                          <TableCell className="px-4 text-[var(--color-on-surface-muted)]">
+                            {str.form}
+                          </TableCell>
+                          <TableCell className="px-4 text-[var(--color-on-surface-muted)]">
+                            {str.stream}
+                          </TableCell>
+                          <TableCell className="px-4 text-[var(--color-on-surface)]">
+                            {str.classTeacher || "—"}
+                          </TableCell>
+                          <TableCell className="px-4 text-right font-tabular-sm text-tabular-sm font-medium">
+                            {count} Students
+                          </TableCell>
+                          <TableCell className="px-4 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              {!isCurrentActive && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => setActiveStream(str.name)}
+                                  className="p-0 min-h-0 text-xs text-[var(--color-primary)]"
+                                >
+                                  Switch to
+                                </Button>
+                              )}
+                              <span className="text-[var(--color-hairline-border)]">|</span>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleOpenEditStream(str)}
+                                className="p-0 min-h-0 text-xs"
+                              >
+                                Edit
+                              </Button>
+                              <span className="text-[var(--color-hairline-border)]">|</span>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setDeletingStream(str)}
+                                className="p-0 min-h-0 text-xs text-[var(--color-error)] hover:text-[var(--color-error)]/80"
+                              >
+                                Delete
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </tbody>
+                </DataTable>
+              </CardContent>
+            </Card>
+          </section>
+        </TabsContent>
+
+        {/* TAB 3: SUBJECTS */}
+        <TabsContent value="subjects" forceMount>
+          <section>
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-body-sm text-[var(--color-on-surface-muted)]">
+                KCSE subjects configured in the curriculum ledger.
+              </p>
+              <Button
+                size="sm"
+                onClick={handleOpenAddSubject}
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">add</span>}
+              >
+                Add Subject
+              </Button>
+            </div>
+
+            <Card variant="elevated" className="overflow-hidden">
+              <CardContent className="p-0">
+                <DataTable hoverable compact>
+                  <TableHeader>
+                    <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
+                      <TableHead scope="col" className="w-24 px-4">
+                        CODE
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        SUBJECT NAME
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        DEPARTMENT
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        SUBJECT TEACHER
+                      </TableHead>
+                      <TableHead scope="col" className="px-4 text-right">
+                        BENCHMARK MEAN
+                      </TableHead>
+                      <TableHead scope="col" className="px-4 text-right">
+                        ACTIONS
+                      </TableHead>
+                    </tr>
+                  </TableHeader>
+                  <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
+                    {subjects.map((subj) => (
+                      <TableRow
+                        key={subj.id}
+                        className="h-11 hover:bg-[var(--color-surface-container)] transition-colors"
+                      >
+                        <TableCell className="px-4 font-tabular-sm text-tabular-sm font-bold text-[var(--color-on-surface)]">
+                          {subj.code}
+                        </TableCell>
+                        <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">
+                          {subj.name}
+                        </TableCell>
+                        <TableCell className="px-4 text-[var(--color-on-surface-muted)]">
+                          {subj.department}
+                        </TableCell>
+                        <TableCell className="px-4 text-[var(--color-on-surface)]">
+                          {subj.teacher || "—"}
+                        </TableCell>
+                        <TableCell className="px-4 text-right font-tabular-sm text-[var(--color-on-surface)]">
+                          {subj.lastExamMean.toFixed(1)}%
+                        </TableCell>
+                        <TableCell className="px-4 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleOpenEditSubject(subj)}
+                              className="p-0 min-h-0 text-xs"
+                            >
+                              Edit
+                            </Button>
+                            <span className="text-[var(--color-hairline-border)]">|</span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setDeletingSubject(subj)}
+                              className="p-0 min-h-0 text-xs text-[var(--color-error)] hover:text-[var(--color-error)]/80"
+                            >
+                              Delete
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </tbody>
+                </DataTable>
+              </CardContent>
+            </Card>
+          </section>
+        </TabsContent>
+
+        {/* TAB 4: PERIODS */}
+        <TabsContent value="periods" forceMount>
+          <section>
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-body-sm text-[var(--color-on-surface-muted)]">
+                Examination periods and term schedules.
+              </p>
+              <Button
+                size="sm"
+                onClick={handleOpenAddExam}
+                iconPosition="left"
+                icon={<span className="material-symbols-outlined text-[16px]">add</span>}
+              >
+                Add Exam Period
+              </Button>
+            </div>
+
+            <Card variant="elevated" className="overflow-hidden">
+              <CardContent className="p-0">
+                <DataTable hoverable compact>
+                  <TableHeader>
+                    <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
+                      <TableHead scope="col" className="px-4">
+                        EXAM NAME
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        TERM
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        ACADEMIC YEAR
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        TYPE
+                      </TableHead>
+                      <TableHead scope="col" className="px-4 text-right">
+                        ACTIONS
+                      </TableHead>
+                    </tr>
+                  </TableHeader>
+                  <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
+                    {exams.map((exam) => (
+                      <TableRow
+                        key={exam.id}
+                        className="h-11 hover:bg-[var(--color-surface-container)] transition-colors"
+                      >
+                        <TableCell className="px-4 font-semibold text-[var(--color-on-surface)]">
+                          {exam.name}
+                        </TableCell>
+                        <TableCell className="px-4 text-[var(--color-on-surface-muted)]">
+                          {exam.term}
+                        </TableCell>
+                        <TableCell className="px-4 font-tabular-sm text-[var(--color-on-surface)]">
+                          {exam.year}
+                        </TableCell>
+                        <TableCell className="px-4 text-[var(--color-on-surface-muted)]">
+                          {exam.type}
+                        </TableCell>
+                        <TableCell className="px-4 text-right">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setDeletingExam(exam)}
+                            className="p-0 min-h-0 text-xs text-[var(--color-error)] hover:text-[var(--color-error)]/80"
+                          >
                             Delete
                           </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </tbody>
-              </DataTable>
-            </CardContent>
-          </Card>
-        </section>
-      </TabsContent>
-
-      {/* TAB 4: PERIODS */}
-      <TabsContent value="periods" forceMount>
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-body-sm text-[var(--color-on-surface-muted)]">Examination periods and term schedules.</p>
-            <Button
-              size="sm"
-              onClick={handleOpenAddExam}
-              iconPosition="left"
-              icon={<span className="material-symbols-outlined text-[16px]">add</span>}
-            >
-              Add Exam Period
-            </Button>
-          </div>
-
-          <Card variant="elevated" className="overflow-hidden">
-            <CardContent className="p-0">
-              <DataTable hoverable compact>
-                <TableHeader>
-                  <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
-                    <TableHead scope="col" className="px-4">EXAM NAME</TableHead>
-                    <TableHead scope="col" className="px-4">TERM</TableHead>
-                    <TableHead scope="col" className="px-4">ACADEMIC YEAR</TableHead>
-                    <TableHead scope="col" className="px-4">TYPE</TableHead>
-                    <TableHead scope="col" className="px-4 text-right">ACTIONS</TableHead>
-                  </tr>
-                </TableHeader>
-                <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
-                  {exams.map((exam) => (
-                    <TableRow key={exam.id} className="h-11 hover:bg-[var(--color-surface-container)] transition-colors">
-                      <TableCell className="px-4 font-semibold text-[var(--color-on-surface)]">{exam.name}</TableCell>
-                      <TableCell className="px-4 text-[var(--color-on-surface-muted)]">{exam.term}</TableCell>
-                      <TableCell className="px-4 font-tabular-sm text-[var(--color-on-surface)]">{exam.year}</TableCell>
-                      <TableCell className="px-4 text-[var(--color-on-surface-muted)]">{exam.type}</TableCell>
-                      <TableCell className="px-4 text-right">
-                        <Button variant="ghost" size="sm" onClick={() => setDeletingExam(exam)} className="p-0 min-h-0 text-xs text-[var(--color-error)] hover:text-[var(--color-error)]/80">
-                          Delete
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </tbody>
-              </DataTable>
-            </CardContent>
-          </Card>
-        </section>
-      </TabsContent>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </tbody>
+                </DataTable>
+              </CardContent>
+            </Card>
+          </section>
+        </TabsContent>
       </Tabs>
 
       {/* ADD / EDIT STUDENT MODAL - using Sheet */}
@@ -814,7 +981,12 @@ export const StudentsClassesView: React.FC = () => {
             <CardTitle className="font-headline-sm text-headline-sm">
               {editingStudent ? "Edit Student Record" : "Add New Candidate"}
             </CardTitle>
-            <IconButton variant="ghost" size="sm" onClick={() => setIsAddModalOpen(false)} aria-label="Close">
+            <IconButton
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsAddModalOpen(false)}
+              aria-label="Close"
+            >
               <span className="material-symbols-outlined text-[20px]">close</span>
             </IconButton>
           </div>
@@ -834,7 +1006,9 @@ export const StudentsClassesView: React.FC = () => {
                   type="text"
                   required
                   value={studentFormData.admNo}
-                  onChange={(e) => setStudentFormData({ ...studentFormData, admNo: e.target.value })}
+                  onChange={(e) =>
+                    setStudentFormData({ ...studentFormData, admNo: e.target.value })
+                  }
                 />
               </div>
 
@@ -857,7 +1031,9 @@ export const StudentsClassesView: React.FC = () => {
                   </label>
                   <Select
                     value={studentFormData.gender}
-                    onValueChange={(value) => setStudentFormData({ ...studentFormData, gender: value as "Male" | "Female" })}
+                    onValueChange={(value) =>
+                      setStudentFormData({ ...studentFormData, gender: value as "Male" | "Female" })
+                    }
                   >
                     <option value="Female">Female</option>
                     <option value="Male">Male</option>
@@ -873,7 +1049,9 @@ export const StudentsClassesView: React.FC = () => {
                     min={0}
                     max={500}
                     value={studentFormData.kcpeMarks}
-                    onChange={(e) => setStudentFormData({ ...studentFormData, kcpeMarks: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setStudentFormData({ ...studentFormData, kcpeMarks: Number(e.target.value) })
+                    }
                   />
                 </div>
               </div>
@@ -884,7 +1062,9 @@ export const StudentsClassesView: React.FC = () => {
                 </label>
                 <Select
                   value={studentFormData.stream}
-                  onValueChange={(value) => setStudentFormData({ ...studentFormData, stream: value })}
+                  onValueChange={(value) =>
+                    setStudentFormData({ ...studentFormData, stream: value })
+                  }
                 >
                   {streams.map((s) => (
                     <option key={s.id} value={s.name}>
@@ -896,7 +1076,12 @@ export const StudentsClassesView: React.FC = () => {
             </div>
           </div>
           <div className="flex items-center justify-end gap-3 p-4 border-t border-[var(--color-hairline-border)]">
-            <Button variant="ghost" size="sm" type="button" onClick={() => setIsAddModalOpen(false)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              type="button"
+              onClick={() => setIsAddModalOpen(false)}
+            >
               Cancel
             </Button>
             <Button type="submit" size="sm">
@@ -911,7 +1096,9 @@ export const StudentsClassesView: React.FC = () => {
         <div className="max-w-md w-full p-4">
           <div className="flex items-center gap-2 text-[var(--color-error)] mb-2">
             <span className="material-symbols-outlined text-[24px]">warning</span>
-            <CardTitle className="font-headline-sm text-headline-sm">Confirm Student Deletion</CardTitle>
+            <CardTitle className="font-headline-sm text-headline-sm">
+              Confirm Student Deletion
+            </CardTitle>
           </div>
           <p className="font-body-sm text-body-sm text-[var(--color-on-surface)] mb-3">
             Are you sure you want to delete{" "}
@@ -942,14 +1129,21 @@ export const StudentsClassesView: React.FC = () => {
             <CardTitle className="font-headline-sm text-headline-sm">
               Bulk Import Students to {activeStream}
             </CardTitle>
-            <IconButton variant="ghost" size="sm" onClick={() => setIsCSVModalOpen(false)} aria-label="Close">
+            <IconButton
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsCSVModalOpen(false)}
+              aria-label="Close"
+            >
               <span className="material-symbols-outlined text-[20px]">close</span>
             </IconButton>
           </div>
 
           <p className="font-body-sm text-body-sm text-[var(--color-on-surface-muted)] mb-3">
             Paste CSV or Tab-delimited rows with columns:{" "}
-            <span className="font-medium text-[var(--color-on-surface)]">AdmissionNo, FullName, Gender, KCPE</span>
+            <span className="font-medium text-[var(--color-on-surface)]">
+              AdmissionNo, FullName, Gender, KCPE
+            </span>
           </p>
 
           <Textarea
@@ -974,8 +1168,16 @@ export const StudentsClassesView: React.FC = () => {
               <div className="max-h-28 overflow-y-auto divide-y divide-[var(--color-hairline-border)]/50 text-[11px] text-[var(--color-on-surface-muted)]">
                 {csvImportResult.parsed.slice(0, 10).map((row, idx) => (
                   <div key={idx} className="py-0.5 flex justify-between">
-                    <span>{row.admNo} — {row.name} ({row.gender})</span>
-                    <span className={row.isValid ? "text-[var(--color-success)]" : "text-[var(--color-error)] font-semibold"}>
+                    <span>
+                      {row.admNo} — {row.name} ({row.gender})
+                    </span>
+                    <span
+                      className={
+                        row.isValid
+                          ? "text-[var(--color-success)]"
+                          : "text-[var(--color-error)] font-semibold"
+                      }
+                    >
                       {row.isValid ? "Valid" : row.error}
                     </span>
                   </div>
@@ -1006,7 +1208,12 @@ export const StudentsClassesView: React.FC = () => {
             <CardTitle className="font-headline-sm text-headline-sm">
               {editingStream ? "Edit Class Stream" : "Add Class Stream"}
             </CardTitle>
-            <IconButton variant="ghost" size="sm" onClick={() => setIsStreamModalOpen(false)} aria-label="Close">
+            <IconButton
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsStreamModalOpen(false)}
+              aria-label="Close"
+            >
               <span className="material-symbols-outlined text-[20px]">close</span>
             </IconButton>
           </div>
@@ -1044,14 +1251,21 @@ export const StudentsClassesView: React.FC = () => {
                 <Input
                   type="text"
                   value={streamFormData.classTeacher}
-                  onChange={(e) => setStreamFormData({ ...streamFormData, classTeacher: e.target.value })}
+                  onChange={(e) =>
+                    setStreamFormData({ ...streamFormData, classTeacher: e.target.value })
+                  }
                   placeholder="e.g. Mrs. S. Chelangat"
                 />
               </div>
             </div>
           </div>
           <div className="flex items-center justify-end gap-3 p-4 border-t border-[var(--color-hairline-border)]">
-            <Button variant="ghost" size="sm" type="button" onClick={() => setIsStreamModalOpen(false)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              type="button"
+              onClick={() => setIsStreamModalOpen(false)}
+            >
               Cancel
             </Button>
             <Button type="submit" size="sm">
@@ -1064,7 +1278,9 @@ export const StudentsClassesView: React.FC = () => {
       {/* DELETE STREAM CONFIRMATION */}
       <Sheet open={!!deletingStream} onOpenChange={setDeletingStream} side="right">
         <div className="max-w-md w-full p-4">
-          <CardTitle className="font-headline-sm text-headline-sm text-[var(--color-error)] mb-2">Delete Stream</CardTitle>
+          <CardTitle className="font-headline-sm text-headline-sm text-[var(--color-error)] mb-2">
+            Delete Stream
+          </CardTitle>
           <p className="font-body-sm text-body-sm text-[var(--color-on-surface)] mb-3">
             Are you sure you want to delete <strong>{deletingStream?.name}</strong>?
           </p>
@@ -1077,7 +1293,14 @@ export const StudentsClassesView: React.FC = () => {
             <Button variant="ghost" size="sm" onClick={() => setDeletingStream(null)}>
               Cancel
             </Button>
-            <Button variant="destructive" size="sm" onClick={() => { removeClassStream(deletingStream!.id); setDeletingStream(null); }}>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => {
+                removeClassStream(deletingStream!.id);
+                setDeletingStream(null);
+              }}
+            >
               Delete Stream & Students
             </Button>
           </div>
@@ -1091,7 +1314,12 @@ export const StudentsClassesView: React.FC = () => {
             <CardTitle className="font-headline-sm text-headline-sm">
               {editingSubject ? "Edit Subject" : "Add Curriculum Subject"}
             </CardTitle>
-            <IconButton variant="ghost" size="sm" onClick={() => setIsSubjectModalOpen(false)} aria-label="Close">
+            <IconButton
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsSubjectModalOpen(false)}
+              aria-label="Close"
+            >
               <span className="material-symbols-outlined text-[20px]">close</span>
             </IconButton>
           </div>
@@ -1112,7 +1340,9 @@ export const StudentsClassesView: React.FC = () => {
                     required
                     maxLength={4}
                     value={subjectFormData.code}
-                    onChange={(e) => setSubjectFormData({ ...subjectFormData, code: e.target.value.toUpperCase() })}
+                    onChange={(e) =>
+                      setSubjectFormData({ ...subjectFormData, code: e.target.value.toUpperCase() })
+                    }
                     placeholder="e.g. FRE"
                   />
                 </div>
@@ -1122,7 +1352,9 @@ export const StudentsClassesView: React.FC = () => {
                   </label>
                   <Select
                     value={subjectFormData.department}
-                    onValueChange={(value) => setSubjectFormData({ ...subjectFormData, department: value })}
+                    onValueChange={(value) =>
+                      setSubjectFormData({ ...subjectFormData, department: value })
+                    }
                   >
                     <option value="Languages">Languages</option>
                     <option value="Sciences">Sciences</option>
@@ -1152,7 +1384,9 @@ export const StudentsClassesView: React.FC = () => {
                 <Input
                   type="text"
                   value={subjectFormData.teacher}
-                  onChange={(e) => setSubjectFormData({ ...subjectFormData, teacher: e.target.value })}
+                  onChange={(e) =>
+                    setSubjectFormData({ ...subjectFormData, teacher: e.target.value })
+                  }
                   placeholder="e.g. Madame Dubois"
                 />
               </div>
@@ -1164,13 +1398,20 @@ export const StudentsClassesView: React.FC = () => {
                   type="number"
                   step={0.1}
                   value={subjectFormData.lastExamMean}
-                  onChange={(e) => setSubjectFormData({ ...subjectFormData, lastExamMean: Number(e.target.value) })}
+                  onChange={(e) =>
+                    setSubjectFormData({ ...subjectFormData, lastExamMean: Number(e.target.value) })
+                  }
                 />
               </div>
             </div>
           </div>
           <div className="flex items-center justify-end gap-3 p-4 border-t border-[var(--color-hairline-border)]">
-            <Button variant="ghost" size="sm" type="button" onClick={() => setIsSubjectModalOpen(false)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              type="button"
+              onClick={() => setIsSubjectModalOpen(false)}
+            >
               Cancel
             </Button>
             <Button type="submit" size="sm">
@@ -1183,10 +1424,14 @@ export const StudentsClassesView: React.FC = () => {
       {/* DELETE SUBJECT CONFIRMATION */}
       <Sheet open={!!deletingSubject} onOpenChange={setDeletingSubject} side="right">
         <div className="max-w-md w-full p-4">
-          <CardTitle className="font-headline-sm text-headline-sm text-[var(--color-error)] mb-2">Delete Subject</CardTitle>
+          <CardTitle className="font-headline-sm text-headline-sm text-[var(--color-error)] mb-2">
+            Delete Subject
+          </CardTitle>
           <p className="font-body-sm text-body-sm text-[var(--color-on-surface)] mb-3">
             Are you sure you want to remove{" "}
-            <strong>{deletingSubject?.code} — {deletingSubject?.name}</strong>
+            <strong>
+              {deletingSubject?.code} — {deletingSubject?.name}
+            </strong>
             ?
           </p>
           <div className="bg-[var(--color-error-container)] border border-[var(--color-error)]/20 text-[var(--color-on-error-container)] p-3 text-xs mb-4">
@@ -1197,7 +1442,14 @@ export const StudentsClassesView: React.FC = () => {
             <Button variant="ghost" size="sm" onClick={() => setDeletingSubject(null)}>
               Cancel
             </Button>
-            <Button variant="destructive" size="sm" onClick={() => { removeSubject(deletingSubject!.code); setDeletingSubject(null); }}>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => {
+                removeSubject(deletingSubject!.code);
+                setDeletingSubject(null);
+              }}
+            >
               Delete Subject & Marks
             </Button>
           </div>
@@ -1211,7 +1463,12 @@ export const StudentsClassesView: React.FC = () => {
             <CardTitle className="font-headline-sm text-headline-sm">
               {editingExam ? "Edit Exam Period" : "Add Examination Period"}
             </CardTitle>
-            <IconButton variant="ghost" size="sm" onClick={() => setIsExamModalOpen(false)} aria-label="Close">
+            <IconButton
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsExamModalOpen(false)}
+              aria-label="Close"
+            >
               <span className="material-symbols-outlined text-[20px]">close</span>
             </IconButton>
           </div>
@@ -1250,7 +1507,9 @@ export const StudentsClassesView: React.FC = () => {
                   <Input
                     type="number"
                     value={examFormData.year}
-                    onChange={(e) => setExamFormData({ ...examFormData, year: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setExamFormData({ ...examFormData, year: Number(e.target.value) })
+                    }
                   />
                 </div>
               </div>
@@ -1260,7 +1519,9 @@ export const StudentsClassesView: React.FC = () => {
                 </label>
                 <Select
                   value={examFormData.type}
-                  onValueChange={(value) => setExamFormData({ ...examFormData, type: value as any })}
+                  onValueChange={(value) =>
+                    setExamFormData({ ...examFormData, type: value as any })
+                  }
                 >
                   <option value="Mid-term">Mid-term</option>
                   <option value="End-term">End-term</option>
@@ -1270,7 +1531,12 @@ export const StudentsClassesView: React.FC = () => {
             </div>
           </div>
           <div className="flex items-center justify-end gap-3 p-4 border-t border-[var(--color-hairline-border)]">
-            <Button variant="ghost" size="sm" type="button" onClick={() => setIsExamModalOpen(false)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              type="button"
+              onClick={() => setIsExamModalOpen(false)}
+            >
               Cancel
             </Button>
             <Button type="submit" size="sm">
@@ -1283,7 +1549,9 @@ export const StudentsClassesView: React.FC = () => {
       {/* DELETE EXAM PERIOD MODAL */}
       <Sheet open={!!deletingExam} onOpenChange={setDeletingExam} side="right">
         <div className="max-w-md w-full p-4">
-          <CardTitle className="font-headline-sm text-headline-sm text-[var(--color-error)] mb-2">Delete Exam Period</CardTitle>
+          <CardTitle className="font-headline-sm text-headline-sm text-[var(--color-error)] mb-2">
+            Delete Exam Period
+          </CardTitle>
           <p className="font-body-sm text-body-sm text-[var(--color-on-surface)] mb-3">
             Are you sure you want to delete <strong>{deletingExam?.name}</strong>?
           </p>
@@ -1291,7 +1559,14 @@ export const StudentsClassesView: React.FC = () => {
             <Button variant="ghost" size="sm" onClick={() => setDeletingExam(null)}>
               Cancel
             </Button>
-            <Button variant="destructive" size="sm" onClick={() => { removeExamPeriod(deletingExam!.id); setDeletingExam(null); }}>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => {
+                removeExamPeriod(deletingExam!.id);
+                setDeletingExam(null);
+              }}
+            >
               Confirm Delete
             </Button>
           </div>
@@ -1304,25 +1579,56 @@ export const StudentsClassesView: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h4 className="font-semibold text-sm text-[var(--color-on-surface)] flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">route</span>
+                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">
+                  route
+                </span>
                 <span>Roster & Administration: Next Steps</span>
               </h4>
               <p className="text-xs text-[var(--color-on-surface-muted)] mt-0.5">
-                Cohort records updated. Continue to daily roll-call attendance, marks entry, or academic
-                rankings.
+                Cohort records updated. Continue to daily roll-call attendance, marks entry, or
+                academic rankings.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <Button variant="ghost" size="sm" onClick={() => setActiveView("overview")} className="px-3 py-2 text-xs">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveView("overview")}
+                className="px-3 py-2 text-xs"
+              >
                 ← Overview
               </Button>
-              <Button size="sm" onClick={() => setActiveView("marks-entry")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">edit_note</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                size="sm"
+                onClick={() => setActiveView("marks-entry")}
+                iconPosition="right"
+                icon={<span className="material-symbols-outlined text-[16px]">edit_note</span>}
+                className="px-3.5 py-2 text-xs"
+              >
                 Enter Marks →
               </Button>
-              <Button variant="primary" size="sm" onClick={() => setActiveView("attendance")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">fact_check</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => setActiveView("attendance")}
+                iconPosition="right"
+                icon={<span className="material-symbols-outlined text-[16px]">fact_check</span>}
+                className="px-3.5 py-2 text-xs"
+              >
                 Take Attendance →
               </Button>
-              <Button variant="outline" size="sm" onClick={() => setActiveView("rankings")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">format_list_numbered</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setActiveView("rankings")}
+                iconPosition="right"
+                icon={
+                  <span className="material-symbols-outlined text-[16px]">
+                    format_list_numbered
+                  </span>
+                }
+                className="px-3.5 py-2 text-xs"
+              >
                 Class Rankings →
               </Button>
             </div>

@@ -8,7 +8,14 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui
 import { Button, IconButton } from "@/chokur/components/ui";
 import { Badge } from "@/chokur/components/ui";
 import { Input, Textarea, Select } from "@/chokur/components/ui";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "@/chokur/components/ui";
+import {
+  DataTable,
+  TableHeader,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableFooter,
+} from "@/chokur/components/ui";
 import { Sheet, SheetTrigger } from "@/chokur/components/ui";
 
 type EntryMode = "grid" | "student" | "subject";
@@ -412,12 +419,20 @@ export const MarksEntryView: React.FC = () => {
         {/* Save and Validation Toast */}
         <div className="flex flex-wrap items-center gap-2">
           {validationWarning && (
-            <Badge variant="warning" icon={<span className="material-symbols-outlined text-[14px]">warning</span>} className="animate-fade-in">
+            <Badge
+              variant="warning"
+              icon={<span className="material-symbols-outlined text-[14px]">warning</span>}
+              className="animate-fade-in"
+            >
               {validationWarning}
             </Badge>
           )}
           {saveToast && (
-            <Badge variant="success" icon={<span className="material-symbols-outlined text-[14px]">check_circle</span>} className="animate-fade-in">
+            <Badge
+              variant="success"
+              icon={<span className="material-symbols-outlined text-[14px]">check_circle</span>}
+              className="animate-fade-in"
+            >
               All records synchronized and saved
             </Badge>
           )}
@@ -429,7 +444,11 @@ export const MarksEntryView: React.FC = () => {
         <CardContent className="p-3 sm:p-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             {/* Mode Segmented Controls */}
-            <div className="flex items-center p-0.5 bg-[var(--color-surface-container)] border border-[var(--color-hairline-border)] rounded-lg" role="group" aria-label="Entry mode">
+            <div
+              className="flex items-center p-0.5 bg-[var(--color-surface-container)] border border-[var(--color-hairline-border)] rounded-lg"
+              role="group"
+              aria-label="Entry mode"
+            >
               <Button
                 variant={entryMode === "student" ? "primary" : "ghost"}
                 size="sm"
@@ -470,7 +489,9 @@ export const MarksEntryView: React.FC = () => {
                   size="sm"
                   onClick={() => setIsPastingModalOpen(true)}
                   iconPosition="left"
-                  icon={<span className="material-symbols-outlined text-[16px]">content_paste</span>}
+                  icon={
+                    <span className="material-symbols-outlined text-[16px]">content_paste</span>
+                  }
                   className="min-h-[40px]"
                 >
                   Paste from Excel
@@ -513,7 +534,9 @@ export const MarksEntryView: React.FC = () => {
                 <span className="text-[10px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider block">
                   Candidate {activeStudentIdx + 1} of {students.length}
                 </span>
-                <CardTitle className="font-headline-md text-headline-md mt-1">{currentStudent.name}</CardTitle>
+                <CardTitle className="font-headline-md text-headline-md mt-1">
+                  {currentStudent.name}
+                </CardTitle>
                 <div className="text-xs text-[var(--color-on-surface-muted)] font-tabular-sm mt-1">
                   ADM: <strong>{currentStudent.admNo}</strong> · KCPE: {currentStudent.kcpeMarks} ·{" "}
                   {currentStudent.gender}
@@ -524,7 +547,9 @@ export const MarksEntryView: React.FC = () => {
               {currentStudentCalc && (
                 <div className="text-right">
                   <div className="flex items-center justify-end gap-1.5">
-                    <span className="text-xs text-[var(--color-on-surface-muted)]">Rank: #{currentStudentCalc.rank}</span>
+                    <span className="text-xs text-[var(--color-on-surface-muted)]">
+                      Rank: #{currentStudentCalc.rank}
+                    </span>
                     <GradeChip grade={currentStudentCalc.meanGrade} size="md" />
                   </div>
                   <div className="text-[11px] text-[var(--color-on-surface-muted)] font-tabular-sm mt-1">
@@ -548,7 +573,9 @@ export const MarksEntryView: React.FC = () => {
                 icon={<span className="material-symbols-outlined text-[18px]">arrow_back</span>}
                 className="flex-1 min-w-0 min-h-[48px]"
               >
-                <span>Prev<span className="hidden sm:inline">vious Student</span></span>
+                <span>
+                  Prev<span className="hidden sm:inline">vious Student</span>
+                </span>
               </Button>
 
               {/* Quick Jump Selector */}
@@ -573,7 +600,9 @@ export const MarksEntryView: React.FC = () => {
                 icon={<span className="material-symbols-outlined text-[18px]">arrow_forward</span>}
                 className="flex-1 min-w-0 min-h-[48px]"
               >
-                <span>Next<span className="hidden sm:inline"> Student</span></span>
+                <span>
+                  Next<span className="hidden sm:inline"> Student</span>
+                </span>
               </Button>
             </div>
           </CardContent>
@@ -584,7 +613,9 @@ export const MarksEntryView: React.FC = () => {
               <span className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase">
                 Curriculum Subjects ({subjects.length})
               </span>
-              <span className="text-[11px] text-[var(--color-on-surface-muted)]">Enter 0–100 or ABS</span>
+              <span className="text-[11px] text-[var(--color-on-surface-muted)]">
+                Enter 0–100 or ABS
+              </span>
             </div>
 
             <div className="divide-y divide-[var(--color-hairline-border)]/70">
@@ -603,7 +634,9 @@ export const MarksEntryView: React.FC = () => {
                         <span className="font-semibold text-xs sm:text-sm text-[var(--color-on-surface)]">
                           {subj.code}
                         </span>
-                        <span className="text-xs text-[var(--color-on-surface-muted)] truncate">{subj.name}</span>
+                        <span className="text-xs text-[var(--color-on-surface-muted)] truncate">
+                          {subj.name}
+                        </span>
                       </div>
                       <span className="text-[10px] text-[var(--color-on-surface-disabled)] uppercase font-label-caps">
                         {subj.department}
@@ -615,8 +648,12 @@ export const MarksEntryView: React.FC = () => {
                         type="text"
                         inputMode="numeric"
                         enterKeyHint="next"
-                        value={currentVal === null || currentVal === undefined ? "" : String(currentVal)}
-                        onChange={(e) => handleSingleMarkChange(currentStudent.id, subj.code, e.target.value)}
+                        value={
+                          currentVal === null || currentVal === undefined ? "" : String(currentVal)
+                        }
+                        onChange={(e) =>
+                          handleSingleMarkChange(currentStudent.id, subj.code, e.target.value)
+                        }
                         placeholder="—"
                         className="w-20 sm:w-24 h-12 text-center text-base font-tabular-md font-semibold"
                       />
@@ -644,7 +681,11 @@ export const MarksEntryView: React.FC = () => {
         <Card variant="elevated" className="max-w-3xl mx-auto w-full mb-6">
           <CardContent className="p-0">
             {/* Subject Horizontal Selector */}
-            <div className="px-4 py-3 bg-[var(--color-surface-container-low)] border-b border-[var(--color-hairline-border)] overflow-x-auto hide-scrollbar" role="group" aria-label="Select subject">
+            <div
+              className="px-4 py-3 bg-[var(--color-surface-container-low)] border-b border-[var(--color-hairline-border)] overflow-x-auto hide-scrollbar"
+              role="group"
+              aria-label="Select subject"
+            >
               {subjects.map((subj) => (
                 <Button
                   key={subj.code}
@@ -674,7 +715,9 @@ export const MarksEntryView: React.FC = () => {
                     className="p-3 sm:px-4 flex items-center justify-between gap-3 hover:bg-[var(--color-surface-container-lowest)] transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="w-7 text-xs font-tabular-sm text-[var(--color-on-surface-disabled)]">{idx + 1}.</span>
+                      <span className="w-7 text-xs font-tabular-sm text-[var(--color-on-surface-disabled)]">
+                        {idx + 1}.
+                      </span>
                       <div>
                         <div className="font-medium text-xs sm:text-sm text-[var(--color-on-surface)]">
                           {student.name}
@@ -690,8 +733,12 @@ export const MarksEntryView: React.FC = () => {
                         type="text"
                         inputMode="numeric"
                         enterKeyHint="next"
-                        value={currentVal === null || currentVal === undefined ? "" : String(currentVal)}
-                        onChange={(e) => handleSingleMarkChange(student.id, activeSubjectCode, e.target.value)}
+                        value={
+                          currentVal === null || currentVal === undefined ? "" : String(currentVal)
+                        }
+                        onChange={(e) =>
+                          handleSingleMarkChange(student.id, activeSubjectCode, e.target.value)
+                        }
                         placeholder="—"
                         className="w-20 sm:w-24 h-11 text-center text-base font-tabular-md font-semibold"
                       />
@@ -720,7 +767,10 @@ export const MarksEntryView: React.FC = () => {
             <div className="overflow-x-auto hide-scrollbar flex-1 relative max-h-[640px]">
               <DataTable compact hoverable>
                 <TableHeader>
-                  <TableHead scope="col" className="sticky left-0 z-30 bg-[var(--color-surface-container-low)] border-r border-[var(--color-hairline-border)] w-64 min-w-[240px]">
+                  <TableHead
+                    scope="col"
+                    className="sticky left-0 z-30 bg-[var(--color-surface-container-low)] border-r border-[var(--color-hairline-border)] w-64 min-w-[240px]"
+                  >
                     <div className="flex items-center justify-between font-label-caps text-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider text-[11px]">
                       <span>ADM / STUDENT NAME ({students.length})</span>
                       <span className="material-symbols-outlined text-[14px]">unfold_more</span>
@@ -740,13 +790,22 @@ export const MarksEntryView: React.FC = () => {
                   ))}
 
                   {/* Summary Headers */}
-                  <TableHead scope="col" className="border-r border-[var(--color-hairline-border)] text-center w-16 font-label-caps text-label-caps text-[var(--color-on-surface-muted)]">
+                  <TableHead
+                    scope="col"
+                    className="border-r border-[var(--color-hairline-border)] text-center w-16 font-label-caps text-label-caps text-[var(--color-on-surface-muted)]"
+                  >
                     AVG
                   </TableHead>
-                  <TableHead scope="col" className="border-r border-[var(--color-hairline-border)] text-center w-16 font-label-caps text-label-caps text-[var(--color-on-surface-muted)]">
+                  <TableHead
+                    scope="col"
+                    className="border-r border-[var(--color-hairline-border)] text-center w-16 font-label-caps text-label-caps text-[var(--color-on-surface-muted)]"
+                  >
                     AGG
                   </TableHead>
-                  <TableHead scope="col" className="text-center w-16 font-label-caps text-label-caps text-[var(--color-on-surface-muted)]">
+                  <TableHead
+                    scope="col"
+                    className="text-center w-16 font-label-caps text-label-caps text-[var(--color-on-surface-muted)]"
+                  >
                     GRADE
                   </TableHead>
                 </TableHeader>
@@ -757,7 +816,10 @@ export const MarksEntryView: React.FC = () => {
                     const calc = rankingMap.get(student.id);
 
                     return (
-                      <TableRow key={student.id} className="h-10 hover:bg-[var(--color-surface-container-lowest)] group">
+                      <TableRow
+                        key={student.id}
+                        className="h-10 hover:bg-[var(--color-surface-container-lowest)] group"
+                      >
                         {/* Sticky Student Identifier Column */}
                         <TableCell className="sticky left-0 z-20 bg-[var(--color-surface-container-low)] group-hover:bg-[var(--color-surface-container-lowest)] border-r border-[var(--color-hairline-border)] px-3 py-1.5">
                           <div className="flex items-center justify-between">
@@ -765,7 +827,10 @@ export const MarksEntryView: React.FC = () => {
                               <span className="font-tabular-sm text-xs font-semibold text-[var(--color-on-surface)] shrink-0">
                                 {student.admNo}
                               </span>
-                              <span className="text-body-sm text-xs truncate text-[var(--color-on-surface)]" title={student.name}>
+                              <span
+                                className="text-body-sm text-xs truncate text-[var(--color-on-surface)]"
+                                title={student.name}
+                              >
                                 {student.name}
                               </span>
                             </div>
@@ -783,7 +848,8 @@ export const MarksEntryView: React.FC = () => {
                           const cellVal = studentMarks[subj.code];
                           const isAbsent = cellVal === "ABS";
                           const scoreNum = typeof cellVal === "number" ? cellVal : null;
-                          const grade = scoreNum !== null ? getGradeFromScore(scoreNum).grade : null;
+                          const grade =
+                            scoreNum !== null ? getGradeFromScore(scoreNum).grade : null;
 
                           return (
                             <TableCell
@@ -793,7 +859,9 @@ export const MarksEntryView: React.FC = () => {
                                 setFocusedCell({ studentId: student.id, subjectCode: subj.code });
                               }}
                               className={`border-r border-[var(--color-hairline-border)] p-0 text-center relative cursor-pointer ${
-                                isFocused ? "ring-2 ring-[var(--color-primary)] z-10 bg-[var(--color-primary-container)]/20" : ""
+                                isFocused
+                                  ? "ring-2 ring-[var(--color-primary)] z-10 bg-[var(--color-primary-container)]/20"
+                                  : ""
                               }`}
                             >
                               {isFocused ? (
@@ -814,11 +882,15 @@ export const MarksEntryView: React.FC = () => {
                                       isAbsent
                                         ? "text-[var(--color-error)] font-bold"
                                         : cellVal === null || cellVal === undefined
-                                        ? "text-[var(--color-on-surface-disabled)]"
-                                        : "text-[var(--color-on-surface)] font-medium"
+                                          ? "text-[var(--color-on-surface-disabled)]"
+                                          : "text-[var(--color-on-surface)] font-medium"
                                     }`}
                                   >
-                                    {isAbsent ? "ABS" : cellVal === null || cellVal === undefined ? "—" : cellVal}
+                                    {isAbsent
+                                      ? "ABS"
+                                      : cellVal === null || cellVal === undefined
+                                        ? "—"
+                                        : cellVal}
                                   </span>
                                   {grade && <GradeChip grade={grade} size="sm" />}
                                 </div>
@@ -848,7 +920,10 @@ export const MarksEntryView: React.FC = () => {
                     SUBJECT MEANS ({students.length})
                   </TableCell>
                   {subjectAverages.map((avg, idx) => (
-                    <TableCell key={subjects[idx].code} className="border-r border-[var(--color-hairline-border)] text-center font-tabular-sm text-[var(--color-on-surface)]">
+                    <TableCell
+                      key={subjects[idx].code}
+                      className="border-r border-[var(--color-hairline-border)] text-center font-tabular-sm text-[var(--color-on-surface)]"
+                    >
                       {avg}
                     </TableCell>
                   ))}
@@ -862,7 +937,9 @@ export const MarksEntryView: React.FC = () => {
                       ? (rankings.reduce((a, b) => a + b.aggregate, 0) / rankings.length).toFixed(1)
                       : "—"}
                   </TableCell>
-                  <TableCell className="text-center font-label-caps text-[var(--color-on-surface)]">KCSE</TableCell>
+                  <TableCell className="text-center font-label-caps text-[var(--color-on-surface)]">
+                    KCSE
+                  </TableCell>
                 </TableFooter>
               </DataTable>
             </div>
@@ -876,7 +953,9 @@ export const MarksEntryView: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h4 className="font-semibold text-sm text-[var(--color-on-surface)] flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">route</span>
+                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">
+                  route
+                </span>
                 <span>Marks Entry Workflow: Next Actions</span>
               </h4>
               <p className="text-xs text-[var(--color-on-surface-muted)] mt-0.5">
@@ -885,16 +964,44 @@ export const MarksEntryView: React.FC = () => {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <Button variant="ghost" size="sm" onClick={() => setActiveView("overview")} className="px-3 py-2 text-xs">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveView("overview")}
+                className="px-3 py-2 text-xs"
+              >
                 ← Overview
               </Button>
-              <Button size="sm" onClick={() => setActiveView("rankings")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">format_list_numbered</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                size="sm"
+                onClick={() => setActiveView("rankings")}
+                iconPosition="right"
+                icon={
+                  <span className="material-symbols-outlined text-[16px]">
+                    format_list_numbered
+                  </span>
+                }
+                className="px-3.5 py-2 text-xs"
+              >
                 Class Rankings →
               </Button>
-              <Button variant="outline" size="sm" onClick={() => setActiveView("subject-analysis")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">analytics</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setActiveView("subject-analysis")}
+                iconPosition="right"
+                icon={<span className="material-symbols-outlined text-[16px]">analytics</span>}
+                className="px-3.5 py-2 text-xs"
+              >
                 Subject Analysis →
               </Button>
-              <Button size="sm" onClick={() => setActiveView("report-cards")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">badge</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                size="sm"
+                onClick={() => setActiveView("report-cards")}
+                iconPosition="right"
+                icon={<span className="material-symbols-outlined text-[16px]">badge</span>}
+                className="px-3.5 py-2 text-xs"
+              >
                 Report Cards →
               </Button>
             </div>
@@ -965,7 +1072,12 @@ export const MarksEntryView: React.FC = () => {
           )}
 
           <div className="flex justify-end gap-2 pt-3 border-t border-[var(--color-hairline-border)] mt-4">
-            <Button variant="outline" size="sm" onClick={() => setIsPastingModalOpen(false)} className="min-h-[44px]">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsPastingModalOpen(false)}
+              className="min-h-[44px]"
+            >
               Cancel
             </Button>
             <Button

@@ -7,7 +7,14 @@ import { cn } from "@/lib/utils";
 // shadcn/ui Component Imports (44 components)
 // ============================================================================
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,23 +22,133 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
-import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter } from "@/components/ui/drawer";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+} from "@/components/ui/sheet";
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+} from "@/components/ui/drawer";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuCheckboxItem, DropdownMenuRadioGroup, DropdownMenuRadioItem } from "@/components/ui/dropdown-menu";
-import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuLabel, ContextMenuCheckboxItem, ContextMenuRadioGroup, ContextMenuRadioItem } from "@/components/ui/context-menu";
-import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem, MenubarSeparator, MenubarLabel, MenubarCheckboxItem, MenubarRadioGroup, MenubarRadioItem } from "@/components/ui/menubar";
-import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuContent, NavigationMenuLink, NavigationMenuIndicator, NavigationMenuTrigger, NavigationMenuSeparator } from "@/components/ui/navigation-menu";
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis } from "@/components/ui/breadcrumb";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis } from "@/components/ui/pagination";
-import { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+} from "@/components/ui/dropdown-menu";
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuLabel,
+  ContextMenuCheckboxItem,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+} from "@/components/ui/context-menu";
+import {
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarSeparator,
+  MenubarLabel,
+  MenubarCheckboxItem,
+  MenubarRadioGroup,
+  MenubarRadioItem,
+} from "@/components/ui/menubar";
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuContent,
+  NavigationMenuLink,
+  NavigationMenuIndicator,
+  NavigationMenuTrigger,
+  NavigationMenuSeparator,
+} from "@/components/ui/navigation-menu";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+} from "@/components/ui/breadcrumb";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+} from "@/components/ui/pagination";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+} from "@/components/ui/table";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -40,16 +157,48 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Toggle, ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle";
-import { ToggleGroup as ToggleGroupComp, ToggleGroupItem as ToggleGroupItemComp } from "@/components/ui/toggle-group";
+import {
+  ToggleGroup as ToggleGroupComp,
+  ToggleGroupItem as ToggleGroupItemComp,
+} from "@/components/ui/toggle-group";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 import { ChartContainer } from "@/components/ui/chart";
 import { Calendar } from "@/components/ui/calendar";
-import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandShortcut, CommandSeparator } from "@/components/ui/command";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandShortcut,
+  CommandSeparator,
+} from "@/components/ui/command";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
-import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/ui/input-otp";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+} from "@/components/ui/input-otp";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, useForm } from "@/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  useForm,
+} from "@/components/ui/form";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 
 // Custom Chokur Components
@@ -86,27 +235,66 @@ function ComponentLibraryShell() {
   const [activeCategory, setActiveCategory] = React.useState<string>("all");
 
   const categories = [
-    { key: "all", label: "All", count: COMPONENT_GROUPS.reduce((sum, g) => sum + g.components.length, 0) },
-    { key: "form", label: "Form", count: COMPONENT_GROUPS.find(g => g.key === "form")?.components.length || 0 },
-    { key: "data", label: "Data Display", count: COMPONENT_GROUPS.find(g => g.key === "data")?.components.length || 0 },
-    { key: "navigation", label: "Navigation", count: COMPONENT_GROUPS.find(g => g.key === "navigation")?.components.length || 0 },
-    { key: "feedback", label: "Feedback", count: COMPONENT_GROUPS.find(g => g.key === "feedback")?.components.length || 0 },
-    { key: "overlay", label: "Overlay", count: COMPONENT_GROUPS.find(g => g.key === "overlay")?.components.length || 0 },
-    { key: "layout", label: "Layout", count: COMPONENT_GROUPS.find(g => g.key === "layout")?.components.length || 0 },
-    { key: "chokur", label: "Chokur Custom", count: COMPONENT_GROUPS.find(g => g.key === "chokur")?.components.length || 0 },
+    {
+      key: "all",
+      label: "All",
+      count: COMPONENT_GROUPS.reduce((sum, g) => sum + g.components.length, 0),
+    },
+    {
+      key: "form",
+      label: "Form",
+      count: COMPONENT_GROUPS.find((g) => g.key === "form")?.components.length || 0,
+    },
+    {
+      key: "data",
+      label: "Data Display",
+      count: COMPONENT_GROUPS.find((g) => g.key === "data")?.components.length || 0,
+    },
+    {
+      key: "navigation",
+      label: "Navigation",
+      count: COMPONENT_GROUPS.find((g) => g.key === "navigation")?.components.length || 0,
+    },
+    {
+      key: "feedback",
+      label: "Feedback",
+      count: COMPONENT_GROUPS.find((g) => g.key === "feedback")?.components.length || 0,
+    },
+    {
+      key: "overlay",
+      label: "Overlay",
+      count: COMPONENT_GROUPS.find((g) => g.key === "overlay")?.components.length || 0,
+    },
+    {
+      key: "layout",
+      label: "Layout",
+      count: COMPONENT_GROUPS.find((g) => g.key === "layout")?.components.length || 0,
+    },
+    {
+      key: "chokur",
+      label: "Chokur Custom",
+      count: COMPONENT_GROUPS.find((g) => g.key === "chokur")?.components.length || 0,
+    },
   ];
 
   return (
     <>
       {/* Header */}
       <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <nav className="mx-auto max-w-[1400px] flex h-14 items-center justify-between px-4" aria-label="Component library navigation">
+        <nav
+          className="mx-auto max-w-[1400px] flex h-14 items-center justify-between px-4"
+          aria-label="Component library navigation"
+        >
           <Link to="/" className="flex items-center gap-2 shrink-0" title="Back to Chokur App">
             <ChokurLogo variant="symbol" size={28} className="text-primary" />
             <span className="hidden sm:inline font-headline-sm text-foreground">Chokur</span>
           </Link>
 
-          <div className="flex flex-1 items-center justify-center gap-1 overflow-x-auto px-4 pb-1 scrollbar-hide" role="tablist" aria-label="Component categories">
+          <div
+            className="flex flex-1 items-center justify-center gap-1 overflow-x-auto px-4 pb-1 scrollbar-hide"
+            role="tablist"
+            aria-label="Component categories"
+          >
             {categories.map((cat) => (
               <button
                 key={cat.key}
@@ -142,26 +330,37 @@ function ComponentLibraryShell() {
         <div className="mb-6">
           <h1 className="font-headline-lg text-foreground tracking-tight">Component Library</h1>
           <p className="mt-1 text-muted-foreground text-body-md">
-            {COMPONENT_GROUPS.reduce((sum, g) => sum + g.components.length, 0)} components · shadcn/ui v4 + Radix UI + Tailwind CSS v4
+            {COMPONENT_GROUPS.reduce((sum, g) => sum + g.components.length, 0)} components ·
+            shadcn/ui v4 + Radix UI + Tailwind CSS v4
           </p>
         </div>
 
         <div className="space-y-8">
-          {COMPONENT_GROUPS
-            .filter((group) => activeCategory === "all" || group.key === activeCategory)
-            .map((group) => (
-              <ComponentSection key={group.key} group={group} />
-            ))}
+          {COMPONENT_GROUPS.filter(
+            (group) => activeCategory === "all" || group.key === activeCategory,
+          ).map((group) => (
+            <ComponentSection key={group.key} group={group} />
+          ))}
         </div>
       </main>
 
       {/* Footer */}
       <footer className="border-t border-border bg-background/50">
         <div className="mx-auto max-w-[1400px] flex flex-col md:flex-row items-center justify-between gap-4 px-4 py-4 text-sm text-muted-foreground">
-          <p>Chokur Design System v1.0 — {COMPONENT_GROUPS.reduce((sum, g) => sum + g.components.length, 0)} components</p>
+          <p>
+            Chokur Design System v1.0 —{" "}
+            {COMPONENT_GROUPS.reduce((sum, g) => sum + g.components.length, 0)} components
+          </p>
           <div className="flex items-center gap-4">
-            <Link to="/ui-showcase" className="hover:text-foreground transition-colors">Dashboard Showcase</Link>
-            <Link to="https://github.com/tchukor/scope-to-launch" target="_blank" rel="noopener" className="hover:text-foreground transition-colors">
+            <Link to="/ui-showcase" className="hover:text-foreground transition-colors">
+              Dashboard Showcase
+            </Link>
+            <Link
+              to="https://github.com/tchukor/scope-to-launch"
+              target="_blank"
+              rel="noopener"
+              className="hover:text-foreground transition-colors"
+            >
               <span className="material-symbols-outlined text-[18px] align-middle">code</span>
               GitHub
             </Link>
@@ -177,7 +376,9 @@ function ComponentSection({ group }: { group: ComponentGroup }) {
     <section aria-labelledby={`${group.key}-heading`} className="animate-slide-up">
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 pb-3 border-b border-border">
         <div>
-          <h2 id={`${group.key}-heading`} className="font-headline-md text-foreground">{group.label}</h2>
+          <h2 id={`${group.key}-heading`} className="font-headline-md text-foreground">
+            {group.label}
+          </h2>
           <p className="text-muted-foreground text-sm mt-0.5">{group.description}</p>
         </div>
         <span className="inline-flex items-center justify-center rounded-full bg-muted px-2 py-0.5 text-xs font-mono font-medium text-muted-foreground">
@@ -200,7 +401,9 @@ function ComponentCard({ component }: { component: ComponentDef }) {
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex-1 min-w-0">
             <h3 className="font-headline-sm text-foreground truncate">{component.name}</h3>
-            <p className="text-muted-foreground text-xs mt-0.5 line-clamp-2">{component.description}</p>
+            <p className="text-muted-foreground text-xs mt-0.5 line-clamp-2">
+              {component.description}
+            </p>
           </div>
           {component.badge && (
             <span className="shrink-0 inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
@@ -208,15 +411,16 @@ function ComponentCard({ component }: { component: ComponentDef }) {
             </span>
           )}
         </div>
-        <div className="bg-muted/50 rounded-lg p-3 min-h-[120px]">
-          {component.preview}
-        </div>
+        <div className="bg-muted/50 rounded-lg p-3 min-h-[120px]">{component.preview}</div>
       </div>
       <div className="px-4 py-3 bg-muted/30 border-t border-border flex items-center justify-end gap-2">
         {component.variants && component.variants.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {component.variants.map((v) => (
-              <span key={v} className="inline-flex items-center rounded-full bg-background px-2 py-0.5 text-[10px] font-mono font-medium text-muted-foreground border border-border">
+              <span
+                key={v}
+                className="inline-flex items-center rounded-full bg-background px-2 py-0.5 text-[10px] font-mono font-medium text-muted-foreground border border-border"
+              >
                 {v}
               </span>
             ))}
@@ -255,7 +459,17 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
       {
         name: "Button",
         description: "Primary actions with multiple variants and sizes",
-        variants: ["default", "destructive", "outline", "secondary", "ghost", "link", "sm", "lg", "icon"],
+        variants: [
+          "default",
+          "destructive",
+          "outline",
+          "secondary",
+          "ghost",
+          "link",
+          "sm",
+          "lg",
+          "icon",
+        ],
         preview: (
           <div className="flex flex-wrap gap-2">
             <Button variant="default">Default</Button>
@@ -266,7 +480,9 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
             <Button variant="link">Link</Button>
             <Button size="sm">Small</Button>
             <Button size="lg">Large</Button>
-            <Button variant="outline" size="icon"><span className="material-symbols-outlined">add</span></Button>
+            <Button variant="outline" size="icon">
+              <span className="material-symbols-outlined">add</span>
+            </Button>
           </div>
         ),
       },
@@ -282,8 +498,16 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="email-error">Email (error)</Label>
-              <Input id="email-error" aria-invalid="true" aria-describedby="email-error-msg" className="border-destructive" placeholder="invalid-email" />
-              <p id="email-error-msg" className="text-xs text-destructive">Invalid email address</p>
+              <Input
+                id="email-error"
+                aria-invalid="true"
+                aria-describedby="email-error-msg"
+                className="border-destructive"
+                placeholder="invalid-email"
+              />
+              <p id="email-error-msg" className="text-xs text-destructive">
+                Invalid email address
+              </p>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="email-disabled">Email (disabled)</Label>
@@ -312,7 +536,9 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
         preview: (
           <div className="space-y-3">
             <Label htmlFor="name">Name</Label>
-            <Label htmlFor="required-field" className="text-primary">Required Field <span className="text-destructive">*</span></Label>
+            <Label htmlFor="required-field" className="text-primary">
+              Required Field <span className="text-destructive">*</span>
+            </Label>
           </div>
         ),
       },
@@ -377,7 +603,9 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
             <SelectContent>
               <SelectItem value="1">Option One</SelectItem>
               <SelectItem value="2">Option Two</SelectItem>
-              <SelectItem value="3" disabled>Disabled</SelectItem>
+              <SelectItem value="3" disabled>
+                Disabled
+              </SelectItem>
             </SelectContent>
           </Select>
         ),
@@ -392,7 +620,9 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
               <InputOTPSlot index={0} className="h-10 w-10 text-center text-lg" />
               <InputOTPSlot index={1} className="h-10 w-10 text-center text-lg" />
               <InputOTPSlot index={2} className="h-10 w-10 text-center text-lg" />
-              <InputOTPSeparator className="flex items-center justify-center text-muted-foreground">:</InputOTPSeparator>
+              <InputOTPSeparator className="flex items-center justify-center text-muted-foreground">
+                :
+              </InputOTPSeparator>
               <InputOTPSlot index={3} className="h-10 w-10 text-center text-lg" />
               <InputOTPSlot index={4} className="h-10 w-10 text-center text-lg" />
               <InputOTPSlot index={5} className="h-10 w-10 text-center text-lg" />
@@ -417,10 +647,20 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
         variants: ["single", "multiple", "outline"],
         preview: (
           <div className="space-y-3">
-            <ToggleGroupComp type="single" defaultValue="bold" className="flex gap-1 bg-muted p-1 rounded-lg">
-              <ToggleGroupItemComp value="bold" className="px-3 py-1.5 text-sm"><span className="material-symbols-outlined text-[16px]">format_bold</span></ToggleGroupItemComp>
-              <ToggleGroupItemComp value="italic" className="px-3 py-1.5 text-sm"><span className="material-symbols-outlined text-[16px]">format_italic</span></ToggleGroupItemComp>
-              <ToggleGroupItemComp value="underline" className="px-3 py-1.5 text-sm"><span className="material-symbols-outlined text-[16px]">format_underline</span></ToggleGroupItemComp>
+            <ToggleGroupComp
+              type="single"
+              defaultValue="bold"
+              className="flex gap-1 bg-muted p-1 rounded-lg"
+            >
+              <ToggleGroupItemComp value="bold" className="px-3 py-1.5 text-sm">
+                <span className="material-symbols-outlined text-[16px]">format_bold</span>
+              </ToggleGroupItemComp>
+              <ToggleGroupItemComp value="italic" className="px-3 py-1.5 text-sm">
+                <span className="material-symbols-outlined text-[16px]">format_italic</span>
+              </ToggleGroupItemComp>
+              <ToggleGroupItemComp value="underline" className="px-3 py-1.5 text-sm">
+                <span className="material-symbols-outlined text-[16px]">format_underline</span>
+              </ToggleGroupItemComp>
             </ToggleGroupComp>
           </div>
         ),
@@ -443,10 +683,14 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
               <CardDescription>Card description goes here</CardDescription>
             </CardHeader>
             <CardContent className="pt-0">
-              <p className="text-sm text-muted-foreground">Card content with some descriptive text about the card.</p>
+              <p className="text-sm text-muted-foreground">
+                Card content with some descriptive text about the card.
+              </p>
             </CardContent>
             <CardFooter className="flex justify-end gap-2">
-              <Button variant="ghost" size="sm">Cancel</Button>
+              <Button variant="ghost" size="sm">
+                Cancel
+              </Button>
               <Button size="sm">Save</Button>
             </CardFooter>
           </Card>
@@ -470,17 +714,23 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
                 <TableRow>
                   <TableCell className="font-medium">John Doe</TableCell>
                   <TableCell className="hidden md:table-cell">Admin</TableCell>
-                  <TableCell className="text-right"><Badge variant="default">Active</Badge></TableCell>
+                  <TableCell className="text-right">
+                    <Badge variant="default">Active</Badge>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell className="font-medium">Jane Smith</TableCell>
                   <TableCell className="hidden md:table-cell">Teacher</TableCell>
-                  <TableCell className="text-right"><Badge variant="secondary">Pending</Badge></TableCell>
+                  <TableCell className="text-right">
+                    <Badge variant="secondary">Pending</Badge>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell className="font-medium">Bob Wilson</TableCell>
                   <TableCell className="hidden md:table-cell">Student</TableCell>
-                  <TableCell className="text-right"><Badge variant="destructive">Inactive</Badge></TableCell>
+                  <TableCell className="text-right">
+                    <Badge variant="destructive">Inactive</Badge>
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -583,9 +833,7 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
         name: "Calendar",
         description: "Date picker and calendar display",
         variants: ["single", "range", "multiple"],
-        preview: (
-          <Calendar mode="single" className="w-auto" />
-        ),
+        preview: <Calendar mode="single" className="w-auto" />,
       },
     ],
   },
@@ -603,11 +851,19 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
             <TabsList className="w-full">
               <TabsTrigger value="tab1">Tab One</TabsTrigger>
               <TabsTrigger value="tab2">Tab Two</TabsTrigger>
-              <TabsTrigger value="tab3" disabled>Disabled</TabsTrigger>
+              <TabsTrigger value="tab3" disabled>
+                Disabled
+              </TabsTrigger>
             </TabsList>
-            <TabsContent value="tab1" className="mt-3 p-3 bg-muted rounded-lg text-sm">Content for Tab One</TabsContent>
-            <TabsContent value="tab2" className="mt-3 p-3 bg-muted rounded-lg text-sm">Content for Tab Two</TabsContent>
-            <TabsContent value="tab3" className="mt-3 p-3 bg-muted rounded-lg text-sm">Content for Tab Three</TabsContent>
+            <TabsContent value="tab1" className="mt-3 p-3 bg-muted rounded-lg text-sm">
+              Content for Tab One
+            </TabsContent>
+            <TabsContent value="tab2" className="mt-3 p-3 bg-muted rounded-lg text-sm">
+              Content for Tab Two
+            </TabsContent>
+            <TabsContent value="tab3" className="mt-3 p-3 bg-muted rounded-lg text-sm">
+              Content for Tab Three
+            </TabsContent>
           </Tabs>
         ),
       },
@@ -618,13 +874,21 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
         preview: (
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              </BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem><BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink></BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+              </BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem><BreadcrumbLink href="/dashboard/analytics">Analytics</BreadcrumbLink></BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/dashboard/analytics">Analytics</BreadcrumbLink>
+              </BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem><BreadcrumbPage>Overview</BreadcrumbPage></BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Overview</BreadcrumbPage>
+              </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         ),
@@ -636,13 +900,29 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
         preview: (
           <Pagination>
             <PaginationContent>
-              <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
-              <PaginationItem><PaginationLink href="#" isActive>1</PaginationLink></PaginationItem>
-              <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>
-              <PaginationItem><PaginationLink href="#">3</PaginationLink></PaginationItem>
-              <PaginationItem><PaginationEllipsis /></PaginationItem>
-              <PaginationItem><PaginationLink href="#">10</PaginationLink></PaginationItem>
-              <PaginationItem><PaginationNext href="#" /></PaginationItem>
+              <PaginationItem>
+                <PaginationPrevious href="#" />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#" isActive>
+                  1
+                </PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">2</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">3</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">10</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext href="#" />
+              </PaginationItem>
             </PaginationContent>
           </Pagination>
         ),
@@ -740,7 +1020,9 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
         preview: (
           <TooltipProvider>
             <div className="space-y-2">
-              <p className="text-xs text-muted-foreground">Use Sonner provider in app root. Demo shows variants:</p>
+              <p className="text-xs text-muted-foreground">
+                Use Sonner provider in app root. Demo shows variants:
+              </p>
               <div className="flex flex-wrap gap-2">
                 <Badge variant="outline">Success</Badge>
                 <Badge variant="outline">Error</Badge>
@@ -764,7 +1046,9 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
                 <TooltipTrigger asChild>
                   <Button variant="outline">Hover me</Button>
                 </TooltipTrigger>
-                <TooltipContent side="top" align="center">Tooltip on top</TooltipContent>
+                <TooltipContent side="top" align="center">
+                  Tooltip on top
+                </TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -811,7 +1095,9 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Dialog Title</DialogTitle>
-                <DialogDescription>This is a dialog description with more details.</DialogDescription>
+                <DialogDescription>
+                  This is a dialog description with more details.
+                </DialogDescription>
               </DialogHeader>
               <DialogFooter>
                 <Button variant="ghost">Cancel</Button>
@@ -828,7 +1114,9 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
         preview: (
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="destructive" outline>Show Alert Dialog</Button>
+              <Button variant="destructive" outline>
+                Show Alert Dialog
+              </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -858,7 +1146,9 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
                 <SheetDescription>Content from the side.</SheetDescription>
               </SheetHeader>
               <SheetFooter>
-                <Button variant="ghost" className="w-full">Close</Button>
+                <Button variant="ghost" className="w-full">
+                  Close
+                </Button>
               </SheetFooter>
             </SheetContent>
           </Sheet>
@@ -879,7 +1169,9 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
                 <DrawerDescription>Drawer content goes here.</DrawerDescription>
               </DrawerHeader>
               <DrawerFooter>
-                <Button variant="ghost" className="w-full">Close</Button>
+                <Button variant="ghost" className="w-full">
+                  Close
+                </Button>
               </DrawerFooter>
             </DrawerContent>
           </Drawer>
@@ -915,7 +1207,9 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
               <DropdownMenuItem>Edit</DropdownMenuItem>
               <DropdownMenuItem>Duplicate</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive focus:text-destructive">Delete</DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive focus:text-destructive">
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ),
@@ -955,11 +1249,15 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger>What is Chokur?</AccordionTrigger>
-              <AccordionContent>Chokur is a Kenyan secondary school management system for KCSE grading.</AccordionContent>
+              <AccordionContent>
+                Chokur is a Kenyan secondary school management system for KCSE grading.
+              </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
               <AccordionTrigger>How does offline work?</AccordionTrigger>
-              <AccordionContent>Data syncs when online; all features work offline via IndexedDB.</AccordionContent>
+              <AccordionContent>
+                Data syncs when online; all features work offline via IndexedDB.
+              </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
               <AccordionTrigger>Is it free?</AccordionTrigger>
@@ -974,7 +1272,9 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
         variants: ["default", "controlled"],
         preview: (
           <Collapsible>
-            <CollapsibleTrigger className="font-medium hover:underline cursor-pointer">Show more</CollapsibleTrigger>
+            <CollapsibleTrigger className="font-medium hover:underline cursor-pointer">
+              Show more
+            </CollapsibleTrigger>
             <CollapsibleContent className="mt-2 text-sm text-muted-foreground">
               This content can be collapsed and expanded.
             </CollapsibleContent>
@@ -1012,12 +1312,21 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
         description: "Resizable panel groups",
         variants: ["horizontal", "vertical"],
         preview: (
-          <ResizablePanelGroup direction="horizontal" className="h-40 border border-border rounded-lg overflow-hidden">
-            <ResizablePanel className="flex items-center justify-center bg-muted min-w-[100px]">Panel 1</ResizablePanel>
+          <ResizablePanelGroup
+            direction="horizontal"
+            className="h-40 border border-border rounded-lg overflow-hidden"
+          >
+            <ResizablePanel className="flex items-center justify-center bg-muted min-w-[100px]">
+              Panel 1
+            </ResizablePanel>
             <ResizableHandle className="bg-border" />
-            <ResizablePanel className="flex items-center justify-center bg-muted min-w-[100px]">Panel 2</ResizablePanel>
+            <ResizablePanel className="flex items-center justify-center bg-muted min-w-[100px]">
+              Panel 2
+            </ResizablePanel>
             <ResizableHandle className="bg-border" />
-            <ResizablePanel className="flex items-center justify-center bg-muted min-w-[100px]">Panel 3</ResizablePanel>
+            <ResizablePanel className="flex items-center justify-center bg-muted min-w-[100px]">
+              Panel 3
+            </ResizablePanel>
           </ResizablePanelGroup>
         ),
       },
@@ -1027,10 +1336,10 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
         variants: ["16:9", "4:3", "1:1", "21:9"],
         preview: (
           <div className="grid gap-2 sm:grid-cols-2">
-            <AspectRatio ratio={16/9} className="bg-muted rounded-lg" />
-            <AspectRatio ratio={4/3} className="bg-muted rounded-lg" />
+            <AspectRatio ratio={16 / 9} className="bg-muted rounded-lg" />
+            <AspectRatio ratio={4 / 3} className="bg-muted rounded-lg" />
             <AspectRatio ratio={1} className="bg-muted rounded-lg" />
-            <AspectRatio ratio={21/9} className="bg-muted rounded-lg" />
+            <AspectRatio ratio={21 / 9} className="bg-muted rounded-lg" />
           </div>
         ),
       },
@@ -1041,9 +1350,15 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
         preview: (
           <Carousel className="relative h-40 rounded-lg overflow-hidden">
             <CarouselContent className="h-full">
-              <CarouselItem className="bg-primary/10 flex items-center justify-center">Slide 1</CarouselItem>
-              <CarouselItem className="bg-secondary/10 flex items-center justify-center">Slide 2</CarouselItem>
-              <CarouselItem className="bg-accent/10 flex items-center justify-center">Slide 3</CarouselItem>
+              <CarouselItem className="bg-primary/10 flex items-center justify-center">
+                Slide 1
+              </CarouselItem>
+              <CarouselItem className="bg-secondary/10 flex items-center justify-center">
+                Slide 2
+              </CarouselItem>
+              <CarouselItem className="bg-accent/10 flex items-center justify-center">
+                Slide 3
+              </CarouselItem>
             </CarouselContent>
             <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2" />
             <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2" />
@@ -1128,8 +1443,8 @@ const COMPONENT_GROUPS: ComponentGroup[] = [
 ];
 
 // CSS animations for showcase (client-side only)
-if (typeof window !== 'undefined') {
-  const style = document.createElement('style');
+if (typeof window !== "undefined") {
+  const style = document.createElement("style");
   style.textContent = `
     @keyframes fade-in {
       from { opacity: 0; transform: translateY(8px); }

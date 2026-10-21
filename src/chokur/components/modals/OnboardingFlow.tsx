@@ -2,30 +2,206 @@ import React, { useState, useEffect } from "react";
 import { useGrading } from "@/chokur/context/GradingContext";
 import { ChokurLogo } from "../brand/ChokurLogo";
 
-interface OnboardingStep { id: string; title: string; description: string; component: React.ReactNode; isComplete: () => boolean; }
+interface OnboardingStep {
+  id: string;
+  title: string;
+  description: string;
+  component: React.ReactNode;
+  isComplete: () => boolean;
+}
 
 export const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
-  const { students, schoolConfig, updateSchoolConfig, resetToDemoData, setActiveView } = useGrading();
+  const { students, schoolConfig, updateSchoolConfig, resetToDemoData, setActiveView } =
+    useGrading();
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState({ schoolName: schoolConfig.schoolName, motto: schoolConfig.motto, postalAddress: schoolConfig.postalAddress, contactPhoneEmail: schoolConfig.contactPhoneEmail, principalName: schoolConfig.principalName, classTeacher: schoolConfig.classTeacher });
+  const [formData, setFormData] = useState({
+    schoolName: schoolConfig.schoolName,
+    motto: schoolConfig.motto,
+    postalAddress: schoolConfig.postalAddress,
+    contactPhoneEmail: schoolConfig.contactPhoneEmail,
+    principalName: schoolConfig.principalName,
+    classTeacher: schoolConfig.classTeacher,
+  });
 
   const steps: OnboardingStep[] = [
-    { id: "welcome", title: "Welcome to Chokur", description: "Kenyan secondary school marks-to-insight system. Let's set up your school in 3 quick steps.", isComplete: () => true, component: <div className="text-center space-y-4"><ChokurLogo variant="horizontal" size={40} /><p className="text-lg text-[#5F5E5E] max-w-md mx-auto">Chokur helps you enter marks once and instantly get KCSE grades, rankings, report cards, and parent communication — all offline.</p></div> },
-    { id: "school", title: "School Profile", description: "Enter your school details — these appear on all report cards and transcripts.", isComplete: () => !!formData.schoolName && !!formData.motto, component: <div className="space-y-4 text-left max-w-md mx-auto"><input value={formData.schoolName} onChange={(e) => setFormData({...formData, schoolName: e.target.value})} placeholder="School Name *" className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm" /><input value={formData.motto} onChange={(e) => setFormData({...formData, motto: e.target.value})} placeholder="School Motto *" className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm" /><input value={formData.postalAddress} onChange={(e) => setFormData({...formData, postalAddress: e.target.value})} placeholder="Postal Address" className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm" /><input value={formData.contactPhoneEmail} onChange={(e) => setFormData({...formData, contactPhoneEmail: e.target.value})} placeholder="Contact Phone / Email" className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm" /><input value={formData.principalName} onChange={(e) => setFormData({...formData, principalName: e.target.value})} placeholder="Principal Name" className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm" /><input value={formData.classTeacher} onChange={(e) => setFormData({...formData, classTeacher: e.target.value})} placeholder="Class Teacher / Head of Curriculum" className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm" /></div> },
-    { id: "data", title: "Student Data", description: "Load the sample KCSE cohort (42 students) or add your own students later.", isComplete: () => students.length > 0, component: <div className="text-center space-y-4"><p className="text-[#5F5E5E] max-w-md mx-auto">No students enrolled yet. Choose how to proceed:</p><button onClick={async () => { await resetToDemoData(); setFormData({ schoolName: schoolConfig.schoolName, motto: schoolConfig.motto, postalAddress: schoolConfig.postalAddress, contactPhoneEmail: schoolConfig.contactPhoneEmail, principalName: schoolConfig.principalName, classTeacher: schoolConfig.classTeacher }); }} className="mx-auto px-6 py-3 bg-[#C2410C] text-white rounded font-medium flex items-center gap-2 cursor-pointer"><span className="material-symbols-outlined">sync</span><span>Load Sample Cohort (42 Students)</span></button><button onClick={() => setActiveView("students")} className="mx-auto px-6 py-3 border border-[#DDD6C7] text-[#111111] rounded font-medium flex items-center gap-2 cursor-pointer"><span className="material-symbols-outlined">person_add</span><span>I'll Add Students Manually</span></button></div> },
+    {
+      id: "welcome",
+      title: "Welcome to Chokur",
+      description:
+        "Kenyan secondary school marks-to-insight system. Let's set up your school in 3 quick steps.",
+      isComplete: () => true,
+      component: (
+        <div className="text-center space-y-4">
+          <ChokurLogo variant="horizontal" size={40} />
+          <p className="text-lg text-[#5F5E5E] max-w-md mx-auto">
+            Chokur helps you enter marks once and instantly get KCSE grades, rankings, report cards,
+            and parent communication — all offline.
+          </p>
+        </div>
+      ),
+    },
+    {
+      id: "school",
+      title: "School Profile",
+      description: "Enter your school details — these appear on all report cards and transcripts.",
+      isComplete: () => !!formData.schoolName && !!formData.motto,
+      component: (
+        <div className="space-y-4 text-left max-w-md mx-auto">
+          <input
+            value={formData.schoolName}
+            onChange={(e) => setFormData({ ...formData, schoolName: e.target.value })}
+            placeholder="School Name *"
+            className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm"
+          />
+          <input
+            value={formData.motto}
+            onChange={(e) => setFormData({ ...formData, motto: e.target.value })}
+            placeholder="School Motto *"
+            className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm"
+          />
+          <input
+            value={formData.postalAddress}
+            onChange={(e) => setFormData({ ...formData, postalAddress: e.target.value })}
+            placeholder="Postal Address"
+            className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm"
+          />
+          <input
+            value={formData.contactPhoneEmail}
+            onChange={(e) => setFormData({ ...formData, contactPhoneEmail: e.target.value })}
+            placeholder="Contact Phone / Email"
+            className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm"
+          />
+          <input
+            value={formData.principalName}
+            onChange={(e) => setFormData({ ...formData, principalName: e.target.value })}
+            placeholder="Principal Name"
+            className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm"
+          />
+          <input
+            value={formData.classTeacher}
+            onChange={(e) => setFormData({ ...formData, classTeacher: e.target.value })}
+            placeholder="Class Teacher / Head of Curriculum"
+            className="w-full h-11 px-3 border border-[#DDD6C7] rounded bg-white text-sm"
+          />
+        </div>
+      ),
+    },
+    {
+      id: "data",
+      title: "Student Data",
+      description: "Load the sample KCSE cohort (42 students) or add your own students later.",
+      isComplete: () => students.length > 0,
+      component: (
+        <div className="text-center space-y-4">
+          <p className="text-[#5F5E5E] max-w-md mx-auto">
+            No students enrolled yet. Choose how to proceed:
+          </p>
+          <button
+            onClick={async () => {
+              await resetToDemoData();
+              setFormData({
+                schoolName: schoolConfig.schoolName,
+                motto: schoolConfig.motto,
+                postalAddress: schoolConfig.postalAddress,
+                contactPhoneEmail: schoolConfig.contactPhoneEmail,
+                principalName: schoolConfig.principalName,
+                classTeacher: schoolConfig.classTeacher,
+              });
+            }}
+            className="mx-auto px-6 py-3 bg-[#C2410C] text-white rounded font-medium flex items-center gap-2 cursor-pointer"
+          >
+            <span className="material-symbols-outlined">sync</span>
+            <span>Load Sample Cohort (42 Students)</span>
+          </button>
+          <button
+            onClick={() => setActiveView("students")}
+            className="mx-auto px-6 py-3 border border-[#DDD6C7] text-[#111111] rounded font-medium flex items-center gap-2 cursor-pointer"
+          >
+            <span className="material-symbols-outlined">person_add</span>
+            <span>I'll Add Students Manually</span>
+          </button>
+        </div>
+      ),
+    },
   ];
 
-  const handleNext = () => { if (currentStep < steps.length - 1) { if (currentStep === 1) updateSchoolConfig(formData); setCurrentStep(currentStep + 1); } else { localStorage.setItem("chokur.onboarding_complete", "true"); onComplete(); } };
-  const handleBack = () => { if (currentStep > 0) setCurrentStep(currentStep - 1); };
+  const handleNext = () => {
+    if (currentStep < steps.length - 1) {
+      if (currentStep === 1) updateSchoolConfig(formData);
+      setCurrentStep(currentStep + 1);
+    } else {
+      localStorage.setItem("chokur.onboarding_complete", "true");
+      onComplete();
+    }
+  };
+  const handleBack = () => {
+    if (currentStep > 0) setCurrentStep(currentStep - 1);
+  };
   const isLastStep = currentStep === steps.length - 1;
   const canProceed = steps[currentStep].isComplete();
 
   return (
     <div className="min-h-screen bg-[#FEF9EF] flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-xl bg-[#FBF8F1] border border-[#DDD6C7] rounded-xl p-6 sm:p-8 shadow-lg">
-        <div className="mb-6 flex items-center justify-between">{steps.map((step, idx) => (<React.Fragment key={step.id}><div className={`flex items-center gap-1.5 ${idx < steps.length - 1 ? "flex-1" : ""}`}><div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${idx < currentStep ? "bg-[#C2410C] text-white" : idx === currentStep ? "bg-[#C2410C] text-white" : "bg-[#F2EDE3] text-[#5F5E5E]"}`}>{idx < currentStep ? <span className="material-symbols-outlined text-[14px]">check</span> : idx + 1}</div>{idx < steps.length - 1 && <div className={`h-1 flex-1 ${idx < currentStep ? "bg-[#C2410C]" : "bg-[#DDD6C7]"}`} />}</div></React.Fragment>))}</div>
-        <div className="space-y-6"><h2 className="font-headline-md text-xl text-[#111111] text-center">{steps[currentStep].title}</h2><p className="text-sm text-[#5F5E5E] text-center">{steps[currentStep].description}</p>{steps[currentStep].component}</div>
-        <div className="mt-8 flex items-center justify-between pt-6 border-t border-[#DDD6C7]"><button onClick={handleBack} disabled={currentStep === 0} className="px-4 py-2 text-sm text-[#5F5E5E] hover:text-[#111111] disabled:opacity-30 cursor-pointer"><span className="material-symbols-outlined text-[16px] align-middle mr-1">arrow_back</span>Back</button><button onClick={handleNext} disabled={!canProceed} className="px-6 py-2 bg-[#C2410C] text-white rounded font-medium text-sm hover:opacity-90 disabled:opacity-50 cursor-pointer flex items-center gap-1.5">{isLastStep ? <>Launch Chokur<span className="material-symbols-outlined text-[16px]">arrow_forward</span></> : <>Next<span className="material-symbols-outlined text-[16px]">arrow_forward</span></>}</button></div>
+        <div className="mb-6 flex items-center justify-between">
+          {steps.map((step, idx) => (
+            <React.Fragment key={step.id}>
+              <div
+                className={`flex items-center gap-1.5 ${idx < steps.length - 1 ? "flex-1" : ""}`}
+              >
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${idx < currentStep ? "bg-[#C2410C] text-white" : idx === currentStep ? "bg-[#C2410C] text-white" : "bg-[#F2EDE3] text-[#5F5E5E]"}`}
+                >
+                  {idx < currentStep ? (
+                    <span className="material-symbols-outlined text-[14px]">check</span>
+                  ) : (
+                    idx + 1
+                  )}
+                </div>
+                {idx < steps.length - 1 && (
+                  <div
+                    className={`h-1 flex-1 ${idx < currentStep ? "bg-[#C2410C]" : "bg-[#DDD6C7]"}`}
+                  />
+                )}
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
+        <div className="space-y-6">
+          <h2 className="font-headline-md text-xl text-[#111111] text-center">
+            {steps[currentStep].title}
+          </h2>
+          <p className="text-sm text-[#5F5E5E] text-center">{steps[currentStep].description}</p>
+          {steps[currentStep].component}
+        </div>
+        <div className="mt-8 flex items-center justify-between pt-6 border-t border-[#DDD6C7]">
+          <button
+            onClick={handleBack}
+            disabled={currentStep === 0}
+            className="px-4 py-2 text-sm text-[#5F5E5E] hover:text-[#111111] disabled:opacity-30 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px] align-middle mr-1">
+              arrow_back
+            </span>
+            Back
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={!canProceed}
+            className="px-6 py-2 bg-[#C2410C] text-white rounded font-medium text-sm hover:opacity-90 disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
+          >
+            {isLastStep ? (
+              <>
+                Launch Chokur
+                <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+              </>
+            ) : (
+              <>
+                Next<span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

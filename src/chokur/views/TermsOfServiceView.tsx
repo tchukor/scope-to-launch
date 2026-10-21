@@ -44,7 +44,9 @@ export const TermsOfServiceView: React.FC = () => {
         {/* Section 1 */}
         <section className="space-y-3">
           <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">verified</span>
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">
+              verified
+            </span>
             <span>1. KCSE 12-Point Grading & Curriculum Compliance</span>
           </h2>
           <p className="text-[var(--color-on-surface-muted)]">
@@ -54,7 +56,9 @@ export const TermsOfServiceView: React.FC = () => {
             and above).
           </p>
           <Card variant="outlined" className="p-4">
-            <div className="font-semibold text-[var(--color-on-surface)] text-sm mb-2">Statutory Calculation Boundaries:</div>
+            <div className="font-semibold text-[var(--color-on-surface)] text-sm mb-2">
+              Statutory Calculation Boundaries:
+            </div>
             <ul className="list-disc list-inside space-y-1 text-[var(--color-on-surface-muted)] text-sm">
               <li>
                 <strong>Best 7 Aggregate Formula:</strong> Mathematics + 2 Languages (ENG, KIS) + 2
@@ -66,8 +70,8 @@ export const TermsOfServiceView: React.FC = () => {
                 secondary or interim continuous assessments.
               </li>
               <li>
-                Raw marks must be entered between 0 and 100 inclusive, or designated as
-                "ABS" (Absent with 0 points).
+                Raw marks must be entered between 0 and 100 inclusive, or designated as "ABS"
+                (Absent with 0 points).
               </li>
             </ul>
           </Card>
@@ -76,7 +80,9 @@ export const TermsOfServiceView: React.FC = () => {
         {/* Section 2 */}
         <section className="space-y-3">
           <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">badge</span>
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">
+              badge
+            </span>
             <span>2. Official Report Cards & Institutional Authority</span>
           </h2>
           <p className="text-[var(--color-on-surface-muted)]">
@@ -94,7 +100,9 @@ export const TermsOfServiceView: React.FC = () => {
         {/* Section 3 */}
         <section className="space-y-3">
           <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">sms</span>
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">
+              sms
+            </span>
             <span>3. Bulk SMS & Parent Messaging Communications</span>
           </h2>
           <p className="text-[var(--color-on-surface-muted)]">
@@ -111,7 +119,9 @@ export const TermsOfServiceView: React.FC = () => {
         {/* Section 4 */}
         <section className="space-y-3">
           <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">database</span>
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">
+              database
+            </span>
             <span>4. Offline Maintenance & Backup Obligations</span>
           </h2>
           <p className="text-[var(--color-on-surface-muted)]">
@@ -125,7 +135,9 @@ export const TermsOfServiceView: React.FC = () => {
         {/* Section 5 */}
         <section className="space-y-3">
           <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">gavel</span>
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">
+              gavel
+            </span>
             <span>5. Jurisdiction & Governing Law</span>
           </h2>
           <p className="text-[var(--color-on-surface-muted)]">

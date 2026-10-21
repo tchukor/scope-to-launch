@@ -10,7 +10,8 @@ interface CardProps {
 }
 
 const variantClasses = {
-  default: "bg-[var(--color-surface-container-lowest)] border border-[var(--color-hairline-border)]",
+  default:
+    "bg-[var(--color-surface-container-lowest)] border border-[var(--color-hairline-border)]",
   elevated: "bg-[var(--color-surface-container-lowest)] shadow-lg border-none",
   outlined: "bg-transparent border-2 border-[var(--color-border-strong)]",
   panel: "bg-[var(--color-surface-panel)] border border-[var(--color-border-subtle)]",
@@ -32,15 +33,16 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
           "rounded-lg transition-all duration-200",
           variantClasses[variant],
           paddingClasses[padding],
-          hover && "hover:shadow-xl hover:border-[var(--color-primary)] hover:-translate-y-0.5 cursor-pointer",
-          className
+          hover &&
+            "hover:shadow-xl hover:border-[var(--color-primary)] hover:-translate-y-0.5 cursor-pointer",
+          className,
         )}
         {...props}
       >
         {children}
       </div>
     );
-  }
+  },
 );
 Card.displayName = "Card";
 
@@ -59,7 +61,7 @@ export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
         className={cn(
           "flex items-start justify-between gap-4 mb-4",
           divider && "pb-3 border-b border-[var(--color-hairline-border)]",
-          className
+          className,
         )}
         {...props}
       >
@@ -67,7 +69,7 @@ export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
         {action && <div className="flex-shrink-0">{action}</div>}
       </div>
     );
-  }
+  },
 );
 CardHeader.displayName = "CardHeader";
 
@@ -98,7 +100,7 @@ export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
     <div ref={ref} className={cn(className)} {...props}>
       {children}
     </div>
-  )
+  ),
 );
 CardContent.displayName = "CardContent";
 
@@ -115,12 +117,12 @@ export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
       className={cn(
         "flex items-center justify-end gap-2 mt-4",
         divider && "pt-3 border-t border-[var(--color-hairline-border)]",
-        className
+        className,
       )}
       {...props}
     >
       {children}
     </div>
-  )
+  ),
 );
 CardFooter.displayName = "CardFooter";

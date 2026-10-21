@@ -202,7 +202,9 @@ export const ReportCardsView: React.FC = () => {
           <p className="font-caption text-caption text-[var(--color-on-surface-muted)] tracking-wider mt-0.5 uppercase text-[10px] sm:text-xs">
             {schoolConfig.postalAddress} · {schoolConfig.contactPhoneEmail}
           </p>
-          <p className="italic text-xs text-[var(--color-on-surface-muted)] mt-0.5">"{schoolConfig.motto}"</p>
+          <p className="italic text-xs text-[var(--color-on-surface-muted)] mt-0.5">
+            "{schoolConfig.motto}"
+          </p>
           <div className="mt-2.5 inline-block border-y border-[var(--color-hairline-border)] py-1 px-4 sm:px-6 bg-[var(--color-surface-container-low)]">
             <h2 className="font-headline-sm text-headline-sm uppercase tracking-wider font-semibold text-[var(--color-on-surface)] text-xs sm:text-sm">
               Student Academic Report Card
@@ -219,7 +221,9 @@ export const ReportCardsView: React.FC = () => {
             <span className="text-[var(--color-on-surface-muted)] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
               STUDENT NAME:
             </span>
-            <span className="font-semibold text-[var(--color-on-surface)]">{calc.student.name}</span>
+            <span className="font-semibold text-[var(--color-on-surface)]">
+              {calc.student.name}
+            </span>
           </div>
           <div className="flex justify-between border-b border-[var(--color-hairline-border)]/50 pb-1">
             <span className="text-[var(--color-on-surface-muted)] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
@@ -233,7 +237,9 @@ export const ReportCardsView: React.FC = () => {
             <span className="text-[var(--color-on-surface-muted)] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
               CLASS & STREAM:
             </span>
-            <span className="font-semibold text-[var(--color-on-surface)]">{calc.student.stream}</span>
+            <span className="font-semibold text-[var(--color-on-surface)]">
+              {calc.student.stream}
+            </span>
           </div>
           <div className="flex justify-between border-b border-[var(--color-hairline-border)]/50 pb-1">
             <span className="text-[var(--color-on-surface-muted)] font-caption text-caption uppercase text-[10px] sm:text-[11px]">
@@ -286,7 +292,9 @@ export const ReportCardsView: React.FC = () => {
                     </td>
                     <td className="py-2 px-2 text-center font-tabular-sm">
                       {isAbs ? (
-                        <span className="text-[var(--color-on-surface-disabled)] font-bold">ABS</span>
+                        <span className="text-[var(--color-on-surface-disabled)] font-bold">
+                          ABS
+                        </span>
                       ) : val !== null && val !== undefined ? (
                         val
                       ) : (
@@ -295,7 +303,9 @@ export const ReportCardsView: React.FC = () => {
                     </td>
                     <td className="py-2 px-2 text-center">
                       {isAbs ? (
-                        <span className="text-[var(--color-on-surface-disabled)] font-medium text-xs">X</span>
+                        <span className="text-[var(--color-on-surface-disabled)] font-medium text-xs">
+                          X
+                        </span>
                       ) : val !== null && val !== undefined ? (
                         <GradeChip grade={gradeInfo.grade} size="sm" />
                       ) : (
@@ -323,7 +333,9 @@ export const ReportCardsView: React.FC = () => {
             </span>
             <span className="font-display-stat text-xl sm:text-2xl font-bold text-[var(--color-on-surface)] block mt-0.5">
               #{calc.rank}{" "}
-              <span className="text-xs text-[var(--color-on-surface-muted)] font-normal">of {students.length}</span>
+              <span className="text-xs text-[var(--color-on-surface-muted)] font-normal">
+                of {students.length}
+              </span>
             </span>
           </div>
           <div className="sm:border-r border-[var(--color-hairline-border)] sm:pr-2">
@@ -331,7 +343,10 @@ export const ReportCardsView: React.FC = () => {
               BEST 7 AGGREGATE
             </span>
             <span className="font-display-stat text-xl sm:text-2xl font-bold text-[var(--color-on-surface)] block mt-0.5">
-              {calc.aggregate} <span className="text-xs text-[var(--color-on-surface-muted)] font-normal">/ 84 pts</span>
+              {calc.aggregate}{" "}
+              <span className="text-xs text-[var(--color-on-surface-muted)] font-normal">
+                / 84 pts
+              </span>
             </span>
           </div>
           <div className="border-r border-[var(--color-hairline-border)] pr-2 pt-2 sm:pt-0 border-t sm:border-t-0">
@@ -515,7 +530,11 @@ export const ReportCardsView: React.FC = () => {
             disabled={isGeneratingPDF}
             className="min-h-[40px]"
             iconPosition="left"
-            icon={<span className="material-symbols-outlined text-[16px]">{isGeneratingPDF ? "hourglass_empty" : "download"}</span>}
+            icon={
+              <span className="material-symbols-outlined text-[16px]">
+                {isGeneratingPDF ? "hourglass_empty" : "download"}
+              </span>
+            }
           >
             {isGeneratingPDF ? "PDF..." : "PDF"}
           </Button>
@@ -559,7 +578,9 @@ export const ReportCardsView: React.FC = () => {
               />
             </div>
             <div className="flex items-center justify-between text-xs px-1 text-[var(--color-on-surface-muted)]">
-              <span className="font-caption text-caption text-[var(--color-on-surface-muted)]">Class Candidates</span>
+              <span className="font-caption text-caption text-[var(--color-on-surface-muted)]">
+                Class Candidates
+              </span>
               <span className="text-[var(--color-on-surface)] font-semibold font-tabular-sm">
                 {filteredRoster.length} Candidates
               </span>
@@ -579,7 +600,9 @@ export const ReportCardsView: React.FC = () => {
                     setMobileView("card");
                   }}
                   className={`p-3 cursor-pointer transition-colors min-h-[56px] flex items-center justify-between ${
-                    isSelected ? "bg-[var(--color-surface-container)] border-l-3 border-[var(--color-primary)]" : "hover:bg-[var(--color-surface-container)]"
+                    isSelected
+                      ? "bg-[var(--color-surface-container)] border-l-3 border-[var(--color-primary)]"
+                      : "hover:bg-[var(--color-surface-container)]"
                   }`}
                 >
                   <div className="flex-1 min-w-0 pr-2">
@@ -596,7 +619,9 @@ export const ReportCardsView: React.FC = () => {
                       {item.student.name}
                     </h4>
                     <div className="mt-1 flex items-center gap-2 text-[10px] text-[var(--color-on-surface-muted)] font-tabular-sm">
-                      <span className="text-[var(--color-on-surface)] font-semibold">Rank #{item.rank}</span>
+                      <span className="text-[var(--color-on-surface)] font-semibold">
+                        Rank #{item.rank}
+                      </span>
                       <span>•</span>
                       <span>{item.aggregate}/84 pts</span>
                     </div>

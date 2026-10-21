@@ -5,7 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/chokur/components/ui
 import { StatTile, StatTileGrid } from "@/chokur/components/ui";
 import { Button } from "@/chokur/components/ui";
 import { Badge } from "@/chokur/components/ui";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "@/chokur/components/ui";
+import {
+  DataTable,
+  TableHeader,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableFooter,
+} from "@/chokur/components/ui";
 
 export const OverviewView: React.FC = () => {
   const {
@@ -77,7 +84,9 @@ export const OverviewView: React.FC = () => {
             variant="outline"
             size="md"
             iconPosition="left"
-            icon={<span className="material-symbols-outlined text-[17px]">format_list_numbered</span>}
+            icon={
+              <span className="material-symbols-outlined text-[17px]">format_list_numbered</span>
+            }
             className="flex-1 sm:flex-none min-h-[44px]"
           >
             View rankings
@@ -174,7 +183,9 @@ export const OverviewView: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[22px] text-[var(--color-on-warning-container)]">school</span>
+                <span className="material-symbols-outlined text-[22px] text-[var(--color-on-warning-container)]">
+                  school
+                </span>
                 <h3 className="font-headline-md font-bold text-[var(--color-on-warning-container)]">
                   Welcome to Chokur System
                 </h3>
@@ -319,7 +330,9 @@ export const OverviewView: React.FC = () => {
           {/* Near the line */}
           <section>
             <div className="pb-3 border-b border-[var(--color-hairline-border)]">
-              <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">Near the line</h2>
+              <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
+                Near the line
+              </h2>
               <p className="font-caption text-caption text-[var(--color-on-surface-muted)] mt-0.5">
                 Students within 1–2 points of the C+ university threshold (targeted academic
                 intervention)
@@ -331,27 +344,44 @@ export const OverviewView: React.FC = () => {
               <DataTable caption="Students near university cutoff line" compact striped hoverable>
                 <TableHeader>
                   <TableHead scope="col">STUDENT</TableHead>
-                  <TableHead align="right" scope="col">MEAN POINTS</TableHead>
-                  <TableHead align="right" scope="col">AGGREGATE</TableHead>
-                  <TableHead align="left" className="pl-6" scope="col">WEAKEST SUBJECT</TableHead>
-                  <TableHead align="right" scope="col">ACTION</TableHead>
+                  <TableHead align="right" scope="col">
+                    MEAN POINTS
+                  </TableHead>
+                  <TableHead align="right" scope="col">
+                    AGGREGATE
+                  </TableHead>
+                  <TableHead align="left" className="pl-6" scope="col">
+                    WEAKEST SUBJECT
+                  </TableHead>
+                  <TableHead align="right" scope="col">
+                    ACTION
+                  </TableHead>
                 </TableHeader>
                 <tbody className="divide-y divide-[var(--color-hairline-border)]">
                   {nearTheLineStudents.slice(0, 6).map((record) => (
-                    <TableRow key={record.student.id} onClick={() => handleViewCard(record.student.id)} hoverable>
-                      <TableCell fontWeight="medium">
-                        {record.student.name}
-                      </TableCell>
+                    <TableRow
+                      key={record.student.id}
+                      onClick={() => handleViewCard(record.student.id)}
+                      hoverable
+                    >
+                      <TableCell fontWeight="medium">{record.student.name}</TableCell>
                       <TableCell align="right" fontVariant="tabular" fontWeight="medium">
                         {record.meanPoints.toFixed(2)}
                       </TableCell>
                       <TableCell align="right" fontVariant="tabular">
                         {record.aggregate}/84
                       </TableCell>
-                      <TableCell align="left" className="pl-6" fontVariant="tabular" fontSize="sm" color="muted">
+                      <TableCell
+                        align="left"
+                        className="pl-6"
+                        fontVariant="tabular"
+                        fontSize="sm"
+                        color="muted"
+                      >
                         {record.weakestSubject ? (
                           <span className="font-mono text-xs text-[var(--color-on-surface)]">
-                            {record.weakestSubject.code} <span className="text-[var(--color-on-surface-disabled)]">·</span>{" "}
+                            {record.weakestSubject.code}{" "}
+                            <span className="text-[var(--color-on-surface-disabled)]">·</span>{" "}
                             <span className="font-bold text-[var(--color-primary)]">
                               {record.weakestSubject.score}%
                             </span>
@@ -394,7 +424,9 @@ export const OverviewView: React.FC = () => {
               <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
                 Top 5 Cohort Leaderboard
               </h2>
-              <span className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)]">TERM STANDING</span>
+              <span className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)]">
+                TERM STANDING
+              </span>
             </div>
 
             {/* Rankings Ledger using DataTable */}
@@ -402,8 +434,12 @@ export const OverviewView: React.FC = () => {
               <TableHeader>
                 <TableHead scope="col">RANK</TableHead>
                 <TableHead scope="col">STUDENT</TableHead>
-                <TableHead align="right" scope="col">AGGREGATE</TableHead>
-                <TableHead align="center" scope="col">GRADE</TableHead>
+                <TableHead align="right" scope="col">
+                  AGGREGATE
+                </TableHead>
+                <TableHead align="center" scope="col">
+                  GRADE
+                </TableHead>
               </TableHeader>
               <tbody className="divide-y divide-[var(--color-hairline-border)]">
                 {top5.map((student) => (
@@ -412,10 +448,19 @@ export const OverviewView: React.FC = () => {
                     onClick={() => handleViewCard(student.student.id)}
                     hoverable
                   >
-                    <TableCell fontVariant="tabular" fontWeight="bold" color="muted" className="w-4 text-center">
+                    <TableCell
+                      fontVariant="tabular"
+                      fontWeight="bold"
+                      color="muted"
+                      className="w-4 text-center"
+                    >
                       {student.rank}
                     </TableCell>
-                    <TableCell fontWeight="medium" color="on-surface" className="hover:text-[var(--color-primary)]">
+                    <TableCell
+                      fontWeight="medium"
+                      color="on-surface"
+                      className="hover:text-[var(--color-primary)]"
+                    >
                       {student.student.name}
                     </TableCell>
                     <TableCell align="right" fontVariant="tabular" color="muted">
@@ -455,7 +500,9 @@ export const OverviewView: React.FC = () => {
             <div className="space-y-3">
               <div>
                 <div className="flex items-center text-caption justify-between mb-1.5">
-                  <span className="text-[var(--color-on-surface-muted)] font-tabular-sm">Honors Tier (B+ to A)</span>
+                  <span className="text-[var(--color-on-surface-muted)] font-tabular-sm">
+                    Honors Tier (B+ to A)
+                  </span>
                   <span className="font-tabular-md text-[var(--color-on-surface)] font-semibold">
                     {honorsCount} students ({honorsPct}%)
                   </span>
@@ -493,7 +540,9 @@ export const OverviewView: React.FC = () => {
       <section className="mt-6 p-4 sm:p-5 bg-[var(--color-surface-container-low)] border border-[var(--color-hairline-border)] rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h4 className="font-semibold text-sm text-[var(--color-on-surface)] flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">route</span>
+            <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">
+              route
+            </span>
             <span>Marks Entry Workflow: Next Actions</span>
           </h4>
           <p className="text-xs text-[var(--color-on-surface-muted)] mt-0.5">
@@ -516,7 +565,9 @@ export const OverviewView: React.FC = () => {
             onClick={() => setActiveView("rankings")}
             size="sm"
             iconPosition="right"
-            icon={<span className="material-symbols-outlined text-[16px]">format_list_numbered</span>}
+            icon={
+              <span className="material-symbols-outlined text-[16px]">format_list_numbered</span>
+            }
             className="px-3.5 py-2 text-xs"
           >
             Class Rankings →

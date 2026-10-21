@@ -6,7 +6,14 @@ import { GradeDistributionTier, KCSEGrade } from "../types";
 import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui";
 import { Button, IconButton } from "@/chokur/components/ui";
 import { Badge } from "@/chokur/components/ui";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "@/chokur/components/ui";
+import {
+  DataTable,
+  TableHeader,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableFooter,
+} from "@/chokur/components/ui";
 import { Select } from "@/chokur/components/ui";
 
 export const GradeDistributionView: React.FC = () => {
@@ -163,7 +170,11 @@ export const GradeDistributionView: React.FC = () => {
             value={selectedSubjectFilter}
             onValueChange={setSelectedSubjectFilter}
             className="min-w-[200px] sm:min-w-[240px]"
-            icon={<span className="material-symbols-outlined text-[16px] text-[var(--color-primary)]">filter_list</span>}
+            icon={
+              <span className="material-symbols-outlined text-[16px] text-[var(--color-primary)]">
+                filter_list
+              </span>
+            }
           >
             <option value="ALL">Cohort KCSE Mean Grade</option>
             {subjects.map((s) => (
@@ -220,19 +231,25 @@ export const GradeDistributionView: React.FC = () => {
                   >
                     <div className="font-tabular-sm text-xs sm:text-tabular-sm text-[var(--color-on-surface)] mb-1.5 text-center whitespace-nowrap">
                       <span className={isTallest ? "font-bold" : "font-medium"}>{cat.count}</span>{" "}
-                      <span className="text-[var(--color-on-surface-muted)] hidden sm:inline">· {cat.pct}%</span>
+                      <span className="text-[var(--color-on-surface-muted)] hidden sm:inline">
+                        · {cat.pct}%
+                      </span>
                     </div>
 
                     <div
                       className={`w-full max-w-[48px] sm:max-w-[68px] transition-all duration-300 ${
-                        isTallest ? "bg-[var(--color-on-surface)]" : "bg-[var(--color-on-surface-muted)]"
+                        isTallest
+                          ? "bg-[var(--color-on-surface)]"
+                          : "bg-[var(--color-on-surface-muted)]"
                       }`}
                       style={{ height: `${Math.max(4, barHeightPct)}%` }}
                     ></div>
 
                     <div
                       className={`mt-2 sm:mt-3 font-tabular-md text-sm sm:text-tabular-md ${
-                        isTallest ? "font-bold text-[var(--color-on-surface)]" : "font-semibold text-[var(--color-on-surface)]"
+                        isTallest
+                          ? "font-bold text-[var(--color-on-surface)]"
+                          : "font-semibold text-[var(--color-on-surface)]"
                       }`}
                     >
                       {cat.letter}
@@ -323,8 +340,12 @@ export const GradeDistributionView: React.FC = () => {
                       </span>
                     </div>
                     <div className="flex items-center gap-3 text-xs font-tabular-sm">
-                      <span className="font-bold text-[var(--color-on-surface)]">{tier.studentCount} students</span>
-                      <span className="text-[var(--color-on-surface-muted)]">({tier.cohortShare.toFixed(1)}%)</span>
+                      <span className="font-bold text-[var(--color-on-surface)]">
+                        {tier.studentCount} students
+                      </span>
+                      <span className="text-[var(--color-on-surface-muted)]">
+                        ({tier.cohortShare.toFixed(1)}%)
+                      </span>
                       <span className="text-[10px] text-[var(--color-on-surface-disabled)]">
                         Cum: {tier.cumulativePercentage.toFixed(1)}%
                       </span>
@@ -334,7 +355,10 @@ export const GradeDistributionView: React.FC = () => {
               </Card>
 
               {isCPlus && (
-                <Card variant="outlined" className="py-2 my-1 border-y-2 border-[var(--color-on-surface)] bg-[var(--color-surface-container-low)] px-3">
+                <Card
+                  variant="outlined"
+                  className="py-2 my-1 border-y-2 border-[var(--color-on-surface)] bg-[var(--color-surface-container-low)] px-3"
+                >
                   <CardContent className="p-0">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] font-label-caps font-bold uppercase text-[var(--color-on-surface)]">
@@ -368,11 +392,21 @@ export const GradeDistributionView: React.FC = () => {
             <DataTable hoverable compact>
               <TableHeader>
                 <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
-                  <TableHead scope="col" className="w-28 px-4">KCSE Grade</TableHead>
-                  <TableHead scope="col" className="w-36 px-4">Points Equivalent</TableHead>
-                  <TableHead scope="col" className="px-4 text-right">Candidate Count</TableHead>
-                  <TableHead scope="col" className="px-4 text-right">Cohort Share</TableHead>
-                  <TableHead scope="col" className="px-4 text-right">Cumulative %</TableHead>
+                  <TableHead scope="col" className="w-28 px-4">
+                    KCSE Grade
+                  </TableHead>
+                  <TableHead scope="col" className="w-36 px-4">
+                    Points Equivalent
+                  </TableHead>
+                  <TableHead scope="col" className="px-4 text-right">
+                    Candidate Count
+                  </TableHead>
+                  <TableHead scope="col" className="px-4 text-right">
+                    Cohort Share
+                  </TableHead>
+                  <TableHead scope="col" className="px-4 text-right">
+                    Cumulative %
+                  </TableHead>
                 </tr>
               </TableHeader>
               <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
@@ -402,7 +436,10 @@ export const GradeDistributionView: React.FC = () => {
                       {/* The Cutoff Boundary Line after C+ */}
                       {isCPlus && (
                         <TableRow className="bg-[var(--color-surface-container-low)]">
-                          <TableCell colSpan={5} className="py-1 px-4 border-y-2 border-[var(--color-on-surface)]">
+                          <TableCell
+                            colSpan={5}
+                            className="py-1 px-4 border-y-2 border-[var(--color-on-surface)]"
+                          >
                             <div className="flex items-center justify-between">
                               <span className="font-label-caps text-label-caps text-[var(--color-on-surface)] uppercase tracking-widest font-bold flex items-center gap-2 text-xs">
                                 <span className="w-2 h-2 bg-[var(--color-on-surface)] inline-block"></span>
@@ -424,7 +461,9 @@ export const GradeDistributionView: React.FC = () => {
                   <TableCell className="py-3 px-4 font-body-sm text-body-sm text-[var(--color-on-surface)]">
                     Total Cohort Evaluated
                   </TableCell>
-                  <TableCell className="py-3 px-4 font-tabular-sm text-[var(--color-on-surface-muted)]">—</TableCell>
+                  <TableCell className="py-3 px-4 font-tabular-sm text-[var(--color-on-surface-muted)]">
+                    —
+                  </TableCell>
                   <TableCell className="py-3 px-4 text-right font-tabular-md text-[var(--color-on-surface)]">
                     {evaluatedCount} Candidates
                   </TableCell>
@@ -447,22 +486,46 @@ export const GradeDistributionView: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h4 className="font-semibold text-sm text-[var(--color-on-surface)] flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">route</span>
+                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">
+                  route
+                </span>
                 <span>Grade Distribution: Next Steps</span>
               </h4>
               <p className="text-xs text-[var(--color-on-surface-muted)] mt-0.5">
-                Verify cohort standing, review individual student positions, or produce official report
-                cards.
+                Verify cohort standing, review individual student positions, or produce official
+                report cards.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <Button variant="ghost" size="sm" onClick={() => setActiveView("overview")} className="px-3 py-2 text-xs">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveView("overview")}
+                className="px-3 py-2 text-xs"
+              >
                 ← Overview
               </Button>
-              <Button size="sm" onClick={() => setActiveView("rankings")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">format_list_numbered</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                size="sm"
+                onClick={() => setActiveView("rankings")}
+                iconPosition="right"
+                icon={
+                  <span className="material-symbols-outlined text-[16px]">
+                    format_list_numbered
+                  </span>
+                }
+                className="px-3.5 py-2 text-xs"
+              >
                 Class Rankings →
               </Button>
-              <Button variant="secondary" size="sm" onClick={() => setActiveView("report-cards")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">badge</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setActiveView("report-cards")}
+                iconPosition="right"
+                icon={<span className="material-symbols-outlined text-[16px]">badge</span>}
+                className="px-3.5 py-2 text-xs"
+              >
                 Report Cards →
               </Button>
             </div>

@@ -19,8 +19,10 @@ const variantClasses = {
   warning: "bg-[var(--color-tertiary-light)] text-[var(--color-on-tertiary-container)] border-none",
   error: "bg-[var(--color-error-light)] text-[var(--color-on-error-container)] border-none",
   info: "bg-[var(--color-info-light)] text-[var(--color-on-info-container)] border-none",
-  neutral: "bg-[var(--color-surface-container-high)] text-[var(--color-on-surface-variant)] border-none",
-  outline: "bg-transparent text-[var(--color-on-surface-variant)] border border-[var(--color-border-strong)]",
+  neutral:
+    "bg-[var(--color-surface-container-high)] text-[var(--color-on-surface-variant)] border-none",
+  outline:
+    "bg-transparent text-[var(--color-on-surface-variant)] border border-[var(--color-border-strong)]",
 };
 
 const sizeClasses = {
@@ -44,7 +46,7 @@ export const Badge = ({
         "transition-colors duration-200",
         variantClasses[variant],
         sizeClasses[size],
-        className
+        className,
       )}
     >
       {dot && (
@@ -57,11 +59,15 @@ export const Badge = ({
             variant === "info" && "bg-[var(--color-info)]",
             variant === "default" && "bg-[var(--color-primary)]",
             variant === "neutral" && "bg-[var(--color-on-surface-muted)]",
-            variant === "outline" && "bg-current"
+            variant === "outline" && "bg-current",
           )}
         />
       )}
-      {icon && <span className="flex-shrink-0" aria-hidden="true">{icon}</span>}
+      {icon && (
+        <span className="flex-shrink-0" aria-hidden="true">
+          {icon}
+        </span>
+      )}
       <span className="truncate">{children}</span>
     </span>
   );
@@ -99,7 +105,11 @@ export const StatusBadge = ({
       variant={config.variant}
       size={size}
       className={className}
-      icon={showIcon ? <span className="material-symbols-outlined text-[12px]">{config.icon}</span> : undefined}
+      icon={
+        showIcon ? (
+          <span className="material-symbols-outlined text-[12px]">{config.icon}</span>
+        ) : undefined
+      }
       dot={!showIcon}
     >
       {config.label}
@@ -108,7 +118,11 @@ export const StatusBadge = ({
 };
 
 // Internal type for StatusBadge to satisfy exactOptionalPropertyTypes when spreading
-type StatusBadgePropsInternal = StatusBadgeProps & { variant?: BadgeProps["variant"] | undefined; icon?: React.ReactNode | undefined; dot?: boolean | undefined };
+type StatusBadgePropsInternal = StatusBadgeProps & {
+  variant?: BadgeProps["variant"] | undefined;
+  icon?: React.ReactNode | undefined;
+  dot?: boolean | undefined;
+};
 
 export const GradeBadge = ({
   grade,

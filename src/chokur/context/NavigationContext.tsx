@@ -24,7 +24,9 @@ const ctxStore = globalThis as unknown as {
 };
 const NavigationContext =
   ctxStore.__chokurNavigationContext ??
-  (ctxStore.__chokurNavigationContext = createContext<NavigationContextType | undefined>(undefined));
+  (ctxStore.__chokurNavigationContext = createContext<NavigationContextType | undefined>(
+    undefined,
+  ));
 
 // Hash route parser
 const parseHashRoute = (): { view: ViewType; studentId?: string; subTab?: string } => {

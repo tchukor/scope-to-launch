@@ -20,7 +20,12 @@ export const DataTable = ({
   stickyHeader = true,
   caption,
 }: DataTableProps) => (
-  <div className={cn("overflow-x-auto border border-[var(--color-hairline-border)] rounded-lg bg-[var(--color-surface-container-lowest)]", className)}>
+  <div
+    className={cn(
+      "overflow-x-auto border border-[var(--color-hairline-border)] rounded-lg bg-[var(--color-surface-container-lowest)]",
+      className,
+    )}
+  >
     <table className="w-full border-collapse" role="grid">
       {caption && <caption className="sr-only">{caption}</caption>}
       <thead className={cn(stickyHeader && "sticky top-0 z-10")}>
@@ -28,18 +33,23 @@ export const DataTable = ({
           if (React.isValidElement(child) && child.type === TableHeader) {
             return React.cloneElement(child, {
               compact,
-              sticky: stickyHeader
+              sticky: stickyHeader,
             } as any);
           }
           return child;
         })}
       </thead>
-      <tbody className={cn("divide-y divide-[var(--color-hairline-border)]", striped && "even:bg-[var(--color-surface-container-low)]")}>
+      <tbody
+        className={cn(
+          "divide-y divide-[var(--color-hairline-border)]",
+          striped && "even:bg-[var(--color-surface-container-low)]",
+        )}
+      >
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child) && (child.type === TableRow || child.type === "tr")) {
             return React.cloneElement(child, {
               compact,
-              hoverable
+              hoverable,
             } as any);
           }
           return child;
@@ -72,7 +82,7 @@ export const TableHeader = ({
     className={cn(
       "bg-[var(--color-surface-container-low)] border-b-2 border-[var(--color-border-strong)]",
       sticky && "sticky top-0 z-10",
-      className
+      className,
     )}
   >
     {React.Children.map(children, (child) => {
@@ -116,9 +126,10 @@ export const TableHead = ({
       "border-r border-[var(--color-hairline-border)]",
       align === "center" && "text-center",
       align === "right" && "text-right",
-      sortable && "cursor-pointer select-none hover:bg-[var(--color-surface-container)] transition-colors",
+      sortable &&
+        "cursor-pointer select-none hover:bg-[var(--color-surface-container)] transition-colors",
       compact ? "px-2 py-2" : "px-3 py-2.5",
-      className
+      className,
     )}
     onClick={onClick}
     aria-sort={sortDirection !== "none" ? sortDirection : undefined}
@@ -160,11 +171,20 @@ export const TableRow = ({
       onClick && "cursor-pointer hover:bg-[var(--color-surface-container)]",
       selected && "bg-[var(--color-primary-light)]",
       compact ? "" : "",
-      className
+      className,
     )}
     onClick={onClick}
     tabIndex={onClick ? 0 : undefined}
-    onKeyDown={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(); }} : undefined}
+    onKeyDown={
+      onClick
+        ? (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onClick();
+            }
+          }
+        : undefined
+    }
     {...props}
   >
     {React.Children.map(children, (child) => {
@@ -231,7 +251,7 @@ export const TableCell = ({
         weightClasses[fontWeight],
         colorClasses[color],
         compact ? "px-2 py-1.5" : "px-3 py-2",
-        className
+        className,
       )}
       {...props}
     >
@@ -246,11 +266,7 @@ interface TableFooterProps {
   compact?: boolean;
 }
 
-export const TableFooter = ({
-  children,
-  className,
-  compact = false,
-}: TableFooterProps) => (
+export const TableFooter = ({ children, className, compact = false }: TableFooterProps) => (
   <tfoot className="bg-[var(--color-surface-container-low)] border-t-2 border-[var(--color-border-strong)]">
     <tr>
       {React.Children.map(children, (child) => {
@@ -269,17 +285,13 @@ interface TableActionCellProps {
   compact?: boolean;
 }
 
-export const TableActionCell = ({
-  children,
-  className,
-  compact = false,
-}: TableActionCellProps) => (
+export const TableActionCell = ({ children, className, compact = false }: TableActionCellProps) => (
   <td
     className={cn(
       "flex items-center justify-end gap-1.5",
       "border-r border-[var(--color-hairline-border)]",
       compact ? "px-2 py-1.5" : "px-3 py-2",
-      className
+      className,
     )}
   >
     {children}

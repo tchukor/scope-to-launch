@@ -28,7 +28,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       required,
       ...props
     },
-    ref
+    ref,
   ) => {
     const leadingIcon = leftIcon ?? icon;
     const inputId = id || React.useId();
@@ -42,7 +42,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             htmlFor={inputId}
             className={cn(
               "font-label-caps text-[11px] uppercase tracking-wider text-[var(--color-on-surface-muted)]",
-              required && "after:content-['*'] after:text-[var(--color-error)] after:ml-1"
+              required && "after:content-['*'] after:text-[var(--color-error)] after:ml-1",
             )}
           >
             {label}
@@ -50,7 +50,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         <div className="relative flex items-center">
           {leadingIcon && (
-            <div className="absolute left-3 text-[var(--color-on-surface-muted)] pointer-events-none flex-shrink-0" aria-hidden="true">
+            <div
+              className="absolute left-3 text-[var(--color-on-surface-muted)] pointer-events-none flex-shrink-0"
+              aria-hidden="true"
+            >
               {leadingIcon}
             </div>
           )}
@@ -73,18 +76,25 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               error
                 ? "border-[var(--color-error)] focus-visible:ring-[var(--color-error)]"
                 : "border-[var(--color-hairline-border)]",
-              className
+              className,
             )}
             {...props}
           />
           {rightIcon && (
-            <div className="absolute right-3 text-[var(--color-on-surface-muted)] pointer-events-none flex-shrink-0" aria-hidden="true">
+            <div
+              className="absolute right-3 text-[var(--color-on-surface-muted)] pointer-events-none flex-shrink-0"
+              aria-hidden="true"
+            >
               {rightIcon}
             </div>
           )}
         </div>
         {error && (
-          <p id={errorId} className="text-[11px] font-medium text-[var(--color-error)] flex items-center gap-1" role="alert">
+          <p
+            id={errorId}
+            className="text-[11px] font-medium text-[var(--color-error)] flex items-center gap-1"
+            role="alert"
+          >
             <span className="material-symbols-outlined text-[13px]">error</span>
             {error}
           </p>
@@ -96,7 +106,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 Input.displayName = "Input";
 
@@ -108,20 +118,7 @@ interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 }
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  (
-    {
-      className,
-      label,
-      error,
-      hint,
-      fullWidth = true,
-      id,
-      disabled,
-      required,
-      ...props
-    },
-    ref
-  ) => {
+  ({ className, label, error, hint, fullWidth = true, id, disabled, required, ...props }, ref) => {
     const textareaId = id || React.useId();
     const errorId = error ? `${textareaId}-error` : undefined;
     const hintId = hint ? `${textareaId}-hint` : undefined;
@@ -133,7 +130,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             htmlFor={textareaId}
             className={cn(
               "font-label-caps text-[11px] uppercase tracking-wider text-[var(--color-on-surface-muted)]",
-              required && "after:content-['*'] after:text-[var(--color-error)] after:ml-1"
+              required && "after:content-['*'] after:text-[var(--color-error)] after:ml-1",
             )}
           >
             {label}
@@ -156,12 +153,16 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             error
               ? "border-[var(--color-error)] focus-visible:ring-[var(--color-error)]"
               : "border-[var(--color-hairline-border)]",
-            className
+            className,
           )}
           {...props}
         />
         {error && (
-          <p id={errorId} className="text-[11px] font-medium text-[var(--color-error)] flex items-center gap-1" role="alert">
+          <p
+            id={errorId}
+            className="text-[11px] font-medium text-[var(--color-error)] flex items-center gap-1"
+            role="alert"
+          >
             <span className="material-symbols-outlined text-[13px]">error</span>
             {error}
           </p>
@@ -173,7 +174,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         )}
       </div>
     );
-  }
+  },
 );
 Textarea.displayName = "Textarea";
 
@@ -210,7 +211,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       onChange,
       ...props
     },
-    ref
+    ref,
   ) => {
     const selectId = id || React.useId();
     const errorId = error ? `${selectId}-error` : undefined;
@@ -223,7 +224,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             htmlFor={selectId}
             className={cn(
               "font-label-caps text-[11px] uppercase tracking-wider text-[var(--color-on-surface-muted)]",
-              required && "after:content-['*'] after:text-[var(--color-error)] after:ml-1"
+              required && "after:content-['*'] after:text-[var(--color-error)] after:ml-1",
             )}
           >
             {label}
@@ -246,7 +247,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             error
               ? "border-[var(--color-error)] focus-visible:ring-[var(--color-error)]"
               : "border-[var(--color-hairline-border)]",
-            className
+            className,
           )}
           onChange={(e) => {
             onChange?.(e);
@@ -268,7 +269,11 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             : children}
         </select>
         {error && (
-          <p id={errorId} className="text-[11px] font-medium text-[var(--color-error)] flex items-center gap-1" role="alert">
+          <p
+            id={errorId}
+            className="text-[11px] font-medium text-[var(--color-error)] flex items-center gap-1"
+            role="alert"
+          >
             <span className="material-symbols-outlined text-[13px]">error</span>
             {error}
           </p>
@@ -280,6 +285,6 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         )}
       </div>
     );
-  }
+  },
 );
 Select.displayName = "Select";

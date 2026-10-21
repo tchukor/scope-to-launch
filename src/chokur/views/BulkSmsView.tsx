@@ -142,7 +142,7 @@ export const BulkSmsView: React.FC = () => {
             onChange={(e) => setText(e.target.value)}
             rows={6}
             placeholder="Enter your message with merge fields..."
-            hint='Available fields: {parent} {student} {adm} {balance} {grade} {rank} {exam} {school} {closing}'
+            hint="Available fields: {parent} {student} {adm} {balance} {grade} {rank} {exam} {school} {closing}"
           />
 
           <Card variant="outlined" className="p-3">
@@ -165,16 +165,14 @@ export const BulkSmsView: React.FC = () => {
             >
               Send to {recipients.length} parent{recipients.length === 1 ? "" : "s"}
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={copyNumbers}
-              className="min-h-[36px]"
-            >
+            <Button variant="outline" size="sm" onClick={copyNumbers} className="min-h-[36px]">
               Copy numbers
             </Button>
             {result && (
-              <Badge variant={result.includes("queued") ? "success" : "outline"} className="text-sm">
+              <Badge
+                variant={result.includes("queued") ? "success" : "outline"}
+                className="text-sm"
+              >
                 {result}
               </Badge>
             )}
@@ -192,12 +190,17 @@ export const BulkSmsView: React.FC = () => {
             </CardHeader>
             <CardContent className="p-0">
               {store.smsLog.length === 0 ? (
-                <div className="p-4 text-center text-[var(--color-on-surface-muted)] text-sm">Nothing sent yet.</div>
+                <div className="p-4 text-center text-[var(--color-on-surface-muted)] text-sm">
+                  Nothing sent yet.
+                </div>
               ) : (
                 <DataTable compact>
                   <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
                     {store.smsLog.map((m) => (
-                      <TableRow key={m.id} className="h-12 hover:bg-[var(--color-surface-container)]">
+                      <TableRow
+                        key={m.id}
+                        className="h-12 hover:bg-[var(--color-surface-container)]"
+                      >
                         <TableCell className="px-4 py-2">
                           <div className="font-medium text-[var(--color-on-surface)]">
                             {m.audience} · {m.recipients} recipient{m.recipients === 1 ? "" : "s"}
@@ -205,7 +208,9 @@ export const BulkSmsView: React.FC = () => {
                           <div className="font-tabular-sm text-tabular-sm text-[var(--color-on-surface-muted)]">
                             {new Date(m.sentAt).toLocaleString()}
                           </div>
-                          <div className="mt-1 line-clamp-2 text-[var(--color-on-surface)]">{m.text}</div>
+                          <div className="mt-1 line-clamp-2 text-[var(--color-on-surface)]">
+                            {m.text}
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}

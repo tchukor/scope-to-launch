@@ -79,7 +79,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => {
     const Comp = asChild ? Slot : "button";
     const isDisabled = disabled || loading;
@@ -95,7 +95,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           variantClasses[variant],
           sizeClasses[size],
           fullWidth && "w-full",
-          className
+          className,
         )}
         disabled={isDisabled}
         aria-busy={loading}
@@ -125,15 +125,19 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </svg>
         )}
         {!loading && iconPosition === "left" && icon && (
-          <span className="flex-shrink-0" aria-hidden="true">{icon}</span>
+          <span className="flex-shrink-0" aria-hidden="true">
+            {icon}
+          </span>
         )}
         <span className={cn("truncate", loading && "opacity-0")}>{children}</span>
         {!loading && iconPosition === "right" && icon && (
-          <span className="flex-shrink-0" aria-hidden="true">{icon}</span>
+          <span className="flex-shrink-0" aria-hidden="true">
+            {icon}
+          </span>
         )}
       </Comp>
     );
-  }
+  },
 );
 Button.displayName = "Button";
 
@@ -144,7 +148,10 @@ interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 }
 
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({ className, variant = "ghost", size = "md", "aria-label": ariaLabel, children, ...props }, ref) => {
+  (
+    { className, variant = "ghost", size = "md", "aria-label": ariaLabel, children, ...props },
+    ref,
+  ) => {
     return (
       <Button
         ref={ref}
@@ -157,6 +164,6 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         {children}
       </Button>
     );
-  }
+  },
 );
 IconButton.displayName = "IconButton";

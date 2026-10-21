@@ -11,13 +11,7 @@ interface SheetProps {
   className?: string;
 }
 
-export const Sheet = ({
-  children,
-  open,
-  onOpenChange,
-  side = "right",
-  className,
-}: SheetProps) => {
+export const Sheet = ({ children, open, onOpenChange, side = "right", className }: SheetProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -69,14 +63,16 @@ export const Sheet = ({
           side === "bottom"
             ? "w-full max-h-[85vh] rounded-t-2xl border-t border-[var(--color-hairline-border)]"
             : "h-full max-w-[400px] w-full border-l border-[var(--color-hairline-border)]",
-          className
+          className,
         )}
         data-state={open ? "open" : "closed"}
         role="dialog"
         aria-modal="true"
       >
         <div className="flex items-center justify-between p-4 border-b border-[var(--color-hairline-border)]">
-          <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">Filters</h2>
+          <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
+            Filters
+          </h2>
           <button
             onClick={() => onOpenChange(false)}
             className="p-2 rounded-lg hover:bg-[var(--color-surface-container)] transition-colors text-[var(--color-on-surface-muted)]"
@@ -100,14 +96,10 @@ export const SheetTrigger = React.forwardRef<HTMLButtonElement, SheetTriggerProp
   ({ children, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
-      <Comp
-        ref={ref}
-        className="inline-flex items-center justify-center gap-2"
-        {...props}
-      >
+      <Comp ref={ref} className="inline-flex items-center justify-center gap-2" {...props}>
         {children}
       </Comp>
     );
-  }
+  },
 );
 SheetTrigger.displayName = "SheetTrigger";

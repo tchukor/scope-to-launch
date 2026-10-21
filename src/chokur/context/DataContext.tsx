@@ -101,7 +101,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const [schoolConfig, setSchoolConfig] = useState<SchoolConfig>(initialData.schoolConfig);
   const [teacherProfile, setTeacherProfile] = useState<TeacherProfile>(initialData.teacherProfile);
-  const [whatsAppMessages, setWhatsAppMessages] = useState<WhatsAppMessage[]>(initialData.whatsAppMessages);
+  const [whatsAppMessages, setWhatsAppMessages] = useState<WhatsAppMessage[]>(
+    initialData.whatsAppMessages,
+  );
   const [students, setStudents] = useState<Student[]>(initialData.students);
   const [subjects, setSubjects] = useState<Subject[]>(initialData.subjects);
   const [streams, setStreams] = useState<ClassStream[]>(initialData.streams);

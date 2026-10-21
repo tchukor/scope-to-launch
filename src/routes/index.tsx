@@ -3,18 +3,33 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { GradingProvider } from "@/chokur/context/GradingContext";
 
 const ChokurApp = lazy(() => import("@/chokur/App"));
-const LandingPage = lazy(() => import("@/chokur/views/LandingPageView").then(m => ({ default: m.LandingPageView })));
+const LandingPage = lazy(() =>
+  import("@/chokur/views/LandingPageView").then((m) => ({ default: m.LandingPageView })),
+);
 
 const TITLE = "Chokur System — Marks to insight in one pass. Offline.";
 const DESC =
   "Kenyan secondary school (KCSE) 12-point grading ledger, rapid spreadsheet marks entry, class rankings, subject analysis, and official printable report cards.";
 
 export const Route = createFileRoute("/")({
-  head: () => ({ meta: [{ title: TITLE }, { name: "description", content: DESC }, { property: "og:title", content: TITLE }, { property: "og:description", content: DESC }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { name: "twitter:title", content: TITLE }, { name: "twitter:description", content: DESC }] }),
+  head: () => ({
+    meta: [
+      { title: TITLE },
+      { name: "description", content: DESC },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESC },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESC },
+    ],
+  }),
   component: Index,
 });
 
-function Fallback() { return <div className="min-h-screen bg-[#FEF9EF]" />; }
+function Fallback() {
+  return <div className="min-h-screen bg-[#FEF9EF]" />;
+}
 
 function Index() {
   const [showLanding, setShowLanding] = useState(true);
@@ -32,7 +47,16 @@ function Index() {
   return (
     <Suspense fallback={<Fallback />}>
       <GradingProvider>
-        {showLanding ? <LandingPage onLaunch={() => { localStorage.setItem("chokur.has_used_app", "true"); setShowLanding(false); }} /> : <ChokurApp />}
+        {showLanding ? (
+          <LandingPage
+            onLaunch={() => {
+              localStorage.setItem("chokur.has_used_app", "true");
+              setShowLanding(false);
+            }}
+          />
+        ) : (
+          <ChokurApp />
+        )}
       </GradingProvider>
     </Suspense>
   );

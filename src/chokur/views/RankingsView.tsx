@@ -7,7 +7,14 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui
 import { Button, IconButton } from "@/chokur/components/ui";
 import { Badge, StatusBadge } from "@/chokur/components/ui";
 import { Input, Select } from "@/chokur/components/ui";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "@/chokur/components/ui";
+import {
+  DataTable,
+  TableHeader,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableFooter,
+} from "@/chokur/components/ui";
 import { Sheet, SheetTrigger } from "@/chokur/components/ui";
 
 type SortField =
@@ -341,7 +348,11 @@ export const RankingsView: React.FC = () => {
             size="sm"
             onClick={() => setIsFilterSheetOpen(true)}
             iconPosition="left"
-            icon={<span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">tune</span>}
+            icon={
+              <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">
+                tune
+              </span>
+            }
             className="md:hidden min-h-[44px]"
           >
             Filters ({genderFilter !== "all" || statusFilter !== "all" ? "Active" : "All"})
@@ -448,9 +459,14 @@ export const RankingsView: React.FC = () => {
               )}
 
               {/* Touch Candidate Card */}
-              <Card variant={record.qualifies ? "outlined" : "outlined"} className={`transition-colors ${
-                record.qualifies ? "border-[var(--color-hairline-border)]" : "border-[var(--color-hairline-border)]/60 opacity-95"
-              }`}>
+              <Card
+                variant={record.qualifies ? "outlined" : "outlined"}
+                className={`transition-colors ${
+                  record.qualifies
+                    ? "border-[var(--color-hairline-border)]"
+                    : "border-[var(--color-hairline-border)]/60 opacity-95"
+                }`}
+              >
                 <CardContent className="p-3.5">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2.5">
@@ -517,7 +533,11 @@ export const RankingsView: React.FC = () => {
                         size="sm"
                         onClick={() => setExpandedStudentId(isExpanded ? null : record.student.id)}
                         iconPosition="right"
-                        icon={<span className="material-symbols-outlined text-[14px]">{isExpanded ? "expand_less" : "expand_more"}</span>}
+                        icon={
+                          <span className="material-symbols-outlined text-[14px]">
+                            {isExpanded ? "expand_less" : "expand_more"}
+                          </span>
+                        }
                         className="min-h-[36px]"
                       >
                         {isExpanded ? "Hide" : "Subjects"}
@@ -542,7 +562,10 @@ export const RankingsView: React.FC = () => {
                         const val = marks[record.student.id]?.[subj.code];
                         const grade = getGradeFromScore(val);
                         return (
-                          <div key={subj.code} className="text-center p-1 bg-[var(--color-surface)] border border-[var(--color-hairline-border)] rounded">
+                          <div
+                            key={subj.code}
+                            className="text-center p-1 bg-[var(--color-surface)] border border-[var(--color-hairline-border)] rounded"
+                          >
                             <span className="text-[10px] font-semibold block text-[var(--color-on-surface-muted)]">
                               {subj.code}
                             </span>
@@ -550,7 +573,9 @@ export const RankingsView: React.FC = () => {
                               {val !== null && val !== undefined ? val : "—"}
                             </span>
                             {val !== null && val !== undefined && (
-                              <span className="text-[10px] text-[var(--color-on-surface-muted)] block">{grade.grade}</span>
+                              <span className="text-[10px] text-[var(--color-on-surface-muted)] block">
+                                {grade.grade}
+                              </span>
                             )}
                           </div>
                         );
@@ -569,7 +594,9 @@ export const RankingsView: React.FC = () => {
               <span className="material-symbols-outlined text-3xl text-[var(--color-on-surface-disabled)]">
                 person_search
               </span>
-              <h3 className="font-semibold text-sm text-[var(--color-on-surface)]">No students found</h3>
+              <h3 className="font-semibold text-sm text-[var(--color-on-surface)]">
+                No students found
+              </h3>
               <p className="text-xs text-[var(--color-on-surface-muted)]">
                 No candidates match your current search or filters.
               </p>
@@ -611,19 +638,31 @@ export const RankingsView: React.FC = () => {
                       {renderSortIndicator("admNo")}
                     </div>
                   </TableHead>
-                  <TableHead scope="col" className="px-3 min-w-[160px]" onClick={() => handleSort("name")}>
+                  <TableHead
+                    scope="col"
+                    className="px-3 min-w-[160px]"
+                    onClick={() => handleSort("name")}
+                  >
                     <div className="flex items-center gap-1">
                       <span>STUDENT NAME</span>
                       {renderSortIndicator("name")}
                     </div>
                   </TableHead>
-                  <TableHead scope="col" className="w-16 px-2 text-center" onClick={() => handleSort("gender")}>
+                  <TableHead
+                    scope="col"
+                    className="w-16 px-2 text-center"
+                    onClick={() => handleSort("gender")}
+                  >
                     <div className="flex items-center justify-center gap-1">
                       <span>GEN</span>
                       {renderSortIndicator("gender")}
                     </div>
                   </TableHead>
-                  <TableHead scope="col" className="w-20 px-2 text-right" onClick={() => handleSort("kcpe")}>
+                  <TableHead
+                    scope="col"
+                    className="w-20 px-2 text-right"
+                    onClick={() => handleSort("kcpe")}
+                  >
                     <div className="flex items-center justify-end gap-1">
                       <span>KCPE</span>
                       {renderSortIndicator("kcpe")}
@@ -647,25 +686,41 @@ export const RankingsView: React.FC = () => {
                       </TableHead>
                     ))}
 
-                  <TableHead scope="col" className="w-24 px-3 text-right" onClick={() => handleSort("average")}>
+                  <TableHead
+                    scope="col"
+                    className="w-24 px-3 text-right"
+                    onClick={() => handleSort("average")}
+                  >
                     <div className="flex items-center justify-end gap-1">
                       <span>AVG</span>
                       {renderSortIndicator("average")}
                     </div>
                   </TableHead>
-                  <TableHead scope="col" className="w-24 px-2 text-center" onClick={() => handleSort("meanPoints")}>
+                  <TableHead
+                    scope="col"
+                    className="w-24 px-2 text-center"
+                    onClick={() => handleSort("meanPoints")}
+                  >
                     <div className="flex items-center justify-center gap-1">
                       <span>GRADE</span>
                       {renderSortIndicator("meanPoints")}
                     </div>
                   </TableHead>
-                  <TableHead scope="col" className="w-24 px-3 text-right" onClick={() => handleSort("aggregate")}>
+                  <TableHead
+                    scope="col"
+                    className="w-24 px-3 text-right"
+                    onClick={() => handleSort("aggregate")}
+                  >
                     <div className="flex items-center justify-end gap-1">
                       <span>AGG (/84)</span>
                       {renderSortIndicator("aggregate")}
                     </div>
                   </TableHead>
-                  <TableHead scope="col" className="w-28 px-3 text-right" onClick={() => handleSort("subjectsPassed")}>
+                  <TableHead
+                    scope="col"
+                    className="w-28 px-3 text-right"
+                    onClick={() => handleSort("subjectsPassed")}
+                  >
                     <div className="flex items-center justify-end gap-1">
                       <span>PASSED</span>
                       {renderSortIndicator("subjectsPassed")}
@@ -687,7 +742,10 @@ export const RankingsView: React.FC = () => {
                       {/* The C+ Qualification Cutoff Marker */}
                       {showCutoffLineBeforeThis && (
                         <tr className="bg-[var(--color-surface-container-low)]">
-                          <TableCell colSpan={showSubjectCols ? subjects.length + 10 : 10} className="p-0">
+                          <TableCell
+                            colSpan={showSubjectCols ? subjects.length + 10 : 10}
+                            className="p-0"
+                          >
                             <div className="relative py-2 flex items-center">
                               <div className="w-full border-t-2 border-[var(--color-on-surface)]"></div>
                               <div className="absolute right-6 bg-[var(--color-surface-container-low)] px-3 py-0.5 border border-[var(--color-on-surface)] text-[var(--color-on-surface)] font-label-caps text-[10px] uppercase tracking-wider font-bold shadow-xs">
@@ -746,7 +804,9 @@ export const RankingsView: React.FC = () => {
                                 ) : val !== null && val !== undefined ? (
                                   <span>
                                     {val}{" "}
-                                    <span className="text-[10px] text-[var(--color-on-surface-muted)]">{grade.grade}</span>
+                                    <span className="text-[10px] text-[var(--color-on-surface-muted)]">
+                                      {grade.grade}
+                                    </span>
                                   </span>
                                 ) : (
                                   <span className="text-[var(--color-hairline-border)]">—</span>
@@ -779,7 +839,10 @@ export const RankingsView: React.FC = () => {
 
                 {processedRankings.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={showSubjectCols ? subjects.length + 10 : 10} className="py-12 text-center text-[var(--color-on-surface-muted)]">
+                    <TableCell
+                      colSpan={showSubjectCols ? subjects.length + 10 : 10}
+                      className="py-12 text-center text-[var(--color-on-surface-muted)]"
+                    >
                       <div className="flex flex-col items-center justify-center gap-1.5">
                         <span className="material-symbols-outlined text-3xl text-[var(--color-on-surface-disabled)]">
                           person_search
@@ -821,7 +884,9 @@ export const RankingsView: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h4 className="font-semibold text-sm text-[var(--color-on-surface)] flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">route</span>
+                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">
+                  route
+                </span>
                 <span>Rankings Ledger: Next Actions</span>
               </h4>
               <p className="text-xs text-[var(--color-on-surface-muted)] mt-0.5">
@@ -830,16 +895,41 @@ export const RankingsView: React.FC = () => {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <Button variant="ghost" size="sm" onClick={() => setActiveView("overview")} className="px-3 py-2 text-xs">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveView("overview")}
+                className="px-3 py-2 text-xs"
+              >
                 ← Overview
               </Button>
-              <Button size="sm" onClick={() => setActiveView("report-cards")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">badge</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                size="sm"
+                onClick={() => setActiveView("report-cards")}
+                iconPosition="right"
+                icon={<span className="material-symbols-outlined text-[16px]">badge</span>}
+                className="px-3.5 py-2 text-xs"
+              >
                 Report Cards →
               </Button>
-              <Button variant="primary" size="sm" onClick={() => setActiveView("subject-analysis")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">analytics</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => setActiveView("subject-analysis")}
+                iconPosition="right"
+                icon={<span className="material-symbols-outlined text-[16px]">analytics</span>}
+                className="px-3.5 py-2 text-xs"
+              >
                 Subject Analysis →
               </Button>
-              <Button variant="outline" size="sm" onClick={() => setActiveView("marks-entry")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">edit_note</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setActiveView("marks-entry")}
+                iconPosition="right"
+                icon={<span className="material-symbols-outlined text-[16px]">edit_note</span>}
+                className="px-3.5 py-2 text-xs"
+              >
                 Edit Marks →
               </Button>
             </div>
@@ -851,9 +941,7 @@ export const RankingsView: React.FC = () => {
       <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen} side="bottom">
         <div className="p-4 max-h-[80vh] overflow-y-auto">
           <div className="flex items-center justify-between pb-3 border-b border-[var(--color-hairline-border)] mb-3">
-            <span className="font-headline-md font-semibold text-sm">
-              Sort & Filter Rankings
-            </span>
+            <span className="font-headline-md font-semibold text-sm">Sort & Filter Rankings</span>
             <IconButton
               variant="ghost"
               size="sm"

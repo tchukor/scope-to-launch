@@ -16,7 +16,7 @@ const RoleContext =
 
 export const RoleProvider: React.FC<{ children: React.ReactNode; activeView?: string }> = ({
   children,
-  activeView = "overview"
+  activeView = "overview",
 }) => {
   const [role, setRoleInternal] = useState<Role>(() => loadRole());
 

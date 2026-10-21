@@ -1,10 +1,6 @@
 import React, { createContext, useContext, useMemo } from "react";
 import type { MarkValue, ParsedCSVResult, Student } from "../types";
-import {
-  exportMarksTemplateCSV,
-  sanitizeMarkInput,
-  parseMarksCSV,
-} from "../utils/grading";
+import { exportMarksTemplateCSV, sanitizeMarkInput, parseMarksCSV } from "../utils/grading";
 
 interface MarksContextType {
   // Mark Operations
@@ -13,7 +9,11 @@ interface MarksContextType {
     updates: Array<{ studentId: string; subjectCode: string; value: any }>,
   ) => void;
   importMarksFromCSV: (csvContent: string, students: Student[], subjects: any[]) => ParsedCSVResult;
-  downloadMarksTemplateCSV: (filteredStudents: Student[], subjects: any[], streamName: string) => void;
+  downloadMarksTemplateCSV: (
+    filteredStudents: Student[],
+    subjects: any[],
+    streamName: string,
+  ) => void;
 }
 
 const ctxStore = globalThis as unknown as {
@@ -28,7 +28,6 @@ export const MarksProvider: React.FC<{
   marks: Record<string, Record<string, MarkValue>>;
   setMarks: React.Dispatch<React.SetStateAction<Record<string, Record<string, MarkValue>>>>;
 }> = ({ children, marks, setMarks }) => {
-
   const updateMark = (studentId: string, subjectCode: string, rawVal: any) => {
     const sanitized = sanitizeMarkInput(rawVal);
     setMarks((prev) => {
@@ -59,11 +58,19 @@ export const MarksProvider: React.FC<{
     });
   };
 
-  const importMarksFromCSV = (csvContent: string, students: Student[], subjects: any[]): ParsedCSVResult => {
+  const importMarksFromCSV = (
+    csvContent: string,
+    students: Student[],
+    subjects: any[],
+  ): ParsedCSVResult => {
     return parseMarksCSV(csvContent, students, subjects);
   };
 
-  const downloadMarksTemplateCSV = (filteredStudents: Student[], subjects: any[], streamName: string) => {
+  const downloadMarksTemplateCSV = (
+    filteredStudents: Student[],
+    subjects: any[],
+    streamName: string,
+  ) => {
     exportMarksTemplateCSV(
       filteredStudents,
       subjects,

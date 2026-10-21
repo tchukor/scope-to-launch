@@ -37,7 +37,14 @@ const MainContent: React.FC = () => {
   }, [students.length]);
 
   if (showOnboarding) {
-    return <OnboardingFlow onComplete={() => { localStorage.setItem("chokur.has_used_app", "true"); setShowOnboarding(false); }} />;
+    return (
+      <OnboardingFlow
+        onComplete={() => {
+          localStorage.setItem("chokur.has_used_app", "true");
+          setShowOnboarding(false);
+        }}
+      />
+    );
   }
 
   // Role Access Guard: Prevent unauthorized view access

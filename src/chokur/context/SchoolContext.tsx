@@ -25,7 +25,8 @@ export const SchoolProvider: React.FC<{
 }> = ({ children, initialSchoolConfig, initialTeacherProfile, initialWhatsAppMessages }) => {
   const [schoolConfig, setSchoolConfig] = useState<SchoolConfig>(initialSchoolConfig);
   const [teacherProfile, setTeacherProfile] = useState<TeacherProfile>(initialTeacherProfile);
-  const [whatsAppMessages, setWhatsAppMessages] = useState<WhatsAppMessage[]>(initialWhatsAppMessages);
+  const [whatsAppMessages, setWhatsAppMessages] =
+    useState<WhatsAppMessage[]>(initialWhatsAppMessages);
 
   const updateSchoolConfig = (newConfig: Partial<SchoolConfig>) => {
     setSchoolConfig((prev) => ({ ...prev, ...newConfig }));

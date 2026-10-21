@@ -134,7 +134,11 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
             setIsEditingProfile(true);
           }}
           iconPosition="left"
-          icon={<span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">edit</span>}
+          icon={
+            <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">
+              edit
+            </span>
+          }
           className="self-start sm:self-auto min-h-[44px]"
         >
           Edit Profile
@@ -158,7 +162,9 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
                   <span className="font-headline-md text-headline-md text-[var(--color-on-surface)] font-semibold">
                     {teacherProfile.name}
                   </span>
-                  <Badge variant="success" size="sm">TSC VERIFIED</Badge>
+                  <Badge variant="success" size="sm">
+                    TSC VERIFIED
+                  </Badge>
                 </div>
                 <div className="font-body-xs text-body-xs text-[var(--color-on-surface-muted)] mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1">
                   <span>{teacherProfile.tscNumber}</span>
@@ -175,13 +181,17 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
                 <span className="text-[var(--color-on-surface-disabled)] block text-[10px] uppercase font-label-caps">
                   Phone
                 </span>
-                <span className="font-tabular-sm text-[var(--color-on-surface)]">{teacherProfile.phone}</span>
+                <span className="font-tabular-sm text-[var(--color-on-surface)]">
+                  {teacherProfile.phone}
+                </span>
               </div>
               <div className="px-2.5 py-1.5 rounded bg-[var(--color-surface-container-low)] border border-[var(--color-hairline-border)]">
                 <span className="text-[var(--color-on-surface-disabled)] block text-[10px] uppercase font-label-caps">
                   Subjects
                 </span>
-                <span className="text-[var(--color-on-surface)]">{teacherProfile.subjectsTaught.join(", ")}</span>
+                <span className="text-[var(--color-on-surface)]">
+                  {teacherProfile.subjectsTaught.join(", ")}
+                </span>
               </div>
             </div>
           </div>
@@ -216,7 +226,9 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
                     key={student.id}
                     variant={isSelected ? "primary" : "ghost"}
                     className={`w-full text-left justify-start min-h-[54px] px-3 ${
-                      isSelected ? "bg-[var(--color-primary-container)] border-l-3 border-[var(--color-primary)]" : "hover:bg-[var(--color-surface-container-low)]"
+                      isSelected
+                        ? "bg-[var(--color-primary-container)] border-l-3 border-[var(--color-primary)]"
+                        : "hover:bg-[var(--color-surface-container-low)]"
                     }`}
                     onClick={() => setSelectedStudentId(student.id)}
                   >
@@ -237,7 +249,11 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
 
                     <div className="flex items-center gap-1.5 shrink-0">
                       {studentMsgCount > 0 && (
-                        <Badge variant="success" size="sm" className="text-[10px] w-5 h-5 p-0 flex items-center justify-center">
+                        <Badge
+                          variant="success"
+                          size="sm"
+                          className="text-[10px] w-5 h-5 p-0 flex items-center justify-center"
+                        >
                           {studentMsgCount}
                         </Badge>
                       )}
@@ -264,7 +280,9 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
                 <div className="font-semibold text-xs text-[var(--color-on-surface)] flex items-center gap-2">
                   <span>Parent of {currentStudent?.name}</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-success)]"></span>
-                  <span className="font-caption text-caption text-[var(--color-success)]">WhatsApp Active</span>
+                  <span className="font-caption text-caption text-[var(--color-success)]">
+                    WhatsApp Active
+                  </span>
                 </div>
                 <div className="font-tabular-sm text-tabular-sm text-[var(--color-on-surface-muted)] text-[11px]">
                   Candidate ADM: {currentStudent?.admNo} · Mean: {currentStanding?.meanGrade} (
@@ -300,7 +318,9 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
 
           {/* Quick Template Chips */}
           <div className="px-3 py-2 bg-[var(--color-surface-container-low)] border-b border-[var(--color-hairline-border)] flex items-center gap-1.5 overflow-x-auto text-[11px]">
-            <span className="text-[var(--color-on-surface-muted)] font-medium shrink-0">Templates:</span>
+            <span className="text-[var(--color-on-surface-muted)] font-medium shrink-0">
+              Templates:
+            </span>
             <Button
               variant="outline"
               size="sm"
@@ -374,7 +394,9 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
                         {isTeacher && (
                           <span
                             className={`text-[12px] font-bold ${
-                              msg.status === "read" ? "text-blue-500" : "text-[var(--color-on-surface-disabled)]"
+                              msg.status === "read"
+                                ? "text-blue-500"
+                                : "text-[var(--color-on-surface-disabled)]"
                             }`}
                           >
                             ✓✓
@@ -436,15 +458,24 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
         <Sheet open={isEditingProfile} onOpenChange={setIsEditingProfile} side="right">
           <div className="max-w-lg w-full p-4">
             <div className="flex items-center justify-between pb-3 border-b border-[var(--color-hairline-border)] mb-3">
-              <CardTitle className="font-headline-md text-headline-md">Edit Teacher Profile</CardTitle>
-              <IconButton variant="ghost" size="sm" onClick={() => setIsEditingProfile(false)} aria-label="Close">
+              <CardTitle className="font-headline-md text-headline-md">
+                Edit Teacher Profile
+              </CardTitle>
+              <IconButton
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsEditingProfile(false)}
+                aria-label="Close"
+              >
                 <span className="material-symbols-outlined text-[20px]">close</span>
               </IconButton>
             </div>
 
             <form onSubmit={handleSaveProfile} className="space-y-3 font-body-xs text-body-xs">
               <div>
-                <label className="block text-[var(--color-on-surface-muted)] font-medium mb-1">Full Name</label>
+                <label className="block text-[var(--color-on-surface-muted)] font-medium mb-1">
+                  Full Name
+                </label>
                 <Input
                   type="text"
                   value={profileForm.name}
@@ -455,7 +486,9 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[var(--color-on-surface-muted)] font-medium mb-1">TSC Number</label>
+                  <label className="block text-[var(--color-on-surface-muted)] font-medium mb-1">
+                    TSC Number
+                  </label>
                   <Input
                     type="text"
                     value={profileForm.tscNumber}
@@ -464,7 +497,9 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
                   />
                 </div>
                 <div>
-                  <label className="block text-[var(--color-on-surface-muted)] font-medium mb-1">Phone Number</label>
+                  <label className="block text-[var(--color-on-surface-muted)] font-medium mb-1">
+                    Phone Number
+                  </label>
                   <Input
                     type="text"
                     value={profileForm.phone}
@@ -475,7 +510,9 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
               </div>
 
               <div>
-                <label className="block text-[var(--color-on-surface-muted)] font-medium mb-1">Email</label>
+                <label className="block text-[var(--color-on-surface-muted)] font-medium mb-1">
+                  Email
+                </label>
                 <Input
                   type="email"
                   value={profileForm.email}
@@ -486,7 +523,9 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[var(--color-on-surface-muted)] font-medium mb-1">Department</label>
+                  <label className="block text-[var(--color-on-surface-muted)] font-medium mb-1">
+                    Department
+                  </label>
                   <Input
                     type="text"
                     value={profileForm.department}
@@ -494,7 +533,9 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
                   />
                 </div>
                 <div>
-                  <label className="block text-[var(--color-on-surface-muted)] font-medium mb-1">Assigned Stream</label>
+                  <label className="block text-[var(--color-on-surface-muted)] font-medium mb-1">
+                    Assigned Stream
+                  </label>
                   <Input
                     type="text"
                     value={profileForm.assignedStream}
@@ -514,11 +555,7 @@ Principal: ${schoolConfig.principalName || "Mrs. J. K. Cheruiyot"}.`;
                 >
                   Cancel
                 </Button>
-                <Button
-                  type="submit"
-                  size="sm"
-                  className="min-h-[44px]"
-                >
+                <Button type="submit" size="sm" className="min-h-[44px]">
                   Save Profile
                 </Button>
               </div>

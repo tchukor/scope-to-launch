@@ -98,7 +98,11 @@ export const ParentPortalView: React.FC = () => {
             onChange={(e) => setPhone(e.target.value)}
             placeholder="+254..."
           />
-          {error && <Badge variant="error" className="w-full justify-center">{error}</Badge>}
+          {error && (
+            <Badge variant="error" className="w-full justify-center">
+              {error}
+            </Badge>
+          )}
           <Button onClick={signIn} className="w-full" size="lg">
             View my child
           </Button>
@@ -178,30 +182,48 @@ export const ParentPortalView: React.FC = () => {
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3 py-4">
         <Card variant="elevated">
           <CardContent className="p-3">
-            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase tracking-wider">Mean grade</div>
+            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase tracking-wider">
+              Mean grade
+            </div>
             <div className="mt-1">{standing ? <GradeChip grade={standing.meanGrade} /> : "—"}</div>
           </CardContent>
         </Card>
         <Card variant="elevated">
           <CardContent className="p-3">
-            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase tracking-wider">Class rank</div>
-            <div className="font-headline-lg text-headline-lg font-bold text-[var(--color-on-surface)]">{standing ? `#${standing.rank}` : "—"}</div>
+            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase tracking-wider">
+              Class rank
+            </div>
+            <div className="font-headline-lg text-headline-lg font-bold text-[var(--color-on-surface)]">
+              {standing ? `#${standing.rank}` : "—"}
+            </div>
           </CardContent>
         </Card>
         <Card variant="elevated">
           <CardContent className="p-3">
-            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase tracking-wider">Attendance</div>
-            <div className="font-headline-lg text-headline-lg font-bold text-[var(--color-on-surface)]">{att.rate === null ? "—" : `${att.rate}%`}</div>
-            <div className="font-body-xs text-body-xs text-[var(--color-on-surface-muted)]">{att.absent} absent</div>
+            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase tracking-wider">
+              Attendance
+            </div>
+            <div className="font-headline-lg text-headline-lg font-bold text-[var(--color-on-surface)]">
+              {att.rate === null ? "—" : `${att.rate}%`}
+            </div>
+            <div className="font-body-xs text-body-xs text-[var(--color-on-surface-muted)]">
+              {att.absent} absent
+            </div>
           </CardContent>
         </Card>
         <Card variant="elevated">
           <CardContent className="p-3">
-            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase tracking-wider">Fee balance</div>
-            <div className={`font-headline-lg text-headline-lg font-bold ${fee.balance > 0 ? "text-[var(--color-error)]" : "text-[var(--color-success)]"}`}>
+            <div className="font-label-caps text-label-caps text-[var(--color-on-surface-muted)] text-[11px] uppercase tracking-wider">
+              Fee balance
+            </div>
+            <div
+              className={`font-headline-lg text-headline-lg font-bold ${fee.balance > 0 ? "text-[var(--color-error)]" : "text-[var(--color-success)]"}`}
+            >
               KES {fee.balance.toLocaleString()}
             </div>
-            <div className="font-body-xs text-body-xs text-[var(--color-on-surface-muted)]">Paid {fee.paid.toLocaleString()}</div>
+            <div className="font-body-xs text-body-xs text-[var(--color-on-surface-muted)]">
+              Paid {fee.paid.toLocaleString()}
+            </div>
           </CardContent>
         </Card>
       </section>
@@ -212,14 +234,21 @@ export const ParentPortalView: React.FC = () => {
           <DataTable compact>
             <TableHeader>
               <tr className="h-9 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] font-label-caps text-label-caps text-[10px] text-[var(--color-on-surface-muted)] uppercase tracking-wider">
-                <TableHead scope="col" className="px-3">Subject</TableHead>
-                <TableHead scope="col" className="px-3 text-right">Mark</TableHead>
+                <TableHead scope="col" className="px-3">
+                  Subject
+                </TableHead>
+                <TableHead scope="col" className="px-3 text-right">
+                  Mark
+                </TableHead>
               </tr>
             </TableHeader>
             <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
               {rows.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={2} className="px-3 py-4 text-center text-[var(--color-on-surface-muted)]">
+                  <TableCell
+                    colSpan={2}
+                    className="px-3 py-4 text-center text-[var(--color-on-surface-muted)]"
+                  >
                     No marks entered yet.
                   </TableCell>
                 </TableRow>
@@ -227,7 +256,9 @@ export const ParentPortalView: React.FC = () => {
               {rows.map(({ sub, mark }) => (
                 <TableRow key={sub.id} className="h-9 hover:bg-[var(--color-surface-container)]">
                   <TableCell className="px-3 text-[var(--color-on-surface)]">{sub.name}</TableCell>
-                  <TableCell className="px-3 text-right font-semibold font-tabular-sm text-[var(--color-on-surface)]">{String(mark)}</TableCell>
+                  <TableCell className="px-3 text-right font-semibold font-tabular-sm text-[var(--color-on-surface)]">
+                    {String(mark)}
+                  </TableCell>
                 </TableRow>
               ))}
             </tbody>
@@ -238,7 +269,9 @@ export const ParentPortalView: React.FC = () => {
       <Card variant="outlined" className="mt-5 p-4">
         {!editing ? (
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="text-[var(--color-on-surface)]">{contact.parentName} · {contact.phone}</span>
+            <span className="text-[var(--color-on-surface)]">
+              {contact.parentName} · {contact.phone}
+            </span>
             <Button
               variant="ghost"
               size="sm"

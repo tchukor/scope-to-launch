@@ -57,7 +57,7 @@ export const StatTile = ({
         "flex flex-col items-start",
         "bg-[var(--color-surface-container-low)] border border-[var(--color-hairline-border)] rounded-lg",
         sizeClasses[size],
-        className
+        className,
       )}
     >
       <div className="flex items-baseline justify-between w-full gap-2">
@@ -65,7 +65,7 @@ export const StatTile = ({
           <span
             className={cn(
               "block uppercase tracking-wider text-[var(--color-on-surface-muted)]",
-              labelSizeClasses[size]
+              labelSizeClasses[size],
             )}
           >
             {label}
@@ -75,7 +75,7 @@ export const StatTile = ({
               className={cn(
                 "font-bold tabular-nums leading-none",
                 valueSizeClasses[size],
-                variantColors[variant]
+                variantColors[variant],
               )}
             >
               {value}
@@ -89,7 +89,7 @@ export const StatTile = ({
               "flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold shrink-0",
               trend.positive !== false
                 ? "bg-[var(--color-success-light)] text-[var(--color-on-success-container)]"
-                : "bg-[var(--color-error-light)] text-[var(--color-on-error-container)]"
+                : "bg-[var(--color-error-light)] text-[var(--color-on-error-container)]",
             )}
           >
             {trend.positive !== false ? (
@@ -97,7 +97,10 @@ export const StatTile = ({
             ) : (
               <span className="material-symbols-outlined text-[12px]">trending_down</span>
             )}
-            <span>{trend.value >= 0 ? "+" : ""}{trend.value.toFixed(1)}%</span>
+            <span>
+              {trend.value >= 0 ? "+" : ""}
+              {trend.value.toFixed(1)}%
+            </span>
             {trend.label && <span className="text-[10px] opacity-80">{trend.label}</span>}
           </div>
         )}
@@ -125,15 +128,11 @@ const gapClasses = {
   lg: "gap-6",
 };
 
-export const StatTileGrid = ({ children, columns = 4, className, gap = "md" }: StatTileGridProps) => (
-  <div
-    className={cn(
-      "grid",
-      gridColumns[columns],
-      gapClasses[gap],
-      className
-    )}
-  >
-    {children}
-  </div>
+export const StatTileGrid = ({
+  children,
+  columns = 4,
+  className,
+  gap = "md",
+}: StatTileGridProps) => (
+  <div className={cn("grid", gridColumns[columns], gapClasses[gap], className)}>{children}</div>
 );

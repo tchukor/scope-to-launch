@@ -92,7 +92,11 @@ export const SubjectAnalysisView: React.FC = () => {
         {/* Controls */}
         <div className="flex items-center gap-2 sm:gap-3 flex-wrap no-print">
           {/* Department Filter */}
-          <div className="flex flex-wrap items-center border border-[var(--color-hairline-border)] rounded-lg bg-[var(--color-surface-container-low)] text-xs font-medium overflow-hidden max-w-full" role="group" aria-label="Department filter">
+          <div
+            className="flex flex-wrap items-center border border-[var(--color-hairline-border)] rounded-lg bg-[var(--color-surface-container-low)] text-xs font-medium overflow-hidden max-w-full"
+            role="group"
+            aria-label="Department filter"
+          >
             <Button
               variant={selectedDepartment === "ALL" ? "primary" : "ghost"}
               size="sm"
@@ -233,7 +237,9 @@ export const SubjectAnalysisView: React.FC = () => {
                       }`}
                       style={{ width: `${Math.min(100, Math.max(10, stat.average))}%` }}
                     >
-                      <span className="font-tabular-sm text-[11px]">{stat.average.toFixed(1)}%</span>
+                      <span className="font-tabular-sm text-[11px]">
+                        {stat.average.toFixed(1)}%
+                      </span>
                     </div>
                   </div>
 
@@ -242,7 +248,9 @@ export const SubjectAnalysisView: React.FC = () => {
                     {comparePrevious && (
                       <span
                         className={`text-[10px] sm:text-[11px] font-tabular-sm font-semibold hidden sm:inline ${
-                          stat.diffFromLastExam >= 0 ? "text-[var(--color-success)]" : "text-[var(--color-error)]"
+                          stat.diffFromLastExam >= 0
+                            ? "text-[var(--color-success)]"
+                            : "text-[var(--color-error)]"
                         }`}
                       >
                         {stat.diffFromLastExam >= 0
@@ -274,16 +282,36 @@ export const SubjectAnalysisView: React.FC = () => {
                 <DataTable hoverable compact>
                   <TableHeader>
                     <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
-                      <TableHead scope="col" className="w-20 px-4">CODE</TableHead>
-                      <TableHead scope="col" className="px-4">SUBJECT NAME</TableHead>
-                      <TableHead scope="col" className="px-4">DEPARTMENT</TableHead>
-                      <TableHead scope="col" className="px-4">TEACHER</TableHead>
-                      <TableHead scope="col" className="w-24 px-3 text-right">ENTRIES</TableHead>
-                      <TableHead scope="col" className="w-28 px-3 text-right">AVERAGE</TableHead>
-                      <TableHead scope="col" className="w-20 px-2 text-center">GRADE</TableHead>
-                      <TableHead scope="col" className="w-24 px-3 text-right">HIGH / LOW</TableHead>
-                      <TableHead scope="col" className="w-28 px-3 text-right">PASS RATE</TableHead>
-                      <TableHead scope="col" className="w-28 px-4 text-right">DEVIATION</TableHead>
+                      <TableHead scope="col" className="w-20 px-4">
+                        CODE
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        SUBJECT NAME
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        DEPARTMENT
+                      </TableHead>
+                      <TableHead scope="col" className="px-4">
+                        TEACHER
+                      </TableHead>
+                      <TableHead scope="col" className="w-24 px-3 text-right">
+                        ENTRIES
+                      </TableHead>
+                      <TableHead scope="col" className="w-28 px-3 text-right">
+                        AVERAGE
+                      </TableHead>
+                      <TableHead scope="col" className="w-20 px-2 text-center">
+                        GRADE
+                      </TableHead>
+                      <TableHead scope="col" className="w-24 px-3 text-right">
+                        HIGH / LOW
+                      </TableHead>
+                      <TableHead scope="col" className="w-28 px-3 text-right">
+                        PASS RATE
+                      </TableHead>
+                      <TableHead scope="col" className="w-28 px-4 text-right">
+                        DEVIATION
+                      </TableHead>
                     </tr>
                   </TableHeader>
                   <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm text-[var(--color-on-surface)]">
@@ -291,13 +319,22 @@ export const SubjectAnalysisView: React.FC = () => {
                       const grade = getGradeFromScore(stat.average);
 
                       return (
-                        <TableRow key={stat.subject.code} className="h-11 hover:bg-[var(--color-surface-container)] transition-colors">
+                        <TableRow
+                          key={stat.subject.code}
+                          className="h-11 hover:bg-[var(--color-surface-container)] transition-colors"
+                        >
                           <TableCell className="px-4 font-tabular-sm font-bold text-[var(--color-on-surface)]">
                             {stat.subject.code}
                           </TableCell>
-                          <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">{stat.subject.name}</TableCell>
-                          <TableCell className="px-4 text-[var(--color-on-surface-muted)]">{stat.subject.department}</TableCell>
-                          <TableCell className="px-4 text-[var(--color-on-surface)]">{stat.subject.teacher || "—"}</TableCell>
+                          <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">
+                            {stat.subject.name}
+                          </TableCell>
+                          <TableCell className="px-4 text-[var(--color-on-surface-muted)]">
+                            {stat.subject.department}
+                          </TableCell>
+                          <TableCell className="px-4 text-[var(--color-on-surface)]">
+                            {stat.subject.teacher || "—"}
+                          </TableCell>
                           <TableCell className="px-3 text-right font-tabular-sm text-[var(--color-on-surface-muted)]">
                             {stat.entered}
                           </TableCell>
@@ -316,8 +353,8 @@ export const SubjectAnalysisView: React.FC = () => {
                                 stat.passRate >= 70
                                   ? "text-[var(--color-success)]"
                                   : stat.passRate < 50
-                                  ? "text-[var(--color-error)]"
-                                  : "text-[var(--color-on-surface)]"
+                                    ? "text-[var(--color-error)]"
+                                    : "text-[var(--color-on-surface)]"
                               }
                             >
                               {stat.passRate}%
@@ -325,7 +362,11 @@ export const SubjectAnalysisView: React.FC = () => {
                           </TableCell>
                           <TableCell className="px-4 text-right font-tabular-sm font-semibold">
                             <span
-                              className={stat.diffFromLastExam >= 0 ? "text-[var(--color-success)]" : "text-[var(--color-error)]"}
+                              className={
+                                stat.diffFromLastExam >= 0
+                                  ? "text-[var(--color-success)]"
+                                  : "text-[var(--color-error)]"
+                              }
                             >
                               {stat.diffFromLastExam >= 0
                                 ? `↑ +${stat.diffFromLastExam.toFixed(1)}`
@@ -355,11 +396,16 @@ export const SubjectAnalysisView: React.FC = () => {
                     <div className="flex items-start justify-between">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-xs text-[var(--color-on-surface)]">{stat.subject.code}</span>
-                          <span className="text-xs text-[var(--color-on-surface-muted)] font-medium">{stat.subject.name}</span>
+                          <span className="font-bold text-xs text-[var(--color-on-surface)]">
+                            {stat.subject.code}
+                          </span>
+                          <span className="text-xs text-[var(--color-on-surface-muted)] font-medium">
+                            {stat.subject.name}
+                          </span>
                         </div>
                         <div className="text-[10px] text-[var(--color-on-surface-disabled)] mt-0.5">
-                          {stat.subject.department} · Teacher: {stat.subject.teacher || "Unassigned"}
+                          {stat.subject.department} · Teacher:{" "}
+                          {stat.subject.teacher || "Unassigned"}
                         </div>
                       </div>
                       <GradeChip grade={grade.grade} size="md" />
@@ -383,8 +429,8 @@ export const SubjectAnalysisView: React.FC = () => {
                             stat.passRate >= 70
                               ? "text-[var(--color-success)]"
                               : stat.passRate < 50
-                              ? "text-[var(--color-error)]"
-                              : "text-[var(--color-on-surface)]"
+                                ? "text-[var(--color-error)]"
+                                : "text-[var(--color-on-surface)]"
                           }`}
                         >
                           {stat.passRate}%
@@ -406,7 +452,9 @@ export const SubjectAnalysisView: React.FC = () => {
                       </span>
                       <span
                         className={`font-tabular-sm text-xs font-semibold ${
-                          stat.diffFromLastExam >= 0 ? "text-[var(--color-success)]" : "text-[var(--color-error)]"
+                          stat.diffFromLastExam >= 0
+                            ? "text-[var(--color-success)]"
+                            : "text-[var(--color-error)]"
                         }`}
                       >
                         Trend:{" "}
@@ -430,7 +478,9 @@ export const SubjectAnalysisView: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h4 className="font-semibold text-sm text-[var(--color-on-surface)] flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">route</span>
+                <span className="material-symbols-outlined text-[18px] text-[var(--color-primary)]">
+                  route
+                </span>
                 <span>Subject Analysis: Next Steps</span>
               </h4>
               <p className="text-xs text-[var(--color-on-surface-muted)] mt-0.5">
@@ -438,16 +488,45 @@ export const SubjectAnalysisView: React.FC = () => {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <Button variant="ghost" size="sm" onClick={() => setActiveView("overview")} className="px-3 py-2 text-xs">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveView("overview")}
+                className="px-3 py-2 text-xs"
+              >
                 ← Overview
               </Button>
-              <Button variant="primary" size="sm" onClick={() => setActiveView("grade-distribution")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">bar_chart</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => setActiveView("grade-distribution")}
+                iconPosition="right"
+                icon={<span className="material-symbols-outlined text-[16px]">bar_chart</span>}
+                className="px-3.5 py-2 text-xs"
+              >
                 Grade Distribution →
               </Button>
-              <Button variant="outline" size="sm" onClick={() => setActiveView("rankings")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">format_list_numbered</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setActiveView("rankings")}
+                iconPosition="right"
+                icon={
+                  <span className="material-symbols-outlined text-[16px]">
+                    format_list_numbered
+                  </span>
+                }
+                className="px-3.5 py-2 text-xs"
+              >
                 Class Rankings →
               </Button>
-              <Button size="sm" onClick={() => setActiveView("marks-entry")} iconPosition="right" icon={<span className="material-symbols-outlined text-[16px]">edit_note</span>} className="px-3.5 py-2 text-xs">
+              <Button
+                size="sm"
+                onClick={() => setActiveView("marks-entry")}
+                iconPosition="right"
+                icon={<span className="material-symbols-outlined text-[16px]">edit_note</span>}
+                className="px-3.5 py-2 text-xs"
+              >
                 Edit Marks →
               </Button>
             </div>

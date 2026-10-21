@@ -44,7 +44,9 @@ export const PrivacyPolicyView: React.FC = () => {
         {/* Section 1 */}
         <section className="space-y-3">
           <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">shield</span>
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">
+              shield
+            </span>
             <span>1. Offline-First Architecture & Local Data Residency</span>
           </h2>
           <p className="text-[var(--color-on-surface-muted)]">
@@ -54,7 +56,9 @@ export const PrivacyPolicyView: React.FC = () => {
             storage (IndexedDB and encrypted LocalStorage).
           </p>
           <Card variant="outlined" className="p-4">
-            <div className="font-semibold text-[var(--color-on-surface)] text-sm mb-2">Key Storage Guarantees:</div>
+            <div className="font-semibold text-[var(--color-on-surface)] text-sm mb-2">
+              Key Storage Guarantees:
+            </div>
             <ul className="list-disc list-inside space-y-1 text-[var(--color-on-surface-muted)] text-sm">
               <li>
                 No candidate scores or marks are transmitted to remote cloud databases or
@@ -75,7 +79,9 @@ export const PrivacyPolicyView: React.FC = () => {
         {/* Section 2 */}
         <section className="space-y-3">
           <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">person_search</span>
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">
+              person_search
+            </span>
             <span>2. Candidate & Parent Information Collected</span>
           </h2>
           <p className="text-[var(--color-on-surface-muted)]">
@@ -107,7 +113,9 @@ export const PrivacyPolicyView: React.FC = () => {
         {/* Section 3 */}
         <section className="space-y-3">
           <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">lock</span>
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">
+              lock
+            </span>
             <span>3. Parent Portal Confidentiality & Access Controls</span>
           </h2>
           <p className="text-[var(--color-on-surface-muted)]">
@@ -124,10 +132,14 @@ export const PrivacyPolicyView: React.FC = () => {
         {/* Section 4 */}
         <section className="space-y-3">
           <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">download</span>
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">
+              download
+            </span>
             <span>4. Data Backup, Export & Erasure Rights</span>
           </h2>
-          <p className="text-[var(--color-on-surface-muted)]">School administrators retain 100% sovereign ownership over institutional data:</p>
+          <p className="text-[var(--color-on-surface-muted)]">
+            School administrators retain 100% sovereign ownership over institutional data:
+          </p>
           <ul className="list-disc list-inside space-y-1.5 text-sm text-[var(--color-on-surface-muted)]">
             <li>
               <strong>JSON Backups:</strong> Administrators can export the complete database to an
@@ -138,8 +150,8 @@ export const PrivacyPolicyView: React.FC = () => {
               ledgers can be exported directly to standard CSV format.
             </li>
             <li>
-              <strong>Complete Erasure:</strong> The "Reset to Defaults" tool allows
-              complete erasure of local candidate data from the device browser storage upon session
+              <strong>Complete Erasure:</strong> The "Reset to Defaults" tool allows complete
+              erasure of local candidate data from the device browser storage upon session
               termination.
             </li>
           </ul>
@@ -148,7 +160,9 @@ export const PrivacyPolicyView: React.FC = () => {
         {/* Section 5 */}
         <section className="space-y-3">
           <h2 className="font-headline-md text-base sm:text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">support_agent</span>
+            <span className="material-symbols-outlined text-[20px] text-[var(--color-primary)]">
+              support_agent
+            </span>
             <span>5. Institutional Data Controller</span>
           </h2>
           <p className="text-[var(--color-on-surface-muted)]">

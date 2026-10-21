@@ -3,14 +3,32 @@ import { Suspense, lazy } from "react";
 import { ChokurLogo } from "@/chokur/components/brand/ChokurLogo";
 
 // Lazy load heavy views for performance
-const OverviewDemo = lazy(() => import("@/chokur/views/OverviewView").then(m => ({ default: m.OverviewView })));
-const MarksEntryDemo = lazy(() => import("@/chokur/views/MarksEntryView").then(m => ({ default: m.MarksEntryView })));
-const RankingsDemo = lazy(() => import("@/chokur/views/RankingsView").then(m => ({ default: m.RankingsView })));
-const ReportCardsDemo = lazy(() => import("@/chokur/views/ReportCardsView").then(m => ({ default: m.ReportCardsView })));
-const GradeDistributionDemo = lazy(() => import("@/chokur/views/GradeDistributionView").then(m => ({ default: m.GradeDistributionView })));
-const StudentsClassesDemo = lazy(() => import("@/chokur/views/StudentsClassesView").then(m => ({ default: m.StudentsClassesView })));
-const SubjectAnalysisDemo = lazy(() => import("@/chokur/views/SubjectAnalysisView").then(m => ({ default: m.SubjectAnalysisView })));
-const SettingsDemo = lazy(() => import("@/chokur/views/SettingsView").then(m => ({ default: m.SettingsView })));
+const OverviewDemo = lazy(() =>
+  import("@/chokur/views/OverviewView").then((m) => ({ default: m.OverviewView })),
+);
+const MarksEntryDemo = lazy(() =>
+  import("@/chokur/views/MarksEntryView").then((m) => ({ default: m.MarksEntryView })),
+);
+const RankingsDemo = lazy(() =>
+  import("@/chokur/views/RankingsView").then((m) => ({ default: m.RankingsView })),
+);
+const ReportCardsDemo = lazy(() =>
+  import("@/chokur/views/ReportCardsView").then((m) => ({ default: m.ReportCardsView })),
+);
+const GradeDistributionDemo = lazy(() =>
+  import("@/chokur/views/GradeDistributionView").then((m) => ({
+    default: m.GradeDistributionView,
+  })),
+);
+const StudentsClassesDemo = lazy(() =>
+  import("@/chokur/views/StudentsClassesView").then((m) => ({ default: m.StudentsClassesView })),
+);
+const SubjectAnalysisDemo = lazy(() =>
+  import("@/chokur/views/SubjectAnalysisView").then((m) => ({ default: m.SubjectAnalysisView })),
+);
+const SettingsDemo = lazy(() =>
+  import("@/chokur/views/SettingsView").then((m) => ({ default: m.SettingsView })),
+);
 
 const TITLE = "UI Showcase — Chokur Design System";
 const DESC = "Interactive demo of Chokur's dashboard screens built with the design system";
@@ -43,13 +61,20 @@ function ShowcaseShell() {
     <>
       {/* Showcase Navigation Bar */}
       <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <nav className="mx-auto max-w-[1400px] flex h-14 items-center justify-between px-4" aria-label="Showcase navigation">
+        <nav
+          className="mx-auto max-w-[1400px] flex h-14 items-center justify-between px-4"
+          aria-label="Showcase navigation"
+        >
           <Link to="/" className="flex items-center gap-2 shrink-0" title="Back to Chokur App">
             <ChokurLogo variant="symbol" size={28} className="text-primary" />
             <span className="hidden sm:inline font-headline-sm text-foreground">Chokur</span>
           </Link>
 
-          <div className="flex flex-1 items-center justify-center gap-1 overflow-x-auto px-4 pb-1 scrollbar-hide" role="tablist" aria-label="Demo views">
+          <div
+            className="flex flex-1 items-center justify-center gap-1 overflow-x-auto px-4 pb-1 scrollbar-hide"
+            role="tablist"
+            aria-label="Demo views"
+          >
             {DEMOS.map((demo) => (
               <button
                 key={demo.key}
@@ -81,7 +106,7 @@ function ShowcaseShell() {
       {/* Demo Content Area */}
       <main className="mx-auto max-w-[1400px] flex-1 p-4 md:p-6">
         <Suspense fallback={<DemoSkeleton />}>
-          {DEMOS.find(d => d.key === activeDemo)?.component}
+          {DEMOS.find((d) => d.key === activeDemo)?.component}
         </Suspense>
       </main>
 
@@ -90,8 +115,15 @@ function ShowcaseShell() {
         <div className="mx-auto max-w-[1400px] flex flex-col md:flex-row items-center justify-between gap-4 px-4 py-4 text-sm text-muted-foreground">
           <p>Chokur Design System v1.0 — Built with shadcn/ui + TanStack Start</p>
           <div className="flex items-center gap-4">
-            <Link to="/ui-components" className="hover:text-foreground transition-colors">Component Library</Link>
-            <Link to="https://github.com/tchukor/scope-to-launch" target="_blank" rel="noopener" className="hover:text-foreground transition-colors">
+            <Link to="/ui-components" className="hover:text-foreground transition-colors">
+              Component Library
+            </Link>
+            <Link
+              to="https://github.com/tchukor/scope-to-launch"
+              target="_blank"
+              rel="noopener"
+              className="hover:text-foreground transition-colors"
+            >
               <span className="material-symbols-outlined text-[18px] align-middle">code</span>
               GitHub
             </Link>
@@ -139,53 +171,119 @@ const DEMOS: DemoConfig[] = [
     key: "overview",
     label: "Overview",
     icon: "dashboard",
-    component: <DemoWrapper title="Overview Dashboard" description="System-wide stats, recent activity, and quick actions"> <OverviewDemo /> </DemoWrapper>,
+    component: (
+      <DemoWrapper
+        title="Overview Dashboard"
+        description="System-wide stats, recent activity, and quick actions"
+      >
+        {" "}
+        <OverviewDemo />{" "}
+      </DemoWrapper>
+    ),
   },
   {
     key: "marks-entry",
     label: "Marks Entry",
     icon: "edit_note",
-    component: <DemoWrapper title="Marks Entry" description="Spreadsheet-style marks entry with inline validation"> <MarksEntryDemo /> </DemoWrapper>,
+    component: (
+      <DemoWrapper
+        title="Marks Entry"
+        description="Spreadsheet-style marks entry with inline validation"
+      >
+        {" "}
+        <MarksEntryDemo />{" "}
+      </DemoWrapper>
+    ),
   },
   {
     key: "rankings",
     label: "Rankings",
     icon: "format_list_numbered",
-    component: <DemoWrapper title="Class Rankings" description="Student rankings with percentile, stream filters, and export"> <RankingsDemo /> </DemoWrapper>,
+    component: (
+      <DemoWrapper
+        title="Class Rankings"
+        description="Student rankings with percentile, stream filters, and export"
+      >
+        {" "}
+        <RankingsDemo />{" "}
+      </DemoWrapper>
+    ),
   },
   {
     key: "report-cards",
     label: "Report Cards",
     icon: "badge",
-    component: <DemoWrapper title="Report Cards" description="Official KCSE-format printable report cards"> <ReportCardsDemo /> </DemoWrapper>,
+    component: (
+      <DemoWrapper title="Report Cards" description="Official KCSE-format printable report cards">
+        {" "}
+        <ReportCardsDemo />{" "}
+      </DemoWrapper>
+    ),
   },
   {
     key: "grade-distribution",
     label: "Grade Distribution",
     icon: "bar_chart",
-    component: <DemoWrapper title="Grade Distribution" description="Subject and class grade analytics with charts"> <GradeDistributionDemo /> </DemoWrapper>,
+    component: (
+      <DemoWrapper
+        title="Grade Distribution"
+        description="Subject and class grade analytics with charts"
+      >
+        {" "}
+        <GradeDistributionDemo />{" "}
+      </DemoWrapper>
+    ),
   },
   {
     key: "students",
     label: "Students & Classes",
     icon: "group",
-    component: <DemoWrapper title="Students & Classes" description="Student roster, class management, and enrollment"> <StudentsClassesDemo /> </DemoWrapper>,
+    component: (
+      <DemoWrapper
+        title="Students & Classes"
+        description="Student roster, class management, and enrollment"
+      >
+        {" "}
+        <StudentsClassesDemo />{" "}
+      </DemoWrapper>
+    ),
   },
   {
     key: "subject-analysis",
     label: "Subject Analysis",
     icon: "analytics",
-    component: <DemoWrapper title="Subject Analysis" description="Deep-dive subject performance analytics"> <SubjectAnalysisDemo /> </DemoWrapper>,
+    component: (
+      <DemoWrapper title="Subject Analysis" description="Deep-dive subject performance analytics">
+        {" "}
+        <SubjectAnalysisDemo />{" "}
+      </DemoWrapper>
+    ),
   },
   {
     key: "settings",
     label: "Settings",
     icon: "settings",
-    component: <DemoWrapper title="Settings & Backups" description="App configuration, data management, and offline sync"> <SettingsDemo /> </DemoWrapper>,
+    component: (
+      <DemoWrapper
+        title="Settings & Backups"
+        description="App configuration, data management, and offline sync"
+      >
+        {" "}
+        <SettingsDemo />{" "}
+      </DemoWrapper>
+    ),
   },
 ];
 
-function DemoWrapper({ title, description, children }: { title: string; description: string; children: React.ReactNode }) {
+function DemoWrapper({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -200,9 +298,7 @@ function DemoWrapper({ title, description, children }: { title: string; descript
           </span>
         </div>
       </div>
-      <div className="bg-card border border-border rounded-xl overflow-hidden">
-        {children}
-      </div>
+      <div className="bg-card border border-border rounded-xl overflow-hidden">{children}</div>
     </div>
   );
 }

@@ -130,12 +130,7 @@ export const AttendanceView: React.FC = () => {
             onChange={(e) => setDate(e.target.value || today())}
             className="w-auto min-w-[160px]"
           />
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => markAll("P")}
-            className="min-h-[40px]"
-          >
+          <Button variant="outline" size="sm" onClick={() => markAll("P")} className="min-h-[40px]">
             All Present
           </Button>
           <Button
@@ -153,26 +148,36 @@ export const AttendanceView: React.FC = () => {
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-4">
         <Card variant="elevated">
           <CardContent className="p-3">
-            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Present</div>
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">
+              Present
+            </div>
             <div className="text-2xl font-bold text-[var(--color-success)]">{counts.P}</div>
           </CardContent>
         </Card>
         <Card variant="elevated">
           <CardContent className="p-3">
-            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Late</div>
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">
+              Late
+            </div>
             <div className="text-2xl font-bold text-[var(--color-warning)]">{counts.L}</div>
           </CardContent>
         </Card>
         <Card variant="elevated">
           <CardContent className="p-3">
-            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Absent</div>
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">
+              Absent
+            </div>
             <div className="text-2xl font-bold text-[var(--color-error)]">{counts.A}</div>
           </CardContent>
         </Card>
         <Card variant="elevated">
           <CardContent className="p-3">
-            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">Not Marked</div>
-            <div className="text-2xl font-bold text-[var(--color-on-surface-disabled)]">{counts.unmarked}</div>
+            <div className="text-[11px] font-label-caps text-label-caps uppercase tracking-wider text-[var(--color-on-surface-muted)]">
+              Not Marked
+            </div>
+            <div className="text-2xl font-bold text-[var(--color-on-surface-disabled)]">
+              {counts.unmarked}
+            </div>
           </CardContent>
         </Card>
       </section>
@@ -186,12 +191,7 @@ export const AttendanceView: React.FC = () => {
         >
           SMS Parents of Absentees
         </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={exportCsv}
-          className="min-h-[36px]"
-        >
+        <Button variant="outline" size="sm" onClick={exportCsv} className="min-h-[36px]">
           Export Term CSV
         </Button>
         <Button
@@ -204,10 +204,18 @@ export const AttendanceView: React.FC = () => {
         </Button>
         {savedAt && <span className="text-[var(--color-success)] font-medium">✓ {savedAt}</span>}
         {notice && (
-          <Badge variant={notice.includes("queued") ? "success" : "outline"} className="flex items-center gap-2">
+          <Badge
+            variant={notice.includes("queued") ? "success" : "outline"}
+            className="flex items-center gap-2"
+          >
             <span>{notice}</span>
             {notice.includes("queued") && (
-              <Button variant="ghost" size="sm" onClick={() => setActiveView("messaging")} className="p-0 min-h-0 text-xs">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveView("messaging")}
+                className="p-0 min-h-0 text-xs"
+              >
                 View in Bulk SMS →
               </Button>
             )}
@@ -220,19 +228,34 @@ export const AttendanceView: React.FC = () => {
           <DataTable hoverable compact>
             <TableHeader>
               <tr className="h-10 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
-                <TableHead scope="col" className="w-20 px-4">ADM</TableHead>
-                <TableHead scope="col" className="px-4">STUDENT</TableHead>
-                <TableHead scope="col" className="px-4">TERM ATTENDANCE</TableHead>
-                <TableHead scope="col" className="px-4">TODAY</TableHead>
+                <TableHead scope="col" className="w-20 px-4">
+                  ADM
+                </TableHead>
+                <TableHead scope="col" className="px-4">
+                  STUDENT
+                </TableHead>
+                <TableHead scope="col" className="px-4">
+                  TERM ATTENDANCE
+                </TableHead>
+                <TableHead scope="col" className="px-4">
+                  TODAY
+                </TableHead>
               </tr>
             </TableHeader>
             <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
               {students.map((s) => {
                 const a = attendanceSummary(store, s.id);
                 return (
-                  <TableRow key={s.id} className="h-12 hover:bg-[var(--color-surface-container)] transition-colors">
-                    <TableCell className="px-4 font-tabular-sm text-[11px] text-[var(--color-on-surface-muted)]">{s.admNo}</TableCell>
-                    <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">{s.name}</TableCell>
+                  <TableRow
+                    key={s.id}
+                    className="h-12 hover:bg-[var(--color-surface-container)] transition-colors"
+                  >
+                    <TableCell className="px-4 font-tabular-sm text-[11px] text-[var(--color-on-surface-muted)]">
+                      {s.admNo}
+                    </TableCell>
+                    <TableCell className="px-4 font-medium text-[var(--color-on-surface)]">
+                      {s.name}
+                    </TableCell>
                     <TableCell className="px-4 text-[var(--color-on-surface-muted)]">
                       {a.rate === null ? "—" : `${a.rate}% (${a.absent} absent)`}
                     </TableCell>

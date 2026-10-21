@@ -7,11 +7,7 @@ import type {
   Subject,
   SubjectDepartmentalStat,
 } from "../types";
-import {
-  getGradeFromPoints,
-  KCSE_GRADING_TABLE,
-  rankAllStudents,
-} from "../utils/grading";
+import { getGradeFromPoints, KCSE_GRADING_TABLE, rankAllStudents } from "../utils/grading";
 
 interface ComputedContextType {
   filteredStudents: Student[];
@@ -42,7 +38,6 @@ export const ComputedProvider: React.FC<{
   schoolConfig: any;
   activeStream: string;
 }> = ({ children, students, subjects, marks, schoolConfig, activeStream }) => {
-
   const filteredStudents = useMemo(() => {
     return students.filter((s) => s.stream === activeStream && s.status === "Active");
   }, [students, activeStream]);

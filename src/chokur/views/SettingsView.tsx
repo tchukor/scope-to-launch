@@ -8,7 +8,14 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/chokur/components/ui
 import { Button, IconButton } from "@/chokur/components/ui";
 import { Badge } from "@/chokur/components/ui";
 import { Input, Textarea, Select } from "@/chokur/components/ui";
-import { DataTable, TableHeader, TableHead, TableRow, TableCell, TableFooter } from "@/chokur/components/ui";
+import {
+  DataTable,
+  TableHeader,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableFooter,
+} from "@/chokur/components/ui";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/chokur/components/ui";
 import { Sheet, SheetTrigger } from "@/chokur/components/ui";
 
@@ -192,8 +199,12 @@ export const SettingsView: React.FC = () => {
       <div className="pb-4 sm:pb-6 mb-4 sm:mb-6 border-b border-[var(--color-hairline-border)] flex flex-col md:flex-row md:items-baseline justify-between gap-2">
         <div>
           <div className="flex items-baseline gap-3">
-            <h1 className="font-headline-lg text-headline-lg text-[var(--color-on-surface)]">Settings</h1>
-            <span className="font-tabular-sm text-tabular-sm text-[var(--color-on-surface-muted)]">CONFIG_ACAD_2026</span>
+            <h1 className="font-headline-lg text-headline-lg text-[var(--color-on-surface)]">
+              Settings
+            </h1>
+            <span className="font-tabular-sm text-tabular-sm text-[var(--color-on-surface-muted)]">
+              CONFIG_ACAD_2026
+            </span>
           </div>
           <p className="font-body-md text-body-md text-[var(--color-on-surface-muted)] mt-1">
             Configure school metadata, grading scales, bulk CSV marks import, and offline data sync
@@ -213,7 +224,9 @@ export const SettingsView: React.FC = () => {
         {/* 1. School Information Section */}
         <section className="py-6 border-b border-[var(--color-hairline-border)] grid grid-cols-12 gap-6">
           <div className="col-span-12 md:col-span-4 pr-4">
-            <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">School Information</h2>
+            <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
+              School Information
+            </h2>
             <p className="font-caption text-caption text-[var(--color-on-surface-muted)] mt-1">
               Official institutional identity printed across all term transcripts, KCSE result
               schedules, and student performance dossiers.
@@ -258,7 +271,9 @@ export const SettingsView: React.FC = () => {
                 <Input
                   type="text"
                   value={formConfig.contactPhoneEmail}
-                  onChange={(e) => setFormConfig({ ...formConfig, contactPhoneEmail: e.target.value })}
+                  onChange={(e) =>
+                    setFormConfig({ ...formConfig, contactPhoneEmail: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -382,7 +397,9 @@ export const SettingsView: React.FC = () => {
                       type="radio"
                       name="calcMethod"
                       checked={formConfig.calculationMethod === "simpleMean"}
-                      onChange={() => setFormConfig({ ...formConfig, calculationMethod: "simpleMean" })}
+                      onChange={() =>
+                        setFormConfig({ ...formConfig, calculationMethod: "simpleMean" })
+                      }
                       className="accent-[var(--color-primary)]"
                     />
                     <span>Straight Mean across all subjects</span>
@@ -398,8 +415,8 @@ export const SettingsView: React.FC = () => {
                 </span>
                 <p className="font-caption text-caption text-[var(--color-on-surface-muted)]">
                   Monochrome graphic hierarchy: Solid carbon indicates honors; outline indicates
-                  competence; grey indicates marginal performance; dashed indicates critical remedial
-                  intervention.
+                  competence; grey indicates marginal performance; dashed indicates critical
+                  remedial intervention.
                 </p>
               </CardContent>
             </Card>
@@ -411,10 +428,18 @@ export const SettingsView: React.FC = () => {
                 <DataTable compact>
                   <TableHeader>
                     <tr className="h-9 border-b border-[var(--color-hairline-border)] bg-[var(--color-surface-container-low)] text-[11px] font-label-caps text-[var(--color-on-surface-muted)] uppercase tracking-wider">
-                      <TableHead scope="col" className="px-4 py-2">Marks Range</TableHead>
-                      <TableHead scope="col" className="px-4 py-2">Grade</TableHead>
-                      <TableHead scope="col" className="px-4 py-2 text-right">Points</TableHead>
-                      <TableHead scope="col" className="px-4 py-2">Description</TableHead>
+                      <TableHead scope="col" className="px-4 py-2">
+                        Marks Range
+                      </TableHead>
+                      <TableHead scope="col" className="px-4 py-2">
+                        Grade
+                      </TableHead>
+                      <TableHead scope="col" className="px-4 py-2 text-right">
+                        Points
+                      </TableHead>
+                      <TableHead scope="col" className="px-4 py-2">
+                        Description
+                      </TableHead>
                     </tr>
                   </TableHeader>
                   <tbody className="divide-y divide-[var(--color-hairline-border)] font-body-sm text-body-sm">
@@ -433,7 +458,9 @@ export const SettingsView: React.FC = () => {
                             <TableCell className="px-4 py-2 font-tabular-md text-tabular-md text-right font-medium">
                               {row.points}
                             </TableCell>
-                            <TableCell className="px-4 py-2 text-[var(--color-on-surface)]">{row.description}</TableCell>
+                            <TableCell className="px-4 py-2 text-[var(--color-on-surface)]">
+                              {row.description}
+                            </TableCell>
                           </TableRow>
 
                           {/* Cutoff Pass Line */}
@@ -465,7 +492,9 @@ export const SettingsView: React.FC = () => {
         <section className="py-6 border-b border-[var(--color-hairline-border)] grid grid-cols-12 gap-6 bg-[var(--color-surface-container-low)]/50 p-4 rounded my-2">
           <div className="col-span-12 md:col-span-4 pr-4">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[var(--color-primary)]">upload_file</span>
+              <span className="material-symbols-outlined text-[var(--color-primary)]">
+                upload_file
+              </span>
               <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
                 Bulk Marks Import (CSV)
               </h2>
@@ -503,14 +532,27 @@ export const SettingsView: React.FC = () => {
 
           <div className="col-span-12 md:col-span-8 flex flex-col justify-start space-y-4">
             {/* Mode Selector Tabs */}
-            <Tabs defaultValue={csvMode} onValueChange={(v) => setCsvMode(v as "upload" | "paste")} variant="underline" className="w-full">
+            <Tabs
+              defaultValue={csvMode}
+              onValueChange={(v) => setCsvMode(v as "upload" | "paste")}
+              variant="underline"
+              className="w-full"
+            >
               <TabsList className="flex gap-1" aria-label="CSV import mode">
-                <TabsTrigger value="upload" className="px-3.5 py-2 min-h-[40px] whitespace-nowrap text-xs">
+                <TabsTrigger
+                  value="upload"
+                  className="px-3.5 py-2 min-h-[40px] whitespace-nowrap text-xs"
+                >
                   <span className="material-symbols-outlined text-[15px] mr-1.5">cloud_upload</span>
                   Upload CSV File
                 </TabsTrigger>
-                <TabsTrigger value="paste" className="px-3.5 py-2 min-h-[40px] whitespace-nowrap text-xs">
-                  <span className="material-symbols-outlined text-[15px] mr-1.5">content_paste</span>
+                <TabsTrigger
+                  value="paste"
+                  className="px-3.5 py-2 min-h-[40px] whitespace-nowrap text-xs"
+                >
+                  <span className="material-symbols-outlined text-[15px] mr-1.5">
+                    content_paste
+                  </span>
                   Paste CSV / TSV Text
                 </TabsTrigger>
               </TabsList>
@@ -518,12 +560,20 @@ export const SettingsView: React.FC = () => {
               <TabsContent value="upload" forceMount>
                 {/* Success message banner */}
                 {csvSuccessMessage && (
-                  <Badge variant="success" className="w-full justify-between animate-fadeIn flex items-center gap-2 mb-4">
+                  <Badge
+                    variant="success"
+                    className="w-full justify-between animate-fadeIn flex items-center gap-2 mb-4"
+                  >
                     <div className="flex items-center gap-2">
                       <span className="material-symbols-outlined text-[18px]">check_circle</span>
                       <span className="font-medium">{csvSuccessMessage}</span>
                     </div>
-                    <Button variant="ghost" size="sm" onClick={() => setCsvSuccessMessage(null)} className="p-0 min-h-0 text-xs">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setCsvSuccessMessage(null)}
+                      className="p-0 min-h-0 text-xs"
+                    >
                       ✕
                     </Button>
                   </Badge>
@@ -558,7 +608,9 @@ export const SettingsView: React.FC = () => {
                     </span>
                     <div className="font-body-md text-sm font-medium text-[var(--color-on-surface)]">
                       {csvFileName ? (
-                        <span className="text-[var(--color-primary)] font-semibold">{csvFileName}</span>
+                        <span className="text-[var(--color-primary)] font-semibold">
+                          {csvFileName}
+                        </span>
                       ) : (
                         "Click to select a CSV file or drag and drop here"
                       )}
@@ -573,12 +625,20 @@ export const SettingsView: React.FC = () => {
               <TabsContent value="paste" forceMount>
                 {/* Success message banner */}
                 {csvSuccessMessage && (
-                  <Badge variant="success" className="w-full justify-between animate-fadeIn flex items-center gap-2 mb-4">
+                  <Badge
+                    variant="success"
+                    className="w-full justify-between animate-fadeIn flex items-center gap-2 mb-4"
+                  >
                     <div className="flex items-center gap-2">
                       <span className="material-symbols-outlined text-[18px]">check_circle</span>
                       <span className="font-medium">{csvSuccessMessage}</span>
                     </div>
-                    <Button variant="ghost" size="sm" onClick={() => setCsvSuccessMessage(null)} className="p-0 min-h-0 text-xs">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setCsvSuccessMessage(null)}
+                      className="p-0 min-h-0 text-xs"
+                    >
                       ✕
                     </Button>
                   </Badge>
@@ -607,7 +667,9 @@ export const SettingsView: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <span
                         className={`w-2.5 h-2.5 rounded-full ${
-                          parsedPreview.success ? "bg-[var(--color-success)]" : "bg-[var(--color-error)]"
+                          parsedPreview.success
+                            ? "bg-[var(--color-success)]"
+                            : "bg-[var(--color-error)]"
                         }`}
                       ></span>
                       <span className="font-headline-sm text-xs font-semibold text-[var(--color-on-surface)]">
@@ -671,10 +733,18 @@ export const SettingsView: React.FC = () => {
                           <DataTable compact>
                             <TableHeader>
                               <tr className="bg-[var(--color-surface-container-low)] border-b border-[var(--color-hairline-border)] text-[10px] font-label-caps text-[var(--color-on-surface-muted)]">
-                                <TableHead scope="col" className="px-2 py-1.5">ADM</TableHead>
-                                <TableHead scope="col" className="px-2 py-1.5">NAME</TableHead>
+                                <TableHead scope="col" className="px-2 py-1.5">
+                                  ADM
+                                </TableHead>
+                                <TableHead scope="col" className="px-2 py-1.5">
+                                  NAME
+                                </TableHead>
                                 {parsedPreview.mappedSubjects.slice(0, 6).map((sub) => (
-                                  <TableHead key={sub} scope="col" className="px-2 py-1.5 text-right">
+                                  <TableHead
+                                    key={sub}
+                                    scope="col"
+                                    className="px-2 py-1.5 text-right"
+                                  >
                                     {sub}
                                   </TableHead>
                                 ))}
@@ -687,16 +757,26 @@ export const SettingsView: React.FC = () => {
                             </TableHeader>
                             <tbody className="divide-y divide-[var(--color-hairline-border)] font-tabular-sm">
                               {parsedPreview.updates.slice(0, 5).map((u) => (
-                                <TableRow key={u.studentId} className="h-7 hover:bg-[var(--color-surface-container)]">
+                                <TableRow
+                                  key={u.studentId}
+                                  className="h-7 hover:bg-[var(--color-surface-container)]"
+                                >
                                   <TableCell className="px-2 py-1 font-medium">{u.admNo}</TableCell>
-                                  <TableCell className="px-2 py-1 text-[var(--color-on-surface)]">{u.studentName}</TableCell>
+                                  <TableCell className="px-2 py-1 text-[var(--color-on-surface)]">
+                                    {u.studentName}
+                                  </TableCell>
                                   {parsedPreview.mappedSubjects.slice(0, 6).map((sub) => (
-                                    <TableCell key={sub} className="px-2 py-1 text-right text-[var(--color-on-surface)]">
+                                    <TableCell
+                                      key={sub}
+                                      className="px-2 py-1 text-right text-[var(--color-on-surface)]"
+                                    >
                                       {u.marks[sub] !== undefined ? String(u.marks[sub]) : "—"}
                                     </TableCell>
                                   ))}
                                   {parsedPreview.mappedSubjects.length > 6 && (
-                                    <TableCell className="px-2 py-1 text-right text-[var(--color-on-surface-muted)]">...</TableCell>
+                                    <TableCell className="px-2 py-1 text-right text-[var(--color-on-surface-muted)]">
+                                      ...
+                                    </TableCell>
                                   )}
                                 </TableRow>
                               ))}
@@ -743,7 +823,9 @@ export const SettingsView: React.FC = () => {
         {/* 5. Data & Backups Section */}
         <section className="py-6 border-b border-[var(--color-hairline-border)] grid grid-cols-12 gap-6">
           <div className="col-span-12 md:col-span-4 pr-4">
-            <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">Data & Backups</h2>
+            <h2 className="font-headline-sm text-headline-sm text-[var(--color-on-surface)]">
+              Data & Backups
+            </h2>
             <p className="font-caption text-caption text-[var(--color-on-surface-muted)] mt-1">
               Direct cryptographic snapshots of the ledger state. Store cold archive files onto
               local physical storage keys.
@@ -807,10 +889,15 @@ export const SettingsView: React.FC = () => {
           </div>
           <div className="col-span-12 md:col-span-8 flex flex-col items-start gap-3">
             <div className="flex flex-wrap items-center gap-3">
-              <Badge variant={dbHealth.status === "healthy" ? "success" : "outline"} className="flex items-center gap-2 px-3 py-1.5">
+              <Badge
+                variant={dbHealth.status === "healthy" ? "success" : "outline"}
+                className="flex items-center gap-2 px-3 py-1.5"
+              >
                 <span
                   className={`w-2 h-2 rounded-full inline-block ${
-                    dbHealth.status === "healthy" ? "bg-[var(--color-success)]" : "bg-[var(--color-error)]"
+                    dbHealth.status === "healthy"
+                      ? "bg-[var(--color-success)]"
+                      : "bg-[var(--color-error)]"
                   }`}
                 ></span>
                 <span className="font-tabular-sm text-tabular-sm text-[var(--color-on-surface)] font-medium">
@@ -858,7 +945,11 @@ export const SettingsView: React.FC = () => {
                 onClick={() => setActiveView("legal")}
                 className="flex items-center gap-1.5"
                 iconPosition="left"
-                icon={<span className="material-symbols-outlined text-[16px] text-[var(--color-primary)]">policy</span>}
+                icon={
+                  <span className="material-symbols-outlined text-[16px] text-[var(--color-primary)]">
+                    policy
+                  </span>
+                }
               >
                 Privacy Policy (DPA 2019)
               </Button>
@@ -868,7 +959,11 @@ export const SettingsView: React.FC = () => {
                 onClick={() => setActiveView("legal")}
                 className="flex items-center gap-1.5"
                 iconPosition="left"
-                icon={<span className="material-symbols-outlined text-[16px] text-[var(--color-on-surface-muted)]">gavel</span>}
+                icon={
+                  <span className="material-symbols-outlined text-[16px] text-[var(--color-on-surface-muted)]">
+                    gavel
+                  </span>
+                }
               >
                 Terms of Service
               </Button>
@@ -878,7 +973,11 @@ export const SettingsView: React.FC = () => {
                 onClick={() => setLegalModal("compliance")}
                 className="flex items-center gap-1.5"
                 iconPosition="left"
-                icon={<span className="material-symbols-outlined text-[16px] text-[var(--color-success)]">verified</span>}
+                icon={
+                  <span className="material-symbols-outlined text-[16px] text-[var(--color-success)]">
+                    verified
+                  </span>
+                }
               >
                 Ministry of Education & KNEC
               </Button>
@@ -895,7 +994,9 @@ export const SettingsView: React.FC = () => {
       <footer className="sticky bottom-0 z-20 bg-[var(--color-surface-container-low)] border-t border-[var(--color-hairline-border)] py-3 px-4 sm:px-6 md:hidden">
         <div className="max-w-[1200px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[16px] text-[var(--color-on-surface-muted)]">info</span>
+            <span className="material-symbols-outlined text-[16px] text-[var(--color-on-surface-muted)]">
+              info
+            </span>
             <span className="font-caption text-caption text-[var(--color-on-surface-muted)] text-xs">
               Configuration changes are cached locally until explicitly confirmed.
             </span>
@@ -915,7 +1016,9 @@ export const SettingsView: React.FC = () => {
       <footer className="hidden md:fixed bottom-0 right-0 left-[72px] lg:left-[200px] xl:left-[220px] bg-[var(--color-surface-container-low)] border-t border-[var(--color-hairline-border)] py-3 px-4 sm:px-6 z-30 no-print transition-all duration-200">
         <div className="max-w-[1200px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[16px] text-[var(--color-on-surface-muted)]">info</span>
+            <span className="material-symbols-outlined text-[16px] text-[var(--color-on-surface-muted)]">
+              info
+            </span>
             <span className="font-caption text-caption text-[var(--color-on-surface-muted)] text-xs">
               Configuration changes are cached locally until explicitly confirmed.
             </span>
@@ -935,8 +1038,15 @@ export const SettingsView: React.FC = () => {
       <Sheet open={isRestoreModalOpen} onOpenChange={setIsRestoreModalOpen} side="right">
         <div className="max-w-lg w-full p-4">
           <div className="flex items-center justify-between pb-3 border-b border-[var(--color-hairline-border)] mb-3">
-            <CardTitle className="font-headline-sm text-headline-sm">Restore from JSON Backup</CardTitle>
-            <IconButton variant="ghost" size="sm" onClick={() => setIsRestoreModalOpen(false)} aria-label="Close">
+            <CardTitle className="font-headline-sm text-headline-sm">
+              Restore from JSON Backup
+            </CardTitle>
+            <IconButton
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsRestoreModalOpen(false)}
+              aria-label="Close"
+            >
               <span className="material-symbols-outlined text-[20px]">close</span>
             </IconButton>
           </div>
@@ -970,7 +1080,9 @@ export const SettingsView: React.FC = () => {
         <div className="max-w-md w-full p-4">
           <div className="flex items-center gap-2 text-[var(--color-error)] mb-2">
             <span className="material-symbols-outlined text-[24px]">warning</span>
-            <CardTitle className="font-headline-sm text-headline-sm">Reset to Demo Cohort Data</CardTitle>
+            <CardTitle className="font-headline-sm text-headline-sm">
+              Reset to Demo Cohort Data
+            </CardTitle>
           </div>
           <p className="font-body-sm text-body-sm text-[var(--color-on-surface)] mb-3">
             This will restore the ledger to clean Form 4 East seed records (42 students, KNEC

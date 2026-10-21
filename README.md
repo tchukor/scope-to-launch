@@ -8,18 +8,18 @@ Chokur is a purpose-built marks-to-insight tool for Kenyan secondary school teac
 
 ## What it does
 
-| Feature | Description |
-|---|---|
-| **KCSE 12-Point Grading** | Automated conversion from raw percentage scores to official KNEC letter grades (A through E) and points (12 to 1). Evaluates the best-7 subjects aggregate per MOE cluster requirements. |
-| **Dual-Mode Marks Entry** | Rapid desktop spreadsheet matrix with arrow-key navigation AND focused mobile student-by-student cards with tactile numeric keypads. |
-| **Class & Stream Rankings** | Instant stream rank, overall form rank, aggregate score, mean points. Tracks deviation from previous term. |
-| **Subject Performance Analysis** | Departmental metrics per subject: mean points, standard deviation, pass rate (≥C+), top performers, grade breakdowns. |
-| **Printable Report Cards** | Official MOE layout with school crest, motto, student biodata, subject evaluation remarks, stream rank, and teacher/principal signatures. |
-| **Offline-First** | IndexedDB storage (W3C Level 2) with memory fallback. 100% offline capable — functions identically with or without network. |
-| **Attendance + Bulk SMS** | Roll-call register with instant absentee alerting; queued SMS to parent contacts. |
-| **Fees Ledger** | Term fee collections, payment records, receipt generation, balance tracking. |
-| **Parent Portal** | Secure parent access to child grades, attendance, and fees (privacy-gated — parents only see own student data). |
-| **Legal & Compliance** | Privacy Policy (DPA 2019), Terms of Service, MoE/KNEC compliance modals — accessible from footer and in-app settings. |
+| Feature                          | Description                                                                                                                                                                              |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **KCSE 12-Point Grading**        | Automated conversion from raw percentage scores to official KNEC letter grades (A through E) and points (12 to 1). Evaluates the best-7 subjects aggregate per MOE cluster requirements. |
+| **Dual-Mode Marks Entry**        | Rapid desktop spreadsheet matrix with arrow-key navigation AND focused mobile student-by-student cards with tactile numeric keypads.                                                     |
+| **Class & Stream Rankings**      | Instant stream rank, overall form rank, aggregate score, mean points. Tracks deviation from previous term.                                                                               |
+| **Subject Performance Analysis** | Departmental metrics per subject: mean points, standard deviation, pass rate (≥C+), top performers, grade breakdowns.                                                                    |
+| **Printable Report Cards**       | Official MOE layout with school crest, motto, student biodata, subject evaluation remarks, stream rank, and teacher/principal signatures.                                                |
+| **Offline-First**                | IndexedDB storage (W3C Level 2) with memory fallback. 100% offline capable — functions identically with or without network.                                                              |
+| **Attendance + Bulk SMS**        | Roll-call register with instant absentee alerting; queued SMS to parent contacts.                                                                                                        |
+| **Fees Ledger**                  | Term fee collections, payment records, receipt generation, balance tracking.                                                                                                             |
+| **Parent Portal**                | Secure parent access to child grades, attendance, and fees (privacy-gated — parents only see own student data).                                                                          |
+| **Legal & Compliance**           | Privacy Policy (DPA 2019), Terms of Service, MoE/KNEC compliance modals — accessible from footer and in-app settings.                                                                    |
 
 ## Tech stack
 

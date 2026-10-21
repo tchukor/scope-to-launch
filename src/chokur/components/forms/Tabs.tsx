@@ -39,10 +39,13 @@ export const Tabs = ({
   const controlled = controlledValue !== undefined;
   const value = controlled ? controlledValue : uncontrolledValue;
 
-  const handleValueChange = React.useCallback((newValue: string) => {
-    if (!controlled) setUncontrolledValue(newValue);
-    onValueChange?.(newValue);
-  }, [controlled, onValueChange]);
+  const handleValueChange = React.useCallback(
+    (newValue: string) => {
+      if (!controlled) setUncontrolledValue(newValue);
+      onValueChange?.(newValue);
+    },
+    [controlled, onValueChange],
+  );
 
   return (
     <TabsContext.Provider value={{ value, onValueChange: handleValueChange, variant, orientation }}>
@@ -68,7 +71,7 @@ export const TabsList = ({ children, className }: TabsListProps) => {
         orientation === "vertical" && "flex-col",
         variant === "default" && "bg-[var(--color-surface-container)] p-1 rounded-lg",
         variant === "pills" && "gap-2",
-        className
+        className,
       )}
     >
       {children}
@@ -129,14 +132,23 @@ export const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>
         tabIndex={isActive ? 0 : -1}
         onClick={() => !disabled && onValueChange(value)}
         disabled={disabled}
-        className={cn(baseClasses, variantClasses[variant ?? "default"], orientation === "vertical" && "w-full justify-start px-3", className)}
+        className={cn(
+          baseClasses,
+          variantClasses[variant ?? "default"],
+          orientation === "vertical" && "w-full justify-start px-3",
+          className,
+        )}
         data-state={isActive ? "active" : "inactive"}
       >
-        {icon && <span className="flex-shrink-0" aria-hidden="true">{icon}</span>}
+        {icon && (
+          <span className="flex-shrink-0" aria-hidden="true">
+            {icon}
+          </span>
+        )}
         {children}
       </button>
     );
-  }
+  },
 );
 TabsTrigger.displayName = "TabsTrigger";
 
@@ -147,7 +159,12 @@ interface TabsContentProps {
   forceMount?: boolean;
 }
 
-export const TabsContent = ({ value, children, className, forceMount = false }: TabsContentProps) => {
+export const TabsContent = ({
+  value,
+  children,
+  className,
+  forceMount = false,
+}: TabsContentProps) => {
   const { value: currentValue } = useTabsContext();
   const isActive = currentValue === value;
 
@@ -161,7 +178,7 @@ export const TabsContent = ({ value, children, className, forceMount = false }: 
       className={cn(
         "mt-4 animate-fade-in",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] focus-visible:ring-offset-2",
-        className
+        className,
       )}
       hidden={!isActive}
       tabIndex={0}

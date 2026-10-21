@@ -18,7 +18,9 @@ const ctxStore = globalThis as unknown as {
 };
 const PersistenceContext =
   ctxStore.__chokurPersistenceContext ??
-  (ctxStore.__chokurPersistenceContext = createContext<PersistenceContextType | undefined>(undefined));
+  (ctxStore.__chokurPersistenceContext = createContext<PersistenceContextType | undefined>(
+    undefined,
+  ));
 
 export const PersistenceProvider: React.FC<{
   children: React.ReactNode;
