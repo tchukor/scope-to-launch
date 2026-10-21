@@ -2,7 +2,7 @@
  * Service Worker for Chokur System (Offline-First KCSE Academic Ledger)
  */
 
-const CACHE_NAME = "chokur-cache-v2";
+const CACHE_NAME = "chokur-cache-v3";
 const STATIC_ASSETS = ["/", "/index.html", "/manifest.webmanifest", "/icon.svg"];
 
 self.addEventListener("install", (event) => {
