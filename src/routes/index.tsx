@@ -1,5 +1,6 @@
 import { ClientOnly, createFileRoute } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useState } from "react";
+import { GradingProvider } from "@/chokur/context/GradingContext";
 
 const ChokurApp = lazy(() => import("@/chokur/App"));
 const LandingPage = lazy(() => import("@/chokur/views/LandingPageView").then(m => ({ default: m.LandingPageView })));
@@ -32,7 +33,9 @@ function Index() {
   return (
     <ClientOnly fallback={<Fallback />}>
       <Suspense fallback={<Fallback />}>
-        {showLanding ? <LandingPage onLaunch={() => { localStorage.setItem("chokur.has_used_app", "true"); setShowLanding(false); }} /> : <ChokurApp />}
+        <GradingProvider>
+          {showLanding ? <LandingPage onLaunch={() => { localStorage.setItem("chokur.has_used_app", "true"); setShowLanding(false); }} /> : <ChokurApp />}
+        </GradingProvider>
       </Suspense>
     </ClientOnly>
   );
