@@ -25,6 +25,94 @@ export const INITIAL_SCHOOL_CONFIG: SchoolConfig = {
 };
 
 export const INITIAL_STREAMS: ClassStream[] = [
+  // Form 1
+  {
+    id: "str-f1e",
+    name: "Form 1 East",
+    form: "Form 1",
+    stream: "East",
+    classTeacher: "Ms. A. Muthoni",
+  },
+  {
+    id: "str-f1w",
+    name: "Form 1 West",
+    form: "Form 1",
+    stream: "West",
+    classTeacher: "Mr. B. Ochieng",
+  },
+  {
+    id: "str-f1n",
+    name: "Form 1 North",
+    form: "Form 1",
+    stream: "North",
+    classTeacher: "Mrs. C. Wanjiku",
+  },
+  {
+    id: "str-f1s",
+    name: "Form 1 South",
+    form: "Form 1",
+    stream: "South",
+    classTeacher: "Mr. D. Kipkoech",
+  },
+  // Form 2
+  {
+    id: "str-f2e",
+    name: "Form 2 East",
+    form: "Form 2",
+    stream: "East",
+    classTeacher: "Mr. E. Njoroge",
+  },
+  {
+    id: "str-f2w",
+    name: "Form 2 West",
+    form: "Form 2",
+    stream: "West",
+    classTeacher: "Ms. F. Achieng",
+  },
+  {
+    id: "str-f2n",
+    name: "Form 2 North",
+    form: "Form 2",
+    stream: "North",
+    classTeacher: "Mr. G. Omondi",
+  },
+  {
+    id: "str-f2s",
+    name: "Form 2 South",
+    form: "Form 2",
+    stream: "South",
+    classTeacher: "Mrs. H. Karimi",
+  },
+  // Form 3
+  {
+    id: "str-f3e",
+    name: "Form 3 East",
+    form: "Form 3",
+    stream: "East",
+    classTeacher: "Ms. A. Muthoni",
+  },
+  {
+    id: "str-f3w",
+    name: "Form 3 West",
+    form: "Form 3",
+    stream: "West",
+    classTeacher: "Mr. I. Kiprotich",
+  },
+  {
+    id: "str-f3n",
+    name: "Form 3 North",
+    form: "Form 3",
+    stream: "North",
+    classTeacher: "Mrs. J. Chebet",
+  },
+  {
+    id: "str-f3s",
+    name: "Form 3 South",
+    form: "Form 3",
+    stream: "South",
+    classTeacher: "Mr. K. Mutua",
+  },
+  // Form 4
   {
     id: "str-1",
     name: "Form 4 East",
@@ -45,13 +133,6 @@ export const INITIAL_STREAMS: ClassStream[] = [
     form: "Form 4",
     stream: "North",
     classTeacher: "Mr. P. Wanyama",
-  },
-  {
-    id: "str-4",
-    name: "Form 3 East",
-    form: "Form 3",
-    stream: "East",
-    classTeacher: "Ms. A. Muthoni",
   },
 ];
 
