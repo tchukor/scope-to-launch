@@ -149,17 +149,23 @@ export const RankingsView: React.FC = () => {
   useEffect(() => {
     try {
       sessionStorage.setItem("chokur.rankings_search", searchQuery);
-    } catch {}
+    } catch {
+      // Ignore sessionStorage errors
+    }
   }, [searchQuery]);
   useEffect(() => {
     try {
       sessionStorage.setItem("chokur.rankings_gender", genderFilter);
-    } catch {}
+    } catch {
+      // Ignore sessionStorage errors
+    }
   }, [genderFilter]);
   useEffect(() => {
     try {
       sessionStorage.setItem("chokur.rankings_status", statusFilter);
-    } catch {}
+    } catch {
+      // Ignore sessionStorage errors
+    }
   }, [statusFilter]);
 
   // Identify where the C+ cutoff line falls

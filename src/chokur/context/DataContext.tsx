@@ -85,7 +85,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
           marks: parsed.marks || INITIAL_MARKS,
         };
       }
-    } catch {}
+    } catch {
+      // Ignore parse errors, fall back to initial data
+    }
     return {
       schoolConfig: INITIAL_SCHOOL_CONFIG,
       teacherProfile: INITIAL_TEACHER_PROFILE,

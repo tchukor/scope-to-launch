@@ -9,11 +9,11 @@ interface ProtectedViewProps {
 }
 
 export const ProtectedView: React.FC<ProtectedViewProps> = ({ children, requiredRole }) => {
-  const { role, activeView, setActiveView } = useGrading();
+  const { role, activeView, setActiveView, homeFor } = useGrading();
   const isAuthorized = canSee(role, activeView);
   useEffect(() => {
     if (!isAuthorized && activeView !== "landing") setActiveView(homeFor(role));
-  }, [activeView, role, isAuthorized]);
+  }, [activeView, role, isAuthorized, setActiveView, homeFor]);
   if (!isAuthorized && activeView !== "landing")
     return <UnauthorizedState role={role} onGoHome={() => setActiveView(homeFor(role))} />;
   return <>{children}</>;

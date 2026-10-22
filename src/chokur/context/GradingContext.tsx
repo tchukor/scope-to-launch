@@ -806,6 +806,8 @@ const PersistenceProviderInner: React.FC<{
     return () => clearTimeout(t);
   }, [
     schoolConfig,
+    teacherProfile,
+    whatsAppMessages,
     students,
     subjects,
     streams,

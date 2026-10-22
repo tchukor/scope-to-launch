@@ -1,5 +1,5 @@
 // @ts-nocheck -- original source kept verbatim; project tsconfig is stricter than the source
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { ChokurLogo } from "@/chokur/components/brand/ChokurLogo";
@@ -72,17 +72,17 @@ export const ReportCardsView: React.FC = () => {
     return filteredRoster.findIndex((r) => r.student.id === selectedCalculation.student.id);
   }, [filteredRoster, selectedCalculation]);
 
-  const handlePrevStudent = () => {
+  const handlePrevStudent = useCallback(() => {
     if (currentIndex > 0) {
       setSelectedStudentId(filteredRoster[currentIndex - 1].student.id);
     }
-  };
+  }, [currentIndex, filteredRoster, setSelectedStudentId]);
 
-  const handleNextStudent = () => {
+  const handleNextStudent = useCallback(() => {
     if (currentIndex >= 0 && currentIndex < filteredRoster.length - 1) {
       setSelectedStudentId(filteredRoster[currentIndex + 1].student.id);
     }
-  };
+  }, [currentIndex, filteredRoster, setSelectedStudentId]);
 
   // Keyboard navigation: [ and ] or arrow keys
   useEffect(() => {
@@ -101,7 +101,7 @@ export const ReportCardsView: React.FC = () => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentIndex, filteredRoster]);
+  }, [currentIndex, filteredRoster, handlePrevStudent, handleNextStudent]);
 
   const handlePrintSingle = () => {
     setPrintAllMode(false);

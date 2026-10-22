@@ -124,6 +124,8 @@ export const PersistenceProvider: React.FC<{
     return () => clearTimeout(timer);
   }, [
     schoolConfig,
+    teacherProfile,
+    whatsAppMessages,
     students,
     subjects,
     streams,
