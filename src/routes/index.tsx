@@ -1,11 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { GradingProvider } from "@/chokur/context/GradingContext";
-
-const ChokurApp = lazy(() => import("@/chokur/App"));
-const LandingPage = lazy(() =>
-  import("@/chokur/views/LandingPageView").then((m) => ({ default: m.LandingPageView })),
-);
+import { LandingPageView } from "@/chokur/views/LandingPageView";
 
 const TITLE = "Chokur System — Marks to insight in one pass. Offline.";
 const DESC =
@@ -46,18 +42,7 @@ function Index() {
   }, []);
   return (
     <Suspense fallback={<Fallback />}>
-      <GradingProvider>
-        {showLanding ? (
-          <LandingPage
-            onLaunch={() => {
-              localStorage.setItem("chokur.has_used_app", "true");
-              setShowLanding(false);
-            }}
-          />
-        ) : (
-          <ChokurApp />
-        )}
-      </GradingProvider>
+      <GradingProvider>{showLanding ? <LandingPageView /> : null}</GradingProvider>
     </Suspense>
   );
 }

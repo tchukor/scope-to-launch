@@ -443,39 +443,46 @@ const DataProviderInner: React.FC<{ children: React.ReactNode }> = ({ children }
     }
   };
 
-  return (
-    <DataContext.Provider
-      value={{
-        schoolConfig,
-        updateSchoolConfig,
-        students,
-        subjects,
-        streams,
-        exams,
-        terms,
-        marks,
-        addStudent,
-        updateStudent,
-        removeStudent,
-        bulkAddStudents,
-        addSubject,
-        updateSubject,
-        removeSubject,
-        addClassStream,
-        updateClassStream,
-        removeClassStream,
-        addExamPeriod,
-        updateExamPeriod,
-        removeExamPeriod,
-        teacherProfile,
-        updateTeacherProfile,
-        whatsAppMessages,
-        sendWhatsAppMessage,
-      }}
-    >
-      {children}
-    </DataContext.Provider>
-  );
+  const dataValue = {
+    schoolConfig,
+    updateSchoolConfig,
+    students,
+    subjects,
+    streams,
+    exams,
+    terms,
+    marks,
+    addStudent,
+    updateStudent,
+    removeStudent,
+    bulkAddStudents,
+    addSubject,
+    updateSubject,
+    removeSubject,
+    addClassStream,
+    updateClassStream,
+    removeClassStream,
+    addExamPeriod,
+    updateExamPeriod,
+    removeExamPeriod,
+    teacherProfile,
+    updateTeacherProfile,
+    whatsAppMessages,
+    sendWhatsAppMessage,
+  };
+
+  // Support both static children and a render-prop function (children(value)).
+  // This lets GradingProvider compose providers while handing the data slice
+  // downstream without breaking server-side rendering.
+  if (typeof children === "function") {
+    return (
+      <DataContext.Provider value={dataValue}>
+        {(children as (value: typeof dataValue) => React.ReactNode)(dataValue)}
+      </DataContext.Provider>
+    );
+  }
+
+  return <DataContext.Provider value={dataValue}>{children}</DataContext.Provider>;
 };
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -985,14 +992,38 @@ export const useGrading = () => {
   return c;
 };
 
+// Composes the full GradingContext value from every sub-context so useGrading()
+// returns a complete, working interface everywhere in the app.
+const GradingComposer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const nav = useNavigation();
+  const role = useRole();
+  const data = useData();
+  const marks = useMarks();
+  const computed = useComputed();
+  const persistence = usePersistence();
+
+  const value = useMemo(
+    () => ({
+      ...nav,
+      ...role,
+      ...data,
+      ...marks,
+      ...computed,
+      ...persistence,
+    }),
+    [nav, role, data, marks, computed, persistence],
+  );
+
+  return <GradingContext.Provider value={value}>{children}</GradingContext.Provider>;
+};
+
 // Root composed provider
 export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // We need to compose all providers. Since React contexts can't directly share state between siblings,
-  // we use a render-prop-like pattern or just nest them. The simplest approach:
-  // We'll use a single combined provider that manages all state internally but exports the unified interface.
-  // Actually, the cleanest way is to keep the original GradingContext.tsx as-is and just add the split contexts as internal implementation.
-  // But the plan says to split. Let me create a composed provider that wraps all.
-
+  // DataProviderInner now supports render-prop children: it calls
+  // children(dataValue) and renders the resulting element tree, so SSR works.
+  // All inner providers are normal providers that render {children} directly.
+  // GradingComposer sits innermost, reads every sub-context via hooks, and
+  // provides the unified useGrading() value.
   return (
     <NavigationProvider>
       <RoleProvider>
@@ -1021,7 +1052,7 @@ export const GradingProvider: React.FC<{ children: React.ReactNode }> = ({ child
                   activeView={""}
                   selectedStudentId={""}
                 >
-                  <GradingContext.Provider value={{}}>{children}</GradingContext.Provider>
+                  <GradingComposer>{children}</GradingComposer>
                 </PersistenceProvider>
               </ComputedProvider>
             </MarksProvider>
